@@ -7,6 +7,19 @@
   "author": "François Pluchino <francois.pluchino@gmail.com>",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "config": "node bin/config",
+    "deconfig": "node bin/deconfig",
+    "serve": "node bin/serve",
+    "create-bucket": "node bin/create-bucket",
+    "delete-bucket": "node bin/delete-bucket",
+    "build": "node bin/build",
+    "package": "node bin/package",
+    "deploy": "node bin/deploy",
+    "package-deploy": "node bin/package-deploy",
+    "delete-stack": "node bin/delete-stack",
+    "setup": "yarn install && node bin/setup"
+  },
   "dependencies": {
     "aws-serverless-express": "^3.2.0",
     "body-parser": "^1.18.3",
