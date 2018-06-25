@@ -192,19 +192,22 @@ function findAwsVariables(envs) {
 function runCommand(command, envs, callback, exitOnError, verbose) {
     let args = replaceVariables(command, envs).split(' ');
     let cmd = args.shift();
-    let res = spawn(cmd, args);
+    let res = spawn(cmd, args, {
+        stdio: false === verbose ? 'pipe' : 'inherit'
+    });
+    let errorData = '';
 
-    if (false !== verbose) {
-        res.stdout.on('data', function (data) {
-            console.info(data.toString());
-        });
-
+    if (false === verbose) {
         res.stderr.on('data', function (data) {
-            console.error(data.toString());
+            errorData += data.toString();
         });
     }
 
     res.on('exit', function (code) {
+        if ('' !== errorData) {
+            console.log(errorData.replace(/\n$/, ''));
+        }
+
         if (code > 0 && false !== exitOnError) {
             process.exit(code);
         }
