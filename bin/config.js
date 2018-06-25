@@ -79,6 +79,27 @@ let finishAction = function(envs) {
     }
 };
 
+let availableRegions = null;
+let getAvailableRegions = function () {
+    if (null === availableRegions) {
+        let res = utils.execSync('aws ec2 describe-regions --query Regions[].{Name:RegionName} --output json', envs);
+        availableRegions = [];
+
+        if (res) {
+            res = JSON.parse(res);
+
+            for (let i = 0; i < res.length; ++i) {
+                availableRegions.push(res[i].Name);
+            }
+        } else {
+            console.error('Error: Impossible to retrieve the list of AWS regions');
+            process.exit(1);
+        }
+    }
+
+    return availableRegions;
+};
+
 let findAwsAccountId = function (envs) {
     if (null === envs['AWS_ACCOUNT_ID']) {
         envs['AWS_ACCOUNT_ID'] = utils.execSync('aws sts get-caller-identity --output text --query Account', envs);
@@ -130,10 +151,13 @@ if (program.interaction) {
             }
         },
         {
-            type : 'input',
+            type : 'list',
             name : 'awsRegion',
             default: envs['AWS_REGION'],
             message : 'Enter your AWS Region:',
+            choices: function() {
+                return getAvailableRegions();
+            },
             when: function () {
                 return utils.showOnlyEmptyOption(program, envs, 'AWS_REGION');
             },
