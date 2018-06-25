@@ -63,16 +63,16 @@ let finishAction = function(envs) {
     }
 
     if (invalidOptions.length > 0) {
-        console.error('  Error: You must define the options:');
+        console.error('Error: The options below of the "config" command are required:');
         for (let m = 0; m < invalidOptions.length; ++m) {
-            console.error('    - "' + invalidOptions[m] + '"');
+            console.error('  - "' + invalidOptions[m] + '"');
         }
         process.exit(1);
     }
 
     utils.writeVariables(ENV_PATH, envs);
 
-    console.info('  Project is configured successfully');
+    console.info('Project is configured successfully');
 };
 
 if (program.interaction) {

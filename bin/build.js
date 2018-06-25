@@ -49,4 +49,4 @@ files.forEach((file) => {
     fse.writeFileSync(outputPath + '/' + file.replace('./aws', ''), fileContentModified, 'utf8')
 });
 
-console.info('  Project is built successfully');
+console.info('Project is built successfully');
