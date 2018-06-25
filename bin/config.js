@@ -11,6 +11,7 @@
 
 'use strict';
 
+const {execSync} = require('child_process');
 const program = require('commander');
 const {prompt} = require('inquirer');
 const utils = require('./utils/utils');
@@ -79,6 +80,22 @@ let finishAction = function(envs) {
     }
 };
 
+let findAwsAccountId = function (envs) {
+    if (null === envs['AWS_ACCOUNT_ID']) {
+        try {
+            let res = execSync('aws sts get-caller-identity --output text --query Account', {
+                stdio : [null, null, null]
+            }).toString();
+
+            if (typeof res === 'string' && res.length > 0) {
+                envs['AWS_ACCOUNT_ID'] = res.trim();
+            }
+        } catch (e) {}
+    }
+
+    return envs['AWS_ACCOUNT_ID'];
+};
+
 if (program.interaction) {
     let questions = [
         {
@@ -136,9 +153,12 @@ if (program.interaction) {
         {
             type : 'input',
             name : 'awsAccountId',
-            default: envs['AWS_ACCOUNT_ID'],
+            default: function () {
+                return findAwsAccountId(envs);
+            },
             message : 'Enter your AWS Account ID:',
             when: function () {
+                findAwsAccountId(envs);
                 return utils.showOnlyEmptyOption(program, envs, 'AWS_ACCOUNT_ID');
             },
             validate: function (value) {
