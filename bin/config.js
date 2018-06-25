@@ -72,9 +72,13 @@ let finishAction = function(envs) {
         process.exit(1);
     }
 
-    utils.writeVariables(ENV_PATH, envs);
+    let sameConfig = utils.isSameObject(initialEnvs, envs);
 
-    if (true !== program.onlyEmpty || (true === program.onlyEmpty && !utils.isSameObject(initialEnvs, envs))) {
+    if (!sameConfig) {
+        utils.writeVariables(ENV_PATH, envs);
+    }
+
+    if (true !== program.onlyEmpty || (true === program.onlyEmpty && !sameConfig)) {
         console.info('Project is configured successfully');
     }
 };
