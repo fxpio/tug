@@ -19,6 +19,6 @@ program
     .description('Package and deploy the project')
     .parse(process.argv);
 
-utils.exec('node bin/package', {}, function () {
+utils.exec('node bin/package', [], function () {
     utils.exec('node bin/deploy');
 });

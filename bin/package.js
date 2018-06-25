@@ -19,8 +19,8 @@ program
     .description('Package the built project in S3 for AWS Cloud Formation (build the project before)')
     .parse(process.argv);
 
-utils.exec('node bin/config -n', {}, function () {
-    utils.exec('node bin/build', {}, function () {
+utils.exec('node bin/config', [], function () {
+    utils.exec('node bin/build', [], function () {
         utils.exec('aws cloudformation package --template ./dist/cloudformation.yaml --s3-bucket {AWS_S3_BUCKET} --output-template packaged-sam.yaml --region {AWS_REGION}');
     });
 });
