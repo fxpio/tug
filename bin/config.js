@@ -85,6 +85,9 @@ if (program.interaction) {
             message : 'Enter the AWS CLI profile name you want to use:',
             when: function () {
                 return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs['AWS_PROFILE']);
+            },
+            validate: function (value) {
+                return utils.requiredOption(value);
             }
         },
         {
@@ -98,6 +101,9 @@ if (program.interaction) {
                 envs = utils.mergeVariables(answerEnvs, awsEnvs, envs);
 
                 return null === envs['AWS_ACCESS_KEY_ID'];
+            },
+            validate: function (value) {
+                return utils.requiredOption(value);
             }
         },
         {
@@ -107,6 +113,9 @@ if (program.interaction) {
             message : 'Enter your AWS Secret Access Key:',
             when: function () {
                 return null === envs['AWS_SECRET_ACCESS_KEY'];
+            },
+            validate: function (value) {
+                return utils.requiredOption(value);
             }
         },
         {
@@ -116,6 +125,9 @@ if (program.interaction) {
             message : 'Enter your AWS Region:',
             when: function () {
                 return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs['AWS_REGION']);
+            },
+            validate: function (value) {
+                return utils.requiredOption(value);
             }
         },
         {
@@ -125,6 +137,9 @@ if (program.interaction) {
             message : 'Enter your AWS Account ID:',
             when: function () {
                 return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs['AWS_ACCOUNT_ID']);
+            },
+            validate: function (value) {
+                return utils.requiredOption(value);
             }
         },
         {
@@ -134,6 +149,9 @@ if (program.interaction) {
             message : 'Enter your AWS S3 bucket name:',
             when: function () {
                 return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs['AWS_S3_BUCKET']);
+            },
+            validate: function (value) {
+                return utils.requiredOption(value);
             }
         },
         {
@@ -143,6 +161,9 @@ if (program.interaction) {
             message : 'Enter your AWS Cloud Formation Stack name:',
             when: function () {
                 return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs['AWS_CLOUD_FORMATION_STACK_NAME']);
+            },
+            validate: function (value) {
+                return utils.requiredOption(value);
             }
         },
         {
@@ -152,6 +173,9 @@ if (program.interaction) {
             message : 'Enter your AWS Lambda Function name:',
             when: function () {
                 return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs['AWS_LAMBDA_FUNCTION_NAME']);
+            },
+            validate: function (value) {
+                return utils.requiredOption(value);
             }
         },
         {
@@ -161,6 +185,9 @@ if (program.interaction) {
             message : 'Enter your Github token:',
             when: function () {
                 return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs['GITHUB_TOKEN']);
+            },
+            validate: function (value) {
+                return utils.requiredOption(value);
             }
         }
     ];

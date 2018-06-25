@@ -218,6 +218,24 @@ function runCommand(command, envs, callback, exitOnError, verbose) {
     });
 }
 
+/**
+ * Validate the required option.
+ *
+ * @param {*}              value     The option value
+ * @param {string|boolean} [message] The error message
+ *                                   false to display the default error message
+ *                                   undefined to display the custom default message
+ *
+ * @return {string|boolean}
+ */
+function requiredOption(value, message) {
+    if (undefined === value || null === value || (typeof value === 'string' && 0 === value.length)) {
+        return undefined !== message ? message : 'This option is required';
+    }
+
+    return true;
+}
+
 module.exports = {
     removeDir: removeDir,
     replaceVariables: replaceVariables,
@@ -226,5 +244,6 @@ module.exports = {
     cleanVariable: cleanVariable,
     findAwsVariables: findAwsVariables,
     writeVariables: writeVariables,
-    exec: runCommand
+    exec: runCommand,
+    requiredOption: requiredOption
 };
