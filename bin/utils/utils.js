@@ -247,6 +247,31 @@ function showOnlyEmptyOption(program, envs, envName) {
     return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs[envName]);
 }
 
+/**
+ * Check if 2 objects are same.
+ *
+ * @param {object} object1 The first object
+ * @param {object} object2 The second object
+ *
+ * @return {boolean}
+ */
+function isSameObject(object1, object2) {
+    let keys1 = Object.keys(object1),
+        keys2 = Object.keys(object2);
+
+    if (keys1.length !== keys2.length) {
+        return false;
+    }
+
+    for (let i = 0; i < keys2.length; ++i) {
+        if (object1[keys2[i]] !== object2[keys2[i]]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 module.exports = {
     removeDir: removeDir,
     replaceVariables: replaceVariables,
@@ -257,5 +282,6 @@ module.exports = {
     writeVariables: writeVariables,
     exec: runCommand,
     requiredOption: requiredOption,
-    showOnlyEmptyOption: showOnlyEmptyOption
+    showOnlyEmptyOption: showOnlyEmptyOption,
+    isSameObject: isSameObject
 };

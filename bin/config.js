@@ -19,6 +19,7 @@ const ENV_PATH = './.env';
 const ENV_DIST_PATH = './.env.dist';
 
 let envs = utils.mergeVariables(utils.readEnvVariables(ENV_DIST_PATH), utils.readEnvVariables(ENV_PATH));
+let initialEnvs = Object.assign({}, envs);
 
 program
     .description('Configure your Satis Serverless')
@@ -73,7 +74,9 @@ let finishAction = function(envs) {
 
     utils.writeVariables(ENV_PATH, envs);
 
-    console.info('Project is configured successfully');
+    if (true !== program.onlyEmpty || (true === program.onlyEmpty && !utils.isSameObject(initialEnvs, envs))) {
+        console.info('Project is configured successfully');
+    }
 };
 
 if (program.interaction) {
