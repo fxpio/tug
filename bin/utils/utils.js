@@ -193,6 +193,7 @@ function runCommand(command, envs, callback, exitOnError, verbose) {
     let args = replaceVariables(command, envs).split(' ');
     let cmd = args.shift();
     let res = childProcess.spawn(cmd, args, {
+        shell: true,
         stdio: false === verbose ? 'pipe' : 'inherit'
     });
     let errorData = '';
