@@ -2,7 +2,10 @@ Fxp Satis Serverless
 ====================
 
 The serverless static Composer repository generator built with Amazon AWS Lambda, API Gateway, S3, Cloud Formation, CLI
-and Github Webhooks.
+and Github Webhooks. This project is mainly oriented to manage the private Composer packages on private Github
+repositories for a very low financial cost. In the majority of cases, less than $1/month, see the pricing of
+[Lambda@Edge](https://aws.amazon.com/lambda/pricing), [S3](https://aws.amazon.com/s3/pricing) and
+[API Gateway](https://aws.amazon.com/api-gateway/pricing).
 
 Features include:
 
