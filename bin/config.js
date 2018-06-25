@@ -31,6 +31,7 @@ program
     .option('--aws-cloud-formation-stack-name [stack]', 'Your AWS Cloud Formation Stack name', envs['AWS_CLOUD_FORMATION_STACK_NAME'])
     .option('--aws-lambda-function-name [function]', 'Your AWS Lambda Function name', envs['AWS_LAMBDA_FUNCTION_NAME'])
     .option('--github-token [token]', 'Your Github token', envs['GITHUB_TOKEN'])
+    .option('-e, --only-empty', 'Display only questions of empty options', false)
     .option('-n, --no-interaction', 'Do not ask any interactive question', false)
     .parse(process.argv)
 ;
@@ -53,7 +54,7 @@ let finishAction = function(envs) {
     for (let i = 0; i < program.options.length; ++i) {
         let optionName = program.options[i].long;
 
-        if ('--no-interaction' !== optionName) {
+        if (!['--no-interaction', '--only-empty'].includes(optionName)) {
             let envName = optionName.substr(2).replace(/-/g, '_').toUpperCase();
 
             if (undefined === envs[envName] || null === envs[envName]) {
@@ -81,7 +82,10 @@ if (program.interaction) {
             type : 'input',
             name : 'awsProfile',
             default: envs['AWS_PROFILE'],
-            message : 'Enter the AWS CLI profile name you want to use:'
+            message : 'Enter the AWS CLI profile name you want to use:',
+            when: function () {
+                return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs['AWS_PROFILE']);
+            }
         },
         {
             type : 'input',
@@ -109,37 +113,55 @@ if (program.interaction) {
             type : 'input',
             name : 'awsRegion',
             default: envs['AWS_REGION'],
-            message : 'Enter your AWS Region:'
+            message : 'Enter your AWS Region:',
+            when: function () {
+                return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs['AWS_REGION']);
+            }
         },
         {
             type : 'input',
             name : 'awsAccountId',
             default: envs['AWS_ACCOUNT_ID'],
-            message : 'Enter your AWS Account ID:'
+            message : 'Enter your AWS Account ID:',
+            when: function () {
+                return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs['AWS_ACCOUNT_ID']);
+            }
         },
         {
             type : 'input',
             name : 'awsS3Bucket',
             default: envs['AWS_S3_BUCKET'],
-            message : 'Enter your AWS S3 bucket name:'
+            message : 'Enter your AWS S3 bucket name:',
+            when: function () {
+                return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs['AWS_S3_BUCKET']);
+            }
         },
         {
             type : 'input',
             name : 'awsCloudFormationStackName',
             default: envs['AWS_CLOUD_FORMATION_STACK_NAME'],
-            message : 'Enter your AWS Cloud Formation Stack name:'
+            message : 'Enter your AWS Cloud Formation Stack name:',
+            when: function () {
+                return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs['AWS_CLOUD_FORMATION_STACK_NAME']);
+            }
         },
         {
             type : 'input',
             name : 'awsLambdaFunctionName',
             default: envs['AWS_LAMBDA_FUNCTION_NAME'],
-            message : 'Enter your AWS Lambda Function name:'
+            message : 'Enter your AWS Lambda Function name:',
+            when: function () {
+                return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs['AWS_LAMBDA_FUNCTION_NAME']);
+            }
         },
         {
             type : 'input',
             name : 'githubToken',
             default: envs['GITHUB_TOKEN'],
-            message : 'Enter your Github token:'
+            message : 'Enter your Github token:',
+            when: function () {
+                return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs['GITHUB_TOKEN']);
+            }
         }
     ];
 
