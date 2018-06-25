@@ -236,6 +236,17 @@ function requiredOption(value, message) {
     return true;
 }
 
+/**
+ *
+ * @param {commander.Command} program The command of commander
+ * @param {object}            envs    The env variables
+ * @param {string}            envName The required environment variable
+ * @return {boolean}
+ */
+function showOnlyEmptyOption(program, envs, envName) {
+    return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs[envName]);
+}
+
 module.exports = {
     removeDir: removeDir,
     replaceVariables: replaceVariables,
@@ -245,5 +256,6 @@ module.exports = {
     findAwsVariables: findAwsVariables,
     writeVariables: writeVariables,
     exec: runCommand,
-    requiredOption: requiredOption
+    requiredOption: requiredOption,
+    showOnlyEmptyOption: showOnlyEmptyOption
 };
