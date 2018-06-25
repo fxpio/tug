@@ -19,4 +19,6 @@ program
     .description('Delete the S3 bucket')
     .parse(process.argv);
 
-utils.exec('aws s3 rb s3://{AWS_S3_BUCKET} --region {AWS_REGION}');
+utils.exec('node bin/config -e', [], function () {
+    utils.exec('aws s3 rb s3://{AWS_S3_BUCKET} --region {AWS_REGION}');
+});

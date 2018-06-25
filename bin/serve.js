@@ -12,6 +12,7 @@
 require('dotenv').config();
 const program = require('commander');
 const app = require('./../src/app');
+const utils = require('./utils/utils');
 
 program
     .description('Serve the Satis server in local')
@@ -19,5 +20,7 @@ program
     .parse(process.argv)
 ;
 
-app.listen(program.port);
-console.log(`Listening on http://localhost:${program.port}`);
+utils.exec('node bin/config -e', [], function () {
+    app.listen(program.port);
+    console.log(`Listening on http://localhost:${program.port}`);
+});

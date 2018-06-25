@@ -19,4 +19,6 @@ program
     .description('Delete the AWS Cloud Formation stack')
     .parse(process.argv);
 
-utils.exec('aws cloudformation delete-stack --stack-name {AWS_CLOUD_FORMATION_STACK_NAME} --region {AWS_REGION}');
+utils.exec('node bin/config -e', [], function () {
+    utils.exec('aws cloudformation delete-stack --stack-name {AWS_CLOUD_FORMATION_STACK_NAME} --region {AWS_REGION}');
+});
