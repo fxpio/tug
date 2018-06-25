@@ -10,7 +10,7 @@
 const fs = require('fs');
 const os = require('os');
 const ini = require('ini');
-const {spawn} = require('child_process');
+const childProcess = require('child_process');
 
 function removeDir(path) {
     if (fs.existsSync(path)) {
@@ -192,7 +192,7 @@ function findAwsVariables(envs) {
 function runCommand(command, envs, callback, exitOnError, verbose) {
     let args = replaceVariables(command, envs).split(' ');
     let cmd = args.shift();
-    let res = spawn(cmd, args, {
+    let res = childProcess.spawn(cmd, args, {
         stdio: false === verbose ? 'pipe' : 'inherit'
     });
     let errorData = '';
@@ -216,6 +216,31 @@ function runCommand(command, envs, callback, exitOnError, verbose) {
             callback(code);
         }
     });
+}
+
+/**
+ * Run the external command in sync.
+ *
+ * @param {string} command The command
+ * @param {object} [envs]  The env variables
+ *
+ * @return {string|null}
+ */
+function execSync(command, envs) {
+    let res = null;
+    command = replaceVariables(command, envs || {});
+
+    try {
+        let resCmd = childProcess.execSync(command, {
+            stdio : [null, null, null]
+        }).toString().trim();
+
+        if (typeof resCmd === 'string' && resCmd.length > 0) {
+            res = resCmd;
+        }
+    } catch (e) {}
+
+    return res;
 }
 
 /**
@@ -281,6 +306,7 @@ module.exports = {
     findAwsVariables: findAwsVariables,
     writeVariables: writeVariables,
     exec: runCommand,
+    execSync: execSync,
     requiredOption: requiredOption,
     showOnlyEmptyOption: showOnlyEmptyOption,
     isSameObject: isSameObject

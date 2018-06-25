@@ -11,7 +11,6 @@
 
 'use strict';
 
-const {execSync} = require('child_process');
 const program = require('commander');
 const {prompt} = require('inquirer');
 const utils = require('./utils/utils');
@@ -82,15 +81,7 @@ let finishAction = function(envs) {
 
 let findAwsAccountId = function (envs) {
     if (null === envs['AWS_ACCOUNT_ID']) {
-        try {
-            let res = execSync('aws sts get-caller-identity --output text --query Account', {
-                stdio : [null, null, null]
-            }).toString();
-
-            if (typeof res === 'string' && res.length > 0) {
-                envs['AWS_ACCOUNT_ID'] = res.trim();
-            }
-        } catch (e) {}
+        envs['AWS_ACCOUNT_ID'] = utils.execSync('aws sts get-caller-identity --output text --query Account', envs);
     }
 
     return envs['AWS_ACCOUNT_ID'];
