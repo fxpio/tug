@@ -20,11 +20,14 @@ program
     .description('Create the S3 bucket')
     .parse(process.argv);
 
-utils.spawn('node bin/config -e', [], function () {
-    console.info('Creation of the AWS S3 bucket is started...');
+utils.spawn('node bin/config -e')
+    .then(() => {
+        console.info('Creation of the AWS S3 bucket is started...');
+        let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env['AWS_REGION']});
 
-    let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env['AWS_REGION']});
-    s3.createBucket({Bucket: process.env['AWS_S3_BUCKET']}).promise().then(() => {
+        return s3.createBucket({Bucket: process.env['AWS_S3_BUCKET']}).promise();
+    })
+    .then(() => {
         console.log(`AWS S3 bucket "${process.env['AWS_S3_BUCKET']}" was created with successfully in the "${process.env['AWS_REGION']}" region`);
-    }).catch(utils.displayError);
-});
+    })
+    .catch(utils.displayError);

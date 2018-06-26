@@ -184,39 +184,41 @@ function findAwsVariables(envs) {
  *
  * @param {string}   command       The command
  * @param {object}   [envs]        The env variables
- * @param {function} [callback]    The callback
  * @param {boolean}  [exitOnError] Exit the process on error
  * @param {boolean}  [verbose]     Display the output of command
  *
- * @return {boolean|object}
+ * @return {Promise}
  */
-function spawn(command, envs, callback, exitOnError, verbose) {
-    let args = replaceVariables(command, envs).split(' ');
-    let cmd = args.shift();
-    let res = childProcess.spawn(cmd, args, {
-        shell: true,
-        stdio: false === verbose ? 'pipe' : 'inherit'
-    });
-    let errorData = '';
-
-    if (false === verbose) {
-        res.stderr.on('data', function (data) {
-            errorData += data.toString();
+function spawn(command, envs, exitOnError, verbose) {
+    return new Promise((resolve, reject) => {
+        let args = replaceVariables(command, envs).split(' ');
+        let cmd = args.shift();
+        let res = childProcess.spawn(cmd, args, {
+            shell: true,
+            stdio: false === verbose ? 'pipe' : 'inherit'
         });
-    }
+        let errorData = '';
 
-    res.on('exit', function (code) {
-        if ('' !== errorData) {
-            console.log(errorData.replace(/\n$/, ''));
+        if (false === verbose) {
+            res.stderr.on('data', function (data) {
+                errorData += data.toString();
+            });
         }
 
-        if (code > 0 && false !== exitOnError) {
-            process.exit(code);
-        }
+        res.on('exit', function (code) {
+            if ('' !== errorData) {
+                console.info(errorData.replace(/\n$/, ''));
+            }
 
-        if (typeof callback === 'function') {
-            callback(code);
-        }
+            if (code > 0 && false !== exitOnError) {
+                let error = new Error(`The process ended with the error code "${code}"`);
+                error.code = code;
+                reject(error);
+                return;
+            }
+
+            resolve(code);
+        });
     });
 }
 

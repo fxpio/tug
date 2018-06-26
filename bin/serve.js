@@ -20,7 +20,9 @@ program
     .parse(process.argv)
 ;
 
-utils.spawn('node bin/config -e', [], function () {
-    app.listen(program.port);
-    console.log(`Listening on http://localhost:${program.port}`);
-});
+utils.spawn('node bin/config -e')
+    .then(() => {
+        app.listen(program.port);
+        console.log(`Listening on http://localhost:${program.port}`);
+    })
+    .catch(utils.displayError);

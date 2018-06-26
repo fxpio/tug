@@ -20,11 +20,14 @@ program
     .description('Delete the AWS Cloud Formation stack')
     .parse(process.argv);
 
-utils.spawn('node bin/config -e', [], function () {
-    console.info('Deletion of the AWS Cloud Formation stack is started...');
+utils.spawn('node bin/config -e')
+    .then(() => {
+        console.info('Deletion of the AWS Cloud Formation stack is started...');
+        let cf = new AWS.CloudFormation({apiVersion: '2010-05-15', region: process.env['AWS_REGION']});
 
-    let cf = new AWS.CloudFormation({apiVersion: '2010-05-15', region: process.env['AWS_REGION']});
-    cf.deleteStack({StackName: process.env['AWS_CLOUD_FORMATION_STACK_NAME']}).promise().then((r) => {
+        return cf.deleteStack({StackName: process.env['AWS_CLOUD_FORMATION_STACK_NAME']}).promise();
+    })
+    .then(() => {
         console.log(`AWS Cloud Formation stack "${process.env['AWS_CLOUD_FORMATION_STACK_NAME']}" was queued for the deletion with successfully`);
-    }).catch(utils.displayError);
-});
+    })
+    .catch(utils.displayError);
