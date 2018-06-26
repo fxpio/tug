@@ -37,6 +37,10 @@ Resources:
         - Arn
       Runtime: nodejs8.10
       Timeout: 30
+      Environment:
+        Variables:
+          AWS_S3_BUCKET: {AWS_S3_BUCKET}
+          GITHUB_TOKEN: {GITHUB_TOKEN}
     Type: AWS::Serverless::Function
 
   LambdaApiGatewayExecutionPermission:
