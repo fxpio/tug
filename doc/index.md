@@ -13,7 +13,6 @@ This document contains information on how to download, install, and start the AP
 - [AWS CloudFront](https://aws.amazon.com/cloudfront) (by API Gateway)
 - [AWS Certificate Manager](https://aws.amazon.com/certificate-manager)
 - [AWS IAM](https://aws.amazon.com/iam)
-- [AWS CLI](https://aws.amazon.com/cli)
 - [Github Webhooks](https://developer.github.com/webhooks)
 - [Express](http://expressjs.com)
 
@@ -24,9 +23,8 @@ This project requires:
 - an active account for [AWS](https://aws.amazon.com)
 - an active account for [Github](https://github.com)
 - the installation of the applications bellow on your local machine:
-  - [Git](https://git-scm.com)
   - [Nodejs](https://nodejs.org)
-  - [AWS CLI](https://aws.amazon.com/cli)
+  - [Git](https://git-scm.com) (optional)
 
 ### Services credentials
 
@@ -45,19 +43,14 @@ Keep the token for the step 2.
 **AWS credentials:**
 
 Use the credentials (AWS Access Key ID and the Secret Access Key) from [your AWS account](https://console.aws.amazon.com/iam/home?#/security_credential),
-or follow best practices by creating an [IAM user](https://console.aws.amazon.com/iam) dédié.
+or follow best practices by creating an dedicated [IAM user](https://console.aws.amazon.com/iam).
 
-Keep the credentials for the configuration of the AWS CLI.
+Keep the credentials for the step 2.
 
-### Configure tools
-
-For AWS CLI, you must configure the tool with the command:
-
-```
-$ aws configure
-```
-
-Enter your AWS Access Key ID, AWS Secret Access Key and your default region name.
+> **Note:**
+>
+> If you use the [AWS CLI](https://aws.amazon.com/cli), the credentials and some other parameters are automatically
+> retrieve by the `config` command.
 
 
 ## 1) Clone the repository
@@ -65,6 +58,8 @@ Enter your AWS Access Key ID, AWS Secret Access Key and your default region name
 ```
 $ git clone git@github.com:fxpio/fxp-satis-serverless.git
 ```
+
+Or download the [archive](https://github.com/fxpio/fxp-satis-serverless/archive/master.zip) if you haven't Git.
 
 
 ## 2) Setup the project

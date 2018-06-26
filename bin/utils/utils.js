@@ -10,6 +10,7 @@
 const fs = require('fs');
 const os = require('os');
 const ini = require('ini');
+const crypto = require('crypto');
 const childProcess = require('child_process');
 
 function removeDir(path) {
@@ -138,7 +139,7 @@ function writeVariables(path, variables) {
 }
 
 /**
- * Find the AWS variables in the config of AWS CLI.
+ * Find the AWS credentials in the AWS Shared File.
  *
  * @param {object} [envs] The env variables
  *
@@ -299,6 +300,87 @@ function isSameObject(object1, object2) {
     return true;
 }
 
+/**
+ * Get the checksum of file.
+ *
+ * @param {string} path        The path of file
+ * @param {string} [algorithm] The crypto algorithm
+ *
+ * @return {Promise}
+ */
+function checksumFile(path, algorithm) {
+    algorithm = algorithm || 'sha1';
+
+    return new Promise((resolve, reject) => {
+        fs.createReadStream(path)
+            .on('error', reject)
+            .pipe(crypto.createHash(algorithm).setEncoding('hex'))
+            .once('finish', function () {
+                resolve(this.read());
+            });
+    });
+}
+
+/**
+ * Replace the antislash by slash.
+ *
+ * @param {string} str The string
+ *
+ * @return {string}
+ */
+function fixWinSlash(str) {
+    return str.replace(/\\/g, '/');
+}
+
+/**
+ * Retry the function.
+ *
+ * @param {function} fn     The function
+ * @param {function} [prev] The previous function
+ *
+ * @return {Promise}
+ */
+function retryPromise(fn, prev) {
+    return new Promise((current) => {
+        let resolve = _ => (prev && prev()) || current();
+
+        fn(resolve, delay => {
+            setTimeout(_ => {
+                retryPromise(fn, resolve);
+            }, delay);
+        });
+    });
+}
+
+/**
+ * Generate a pseudo id.
+ *
+ * @param {Number} [size] The size of id
+ *
+ * @return {string}
+ */
+function generateId(size) {
+    let ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let id = '';
+    size = size || 10;
+
+    for (let i = 0; i < size; i++) {
+        id += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
+    }
+
+    return id;
+}
+
+/**
+ * Helper to catch and display the error.
+ *
+ * @param {object} e The error
+ */
+function displayError(e) {
+    console.error('Error:', undefined !== e.message ? e.message : e);
+    process.exit(1);
+}
+
 module.exports = {
     removeDir: removeDir,
     replaceVariables: replaceVariables,
@@ -311,5 +393,10 @@ module.exports = {
     execSync: execSync,
     requiredOption: requiredOption,
     showOnlyEmptyOption: showOnlyEmptyOption,
-    isSameObject: isSameObject
+    isSameObject: isSameObject,
+    checksumFile: checksumFile,
+    fixWinSlash: fixWinSlash,
+    retryPromise: retryPromise,
+    generateId: generateId,
+    displayError: displayError
 };

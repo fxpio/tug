@@ -13,6 +13,7 @@
 
 require('dotenv').config();
 const program = require('commander');
+const AWS = require('aws-sdk');
 const utils = require('./utils/utils');
 
 program
@@ -20,5 +21,10 @@ program
     .parse(process.argv);
 
 utils.exec('node bin/config -e', [], function () {
-    utils.exec('aws cloudformation delete-stack --stack-name {AWS_CLOUD_FORMATION_STACK_NAME} --region {AWS_REGION}');
+    console.info('Deletion of the AWS Cloud Formation stack is started...');
+
+    let cf = new AWS.CloudFormation({apiVersion: '2010-05-15', region: process.env['AWS_REGION']});
+    cf.deleteStack({StackName: process.env['AWS_CLOUD_FORMATION_STACK_NAME']}).promise().then((r) => {
+        console.log(`AWS Cloud Formation stack "${process.env['AWS_CLOUD_FORMATION_STACK_NAME']}" was queued for the deletion with successfully`);
+    }).catch(utils.displayError);
 });

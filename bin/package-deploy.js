@@ -17,8 +17,12 @@ const utils = require('./utils/utils');
 
 program
     .description('Package and deploy the project')
+    .option('-f, --force', 'Force to rebuild the project', false)
+    .option('--force-package', 'Force to rebuild the package only', false)
     .parse(process.argv);
 
-utils.exec('node bin/package', [], function () {
+let opts = (program.force ? ' --force' : '') + (program.forcePackage ? ' --force-package' : '');
+
+utils.exec('node bin/package' + opts, [], function () {
     utils.exec('node bin/deploy');
 });

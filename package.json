@@ -28,6 +28,7 @@
     "express": "^4.16.3"
   },
   "devDependencies": {
+    "archiver": "^2.1.1",
     "aws-sdk": "^2.263.1",
     "commander": "^2.15.1",
     "dotenv": "^6.0.0",

@@ -18,6 +18,7 @@ const utils = require('./utils/utils');
 
 const SRC_PATH = './src';
 const CONTENT_PATH = './dist';
+const AWS_FILES = ['./aws/api-gateway-proxy-swagger.yaml', './aws/cloud-formation-stack.yaml'];
 
 program
     .description('Build the project')
@@ -29,6 +30,8 @@ utils.exec('node bin/config -e', [], function () {
         console.info('Project is already built. Use the "--force" option to rebuild the project');
         return;
     }
+
+    console.info('Project build is started...');
 
     // clean dist directory
     fse.removeSync(CONTENT_PATH);
@@ -46,13 +49,11 @@ utils.exec('node bin/config -e', [], function () {
     fse.removeSync(CONTENT_PATH + '/yarn.lock');
 
     // copy and configure the aws templates
-    let files = ['./aws/simple-proxy-api.yaml', './aws/cloudformation.yaml'];
-
     if (!fse.existsSync(CONTENT_PATH)){
         fse.mkdirSync(CONTENT_PATH);
     }
 
-    files.forEach((file) => {
+    AWS_FILES.forEach((file) => {
         let fileContentModified = utils.replaceVariables(fse.readFileSync(file, 'utf8'));
         fse.writeFileSync(CONTENT_PATH + '/' + file.replace('./aws', ''), fileContentModified, 'utf8')
     });

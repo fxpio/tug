@@ -13,6 +13,7 @@
 
 const program = require('commander');
 const {prompt} = require('inquirer');
+const AWS = require('aws-sdk');
 const utils = require('./utils/utils');
 
 const ENV_PATH = './.env';
@@ -23,11 +24,11 @@ let initialEnvs = Object.assign({}, envs);
 
 program
     .description('Configure your Satis Serverless')
-    .option('--aws-profile [name]', 'The profile name of AWS CLI configuration (to configure automatically the credentials)', envs['AWS_PROFILE'])
+    .option('--aws-profile [name]', 'The profile name of AWS shared file (to configure automatically the credentials)', envs['AWS_PROFILE'])
     .option('--aws-account-id [id]', 'Your AWS Account ID (required for Cloud Formation)', envs['AWS_ACCOUNT_ID'])
-    .option('--aws-access-key-id [key]', 'Your AWS Access Key ID (required if AWS CLI profile is not found)', envs['AWS_ACCESS_KEY_ID'])
-    .option('--aws-secret-access-key [secret]', 'Your AWS Secret Access Key (required if AWS CLI profile is not found)', envs['AWS_SECRET_ACCESS_KEY'])
-    .option('--aws-region [name]', 'Your AWS Region (required if AWS CLI profile is not found)', envs['AWS_REGION'])
+    .option('--aws-access-key-id [key]', 'Your AWS Access Key ID (required if AWS Shared Credentials File is not found)', envs['AWS_ACCESS_KEY_ID'])
+    .option('--aws-secret-access-key [secret]', 'Your AWS Secret Access Key (required if AWS Shared Credentials File is not found)', envs['AWS_SECRET_ACCESS_KEY'])
+    .option('--aws-region [name]', 'Your AWS Region (required if AWS Shared Config File is not found)', envs['AWS_REGION'])
     .option('--aws-s3-bucket [bucket]', 'Your AWS S3 bucket name', envs['AWS_S3_BUCKET'])
     .option('--aws-cloud-formation-stack-name [stack]', 'Your AWS Cloud Formation Stack name', envs['AWS_CLOUD_FORMATION_STACK_NAME'])
     .option('--aws-lambda-function-name [function]', 'Your AWS Lambda Function name', envs['AWS_LAMBDA_FUNCTION_NAME'])
@@ -84,29 +85,30 @@ let finishAction = function(envs) {
 };
 
 let availableRegions = null;
-let getAvailableRegions = function () {
+let getAvailableRegions = async function () {
     if (null === availableRegions) {
-        let res = utils.execSync('aws ec2 describe-regions --query Regions[].{Name:RegionName} --output json', envs);
         availableRegions = [];
+        let ec2 = new AWS.EC2({apiVersion: '2016-11-15', region: 'us-west-1'});
+        let res = await ec2.describeRegions({}).promise().catch(utils.displayError);
 
-        if (res) {
-            res = JSON.parse(res);
-
-            for (let i = 0; i < res.length; ++i) {
-                availableRegions.push(res[i].Name);
+        if (undefined !== res.Regions) {
+            for (let i = 0; i < res.Regions.length; ++i) {
+                availableRegions.push(res.Regions[i].RegionName);
             }
-        } else {
-            console.error('Error: Impossible to retrieve the list of AWS regions');
-            process.exit(1);
         }
     }
 
     return availableRegions;
 };
 
-let findAwsAccountId = function (envs) {
+let findAwsAccountId = async function (envs) {
     if (null === envs['AWS_ACCOUNT_ID']) {
-        envs['AWS_ACCOUNT_ID'] = utils.execSync('aws sts get-caller-identity --output text --query Account', envs);
+        let sts = new AWS.STS({apiVersion: '2011-06-15'});
+        let res = await sts.getCallerIdentity({}).promise().catch(() => {return {};});
+
+        if (undefined !== res.Account) {
+            envs['AWS_ACCOUNT_ID'] = res.Account;
+        }
     }
 
     return envs['AWS_ACCOUNT_ID'];
@@ -118,7 +120,7 @@ if (program.interaction) {
             type : 'input',
             name : 'awsProfile',
             default: envs['AWS_PROFILE'],
-            message : 'Enter the AWS CLI profile name you want to use:',
+            message : 'Enter the profile name of the AWS shared file you want to use:',
             when: function () {
                 return utils.showOnlyEmptyOption(program, envs, 'AWS_PROFILE');
             },
@@ -172,12 +174,12 @@ if (program.interaction) {
         {
             type : 'input',
             name : 'awsAccountId',
-            default: function () {
-                return findAwsAccountId(envs);
+            default: async function () {
+                return await findAwsAccountId(envs);
             },
             message : 'Enter your AWS Account ID:',
-            when: function () {
-                findAwsAccountId(envs);
+            when: async function () {
+                await findAwsAccountId(envs);
                 return utils.showOnlyEmptyOption(program, envs, 'AWS_ACCOUNT_ID');
             },
             validate: function (value) {

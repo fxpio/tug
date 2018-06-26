@@ -1,7 +1,7 @@
 Fxp Satis Serverless
 ====================
 
-The serverless static Composer repository generator built with Amazon AWS Lambda, API Gateway, S3, Cloud Formation, CLI
+The serverless static Composer repository generator built with Amazon AWS Lambda, API Gateway, S3, Cloud Formation
 and Github Webhooks. This project is mainly oriented to manage the private Composer packages on private Github
 repositories for a very low financial cost. In the majority of cases, less than $1/month, see the pricing of
 [Lambda@Edge](https://aws.amazon.com/lambda/pricing), [S3](https://aws.amazon.com/s3/pricing) and
@@ -17,6 +17,8 @@ Features include:
 - Refresh the commit SHA1 on each commit
 - Create automatically the integrality of the Composer packages on a new commit if the Github repository
   is enabled on the Satis Serverless and if no package is present
+- Configure automatically the AWS credentials with the [Shared Credentials File](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-shared.html)
+- Configure automatically the AWS regions with the Shared Config File
 
 Documentation
 -------------

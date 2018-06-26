@@ -13,6 +13,7 @@
 
 require('dotenv').config();
 const program = require('commander');
+const AWS = require('aws-sdk');
 const utils = require('./utils/utils');
 
 program
@@ -20,5 +21,10 @@ program
     .parse(process.argv);
 
 utils.exec('node bin/config -e', [], function () {
-    utils.exec('aws s3 mb s3://{AWS_S3_BUCKET} --region {AWS_REGION}');
+    console.info('Creation of the AWS S3 bucket is started...');
+
+    let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env['AWS_REGION']});
+    s3.createBucket({Bucket: process.env['AWS_S3_BUCKET']}).promise().then(() => {
+        console.log(`AWS S3 bucket "${process.env['AWS_S3_BUCKET']}" was created with successfully in the "${process.env['AWS_REGION']}" region`);
+    }).catch(utils.displayError);
 });

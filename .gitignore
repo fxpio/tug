@@ -1,5 +1,5 @@
 .env
+deploy/
 dist/
 node_modules/
-packaged-sam.yaml
 yarn-error.log
