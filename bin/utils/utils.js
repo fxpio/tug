@@ -222,19 +222,20 @@ function runCommand(command, envs, callback, exitOnError, verbose) {
 /**
  * Run the external command in sync.
  *
- * @param {string} command The command
- * @param {object} [envs]  The env variables
+ * @param {string} command   The command
+ * @param {object} [envs]    The env variables
+ * @param {object} [options] The exec options
  *
  * @return {string|null}
  */
-function execSync(command, envs) {
+function execSync(command, envs, options) {
     let res = null;
     command = replaceVariables(command, envs || {});
 
     try {
-        let resCmd = childProcess.execSync(command, {
+        let resCmd = childProcess.execSync(command, Object.assign({
             stdio : [null, null, null]
-        }).toString().trim();
+        }, options || {})).toString().trim();
 
         if (typeof resCmd === 'string' && resCmd.length > 0) {
             res = resCmd;

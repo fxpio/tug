@@ -15,7 +15,6 @@ require('dotenv').config();
 const program = require('commander');
 const fse = require('fs-extra');
 const utils = require('./utils/utils');
-const {execSync} = require('child_process');
 
 const SRC_PATH = './src';
 const CONTENT_PATH = './dist';
@@ -40,7 +39,7 @@ utils.exec('node bin/config -e', [], function () {
     // copy dependencies
     fse.copySync('./package.json', CONTENT_PATH + '/package.json');
     fse.copySync('./yarn.lock', CONTENT_PATH + '/yarn.lock');
-    execSync('yarn install --prod', {
+    utils.execSync('yarn install --prod', {}, {
         cwd: CONTENT_PATH
     });
     fse.removeSync(CONTENT_PATH + '/package.json');
