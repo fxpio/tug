@@ -17,37 +17,45 @@ const fse = require('fs-extra');
 const utils = require('./utils/utils');
 const {execSync} = require('child_process');
 
+const SRC_PATH = './src';
+const CONTENT_PATH = './dist';
+
 program
     .description('Build the project')
+    .option('-f, --force', 'Force to rebuild the project', false)
     .parse(process.argv);
 
 utils.exec('node bin/config -e', [], function () {
+    if (!program.force && fse.existsSync(CONTENT_PATH)) {
+        console.info('Project is already built. Use the "--force" option to rebuild the project');
+        return;
+    }
+
     // clean dist directory
-    fse.removeSync('./dist/');
+    fse.removeSync(CONTENT_PATH);
 
     // copy sources
-    fse.copySync('./src', './dist');
+    fse.copySync(SRC_PATH, CONTENT_PATH);
 
     // copy dependencies
-    fse.copySync('./package.json', './dist/package.json');
-    fse.copySync('./yarn.lock', './dist/yarn.lock');
+    fse.copySync('./package.json', CONTENT_PATH + '/package.json');
+    fse.copySync('./yarn.lock', CONTENT_PATH + '/yarn.lock');
     execSync('yarn install --prod', {
-        cwd: './dist'
+        cwd: CONTENT_PATH
     });
-    fse.removeSync('./dist/package.json');
-    fse.removeSync('./dist/yarn.lock');
+    fse.removeSync(CONTENT_PATH + '/package.json');
+    fse.removeSync(CONTENT_PATH + '/yarn.lock');
 
     // copy and configure the aws templates
-    let outputPath = './dist',
-        files = ['./aws/simple-proxy-api.yaml', './aws/cloudformation.yaml'];
+    let files = ['./aws/simple-proxy-api.yaml', './aws/cloudformation.yaml'];
 
-    if (!fse.existsSync(outputPath)){
-        fse.mkdirSync(outputPath);
+    if (!fse.existsSync(CONTENT_PATH)){
+        fse.mkdirSync(CONTENT_PATH);
     }
 
     files.forEach((file) => {
         let fileContentModified = utils.replaceVariables(fse.readFileSync(file, 'utf8'));
-        fse.writeFileSync(outputPath + '/' + file.replace('./aws', ''), fileContentModified, 'utf8')
+        fse.writeFileSync(CONTENT_PATH + '/' + file.replace('./aws', ''), fileContentModified, 'utf8')
     });
 
     console.info('Project is built successfully');
