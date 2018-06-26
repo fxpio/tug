@@ -13,16 +13,27 @@
 
 require('dotenv').config();
 const program = require('commander');
+const AWS = require('aws-sdk');
 const utils = require('./utils/utils');
 
 program
     .description('Configure the project, create the S3 bucket, package and deploy in AWS Cloud Formation, with API Gateway, Lambda and IAM')
     .parse(process.argv);
 
-utils.spawn('node bin/config -e')
-    .then(() => utils.spawn('node bin/run aws s3api get-bucket-location --bucket {AWS_S3_BUCKET} --region {AWS_REGION}', [], false, false))
-    .then((code) => {
-        if (code > 0) {
+utils.spawn('node bin/config')
+    .then(async () => {
+        let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env['AWS_REGION']});
+
+        try {
+            await s3.getBucketLocation({Bucket: process.env['AWS_S3_BUCKET']}).promise();
+        } catch (e) {
+            return false;
+        }
+
+        return true;
+    })
+    .then((hasBucket) => {
+        if (!hasBucket) {
             return utils.spawn('node bin/create-bucket');
         }
     })
