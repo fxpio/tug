@@ -35,7 +35,7 @@ program
     .option('--force-package', 'Force to rebuild the package only', false)
     .parse(process.argv);
 
-utils.exec('node bin/build' + (program.force ? ' --force' : ''), [], function () {
+utils.spawn('node bin/build' + (program.force ? ' --force' : ''), [], function () {
     console.info('Packaging of the project has started...');
 
     if (!program.forcePackage && !program.force && fs.existsSync(DEPLOY_PATH)) {

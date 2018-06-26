@@ -190,7 +190,7 @@ function findAwsVariables(envs) {
  *
  * @return {boolean|object}
  */
-function runCommand(command, envs, callback, exitOnError, verbose) {
+function spawn(command, envs, callback, exitOnError, verbose) {
     let args = replaceVariables(command, envs).split(' ');
     let cmd = args.shift();
     let res = childProcess.spawn(cmd, args, {
@@ -389,7 +389,7 @@ module.exports = {
     cleanVariable: cleanVariable,
     findAwsVariables: findAwsVariables,
     writeVariables: writeVariables,
-    exec: runCommand,
+    spawn: spawn,
     execSync: execSync,
     requiredOption: requiredOption,
     showOnlyEmptyOption: showOnlyEmptyOption,

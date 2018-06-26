@@ -20,13 +20,13 @@ program
     .parse(process.argv);
 
 let deployCommand = function () {
-    utils.exec('node bin/package-deploy');
+    utils.spawn('node bin/package-deploy');
 };
 
-utils.exec('node bin/config', [], function () {
-    utils.exec('node bin/run aws s3api get-bucket-location --bucket {AWS_S3_BUCKET} --region {AWS_REGION}', [], function (code) {
+utils.spawn('node bin/config', [], function () {
+    utils.spawn('node bin/run aws s3api get-bucket-location --bucket {AWS_S3_BUCKET} --region {AWS_REGION}', [], function (code) {
         if (code > 0) {
-            utils.exec('node bin/create-bucket', [], deployCommand);
+            utils.spawn('node bin/create-bucket', [], deployCommand);
         } else {
             deployCommand();
         }

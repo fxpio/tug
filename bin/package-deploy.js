@@ -23,6 +23,6 @@ program
 
 let opts = (program.force ? ' --force' : '') + (program.forcePackage ? ' --force-package' : '');
 
-utils.exec('node bin/package' + opts, [], function () {
-    utils.exec('node bin/deploy');
+utils.spawn('node bin/package' + opts, [], function () {
+    utils.spawn('node bin/deploy');
 });

@@ -20,7 +20,7 @@ program
     .description('Delete the S3 bucket')
     .parse(process.argv);
 
-utils.exec('node bin/config -e', [], function () {
+utils.spawn('node bin/config -e', [], function () {
     console.info('Deletion of the S3 bucket is started...');
 
     let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env['AWS_REGION']});

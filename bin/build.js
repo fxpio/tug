@@ -25,7 +25,7 @@ program
     .option('-f, --force', 'Force to rebuild the project', false)
     .parse(process.argv);
 
-utils.exec('node bin/config -e', [], function () {
+utils.spawn('node bin/config -e', [], function () {
     if (!program.force && fse.existsSync(CONTENT_PATH)) {
         console.info('Project is already built. Use the "--force" option to rebuild the project');
         return;
