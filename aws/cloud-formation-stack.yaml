@@ -39,6 +39,7 @@ Resources:
       Timeout: 30
       Environment:
         Variables:
+          NODE_ENV: prod
           AWS_S3_BUCKET: {AWS_S3_BUCKET}
           GITHUB_TOKEN: {GITHUB_TOKEN}
     Type: AWS::Serverless::Function

@@ -26,7 +26,11 @@ if ('test' === process.env.NODE_ENV) {
 router.use(cors());
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
-router.use(awsServerlessExpressMiddleware.eventContext());
+
+if ('prod' === process.env.NODE_ENV) {
+    router.use(awsServerlessExpressMiddleware.eventContext());
+}
+
 
 router.get('/', (req, res) => {
     res.json({message: 'Hello world!'});
