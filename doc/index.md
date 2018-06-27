@@ -1,7 +1,7 @@
 Fxp Satis Serverless
 ====================
 
-Welcome to the Fxp Satis Serverless - a serverless static Composer repository generator.
+Welcome to the Fxp Satis Serverless - a serverless Composer repository for private repositories.
 
 This document contains information on how to download, install, and start the API built with:
 
@@ -9,7 +9,7 @@ This document contains information on how to download, install, and start the AP
 - [AWS Lambda@Edge Nodejs](https://aws.amazon.com/lambda)
 - [AWS S3](https://aws.amazon.com/s3)
 - [AWS Cloud Formation](https://aws.amazon.com/cloudformation)
-- [AWS CloudWatch](https://aws.amazon.com/cloudwatch) (by API Gateway)
+- [AWS CloudWatch](https://aws.amazon.com/cloudwatch) (by Lambda)
 - [AWS CloudFront](https://aws.amazon.com/cloudfront) (by API Gateway)
 - [AWS Certificate Manager](https://aws.amazon.com/certificate-manager)
 - [AWS IAM](https://aws.amazon.com/iam)
@@ -108,11 +108,15 @@ Create the domain in API Gateway with:
 
 ## 3) Create the first API key
 
-In Amazon AWS S3 console, select the satis bucket and:
+Run the command:
 
-1. Create the `api-keys` folder
-2. Create a folder containing the API key in the `api-keys` folder (you can use
-   [this generator](https://codepen.io/corenominal/full/rxOmMJ) to create a key)
+```
+$ node bin/create-api-key
+```
+
+> **Note:**
+>
+> The API key is stored in the S3 bucket with the prefix `api-keys/`.
 
 
 ## 4) Configure the Github Webhook
@@ -130,28 +134,18 @@ In each repository or in a organization, create the webhook with:
 
 ## 5) Enjoy!
 
-### Enable the Github repository
+Now that you have completed the basic installation and configuration of the Satis Serverless, you are ready to learn
+more about using this project.
 
-If the Github Webhook is defined directly on the repository, this action is automatically done when Github try a ping
-after added the webhook.
+The following documents are available:
 
-If the Github Webhook is defined on the organization, you must enable the Github repository. In Amazon AWS S3 console,
-select the satis bucket and defined the package name in the `repositories` folder like this:
+- [Using Satis Serverless in your project](include-in-project.md)
+- [Manage the packages](manage-packages.md)
 
-```
-s3://<satis-bucket>/repositories/<username-or-organization>/<repository-name>
-```
+### Available commands
 
-### Generate the Composer package definitions
-
-For all existing repositories or to regenerate the integrality of the Composer package definitions,
-you can call the `GET` url:
-
-```
-$ curl -u token:<api-key> https://<your-custom-domain-for-satis>/init/<username-or-organization>/<repository-name>
-```
-
-### NPM/Yarn available commands
+All commands below are executable via `node bin/<command-name>`, `yarn run bin/node bin/<command-name>`
+or `npm run bin/node bin/<command-name>`:
 
 - `setup`: Install dependencies, configure the project, create the S3 bucket, package and deploy in
   AWS Cloud Formation, with API Gateway, Lambda and IAM
@@ -160,8 +154,16 @@ $ curl -u token:<api-key> https://<your-custom-domain-for-satis>/init/<username-
 - `serve`: Run the server in local
 - `create-bucket`: Create the S3 bucket
 - `delete-bucket`: Delete the S3 bucket
-- `build`: Build the project (configure the project before)
-- `package`: Package the built project in S3 for AWS Cloud Formation (build the project before)
+- `build`: Build the project (configure the project before, if it's not the case)
+- `package`: Package the built project in S3 for AWS Cloud Formation (builds the project before, if it's not the case)
 - `deploy`: Deploy the packaged project in AWS Cloud Formation
 - `package-deploy`: Package and deploy the project
 - `delete-stack`: Delete the AWS Cloud Formation stack
+- `create-api-key`: Create a API key
+- `delete-api-key`: Delete a API key
+- `enable-repo`: Enable manually the Github repository
+- `disable-repo`: Disable manually the Github repository
+
+> **Note:**
+>
+> Each command has the `--help` option (`-h` alias) to display all informations about the command.
