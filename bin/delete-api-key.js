@@ -15,7 +15,6 @@ require('dotenv').config();
 const program = require('commander');
 const AWS = require('aws-sdk');
 const utils = require('./utils/utils');
-const api = require('./utils/api');
 
 program
     .description('Delete a API key')
