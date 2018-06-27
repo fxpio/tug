@@ -12,8 +12,12 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const compression = require('compression');
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
+const authBasic = require('./auth/basic-api');
+
 const app = express();
 const router = express.Router({});
+
+app.use(authBasic);
 
 if ('test' === process.env.NODE_ENV) {
     router.use(compression());
