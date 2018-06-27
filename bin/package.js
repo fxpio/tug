@@ -19,9 +19,10 @@ const AWS = require('aws-sdk');
 const archiver = require('./utils/archiver');
 const utils = require('./utils/utils');
 
+const AWS_PATH = './aws';
+const AWS_SWAGGER_PATH = AWS_PATH + '/api-gateway-proxy-swagger.yaml';
+const AWS_CLOUDFORMATION_PATH = AWS_PATH + '/cloud-formation-stack.yaml';
 const CONTENT_PATH = './dist';
-const CONTENT_SWAGGER_PATH = CONTENT_PATH + '/api-gateway-proxy-swagger.yaml';
-const CONTENT_CLOUDFORMATION_PATH = CONTENT_PATH + '/cloud-formation-stack.yaml';
 const DEPLOY_PATH = './deploy';
 const DEPLOY_ARCHIVE_PATH = DEPLOY_PATH + '/package-lambda.zip';
 const DEPLOY_SWAGGER_PATH = DEPLOY_PATH + '/swagger-api-gateway.yaml';
@@ -47,6 +48,7 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
         (new Promise((resolve, reject) => {
             try {
                 utils.removeDir(DEPLOY_PATH);
+                fs.ensureDirSync(DEPLOY_PATH);
                 resolve();
             } catch (e) {
                 reject(e);
@@ -54,7 +56,8 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
         }))
         // Swagger API file
             .then(() => {
-                fs.copySync(CONTENT_SWAGGER_PATH, DEPLOY_SWAGGER_PATH);
+                let data = utils.replaceVariables(fs.readFileSync(AWS_SWAGGER_PATH, 'utf8'), s3Keys);
+                fs.writeFileSync(DEPLOY_SWAGGER_PATH, data);
 
                 return DEPLOY_SWAGGER_PATH;
             })
@@ -110,7 +113,7 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
 
             // Cloud Formation stack
             .then(() => {
-                let data = fs.readFileSync(CONTENT_CLOUDFORMATION_PATH, 'utf8');
+                let data = fs.readFileSync(AWS_CLOUDFORMATION_PATH, 'utf8');
                 data = utils.replaceVariables(data, s3Keys);
 
                 fs.writeFileSync(DEPLOY_CLOUDFORMATION_PATH, data);
