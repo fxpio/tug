@@ -33,7 +33,8 @@ update excessively long.
 - All commands to:
   - configure interactively the project
   - create or remove the S3 bucket
-  - build, package, and deploy automatically the project in AWS API Gateway, Lambda, S3, and CloudWatch with the Cloud Formation stack
+  - build, package, and deploy automatically the project in AWS API Gateway, Lambda, SQS, S3, IAM, and Cloud Watch
+    with the Cloud Formation stack
   - remove the project on AWS (but keeping all the data in S3)
   - enable or disable manually each Github repositories
   - generate or delete an API key

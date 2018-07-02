@@ -8,6 +8,7 @@ This document contains information on how to download, install, and start the AP
 - [AWS API Gateway](https://aws.amazon.com/api-gateway)
 - [AWS Lambda@Edge Nodejs](https://aws.amazon.com/lambda)
 - [AWS S3](https://aws.amazon.com/s3)
+- [AWS SQS](https://aws.amazon.com/sqs)
 - [AWS Cloud Formation](https://aws.amazon.com/cloudformation)
 - [AWS CloudWatch](https://aws.amazon.com/cloudwatch) (by Lambda)
 - [AWS CloudFront](https://aws.amazon.com/cloudfront) (by API Gateway)
@@ -65,7 +66,7 @@ Or download the [archive](https://github.com/fxpio/fxp-satis-serverless/archive/
 ## 2) Setup the project
 
 This command install dependencies, configure the project, create the S3 bucket, package and deploy in
-AWS Cloud Formation, with API Gateway, Lambda and IAM.
+AWS Cloud Formation, with API Gateway, Lambda, SQS and IAM.
 
 ```
 $ yarn run setup

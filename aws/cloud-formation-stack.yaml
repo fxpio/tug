@@ -43,6 +43,19 @@ Resources:
             Method: ANY
             RestApiId:
               Ref: ApiGatewayApi
+        SqsQueueEvent:
+          Type: SQS
+          Properties:
+            BatchSize: 10
+            Queue:
+              Fn::GetAtt:
+              - PackageQueue
+              - Arn
+
+  PackageQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      VisibilityTimeout: 60
 
   LambdaApiGatewayExecutionPermission:
     Type: AWS::Lambda::Permission
@@ -89,6 +102,25 @@ Resources:
               Fn::Join:
               - ''
               - - 'arn:aws:logs:'
+                - Ref: AWS::Region
+                - ':'
+                - Ref: AWS::AccountId
+                - ':'
+                - '*'
+      - PolicyName: SQSAccess
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Action:
+            - sqs:SendMessage
+            - sqs:ReceiveMessage
+            - sqs:DeleteMessage
+            - sqs:GetQueueAttributes
+            Effect: Allow
+            Resource:
+              Fn::Join:
+              - ''
+              - - 'arn:aws:sqs:'
                 - Ref: AWS::Region
                 - ':'
                 - Ref: AWS::AccountId
@@ -159,3 +191,13 @@ Outputs:
         - Ref: AWS::Region
         - '#/functions/'
         - Ref: {AWS_LAMBDA_FUNCTION_NAME}
+
+  SqsConsoleUrl:
+    Description: Console URL for the SQS.
+    Value:
+      Fn::Join:
+      - ''
+      - - https://
+        - Ref: AWS::Region
+        - .console.aws.amazon.com/sqs/home?region=
+        - Ref: AWS::Region
