@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const compression = require('compression');
-const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
-const authBasic = require('./auth/basic-api');
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import compression from 'compression';
+import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
+import authBasic from './auth/basic-api';
 
 const app = express();
 const router = express.Router({});
@@ -40,4 +40,4 @@ router.post('/hooks', (req, res) => {
 
 app.use('/', router);
 
-module.exports = app;
+export default app;

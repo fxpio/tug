@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-const auth = require('basic-auth');
-const AWS = require('aws-sdk');
+import auth from 'basic-auth';
+import AWS from 'aws-sdk';
 
-module.exports = async function (request, response, next) {
+export default async function (request, response, next) {
     let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env.AWS_REGION}),
         s3Bucket = process.env.AWS_S3_BUCKET || null,
         user = auth(request);
