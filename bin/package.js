@@ -54,7 +54,7 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
                 reject(e);
             }
         }))
-        // Swagger API file
+            // Swagger API file
             .then(() => {
                 let data = utils.replaceVariables(fs.readFileSync(AWS_SWAGGER_PATH, 'utf8'), s3Keys);
                 fs.writeFileSync(DEPLOY_SWAGGER_PATH, data);

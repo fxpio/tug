@@ -16,11 +16,11 @@ const program = require('commander');
 const fse = require('fs-extra');
 const utils = require('./utils/utils');
 
-const SRC_PATH = './src';
 const CONTENT_PATH = './dist';
 
 program
     .description('Build the project')
+    .option('-d, --dev', 'Build the code without code optimization', false)
     .option('-f, --force', 'Force to rebuild the project', false)
     .parse(process.argv);
 
@@ -28,7 +28,7 @@ utils.spawn('node bin/config -e')
     .then(() => {
         if (!program.force && fse.existsSync(CONTENT_PATH)) {
             console.info('Project is already built. Use the "--force" option to rebuild the project');
-            return;
+            return true;
         }
 
         console.info('Project build is started...');
@@ -36,23 +36,11 @@ utils.spawn('node bin/config -e')
         // clean dist directory
         fse.removeSync(CONTENT_PATH);
 
-        // copy sources
-        fse.copySync(SRC_PATH, CONTENT_PATH);
-
-        // copy dependencies
-        fse.copySync('./package.json', CONTENT_PATH + '/package.json');
-        fse.copySync('./yarn.lock', CONTENT_PATH + '/yarn.lock');
-        utils.execSync('yarn install --prod', {}, {
-            cwd: CONTENT_PATH
-        });
-        fse.removeSync(CONTENT_PATH + '/package.json');
-        fse.removeSync(CONTENT_PATH + '/yarn.lock');
-
-        // copy and configure the aws templates
-        if (!fse.existsSync(CONTENT_PATH)){
-            fse.mkdirSync(CONTENT_PATH);
+        return utils.spawn('webpack' + (program.dev ? '' : ' --production'));
+    })
+    .then((skip) => {
+        if (true !== skip) {
+            console.info('Project is built successfully');
         }
-
-        console.info('Project is built successfully');
     })
     .catch(utils.displayError);

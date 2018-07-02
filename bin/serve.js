@@ -11,7 +11,6 @@
 
 require('dotenv').config();
 const program = require('commander');
-const app = require('./../src/app');
 const utils = require('./utils/utils');
 
 program
@@ -20,9 +19,8 @@ program
     .parse(process.argv)
 ;
 
+process.env.SERVER_PORT = program.port;
+
 utils.spawn('node bin/config -e')
-    .then(() => {
-        app.listen(program.port);
-        console.log(`Listening on http://localhost:${program.port}`);
-    })
+    .then(() => utils.spawn('webpack --watch'))
     .catch(utils.displayError);

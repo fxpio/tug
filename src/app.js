@@ -19,18 +19,14 @@ const router = express.Router({});
 
 app.use(authBasic);
 
-if ('test' === process.env.NODE_ENV) {
-    router.use(compression());
+if ('production' === process.env.NODE_ENV) {
+    app.use(compression());
+    app.use(awsServerlessExpressMiddleware.eventContext());
 }
 
 router.use(cors());
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
-
-if ('prod' === process.env.NODE_ENV) {
-    router.use(awsServerlessExpressMiddleware.eventContext());
-}
-
 
 router.get('/', (req, res) => {
     res.json({message: 'Hello world!'});
