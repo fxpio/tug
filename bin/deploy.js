@@ -49,7 +49,7 @@ let createAction = function(action) {
                                        console.info(`AWS Cloud Formation stack "${process.env['AWS_CLOUD_FORMATION_STACK_NAME']}" was queued for the ${'UPDATE' === action ? 'update' : 'creation'} with successfully`);
                                        done();
                                        resolve();
-                                   }).catch((e) => utils.displayError);
+                                   }).catch(reject);
                             } else if ('CREATE_IN_PROGRESS' === resDesc.Status) {
                                 retry(2000);
                             } else {
@@ -60,13 +60,13 @@ let createAction = function(action) {
                            if ('CREATE_PENDING' === e.Status) {
                                retry(2000);
                            } else {
-                               utils.displayError(e);
+                               reject(e);
                            }
                        });
                 });
             });
         })
-        .catch((e) => utils.displayError);
+        .catch(utils.displayError);
 };
 
 console.info('Deployment of the project has started...');
