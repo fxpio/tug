@@ -15,11 +15,12 @@ import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
 import {basicAuth} from './middleware/auth/basic-api';
 import {logErrors} from './middleware/logs';
 import {showError500} from "./middleware/errors";
+import {isProd} from './utils/server';
 
 const app = express();
 const router = express.Router({});
 
-if ('production' === process.env.NODE_ENV) {
+if (isProd()) {
     app.use(compression());
     app.use(awsServerlessExpressMiddleware.eventContext());
 }
