@@ -50,19 +50,13 @@ let createAction = function(action) {
                                        done();
                                        resolve();
                                    }).catch(reject);
-                            } else if ('CREATE_IN_PROGRESS' === resDesc.Status) {
+                            } else if (['CREATE_PENDING', 'CREATE_IN_PROGRESS'].includes(resDesc.Status)) {
                                 retry(2000);
                             } else {
-                                console.info(`Deployment is "${resDesc.Status}" because "${resDesc.StatusReason}"`);
+                                reject(`Deployment is "${resDesc.Status}" because "${resDesc.StatusReason}"`);
                             }
                        })
-                       .catch((e) => {
-                           if ('CREATE_PENDING' === e.Status) {
-                               retry(2000);
-                           } else {
-                               reject(e);
-                           }
-                       });
+                       .catch(reject);
                 });
             });
         })
