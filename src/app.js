@@ -17,13 +17,12 @@ import authBasic from './auth/basic-api';
 const app = express();
 const router = express.Router({});
 
-app.use(authBasic);
-
 if ('production' === process.env.NODE_ENV) {
     app.use(compression());
     app.use(awsServerlessExpressMiddleware.eventContext());
 }
 
+router.use(authBasic);
 router.use(cors());
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
