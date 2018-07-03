@@ -13,6 +13,7 @@ import cors from 'cors';
 import compression from 'compression';
 import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
 import {basicAuth} from './middleware/auth/basic-api';
+import {showError500} from "./middleware/errors";
 
 const app = express();
 const router = express.Router({});
@@ -38,5 +39,6 @@ router.post('/hooks', (req, res) => {
 });
 
 app.use('/', router);
+app.use(showError500);
 
 export default app;
