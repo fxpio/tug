@@ -12,7 +12,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import compression from 'compression';
 import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
-import authBasic from './auth/basic-api';
+import {basicAuth} from './middleware/auth/basic-api';
 
 const app = express();
 const router = express.Router({});
@@ -22,7 +22,7 @@ if ('production' === process.env.NODE_ENV) {
     app.use(awsServerlessExpressMiddleware.eventContext());
 }
 
-router.use(authBasic);
+router.use(basicAuth);
 router.use(cors());
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));

@@ -10,7 +10,7 @@
 import auth from 'basic-auth';
 import AWS from 'aws-sdk';
 
-export default async function (request, response, next) {
+export async function basicAuth(request, response, next) {
     let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env.AWS_REGION}),
         s3Bucket = process.env.AWS_S3_BUCKET || null,
         user = auth(request);
@@ -30,4 +30,4 @@ export default async function (request, response, next) {
     }
 
     return response.status(401).send();
-};
+}
