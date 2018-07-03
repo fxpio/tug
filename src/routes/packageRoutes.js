@@ -7,17 +7,19 @@
  * file that was distributed with this source code.
  */
 
-import {basicAuth} from '../middleware/auth/basic-api';
+import Authenticate from '../middleware/auth/Authenticate';
+import BasicToken from '../middleware/auth/strategies/BasicToken';
 
 /**
  * Generate the routes.
  *
- * @param {Router} router The router
+ * @param {Router} router  The router
+ * @param {Object} storage The storage
  *
  * @return {Router}
  */
-export default function(router) {
-    router.use(basicAuth);
+export default function packageRoutes(router, storage) {
+    router.use(new Authenticate(new BasicToken(storage)));
 
     return router;
 }

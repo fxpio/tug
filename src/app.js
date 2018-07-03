@@ -12,12 +12,14 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import compression from 'compression';
 import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
+import AwsS3Storage from './storages/AwsS3Storage';
 import {logErrors} from './middleware/logs';
 import {showError500} from "./middleware/errors";
 import {isProd} from './utils/server';
 import packageRoutes from './routes/packageRoutes';
 
 const app = express();
+let storage = new AwsS3Storage(process.env.AWS_S3_BUCKET, process.env.AWS_REGION);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -28,7 +30,7 @@ if (isProd()) {
     app.use(awsServerlessExpressMiddleware.eventContext());
 }
 
-app.use('/', packageRoutes(express.Router({})));
+app.use('/', packageRoutes(express.Router({}), storage));
 app.use(logErrors);
 app.use(showError500);
 
