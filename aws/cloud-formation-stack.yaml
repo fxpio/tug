@@ -2,18 +2,20 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Serverless Composer repository for private PHP packages hosted on Github
 Resources:
-  ApiGatewayApi:
+  Endpoint:
     Type: AWS::Serverless::Api
+    Description: Endpoint of Satis Serverless
     Properties:
       StageName: prod
       DefinitionUri: s3://{AWS_S3_BUCKET}/{S3_SWAGGER_YAML_KEY}
       Variables:
         ServerlessExpressLambdaFunctionName:
-          Ref: {AWS_LAMBDA_FUNCTION_NAME}
+          Ref: Server
 
-  {AWS_LAMBDA_FUNCTION_NAME}:
+  Server:
     Type: AWS::Serverless::Function
     Properties:
+      Description: Logic of Satis Serverless
       Runtime: nodejs8.10
       Handler: server.handler
       CodeUri: s3://{AWS_S3_BUCKET}/{S3_LAMBDA_PACKAGE_ZIP_KEY}
@@ -21,7 +23,7 @@ Resources:
       MemorySize: 1024
       Role:
         Fn::GetAtt:
-        - LambdaExecutionRole
+        - ExecutionRole
         - Arn
       Environment:
         Variables:
@@ -35,36 +37,36 @@ Resources:
             Path: /
             Method: ANY
             RestApiId:
-              Ref: ApiGatewayApi
+              Ref: Endpoint
         ProxyApiGreedy:
           Type: Api
           Properties:
             Path: /{proxy+}
             Method: ANY
             RestApiId:
-              Ref: ApiGatewayApi
+              Ref: Endpoint
         SqsQueueEvent:
           Type: SQS
           Properties:
             BatchSize: 10
             Queue:
               Fn::GetAtt:
-              - PackageQueue
+              - Queue
               - Arn
 
-  PackageQueue:
+  Queue:
     Type: AWS::SQS::Queue
     Properties:
       VisibilityTimeout: 60
 
-  LambdaApiGatewayExecutionPermission:
+  LambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
       FunctionName:
         Fn::GetAtt:
-        - {AWS_LAMBDA_FUNCTION_NAME}
+        - Server
         - Arn
       SourceArn:
         Fn::Join:
@@ -74,10 +76,10 @@ Resources:
           - ':'
           - Ref: AWS::AccountId
           - ':'
-          - Ref: ApiGatewayApi
+          - Ref: Endpoint
           - /*/*
 
-  LambdaExecutionRole:
+  ExecutionRole:
     Type: AWS::IAM::Role
     Properties:
       Path: /
@@ -155,7 +157,7 @@ Resources:
                 - '/*'
 
 Outputs:
-  ApiGatewayApiConsoleUrl:
+  ApiConsoleUrl:
     Description: Console URL for the API Gateway API's Stage.
     Value:
       Fn::Join:
@@ -165,7 +167,7 @@ Outputs:
         - .console.aws.amazon.com/apigateway/home?region=
         - Ref: AWS::Region
         - '#/apis/'
-        - Ref: ApiGatewayApi
+        - Ref: Endpoint
         - /stages/prod
 
   ApiUrl:
@@ -175,12 +177,12 @@ Outputs:
       Fn::Join:
       - ''
       - - https://
-        - Ref: ApiGatewayApi
+        - Ref: Endpoint
         - .execute-api.
         - Ref: AWS::Region
         - .amazonaws.com/prod/
 
-  LambdaFunctionConsoleUrl:
+  LambdaConsoleUrl:
     Description: Console URL for the Lambda Function.
     Value:
       Fn::Join:
@@ -190,7 +192,7 @@ Outputs:
         - .console.aws.amazon.com/lambda/home?region=
         - Ref: AWS::Region
         - '#/functions/'
-        - Ref: {AWS_LAMBDA_FUNCTION_NAME}
+        - Ref: Server
 
   SqsConsoleUrl:
     Description: Console URL for the SQS.

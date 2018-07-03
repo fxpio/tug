@@ -1,7 +1,7 @@
 ---
 swagger: 2.0
 info:
-  title: {AWS_LAMBDA_FUNCTION_NAME}Api
+  title: {AWS_STACK_NAME}Api
 basePath: /prod
 schemes:
 - https

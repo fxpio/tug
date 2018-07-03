@@ -25,9 +25,9 @@ utils.spawn('node bin/config -e')
         console.info('Deletion of the AWS Cloud Formation stack is started...');
         let cf = new AWS.CloudFormation({apiVersion: '2010-05-15', region: process.env['AWS_REGION']});
 
-        return cf.deleteStack({StackName: process.env['AWS_CLOUD_FORMATION_STACK_NAME']}).promise();
+        return cf.deleteStack({StackName: process.env['AWS_STACK_NAME']}).promise();
     })
     .then(() => {
-        console.log(`AWS Cloud Formation stack "${process.env['AWS_CLOUD_FORMATION_STACK_NAME']}" was queued for the deletion with successfully`);
+        console.log(`AWS Cloud Formation stack "${process.env['AWS_STACK_NAME']}" was queued for the deletion with successfully`);
     })
     .catch(utils.displayError);

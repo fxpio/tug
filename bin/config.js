@@ -30,8 +30,7 @@ program
     .option('--aws-secret-access-key [secret]', 'Your AWS Secret Access Key (required if AWS Shared Credentials File is not found)', envs['AWS_SECRET_ACCESS_KEY'])
     .option('--aws-region [name]', 'Your AWS Region (required if AWS Shared Config File is not found)', envs['AWS_REGION'])
     .option('--aws-s3-bucket [bucket]', 'Your AWS S3 bucket name', envs['AWS_S3_BUCKET'])
-    .option('--aws-cloud-formation-stack-name [stack]', 'Your AWS Cloud Formation Stack name', envs['AWS_CLOUD_FORMATION_STACK_NAME'])
-    .option('--aws-lambda-function-name [function]', 'Your AWS Lambda Function name', envs['AWS_LAMBDA_FUNCTION_NAME'])
+    .option('--aws-stack-name [stack]', 'Your AWS Stack name', envs['AWS_STACK_NAME'])
     .option('--github-token [token]', 'Your Github token', envs['GITHUB_TOKEN'])
     .option('-e, --only-empty', 'Display only questions of empty options', false)
     .option('-n, --no-interaction', 'Do not ask any interactive question', false)
@@ -45,8 +44,7 @@ envs = utils.mergeVariables(envs, {
     AWS_SECRET_ACCESS_KEY: program.awsSecretAccessKey,
     AWS_REGION: program.awsRegion,
     AWS_S3_BUCKET: program.awsS3Bucket,
-    AWS_CLOUD_FORMATION_STACK_NAME: program.awsCloudFormationStackName,
-    AWS_LAMBDA_FUNCTION_NAME: program.awsLambdaFunctionName,
+    AWS_STACK_NAME: program.awsStackName,
     GITHUB_TOKEN: program.githubToken
 });
 
@@ -200,23 +198,11 @@ if (program.interaction) {
         },
         {
             type : 'input',
-            name : 'awsCloudFormationStackName',
-            default: envs['AWS_CLOUD_FORMATION_STACK_NAME'],
-            message : 'Enter your AWS Cloud Formation Stack name:',
+            name : 'awsStackName',
+            default: envs['AWS_STACK_NAME'],
+            message : 'Enter your AWS Stack name:',
             when: function () {
-                return utils.showOnlyEmptyOption(program, envs, 'AWS_CLOUD_FORMATION_STACK_NAME');
-            },
-            validate: function (value) {
-                return utils.requiredOption(value);
-            }
-        },
-        {
-            type : 'input',
-            name : 'awsLambdaFunctionName',
-            default: envs['AWS_LAMBDA_FUNCTION_NAME'],
-            message : 'Enter your AWS Lambda Function name:',
-            when: function () {
-                return utils.showOnlyEmptyOption(program, envs, 'AWS_LAMBDA_FUNCTION_NAME');
+                return utils.showOnlyEmptyOption(program, envs, 'AWS_STACK_NAME');
             },
             validate: function (value) {
                 return utils.requiredOption(value);
@@ -244,8 +230,7 @@ if (program.interaction) {
             AWS_SECRET_ACCESS_KEY: utils.cleanVariable(answers.awsSecretAccessKey),
             AWS_REGION: utils.cleanVariable(answers.awsRegion),
             AWS_S3_BUCKET: utils.cleanVariable(answers.awsS3Bucket),
-            AWS_CLOUD_FORMATION_STACK_NAME: utils.cleanVariable(answers.awsCloudFormationStackName),
-            AWS_LAMBDA_FUNCTION_NAME: utils.cleanVariable(answers.awsLambdaFunctionName),
+            AWS_STACK_NAME: utils.cleanVariable(answers.awsStackName),
             GITHUB_TOKEN: utils.cleanVariable(answers.githubToken)
         });
 
