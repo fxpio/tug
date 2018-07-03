@@ -13,8 +13,8 @@ import cors from 'cors';
 import compression from 'compression';
 import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
 import AwsS3Storage from './storages/AwsS3Storage';
-import {logErrors} from './middleware/logs';
-import {showError500} from "./middleware/errors";
+import {logErrors} from './middlewares/logs';
+import {showError500} from "./middlewares/errors";
 import {isProd} from './utils/server';
 import packageRoutes from './routes/packageRoutes';
 

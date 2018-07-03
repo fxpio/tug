@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import Authenticate from '../middleware/auth/Authenticate';
-import BasicToken from '../middleware/auth/strategies/BasicToken';
+import Authenticate from '../middlewares/auth/Authenticate';
+import BasicToken from '../middlewares/auth/strategies/BasicToken';
 
 /**
  * Generate the routes.
