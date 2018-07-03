@@ -12,13 +12,12 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import compression from 'compression';
 import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
-import {basicAuth} from './middleware/auth/basic-api';
 import {logErrors} from './middleware/logs';
 import {showError500} from "./middleware/errors";
 import {isProd} from './utils/server';
+import packageRoutes from './routes/packageRoutes';
 
 const app = express();
-const router = express.Router({});
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -29,19 +28,7 @@ if (isProd()) {
     app.use(awsServerlessExpressMiddleware.eventContext());
 }
 
-router.use(basicAuth);
-
-router.get('/', (req, res) => {
-    res.json({message: 'Hello world!'});
-    //res.json(req.apiGateway.event);
-});
-
-router.post('/hooks', (req, res) => {
-    res.json({message: 'Hello world!'});
-    //res.json(req.apiGateway.event);
-});
-
-app.use('/', router);
+app.use('/', packageRoutes(express.Router({})));
 app.use(logErrors);
 app.use(showError500);
 
