@@ -20,15 +20,16 @@ import {isProd} from './utils/server';
 const app = express();
 const router = express.Router({});
 
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 if (isProd()) {
     app.use(compression());
     app.use(awsServerlessExpressMiddleware.eventContext());
 }
 
 router.use(basicAuth);
-router.use(cors());
-router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get('/', (req, res) => {
     res.json({message: 'Hello world!'});
