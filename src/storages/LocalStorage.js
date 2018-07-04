@@ -33,4 +33,22 @@ module.exports = class LocalStorage
     async has(key) {
         return fs.existsSync(this.basePath + '/' + key);
     }
+
+    /**
+     * Put the data for the key. If data is undefined, a directory is created.
+     *
+     * @param {String}        key    The key
+     * @param {String|Buffer} [data] The data
+     *
+     * @return {Promise<String>}
+     */
+    async put(key, data) {
+        if (undefined === data) {
+            fs.ensureDirSync(this.basePath + '/' + key);
+        } else {
+            fs.outputFileSync(this.basePath + '/' + key.replace(/\/$/, ''), data)
+        }
+
+        return key;
+    }
 };

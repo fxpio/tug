@@ -43,4 +43,28 @@ module.exports = class AwsS3Storage
 
         return 1 === objects.KeyCount;
     }
+
+    /**
+     * Put the data for the key. If data is undefined, a directory is created.
+     *
+     * @param {String}        key    The key
+     * @param {String|Buffer} [data] The data
+     *
+     * @return {Promise<String>}
+     */
+    async put(key, data) {
+        let params = {
+            Bucket: this.bucket,
+            Key: key
+        };
+
+        if (undefined === data) {
+            await this.client.putObject(params).promise();
+        } else {
+            params.Body = data;
+            await this.client.upload(params).promise();
+        }
+
+        return key;
+    }
 };
