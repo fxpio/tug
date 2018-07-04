@@ -51,4 +51,17 @@ module.exports = class LocalStorage
 
         return key;
     }
+
+    /**
+     * Delete the key.
+     *
+     * @param {String} key The key
+     *
+     * @return {Promise<String>}
+     */
+    async delete(key) {
+        fs.removeSync(this.basePath + '/' + key);
+
+        return key;
+    }
 };

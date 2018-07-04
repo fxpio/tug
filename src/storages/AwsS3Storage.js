@@ -67,4 +67,22 @@ module.exports = class AwsS3Storage
 
         return key;
     }
+
+    /**
+     * Delete the key.
+     *
+     * @param {String} key The key
+     *
+     * @return {Promise<String>}
+     */
+    async delete(key) {
+        let params = {
+            Bucket: this.bucket,
+            Key: key
+        };
+
+        await this.client.deleteObject(params).promise();
+
+        return key;
+    }
 };
