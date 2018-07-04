@@ -15,7 +15,6 @@ require('dotenv').config();
 const program = require('commander');
 const utils = require('./utils/utils');
 const createStorage = require('./utils/storage').createStorage;
-const api = require('./utils/api');
 
 program
     .description('Create or generate a API key')
@@ -26,7 +25,7 @@ program
 utils.spawn('node bin/config -e')
     .then(async () => {
         let storage = createStorage(program);
-        let key = typeof program.key !== 'string' || '' === program.key ? api.generateKey() : program.key;
+        let key = typeof program.key !== 'string' || '' === program.key ? utils.generateId(40) : program.key;
 
         await storage.put('api-keys/' + key + '/');
 
