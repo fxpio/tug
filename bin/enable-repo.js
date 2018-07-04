@@ -13,17 +13,18 @@
 
 require('dotenv').config();
 const program = require('commander');
-const AWS = require('aws-sdk');
+const createStorage = require('./utils/storage').createStorage;
 const utils = require('./utils/utils');
 
 program
     .description('Enable the Github repository')
+    .option('-l, --local', 'Use the local storage', false)
     .option('-r, --repository [name]', 'The repository name (<username-organization>/<repository>)')
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')
     .then(async () => {
-        let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env['AWS_REGION']});
+        let storage = createStorage(program);
         let repo = program.repository;
 
         if (typeof repo !== 'string' || '' === repo) {
@@ -34,7 +35,7 @@ utils.spawn('node bin/config -e')
             throw new Error('The repository name must be formated with "<username-or-organization-name>/<repository-name>"');
         }
 
-        await s3.putObject({Bucket: process.env['AWS_S3_BUCKET'], Key: 'repositories/' + repo + '/'}).promise();
+        await storage.put('repositories/' + repo + '/');
 
         return repo;
     })

@@ -15,8 +15,8 @@ require('dotenv').config();
 const path = require('path');
 const fs = require('fs-extra');
 const program = require('commander');
-const AWS = require('aws-sdk');
 const archiver = require('./utils/archiver');
+const createStorage = require('./utils/storage').createStorage;
 const utils = require('./utils/utils');
 
 const AWS_PATH = './aws';
@@ -69,20 +69,15 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
                 return newPath;
             })
             .then((filePath) => {
-                let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env['AWS_REGION']});
+                let storage = createStorage(program);
                 let fileStream = fs.createReadStream(filePath);
-                let params = {
-                    Bucket: process.env['AWS_S3_BUCKET'],
-                    Body: fileStream,
-                    Key: utils.fixWinSlash(filePath)
-                };
 
                 fileStream.on('error', utils.displayError);
 
-                return s3.upload(params).promise();
+                return storage.put(utils.fixWinSlash(filePath), fileStream);
             })
-            .then((data) => {
-                s3Keys['S3_SWAGGER_YAML_KEY'] = data.Key;
+            .then((key) => {
+                s3Keys['S3_SWAGGER_YAML_KEY'] = key;
             })
 
             // Lambda package
@@ -95,17 +90,12 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
                 return newPath;
             })
             .then((filePath) => {
-                let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env['AWS_REGION']});
+                let storage = createStorage(program);
                 let fileStream = fs.createReadStream(filePath);
-                let params = {
-                    Bucket: process.env['AWS_S3_BUCKET'],
-                    Body: fileStream,
-                    Key: utils.fixWinSlash(filePath)
-                };
 
                 fileStream.on('error', utils.displayError);
 
-                return s3.upload(params).promise();
+                return storage.put(utils.fixWinSlash(filePath), fileStream);
             })
             .then((data) => {
                 s3Keys['S3_LAMBDA_PACKAGE_ZIP_KEY'] = data.Key;

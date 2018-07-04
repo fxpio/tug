@@ -13,24 +13,25 @@
 
 require('dotenv').config();
 const program = require('commander');
-const AWS = require('aws-sdk');
+const createStorage = require('./utils/storage').createStorage;
 const utils = require('./utils/utils');
 
 program
     .description('Delete a API key')
+    .option('-l, --local', 'Use the local storage', false)
     .option('--key [key]', 'The API key')
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')
     .then(async () => {
-        let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env['AWS_REGION']});
+        let storage = createStorage(program);
         let key = program.key;
 
         if (typeof key !== 'string' || '' === key) {
             throw new Error('The "--key" option with the api key value is required');
         }
 
-        await s3.deleteObject({Bucket: process.env['AWS_S3_BUCKET'], Key: 'api-keys/' + key + '/'}).promise();
+        await storage.delete('api-keys/' + key + '/');
 
         return key;
     })
