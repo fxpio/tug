@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import fs from 'fs-extra';
+const fs = require('fs-extra');
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class LocalStorage
+module.exports = class LocalStorage
 {
     /**
      * Constructor.
@@ -33,4 +33,4 @@ export default class LocalStorage
     async has(key) {
         return fs.existsSync(this.basePath + '/' + key);
     }
-}
+};

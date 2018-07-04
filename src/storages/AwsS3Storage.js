@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import AWS from 'aws-sdk';
+const AWS = require('aws-sdk');
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class AwsS3Storage
+module.exports = class AwsS3Storage
 {
     /**
      * Constructor.
@@ -40,8 +40,7 @@ export default class AwsS3Storage
         };
 
         let objects = await this.client.listObjectsV2(params).promise();
-        console.log(objects);
 
         return 1 === objects.KeyCount;
     }
-}
+};
