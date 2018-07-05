@@ -162,6 +162,7 @@ or `npm run bin/node bin/<command-name>`:
 - `delete-stack`: Delete the AWS Cloud Formation stack
 - `create-api-key`: Create a API key
 - `delete-api-key`: Delete a API key
+- `create-github-token`: Create the Github token
 - `enable-repo`: Enable manually the Github repository
 - `disable-repo`: Disable manually the Github repository
 
