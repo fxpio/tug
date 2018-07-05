@@ -164,6 +164,7 @@ or `npm run bin/node bin/<command-name>`:
 - `delete-api-key`: Delete a API key
 - `show-github-token`: Show the Github token
 - `create-github-token`: Create the Github token
+- `delete-github-token`: Delete the Github token
 - `enable-repo`: Enable manually the Github repository
 - `disable-repo`: Disable manually the Github repository
 
