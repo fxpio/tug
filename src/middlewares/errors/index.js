@@ -12,10 +12,10 @@ import {isProd} from '../../utils/server';
 /**
  * Display the list of all packages in the "provider" format.
  *
- * @param {Object}   err  The error
- * @param {Object}   req  The Express Request object
- * @param {Object}   res  The Express Response object
- * @param {function} next The next callback
+ * @param {Error}           err  The error
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
  */
 export function showError500(err, req, res, next) {
     let data = {

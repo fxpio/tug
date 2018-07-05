@@ -7,15 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import {isProd} from '../../utils/server';
-
 /**
  * Display the list of all packages in the "provider" format.
  *
- * @param {Object}   err  The error
- * @param {Object}   req  The Express Request object
- * @param {Object}   res  The Express Response object
- * @param {function} next The next callback
+ * @param {Error}           err  The error
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
  */
 export function logErrors(err, req, res, next) {
     console.error(err.stack);
