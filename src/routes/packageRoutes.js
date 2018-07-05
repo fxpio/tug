@@ -13,8 +13,8 @@ import BasicToken from '../middlewares/auth/strategies/BasicToken';
 /**
  * Generate the routes.
  *
- * @param {Router} router  The router
- * @param {Object} storage The storage
+ * @param {Router}      router  The router
+ * @param {DataStorage} storage The storage
  *
  * @return {Router}
  */

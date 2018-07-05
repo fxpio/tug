@@ -8,11 +8,12 @@
  */
 
 const AWS = require('aws-sdk');
+const DataStorage = require('./DataStorage');
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-module.exports = class AwsS3Storage
+module.exports = class AwsS3Storage extends DataStorage
 {
     /**
      * Constructor.
@@ -21,16 +22,13 @@ module.exports = class AwsS3Storage
      * @param {String} region The AWS S3 region
      */
     constructor(bucket, region) {
+        super();
         this.client = new AWS.S3({apiVersion: '2006-03-01', region: region});
         this.bucket = bucket;
     }
 
     /**
-     * Check if the storage has the key.
-     *
-     * @param {String} key The key
-     *
-     * @return {Promise<boolean>}
+     * @inheritDoc
      */
     async has(key) {
         let params = {
@@ -45,12 +43,7 @@ module.exports = class AwsS3Storage
     }
 
     /**
-     * Put the data for the key. If data is undefined, a directory is created.
-     *
-     * @param {String}        key    The key
-     * @param {String|Buffer} [data] The data
-     *
-     * @return {Promise<String>}
+     * @inheritDoc
      */
     async put(key, data) {
         let params = {
@@ -65,15 +58,11 @@ module.exports = class AwsS3Storage
             await this.client.upload(params).promise();
         }
 
-        return key;
+        return super.put(key, data);
     }
 
     /**
-     * Delete the key.
-     *
-     * @param {String} key The key
-     *
-     * @return {Promise<String>}
+     * @inheritDoc
      */
     async delete(key) {
         let params = {
@@ -83,6 +72,6 @@ module.exports = class AwsS3Storage
 
         await this.client.deleteObject(params).promise();
 
-        return key;
+        return super.delete(key);
     }
 };

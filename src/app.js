@@ -20,7 +20,6 @@ import {isProd} from './utils/server';
 import packageRoutes from './routes/packageRoutes';
 
 const app = express();
-let storage = new LocalStorage('./var/' + process.env.AWS_S3_BUCKET);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -29,10 +28,12 @@ app.use(awsServerlessExpressMiddleware.eventContext());
 
 if (isProd()) {
     app.use(compression());
-    storage = new AwsS3Storage(process.env.AWS_S3_BUCKET, process.env.AWS_REGION);
+    app.set('storage', new AwsS3Storage(process.env.AWS_S3_BUCKET, process.env.AWS_REGION));
+} else {
+    app.set('storage', new LocalStorage('./var/' + process.env.AWS_S3_BUCKET));
 }
 
-app.use('/', packageRoutes(express.Router({}), storage));
+app.use('/', packageRoutes(express.Router({}), app.set('storage')));
 app.use(logErrors);
 app.use(showError500);
 

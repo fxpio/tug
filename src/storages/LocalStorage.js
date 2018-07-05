@@ -8,11 +8,12 @@
  */
 
 const fs = require('fs-extra');
+const DataStorage = require('./DataStorage');
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-module.exports = class LocalStorage
+module.exports = class LocalStorage extends DataStorage
 {
     /**
      * Constructor.
@@ -20,27 +21,19 @@ module.exports = class LocalStorage
      * @param {String} basePath The base path
      */
     constructor(basePath) {
+        super();
         this.basePath = basePath;
     }
 
     /**
-     * Check if the storage has the key.
-     *
-     * @param {String} key The key
-     *
-     * @return {Promise<boolean>}
+     * @inheritDoc
      */
     async has(key) {
         return fs.existsSync(this.basePath + '/' + key);
     }
 
     /**
-     * Put the data for the key. If data is undefined, a directory is created.
-     *
-     * @param {String}        key    The key
-     * @param {String|Buffer} [data] The data
-     *
-     * @return {Promise<String>}
+     * @inheritDoc
      */
     async put(key, data) {
         if (undefined === data) {
@@ -49,19 +42,15 @@ module.exports = class LocalStorage
             fs.outputFileSync(this.basePath + '/' + key.replace(/\/$/, ''), data)
         }
 
-        return key;
+        return super.put(key, data);
     }
 
     /**
-     * Delete the key.
-     *
-     * @param {String} key The key
-     *
-     * @return {Promise<String>}
+     * @inheritDoc
      */
     async delete(key) {
         fs.removeSync(this.basePath + '/' + key);
 
-        return key;
+        return super.delete(key);
     }
 };
