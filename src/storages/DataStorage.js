@@ -24,6 +24,17 @@ module.exports = class DataStorage
     }
 
     /**
+     * Get the data of key or null if the key doesn't exist.
+     *
+     * @param {String} key The key
+     *
+     * @return {Promise<String|null>}
+     */
+    async get(key) {
+        return null;
+    }
+
+    /**
      * Put the data for the key. If data is undefined, a directory is created.
      *
      * @param {String}        key    The key

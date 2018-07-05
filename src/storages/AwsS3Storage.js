@@ -45,6 +45,21 @@ module.exports = class AwsS3Storage extends DataStorage
     /**
      * @inheritDoc
      */
+    async get(key) {
+        try {
+            let params = {
+                Bucket: this.bucket,
+                Key: key
+            };
+            return (await this.client.getObject(params).promise()).Body.toString();
+        } catch (e) {}
+
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
     async put(key, data) {
         let params = {
             Bucket: this.bucket,
