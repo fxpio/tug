@@ -36,6 +36,7 @@ export default class GithubWebhookAuth extends AuthStrategy
 
             if (secret && await this.storage.has('api-keys/' + secret)) {
                 next();
+                return;
             }
         }
 

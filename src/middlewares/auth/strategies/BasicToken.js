@@ -33,6 +33,7 @@ export default class BasicToken extends AuthStrategy
 
         if (user && 'token' === user.name && await this.storage.has('api-keys/' + user.pass)) {
             next();
+            return;
         }
 
         return super.logIn(req, res, next);
