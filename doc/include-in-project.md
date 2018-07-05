@@ -14,5 +14,5 @@ $ composer config repositories.satis-serverless composer https://<your-custom-do
 When you run Composer, it will prompt to enter your credentials, in this case, use the values for:
 
 - **Username**: `token`
-- **Password**: `<your-api-key>`
+- **Password**: `<your-api-key-created-in-step-5>`
  

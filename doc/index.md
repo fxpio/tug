@@ -107,7 +107,33 @@ Create the domain in API Gateway with:
   - Stage: `prod`
 
 
-## 3) Create the first API key
+## 3) Create the Github token
+
+Run the command:
+
+```
+$ node bin/create-github-token
+```
+
+> **Note:**
+>
+> The Github token is stored in the S3 bucket with the key `github-token`.
+
+
+## 4) Configure the Github Webhook
+
+In each repository or in a organization, create the webhook with:
+
+- Payload URL: `https://<your-custom-domain-for-satis>`
+- Content type: `application/json`
+- Secret: `<your-created-github-token-in-step-3>`
+- Which events would you like to trigger this webhook? `Let me select individual events.`:
+  - `Branch or tag creation`
+  - `Branch or tag deletion`
+  - `Pushes`
+
+
+## 5) Create the first API key
 
 Run the command:
 
@@ -120,20 +146,7 @@ $ node bin/create-api-key
 > The API key is stored in the S3 bucket with the prefix `api-keys/`.
 
 
-## 4) Configure the Github Webhook
-
-In each repository or in a organization, create the webhook with:
-
-- Payload URL: `https://<your-custom-domain-for-satis>`
-- Content type: `application/json`
-- Secret: `<your-api-key-defined-in-the-api-keys-s3-bucket>`
-- Which events would you like to trigger this webhook? `Let me select individual events.`:
-  - `Branch or tag creation`
-  - `Branch or tag deletion`
-  - `Pushes`
-
-
-## 5) Enjoy!
+## 6) Enjoy!
 
 Now that you have completed the basic installation and configuration of the Satis Serverless, you are ready to learn
 more about using this project.
