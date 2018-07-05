@@ -28,6 +28,6 @@ utils.spawn('node bin/config -e')
         return s3.deleteBucket({Bucket: process.env['AWS_S3_BUCKET']}).promise();
     })
     .then(() => {
-        console.log(`AWS S3 bucket "${process.env['AWS_S3_BUCKET']}" was deleted with successfully`);
+        console.info(`AWS S3 bucket "${process.env['AWS_S3_BUCKET']}" was deleted with successfully`);
     })
     .catch(utils.displayError);

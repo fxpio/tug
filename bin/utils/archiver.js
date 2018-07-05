@@ -50,7 +50,7 @@ module.exports.archive = function archive(srcPath, toPath) {
         });
 
         output.on('close', function() {
-            console.log('Package archive is created successfully (' + archive.pointer() + ' bytes)');
+            console.info('Package archive is created successfully (' + archive.pointer() + ' bytes)');
             resolve(toPath);
         });
 

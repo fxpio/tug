@@ -28,6 +28,6 @@ utils.spawn('node bin/config -e')
         return cf.deleteStack({StackName: process.env['AWS_STACK_NAME']}).promise();
     })
     .then(() => {
-        console.log(`AWS Cloud Formation stack "${process.env['AWS_STACK_NAME']}" was queued for the deletion with successfully`);
+        console.info(`AWS Cloud Formation stack "${process.env['AWS_STACK_NAME']}" was queued for the deletion with successfully`);
     })
     .catch(utils.displayError);

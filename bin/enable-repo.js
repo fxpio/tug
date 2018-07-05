@@ -40,6 +40,6 @@ utils.spawn('node bin/config -e')
         return repo;
     })
     .then((res) => {
-        console.log(`The repository "${res}" were enabled successfully`)
+        console.info(`The repository "${res}" were enabled successfully`)
     })
     .catch(utils.displayError);

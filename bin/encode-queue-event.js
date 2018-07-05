@@ -19,12 +19,12 @@ program
     .parse(process.argv)
 ;
 
-console.log('');
+console.info('');
 console.info('HTTP HEADER "x-apigateway-event":');
-console.log('');
-console.log(encodeURIComponent(JSON.stringify(fs.readJSONSync(program.event))));
+console.info('');
+console.info(encodeURIComponent(JSON.stringify(fs.readJSONSync(program.event))));
 
-console.log('');
+console.info('');
 console.info('HTTP HEADER "x-apigateway-context":');
-console.log('');
-console.log(encodeURIComponent(JSON.stringify(fs.readJSONSync('./test/fixtures/sqs-header-context.json'))));
+console.info('');
+console.info(encodeURIComponent(JSON.stringify(fs.readJSONSync('./test/fixtures/sqs-header-context.json'))));

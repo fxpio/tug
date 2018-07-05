@@ -32,6 +32,6 @@ utils.spawn('node bin/config -e')
         return key;
     })
     .then((res) => {
-        console.log(`The API key "${res}" was created successfully`)
+        console.info(`The API key "${res}" was created successfully`)
     })
     .catch(utils.displayError);

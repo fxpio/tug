@@ -36,6 +36,6 @@ utils.spawn('node bin/config -e')
         return key;
     })
     .then((res) => {
-        console.log(`The API key "${res}" was deleted successfully`)
+        console.info(`The API key "${res}" was deleted successfully`)
     })
     .catch(utils.displayError);

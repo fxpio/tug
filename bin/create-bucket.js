@@ -28,6 +28,6 @@ utils.spawn('node bin/config -e')
         return s3.createBucket({Bucket: process.env['AWS_S3_BUCKET']}).promise();
     })
     .then(() => {
-        console.log(`AWS S3 bucket "${process.env['AWS_S3_BUCKET']}" was created with successfully in the "${process.env['AWS_REGION']}" region`);
+        console.info(`AWS S3 bucket "${process.env['AWS_S3_BUCKET']}" was created with successfully in the "${process.env['AWS_REGION']}" region`);
     })
     .catch(utils.displayError);
