@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import crypto from 'crypto';
 import AuthStrategy from './AuthStrategy';
 import {isGithubEvent} from "../../../utils/apiGithub";
 
@@ -31,10 +32,13 @@ export default class GithubWebhookAuth extends AuthStrategy
     async logIn(req, res, next) {
         let body = req.body;
 
-        if (isGithubEvent(req) && body && body.hook && body.hook.config) {
-            let secret = body.hook.config.secret;
+        if (isGithubEvent(req) && body && body.hook && body.hook.config && req.headers['x-hub-signature']) {
+            let signature = req.headers['x-hub-signature'],
+                payload = JSON.stringify(body),
+                secret = await this.storage.get('github-token'),
+                computedSignature = `sha1=${crypto.createHmac("sha1", secret).update(payload).digest("hex")}`;
 
-            if (secret && await this.storage.has('api-keys/' + secret)) {
+            if (crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(computedSignature))) {
                 next();
                 return;
             }

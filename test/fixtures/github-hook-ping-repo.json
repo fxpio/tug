@@ -14,7 +14,7 @@
     "config": {
       "content_type": "json",
       "insecure_ssl": "0",
-      "secret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+      "secret": "********",
       "url": "https://satis.fxp.io"
     },
     "updated_at": "2018-07-05T08:44:44Z",
