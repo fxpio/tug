@@ -26,9 +26,9 @@ export default class BasicToken
     /**
      * Log in.
      *
-     * @param {Request}  req
-     * @param {Response} res
-     * @param {Function} next
+     * @param {IncomingMessage} req  The request
+     * @param {ServerResponse}  res  The response
+     * @param {Function}        next The next callback
      */
     async logIn(req, res, next) {
         let user = auth(req);
