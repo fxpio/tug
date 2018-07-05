@@ -15,7 +15,7 @@ export default class Authenticate
     /**
      * Constructor.
      *
-     * @param {Object} strategy The strategy
+     * @param {AuthStrategy} strategy The strategy
      *
      * @return {Function}
      */

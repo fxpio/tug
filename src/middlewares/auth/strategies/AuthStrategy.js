@@ -7,22 +7,19 @@
  * file that was distributed with this source code.
  */
 
-import AuthStrategy from './AuthStrategy';
-import {isSqsRequest} from '../../../utils/apiQueue';
-
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class QueueAuth extends AuthStrategy
+export default class AuthStrategy
 {
     /**
-     * @inheritDoc
+     * Log in.
+     *
+     * @param {IncomingMessage} req  The request
+     * @param {ServerResponse}  res  The response
+     * @param {Function}        next The next callback
      */
     async logIn(req, res, next) {
-        if (isSqsRequest(req)) {
-            next();
-        }
-
-        return super.logIn(req, res, next);
+        res.status(401).send();
     }
 }

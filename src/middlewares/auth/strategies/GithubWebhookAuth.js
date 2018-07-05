@@ -7,28 +7,26 @@
  * file that was distributed with this source code.
  */
 
+import AuthStrategy from './AuthStrategy';
 import {isGithubEvent} from "../../../utils/apiGithub";
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class GithubWebhookAuth
+export default class GithubWebhookAuth extends AuthStrategy
 {
     /**
      * Constructor.
      *
-     * @param {Object} storage The storage
+     * @param {DataStorage} storage The storage
      */
     constructor(storage) {
+        super();
         this.storage = storage;
     }
 
     /**
-     * Log in.
-     *
-     * @param {IncomingMessage} req  The request
-     * @param {ServerResponse}  res  The response
-     * @param {Function}        next The next callback
+     * @inheritDoc
      */
     async logIn(req, res, next) {
         let body = req.body;
@@ -41,6 +39,6 @@ export default class GithubWebhookAuth
             }
         }
 
-        res.status(401).send();
+        return super.logIn(req, res, next);
     }
 }
