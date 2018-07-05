@@ -25,10 +25,10 @@ let storage = new LocalStorage('./var/' + process.env.AWS_S3_BUCKET);
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(awsServerlessExpressMiddleware.eventContext());
 
 if (isProd()) {
     app.use(compression());
-    app.use(awsServerlessExpressMiddleware.eventContext());
     storage = new AwsS3Storage(process.env.AWS_S3_BUCKET, process.env.AWS_REGION);
 }
 
