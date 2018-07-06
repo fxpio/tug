@@ -62,7 +62,11 @@ export function getSqsMessageBodies(request) {
             let record = event.Records[i];
 
             if (isSqsMessage(record)) {
-                bodies.push(record.body);
+                let body = record.body;
+                try {
+                    body = JSON.parse(body);
+                } catch (e) {}
+                bodies.push(body);
             }
         }
     }
