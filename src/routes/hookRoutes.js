@@ -10,6 +10,7 @@
 import Authenticate from '../middlewares/auth/Authenticate';
 import GithubWebhookAuth from '../middlewares/auth/strategies/GithubWebhookAuth';
 import QueueAuth from '../middlewares/auth/strategies/QueueAuth';
+import {asyncHandler} from '../utils/handler';
 import {githubHook} from '../controllers/githubHooks';
 import {queueHook} from '../controllers/queueHooks';
 
@@ -22,8 +23,8 @@ import {queueHook} from '../controllers/queueHooks';
  * @return {Router}
  */
 export default function(router, storage) {
-    router.post('/', new Authenticate(new GithubWebhookAuth(storage)), githubHook);
-    router.get('/', new Authenticate(new QueueAuth()), queueHook);
+    router.post('/', new Authenticate(new GithubWebhookAuth(storage)), asyncHandler(githubHook));
+    router.get('/', new Authenticate(new QueueAuth()), asyncHandler(queueHook));
 
     return router;
 }
