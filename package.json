@@ -18,7 +18,14 @@
     "deploy": "node bin/deploy",
     "package-deploy": "node bin/package-deploy",
     "delete-stack": "node bin/delete-stack",
-    "setup": "yarn install && node bin/setup"
+    "setup": "yarn install && node bin/setup",
+    "test": "ava --verbose",
+    "test:watch": "ava --watch"
+  },
+  "ava": {
+    "require": [
+      "@babel/register"
+    ]
   },
   "dependencies": {
     "aws-serverless-express": "^3.2.0",
@@ -32,7 +39,9 @@
     "@babel/core": "^7.0.0-beta.52",
     "@babel/plugin-proposal-class-properties": "^7.0.0-beta.52",
     "@babel/preset-env": "^7.0.0-beta.52",
+    "@babel/register": "^7.0.0-beta.52",
     "archiver": "^2.1.1",
+    "ava": "^1.0.0-beta.6",
     "aws-sdk": "^2.263.1",
     "babel-loader": "^8.0.0-beta.4",
     "commander": "^2.15.1",
