@@ -1,6 +1,8 @@
 Fxp Satis Serverless
 ====================
 
+[![Build Status](https://travis-ci.org/fxpio/fxp-satis-serverless.svg?branch=master)](https://travis-ci.org/fxpio/fxp-satis-serverless)
+
 The Fxp Satis Serverless is a Composer repository for private PHP packages hosted on Github installable with
 [Composer](http://getcomposer.org). Unlike the static package generator [Satis](https://github.com/composer/satis),
 this project is hosted on your AWS account, using API Gateway with Lambda for the serverless code execution, and S3
