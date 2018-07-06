@@ -14,4 +14,4 @@ import app from './app';
 const port = process.env.SERVER_PORT || 3000;
 
 app.listen(port);
-console.log(`Listening on http://localhost:${port}`);
+console.info(`Listening on http://localhost:${port}`);
