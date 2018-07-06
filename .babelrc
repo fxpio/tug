@@ -1,9 +1,8 @@
 {
   "presets": [
-    "es2015",
-    [
-      "env",
-      {
+    ["@babel/preset-env", {
+        "modules": false,
+        "shippedProposals": true,
         "targets": {
           "node": "current"
         }
