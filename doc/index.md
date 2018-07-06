@@ -6,7 +6,7 @@ Welcome to the Fxp Satis Serverless - a serverless Composer repository for priva
 This document contains information on how to download, install, and start the API built with:
 
 - [AWS API Gateway](https://aws.amazon.com/api-gateway)
-- [AWS Lambda@Edge Nodejs](https://aws.amazon.com/lambda)
+- [AWS Lambda Nodejs](https://aws.amazon.com/lambda)
 - [AWS S3](https://aws.amazon.com/s3)
 - [AWS SQS](https://aws.amazon.com/sqs)
 - [AWS Cloud Formation](https://aws.amazon.com/cloudformation)
@@ -89,7 +89,8 @@ $ yarn run setup
 
 ### 2.1. Create the SSL certificate (optional)
          
-Create the domain certificate in AWS Certificate Manager in `us-west-1` region (only compatible this region):
+Create the domain certificate in AWS Certificate Manager in your AWS region if you want to use a regional endpoint,
+or in the `us-west-1` region if you want to use the Edge Optimized endpoint:
 
 1. Add the root domain: `satis.example.tld` (example)
 2. Validate and request the certificate
@@ -99,12 +100,16 @@ Create the domain certificate in AWS Certificate Manager in `us-west-1` region (
 Create the domain in API Gateway with:
 
 - Domain: `<your-custom-domain-for-satis>`
-- Configuration of the endpoint: `Edge Optimized`
+- Configuration of the endpoint: `Edge Optimized` or `Regional`
 - ACM Certificate: `<your-certificate-for-satis-domain>`
 - Base Path Mapping:
   - Path: ``
   - Destination: `<your-satis-gateway-api>`
   - Stage: `prod`
+
+### 2.3. Configure your DNS zone (optional)
+
+Create a DNS entry for your custom domain, map it with the domain target of the API Gateway  with a `CNAME` type.
 
 
 ## 3) Create the Github token

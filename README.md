@@ -13,7 +13,7 @@ or the use of a third party service, and the simple static packages generator [S
 That is, do not be worried about updating package versions and SHA1s for branches, while avoiding the cost of server
 maintenance and execution, or the high cost of third-party services. With the serverless approach, the financial cost
 is very low, and in the majority of cases, less than $1/month. You can see the pricing of
-[Lambda@Edge](https://aws.amazon.com/lambda/pricing), [S3](https://aws.amazon.com/s3/pricing) and
+[Lambda](https://aws.amazon.com/lambda/pricing), [S3](https://aws.amazon.com/s3/pricing) and
 [API Gateway](https://aws.amazon.com/api-gateway/pricing) for more details.
 
 Also, this project is not intended to be another complete Packagist server, or a static packages generator like Satis,
