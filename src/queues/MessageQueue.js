@@ -37,13 +37,28 @@ export default class MessageQueue
      * @param {Array<Object>} messages The messages comes from queue
      */
     receive(messages) {
-        for (let i = 0; i < this.receivers.length; ++i) {
-            /** @type {QueueReceiver} */
-            let receiver = this.receivers[i];
+        let ranReceivers = [];
 
-            if (receiver.supports(messages)) {
-                receiver.execute(messages);
+        for (let i = 0; i < messages.length; ++i) {
+            for (let j = 0; j < this.receivers.length; ++j) {
+                /** @type {QueueReceiver} */
+                let receiver = this.receivers[j];
+
+                if (receiver.supports(messages[i])) {
+                    receiver.execute(messages[i]);
+
+                    if (!ranReceivers.includes(receiver)) {
+                        ranReceivers.push(receiver);
+                    }
+                }
             }
+        }
+
+        for (let i = 0; i < ranReceivers.length; ++i) {
+            /** @type {QueueReceiver} */
+            let receiver = ranReceivers[i];
+
+            receiver.finish();
         }
     }
 

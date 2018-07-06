@@ -15,18 +15,25 @@ export default class QueueReceiver
     /**
      * Check if the receiver support the message.
      *
-     * @param {Array<Object>} messages The messages comes from queue
+     * @param {Object} message The message comes from queue
      *
      * @return {Boolean}
      */
-    supports(messages) {
+    supports(message) {
         return false;
     }
 
     /**
+     * Execute the receiver.
      *
-     * @param {Array<Object>} messages The messages comes from queue
+     * @param {Object} message The message comes from queue
      */
-    execute(messages) {
+    execute(message) {
+    }
+
+    /**
+     * Finish the execution of the receiver.
+     */
+    finish() {
     }
 }
