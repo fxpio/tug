@@ -18,18 +18,13 @@ export default class AwsSqsMessageQueue extends MessageQueue
     /**
      * Constructor.
      *
-     * @param {String}  region    The AWS region
-     * @param {String}  accountId The AWS account id
-     * @param {String}  queueName The AWS queue name
-     * @param {AWS.SQS} [client]  The AWS SQS client
+     * @param {String}  queueUrl The AWS queue url
+     * @param {AWS.SQS} [client] The AWS SQS client
      */
-    constructor(region, accountId, queueName, client = null) {
+    constructor(queueUrl, client = null) {
         super();
-        this.region = region;
-        this.accountId = accountId;
-        this.queueName = queueName;
-        this.client = client || new AWS.SQS({apiVersion: '2012-11-05', region: region});
-        this.client.config.region = region;
+        this.queueUrl = queueUrl;
+        this.client = client || new AWS.SQS({apiVersion: '2012-11-05'});
     }
 
     /**
@@ -37,7 +32,7 @@ export default class AwsSqsMessageQueue extends MessageQueue
      */
     async send(message) {
         let params = {
-            QueueUrl: 'https://sqs.' + this.region + '.amazonaws.com/' + this.accountId + '/' + this.queueName,
+            QueueUrl: this.queueUrl,
             MessageBody: typeof message === 'object' ? JSON.stringify(message) : message
         };
         await this.client.sendMessage(params).promise();
@@ -49,7 +44,7 @@ export default class AwsSqsMessageQueue extends MessageQueue
     async sendBatch(messages) {
         let nextMessages = [];
         let params = {
-            QueueUrl: 'https://sqs.' + this.region + '.amazonaws.com/' + this.accountId + '/' + this.queueName,
+            QueueUrl: this.queueUrl,
             Entries: []
         };
 

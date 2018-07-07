@@ -155,12 +155,9 @@ Resources:
           NODE_ENV: production
           AWS_S3_BUCKET:
             Ref: Storage
-          AWS_ACCOUNT_ID: {AWS_ACCOUNT_ID}
+          AWS_SQS_QUEUE_ENDPOINT:
+            Ref: Queue
           GITHUB_TOKEN: {GITHUB_TOKEN}
-          AWS_SQS_QUEUE_NAME:
-            Fn::GetAtt:
-            - Queue
-            - QueueName
       Events:
         ProxyApiRoot:
           Type: Api
