@@ -153,7 +153,8 @@ Resources:
       Environment:
         Variables:
           NODE_ENV: production
-          AWS_S3_BUCKET: {AWS_S3_BUCKET}
+          AWS_S3_BUCKET:
+            Ref: Storage
           AWS_ACCOUNT_ID: {AWS_ACCOUNT_ID}
           GITHUB_TOKEN: {GITHUB_TOKEN}
           AWS_SQS_QUEUE_NAME:
@@ -188,6 +189,10 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       VisibilityTimeout: 60
+
+  Storage:
+    Type: "AWS::S3::Bucket"
+    DeletionPolicy: Retain
 
   LambdaPermission:
     Type: AWS::Lambda::Permission
@@ -269,7 +274,7 @@ Resources:
               Fn::Join:
               - ''
               - - 'arn:aws:s3:::'
-                - {AWS_S3_BUCKET}
+                - Ref: Storage
       - PolicyName: S3Access
         PolicyDocument:
           Version: '2012-10-17'
@@ -283,7 +288,7 @@ Resources:
               Fn::Join:
               - ''
               - - 'arn:aws:s3:::'
-                - {AWS_S3_BUCKET}
+                - Ref: Storage
                 - '/*'
 
 Outputs:
@@ -335,3 +340,13 @@ Outputs:
         - Ref: AWS::Region
         - '#queue-browser:selected='
         - Ref: Queue
+
+  S3ConsoleUrl:
+    Description: Console URL for the S3 bucket.
+    Value:
+      Fn::Join:
+      - ''
+      - - https://s3.console.aws.amazon.com/s3/buckets/
+        - Ref: Storage
+        - /?region=
+        - Ref: AWS::Region
