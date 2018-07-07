@@ -18,16 +18,18 @@ export default class AwsSqsMessageQueue extends MessageQueue
     /**
      * Constructor.
      *
-     * @param {String} region    The AWS region
-     * @param {String} accountId The AWS account id
-     * @param {String} queueName The AWS queue name
+     * @param {String}  region    The AWS region
+     * @param {String}  accountId The AWS account id
+     * @param {String}  queueName The AWS queue name
+     * @param {AWS.SQS} [client]  The AWS SQS client
      */
-    constructor(region, accountId, queueName) {
+    constructor(region, accountId, queueName, client = null) {
         super();
         this.region = region;
         this.accountId = accountId;
         this.queueName = queueName;
-        this.client = new AWS.SQS({apiVersion: '2012-11-05', region: region});
+        this.client = client || new AWS.SQS({apiVersion: '2012-11-05', region: region});
+        this.client.config.region = region;
     }
 
     /**
