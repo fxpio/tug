@@ -18,12 +18,14 @@ module.exports = class AwsS3Storage extends DataStorage
     /**
      * Constructor.
      *
-     * @param {String} bucket The AWS S3 bucket
-     * @param {String} region The AWS S3 region
+     * @param {String} bucket   The AWS S3 bucket
+     * @param {String} region   The AWS S3 region
+     * @param {AWS.S3} [client] The AWS S3 client
      */
-    constructor(bucket, region) {
+    constructor(bucket, region, client = null) {
         super();
-        this.client = new AWS.S3({apiVersion: '2006-03-01', region: region});
+        this.client = client || new AWS.S3({apiVersion: '2006-03-01', region: region});
+        this.client.config.region = region;
         this.bucket = bucket;
     }
 
