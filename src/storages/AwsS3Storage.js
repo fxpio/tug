@@ -65,10 +65,11 @@ module.exports = class AwsS3Storage extends DataStorage
     async put(key, data) {
         let params = {
             Bucket: this.bucket,
-            Key: key
+            Key: key.replace(/\/$/g, '')
         };
 
         if (undefined === data) {
+            params.Key += '/';
             await this.client.putObject(params).promise();
         } else {
             params.Body = data;
