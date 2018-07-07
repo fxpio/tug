@@ -36,7 +36,7 @@ if (isProd()) {
     storage = new AwsS3Storage(process.env.AWS_S3_BUCKET, process.env.AWS_REGION);
     queue = new AwsSqsMessageQueue(process.env.AWS_REGION, process.env.AWS_ACCOUNT_ID, process.env.AWS_SQS_QUEUE_NAME);
 } else {
-    storage = new LocalStorage('./var/' + process.env.AWS_S3_BUCKET);
+    storage = new LocalStorage('./var/storage');
     queue = new LocalMessageQueue();
 }
 
