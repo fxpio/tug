@@ -208,3 +208,5 @@ Outputs:
         - Ref: AWS::Region
         - .console.aws.amazon.com/sqs/home?region=
         - Ref: AWS::Region
+        - '#queue-browser:selected='
+        - Ref: Queue
