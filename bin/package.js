@@ -20,12 +20,10 @@ const createStorage = require('./utils/storage').createStorage;
 const utils = require('./utils/utils');
 
 const AWS_PATH = './aws';
-const AWS_SWAGGER_PATH = AWS_PATH + '/api-gateway-proxy-swagger.yaml';
 const AWS_CLOUDFORMATION_PATH = AWS_PATH + '/cloud-formation-stack.yaml';
 const CONTENT_PATH = './dist';
 const DEPLOY_PATH = './deploy';
 const DEPLOY_ARCHIVE_PATH = DEPLOY_PATH + '/package-lambda.zip';
-const DEPLOY_SWAGGER_PATH = DEPLOY_PATH + '/swagger-api-gateway.yaml';
 const DEPLOY_CLOUDFORMATION_PATH = DEPLOY_PATH + '/package-stack.yaml';
 
 let s3Keys = {};
@@ -54,32 +52,6 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
                 reject(e);
             }
         }))
-            // Swagger API file
-            .then(() => {
-                let data = utils.replaceVariables(fs.readFileSync(AWS_SWAGGER_PATH, 'utf8'), s3Keys);
-                fs.writeFileSync(DEPLOY_SWAGGER_PATH, data);
-
-                return DEPLOY_SWAGGER_PATH;
-            })
-            .then((swaggerPath) => utils.checksumFile(swaggerPath))
-            .then((hash) => {
-                let newPath = path.join(path.dirname(DEPLOY_SWAGGER_PATH), hash);
-                fs.renameSync(DEPLOY_SWAGGER_PATH, newPath);
-
-                return newPath;
-            })
-            .then((filePath) => {
-                let storage = createStorage(program);
-                let fileStream = fs.createReadStream(filePath);
-
-                fileStream.on('error', utils.displayError);
-
-                return storage.put(utils.fixWinSlash(filePath), fileStream);
-            })
-            .then((key) => {
-                s3Keys['S3_SWAGGER_YAML_KEY'] = key;
-            })
-
             // Lambda package
             .then(() => archiver.archive(CONTENT_PATH, DEPLOY_ARCHIVE_PATH))
             .then((archivePath) => utils.checksumFile(archivePath))
