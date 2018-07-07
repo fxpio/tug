@@ -39,7 +39,7 @@ export function isSqsRequest(request) {
  */
 export function isSqsMessage(message) {
     return 'aws:sqs' === message.eventSource
-        && message.awsRegion === process.env.AWS_REGION
+        && message.awsRegion
         && message.eventSourceARN
         && message.messageId
         && message.body;
