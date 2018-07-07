@@ -36,7 +36,7 @@ export default class MessageQueue
      *
      * @param {Array<Object>} messages The messages comes from queue
      */
-    receive(messages) {
+    async receive(messages) {
         let ranReceivers = [];
 
         for (let i = 0; i < messages.length; ++i) {
@@ -45,7 +45,7 @@ export default class MessageQueue
                 let receiver = this.receivers[j];
 
                 if (receiver.supports(messages[i])) {
-                    receiver.execute(messages[i]);
+                    await receiver.execute(messages[i]);
 
                     if (!ranReceivers.includes(receiver)) {
                         ranReceivers.push(receiver);
@@ -58,7 +58,7 @@ export default class MessageQueue
             /** @type {QueueReceiver} */
             let receiver = ranReceivers[i];
 
-            receiver.finish();
+            await receiver.finish();
         }
     }
 

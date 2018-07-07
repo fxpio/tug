@@ -28,12 +28,12 @@ export default class QueueReceiver
      *
      * @param {Object} message The message comes from queue
      */
-    execute(message) {
+    async execute(message) {
     }
 
     /**
      * Finish the execution of the receiver.
      */
-    finish() {
+    async finish() {
     }
 }

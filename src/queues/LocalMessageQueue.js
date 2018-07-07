@@ -18,13 +18,13 @@ export default class LocalMessageQueue extends MessageQueue
      * @inheritDoc
      */
     async send(message) {
-        this.receive([message]);
+        await this.receive([message]);
     }
 
     /**
      * @inheritDoc
      */
     async sendBatch(messages) {
-        this.receive(messages);
+        await this.receive(messages);
     }
 }
