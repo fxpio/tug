@@ -10,15 +10,9 @@
 import Authenticate from '../middlewares/auth/Authenticate';
 import BasicIamAuth from '../middlewares/auth/strategies/BasicIamAuth';
 import {asyncHandler} from '../utils/handler';
-import {
-    createApiKey,
-    createGithubToken,
-    deleteApiKey,
-    deleteGithubToken,
-    disableRepository,
-    enableRepository,
-    showGithubToken
-} from '../controllers/manageConfigs';
+import {createApiKey, deleteApiKey} from '../controllers/manager/apiKeyController';
+import {createGithubToken, deleteGithubToken, showGithubToken} from '../controllers/manager/githubTokenController';
+import {disableRepository, enableRepository} from '../controllers/manager/repositoryController';
 
 /**
  * Generate the routes.
