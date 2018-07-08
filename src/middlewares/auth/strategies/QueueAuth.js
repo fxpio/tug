@@ -18,12 +18,7 @@ export default class QueueAuth extends AuthStrategy
     /**
      * @inheritDoc
      */
-    async logIn(req, res, next) {
-        if (isSqsRequest(req)) {
-            next();
-            return;
-        }
-
-        return super.logIn(req, res, next);
+    async logIn(req) {
+        return isSqsRequest(req);
     }
 }

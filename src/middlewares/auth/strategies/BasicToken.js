@@ -28,14 +28,9 @@ export default class BasicToken extends AuthStrategy
     /**
      * @inheritDoc
      */
-    async logIn(req, res, next) {
+    async logIn(req) {
         let user = auth(req);
 
-        if (user && 'token' === user.name && await this.storage.has('api-keys/' + user.pass)) {
-            next();
-            return;
-        }
-
-        return super.logIn(req, res, next);
+        return user && 'token' === user.name && await this.storage.has('api-keys/' + user.pass);
     }
 }

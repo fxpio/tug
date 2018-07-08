@@ -29,7 +29,7 @@ export default class GithubWebhookAuth extends AuthStrategy
     /**
      * @inheritDoc
      */
-    async logIn(req, res, next) {
+    async logIn(req) {
         let body = req.body;
 
         if (isGithubEvent(req) && body && body.hook && body.hook.config && req.headers['x-hub-signature']) {
@@ -39,11 +39,10 @@ export default class GithubWebhookAuth extends AuthStrategy
                 computedSignature = `sha1=${crypto.createHmac("sha1", secret).update(payload).digest("hex")}`;
 
             if (crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(computedSignature))) {
-                next();
-                return;
+                return true;
             }
         }
 
-        return super.logIn(req, res, next);
+        return false;
     }
 }

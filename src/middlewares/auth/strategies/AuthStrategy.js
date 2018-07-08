@@ -15,13 +15,11 @@ export default class AuthStrategy
     /**
      * Log in.
      *
-     * @param {IncomingMessage} req  The request
-     * @param {ServerResponse}  res  The response
-     * @param {Function}        next The next callback
+     * @param {IncomingMessage} req The request
      *
      * @return {Boolean}
      */
-    async logIn(req, res, next) {
+    async logIn(req) {
         return false;
     }
 }
