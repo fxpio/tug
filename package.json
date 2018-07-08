@@ -8,6 +8,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "v": "node -p \"require('./package.json').version\"",
     "config": "node bin/config",
     "deconfig": "node bin/deconfig",
     "serve": "node bin/serve",
