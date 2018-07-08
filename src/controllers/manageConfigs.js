@@ -118,3 +118,51 @@ export async function showGithubToken(req, res, next) {
     });
     next();
 }
+
+/**
+ * Enable the repository.
+ *
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
+ */
+export async function enableRepository(req, res, next) {
+    /** @type {DataStorage} */
+    let storage = req.app.set('storage');
+    let repository = req.body.repository;
+
+    let err = validateRepository(repository);
+    if (err) {
+        res.status(400).json({
+            message: err.message
+        });
+        return;
+    }
+
+    await storage.put('repositories/' + repository);
+
+    res.json({
+        message: `The repository "${repository}" were enabled successfully`,
+        repository: repository
+    });
+    next();
+}
+
+/**
+ * Validate the repository.
+ *
+ * @param {string} repository
+ *
+ * @return {Error|null}
+ */
+function validateRepository(repository) {
+    let err = null;
+
+    if (!repository) {
+        err = new Error('The "repository" body attribute is required');
+    } else if (!repository.match(/\//)) {
+        err = new Error('The repository name must be formated with "<username-or-organization-name>/<repository-name>"');
+    }
+
+    return err;
+}

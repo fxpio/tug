@@ -15,6 +15,7 @@ import {
     createGithubToken,
     deleteApiKey,
     deleteGithubToken,
+    enableRepository,
     showGithubToken
 } from '../controllers/manageConfigs';
 
@@ -35,6 +36,8 @@ export default function(router, debug) {
     router.post('/github-token', asyncHandler(createGithubToken));
     router.get('/github-token', asyncHandler(showGithubToken));
     router.delete('/github-token', asyncHandler(deleteGithubToken));
+
+    router.post('/repositories', asyncHandler(enableRepository));
 
     return router;
 }
