@@ -70,7 +70,7 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
                 return storage.put(utils.fixWinSlash(filePath), fileStream);
             })
             .then((key) => {
-                s3Keys['S3_LAMBDA_PACKAGE_ZIP_KEY'] = key;
+                s3Keys['S3_LAMBDA_CODE_URI'] = 's3://' + process.env.AWS_S3_BUCKET_DEPLOY + '/' + key;
             })
 
             // Cloud Formation stack
