@@ -15,14 +15,17 @@ export default class Authenticate
     /**
      * Constructor.
      *
-     * @param {AuthStrategy} strategy The strategy
+     * @param {AuthStrategy} strategy    The strategy
+     * @param {Boolean}      [nextRoute] Define if the next route must be called or not
      *
      * @return {Function}
      */
-    constructor(strategy) {
+    constructor(strategy, nextRoute = false) {
         return async function (req, res, next) {
             if (await strategy.logIn(req)) {
                 next();
+            } else if (nextRoute) {
+                next('route');
             } else {
                 res.status(401).send();
             }
