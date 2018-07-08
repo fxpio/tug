@@ -10,7 +10,7 @@
 import Authenticate from '../middlewares/auth/Authenticate';
 import BasicIamAuth from '../middlewares/auth/strategies/BasicIamAuth';
 import {asyncHandler} from '../utils/handler';
-import {createApiKey} from '../controllers/manageConfigs';
+import {createApiKey, deleteApiKey} from '../controllers/manageConfigs';
 
 /**
  * Generate the routes.
@@ -24,6 +24,7 @@ export default function(router, debug) {
     router.use(asyncHandler(new Authenticate(new BasicIamAuth(debug))));
 
     router.post('/api-keys', asyncHandler(createApiKey));
+    router.delete('/api-keys', asyncHandler(deleteApiKey));
 
     return router;
 }

@@ -29,3 +29,31 @@ export async function createApiKey(req, res, next) {
     });
     next();
 }
+
+/**
+ * Delete the api key.
+ *
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
+ */
+export async function deleteApiKey(req, res, next) {
+    /** @type {DataStorage} */
+    let storage = req.app.set('storage');
+    let token = req.body.token;
+
+    if (!token) {
+        res.status(400).json({
+            message: 'The "token" body attribute is required'
+        });
+        return;
+    }
+
+    await storage.delete('api-keys/' + token);
+
+    res.json({
+        message: `The API key "${token}" was deleted successfully`,
+        token: token
+    });
+    next();
+}
