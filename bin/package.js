@@ -15,8 +15,8 @@ require('dotenv').config();
 const path = require('path');
 const fs = require('fs-extra');
 const program = require('commander');
+const AwsS3Storage = require('./../src/storages/AwsS3Storage');
 const archiver = require('./utils/archiver');
-const createStorage = require('./utils/storage').createStorage;
 const utils = require('./utils/utils');
 
 const AWS_PATH = './aws';
@@ -62,7 +62,7 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
                 return newPath;
             })
             .then(async (filePath) => {
-                let storage = await createStorage(program, process.env.AWS_S3_BUCKET_DEPLOY);
+                let storage = new AwsS3Storage(process.env.AWS_S3_BUCKET_DEPLOY, process.env.AWS_REGION);
                 let fileStream = fs.createReadStream(filePath);
 
                 fileStream.on('error', utils.displayError);
