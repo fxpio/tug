@@ -149,6 +149,35 @@ export async function enableRepository(req, res, next) {
 }
 
 /**
+ * Disable the repository.
+ *
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
+ */
+export async function disableRepository(req, res, next) {
+    /** @type {DataStorage} */
+    let storage = req.app.set('storage');
+    let repository = req.body.repository;
+
+    let err = validateRepository(repository);
+    if (err) {
+        res.status(400).json({
+            message: err.message
+        });
+        return;
+    }
+
+    await storage.delete('repositories/' + repository);
+
+    res.json({
+        message: `The repository "${repository}" were disabled successfully`,
+        repository: repository
+    });
+    next();
+}
+
+/**
  * Validate the repository.
  *
  * @param {string} repository
