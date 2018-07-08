@@ -73,7 +73,7 @@ export async function createGithubToken(req, res, next) {
     await storage.put('github-token', token);
 
     res.json({
-        message: `The Github token "${token}" was created successfully`,
+        message: `The token "${token}" for Github Webhooks was created successfully`,
         token: token
     });
     next();
@@ -93,7 +93,7 @@ export async function deleteGithubToken(req, res, next) {
     await storage.delete('github-token');
 
     res.json({
-        message: `The Github token was deleted successfully`
+        message: `The token for Github Webhooks was deleted successfully`
     });
     next();
 }
