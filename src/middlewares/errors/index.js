@@ -12,6 +12,18 @@ import {isProd} from '../../utils/server';
 /**
  * Display the list of all packages in the "provider" format.
  *
+ * @param {IncomingMessage} req The request
+ * @param {ServerResponse}  res The response
+ */
+export function showError404(req, res) {
+    res.status(404).json({
+        message: 'Not found'
+    });
+}
+
+/**
+ * Display the list of all packages in the "provider" format.
+ *
  * @param {Error}           err  The error
  * @param {IncomingMessage} req  The request
  * @param {ServerResponse}  res  The response

@@ -17,7 +17,7 @@ import AwsS3Storage from './storages/AwsS3Storage';
 import LocalMessageQueue from './queues/LocalMessageQueue';
 import AwsSqsMessageQueue from './queues/AwsSqsMessageQueue';
 import {logErrors} from './middlewares/logs';
-import {showError500} from "./middlewares/errors";
+import {showError404, showError500} from "./middlewares/errors";
 import {isProd} from './utils/server';
 import packageRoutes from './routes/packageRoutes';
 import hookRoutes from './routes/hookRoutes';
@@ -45,6 +45,7 @@ app.set('queue', queue);
 app.use('/', hookRoutes(express.Router({}), app.set('storage')));
 app.use('/', packageRoutes(express.Router({}), app.set('storage')));
 app.use(logErrors);
+app.use(showError404);
 app.use(showError500);
 
 export default app;
