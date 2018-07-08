@@ -36,7 +36,7 @@ module.exports = class LocalStorage extends DataStorage
      * @inheritDoc
      */
     async get(key) {
-        if (this.has(key)) {
+        if (await this.has(key)) {
             return fs.readFileSync(this.basePath + '/' + key).toString();
         }
 
