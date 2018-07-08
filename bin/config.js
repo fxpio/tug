@@ -25,7 +25,6 @@ let initialEnvs = Object.assign({}, envs);
 program
     .description('Configure your Satis Serverless')
     .option('--aws-profile [name]', 'The profile name of AWS shared file (to configure automatically the credentials)', envs['AWS_PROFILE'])
-    .option('--aws-account-id [id]', 'Your AWS Account ID (required for Cloud Formation)', envs['AWS_ACCOUNT_ID'])
     .option('--aws-access-key-id [key]', 'Your AWS Access Key ID (required if AWS Shared Credentials File is not found)', envs['AWS_ACCESS_KEY_ID'])
     .option('--aws-secret-access-key [secret]', 'Your AWS Secret Access Key (required if AWS Shared Credentials File is not found)', envs['AWS_SECRET_ACCESS_KEY'])
     .option('--aws-region [name]', 'Your AWS Region (required if AWS Shared Config File is not found)', envs['AWS_REGION'])
@@ -39,7 +38,6 @@ program
 
 envs = utils.mergeVariables(envs, {
     AWS_PROFILE: program.awsProfile,
-    AWS_ACCOUNT_ID: program.awsAccountId,
     AWS_ACCESS_KEY_ID: program.awsAccessKeyId,
     AWS_SECRET_ACCESS_KEY: program.awsSecretAccessKey,
     AWS_REGION: program.awsRegion,
@@ -97,19 +95,6 @@ let getAvailableRegions = async function () {
     }
 
     return availableRegions;
-};
-
-let findAwsAccountId = async function (envs) {
-    if (null === envs['AWS_ACCOUNT_ID']) {
-        let sts = new AWS.STS({apiVersion: '2011-06-15'});
-        let res = await sts.getCallerIdentity({}).promise().catch(() => {return {};});
-
-        if (undefined !== res.Account) {
-            envs['AWS_ACCOUNT_ID'] = res.Account;
-        }
-    }
-
-    return envs['AWS_ACCOUNT_ID'];
 };
 
 if (program.interaction) {
@@ -171,21 +156,6 @@ if (program.interaction) {
         },
         {
             type : 'input',
-            name : 'awsAccountId',
-            default: async function () {
-                return await findAwsAccountId(envs);
-            },
-            message : 'Enter your AWS Account ID:',
-            when: async function () {
-                await findAwsAccountId(envs);
-                return utils.showOnlyEmptyOption(program, envs, 'AWS_ACCOUNT_ID');
-            },
-            validate: function (value) {
-                return utils.requiredOption(value);
-            }
-        },
-        {
-            type : 'input',
             name : 'awsS3Bucket',
             default: envs['AWS_S3_BUCKET'],
             message : 'Enter your AWS S3 bucket name:',
@@ -225,7 +195,6 @@ if (program.interaction) {
     prompt(questions).then(function (answers) {
         envs = utils.mergeVariables(envs, {
             AWS_PROFILE: utils.cleanVariable(answers.awsProfile),
-            AWS_ACCOUNT_ID: utils.cleanVariable(answers.awsAccountId),
             AWS_ACCESS_KEY_ID: utils.cleanVariable(answers.awsAccessKeyId),
             AWS_SECRET_ACCESS_KEY: utils.cleanVariable(answers.awsSecretAccessKey),
             AWS_REGION: utils.cleanVariable(answers.awsRegion),
