@@ -28,7 +28,7 @@ program
     .option('--aws-access-key-id [key]', 'Your AWS Access Key ID (required if AWS Shared Credentials File is not found)', envs['AWS_ACCESS_KEY_ID'])
     .option('--aws-secret-access-key [secret]', 'Your AWS Secret Access Key (required if AWS Shared Credentials File is not found)', envs['AWS_SECRET_ACCESS_KEY'])
     .option('--aws-region [name]', 'Your AWS Region (required if AWS Shared Config File is not found)', envs['AWS_REGION'])
-    .option('--aws-s3-bucket [bucket]', 'Your AWS S3 bucket name', envs['AWS_S3_BUCKET'])
+    .option('--aws-s3-bucket [bucket]', 'Your AWS S3 bucket name where the code must be deployed', envs['AWS_S3_BUCKET'])
     .option('--aws-stack-name [stack]', 'Your AWS Stack name', envs['AWS_STACK_NAME'])
     .option('--github-token [token]', 'Your Github token', envs['GITHUB_TOKEN'])
     .option('-e, --only-empty', 'Display only questions of empty options', false)
