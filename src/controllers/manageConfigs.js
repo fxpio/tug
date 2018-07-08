@@ -97,3 +97,24 @@ export async function deleteGithubToken(req, res, next) {
     });
     next();
 }
+
+/**
+ * Show the github token.
+ *
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
+ */
+export async function showGithubToken(req, res, next) {
+    /** @type {DataStorage} */
+    let storage = req.app.set('storage');
+
+    let token = await storage.get('github-token');
+    let message = token ? `The token for Github Webhooks is "${token}"` : `The token for Github Webhooks is not generated`;
+
+    res.json({
+        message: message,
+        token: token
+    });
+    next();
+}
