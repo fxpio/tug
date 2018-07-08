@@ -1274,9 +1274,9 @@ aws-sdk@^2.263.1:
     uuid "3.1.0"
     xml2js "0.4.17"
 
-aws-serverless-express@^3.2.0:
+aws-serverless-express@awslabs/aws-serverless-express#content-length-fix:
   version "3.2.0"
-  resolved "https://registry.yarnpkg.com/aws-serverless-express/-/aws-serverless-express-3.2.0.tgz#f7ed4582ac59af3dda7f0e87e89e9e94c3ee67f1"
+  resolved "https://codeload.github.com/awslabs/aws-serverless-express/tar.gz/d39a047c8c93bdb5a3b89ed37d00d357c418898f"
   dependencies:
     binary-case "^1.0.0"
     type-is "^1.6.16"

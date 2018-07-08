@@ -32,6 +32,12 @@ module.exports = {
         new NodemonPlugin(),
     ],
 
+    resolve: {
+        alias: {
+            'aws-serverless-express': path.resolve(__dirname, 'node_modules/aws-serverless-express/src')
+        }
+    },
+
     devServer: {
         compress: true,
         stats: 'errors-only'
