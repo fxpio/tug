@@ -33,7 +33,6 @@ export async function enableRepository(req, res, next) {
         message: `The repository "${repository}" were enabled successfully`,
         repository: repository
     });
-    next();
 }
 
 /**
@@ -62,7 +61,6 @@ export async function disableRepository(req, res, next) {
         message: `The repository "${repository}" were disabled successfully`,
         repository: repository
     });
-    next();
 }
 
 /**

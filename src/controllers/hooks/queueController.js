@@ -19,5 +19,4 @@ import {getSqsMessageBodies} from "../../utils/apiQueue";
 export async function queueHook(req, res, next) {
     req.app.set('queue').receive(getSqsMessageBodies(req));
     res.status(204).send();
-    next();
 }

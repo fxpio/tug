@@ -27,7 +27,6 @@ export async function createGithubToken(req, res, next) {
         message: `The token "${token}" for Github Webhooks was created successfully`,
         token: token
     });
-    next();
 }
 
 /**
@@ -46,7 +45,6 @@ export async function deleteGithubToken(req, res, next) {
     res.json({
         message: `The token for Github Webhooks was deleted successfully`
     });
-    next();
 }
 
 /**
@@ -67,5 +65,4 @@ export async function showGithubToken(req, res, next) {
         message: message,
         token: token
     });
-    next();
 }

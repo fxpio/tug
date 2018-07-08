@@ -41,7 +41,7 @@ export async function githubHook(req, res, next) {
         res.json({
             message: message
         });
+    } else {
+        next();
     }
-
-    next();
 }

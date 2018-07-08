@@ -27,7 +27,6 @@ export async function createApiKey(req, res, next) {
         message: `The API key "${token}" was created successfully`,
         token: token
     });
-    next();
 }
 
 /**
@@ -55,5 +54,4 @@ export async function deleteApiKey(req, res, next) {
         message: `The API key "${token}" was deleted successfully`,
         token: token
     });
-    next();
 }
