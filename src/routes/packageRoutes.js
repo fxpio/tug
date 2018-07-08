@@ -9,6 +9,7 @@
 
 import Authenticate from '../middlewares/auth/Authenticate';
 import BasicToken from '../middlewares/auth/strategies/BasicToken';
+import {asyncHandler} from '../utils/handler';
 
 /**
  * Generate the routes.
@@ -19,7 +20,7 @@ import BasicToken from '../middlewares/auth/strategies/BasicToken';
  * @return {Router}
  */
 export default function packageRoutes(router, storage) {
-    router.use(new Authenticate(new BasicToken(storage)));
+    router.use(asyncHandler(new Authenticate(new BasicToken(storage))));
 
     return router;
 }
