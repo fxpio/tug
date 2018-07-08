@@ -61,8 +61,8 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
 
                 return newPath;
             })
-            .then((filePath) => {
-                let storage = createStorage(program);
+            .then(async (filePath) => {
+                let storage = await createStorage(program, process.env.AWS_S3_BUCKET_DEPLOY);
                 let fileStream = fs.createReadStream(filePath);
 
                 fileStream.on('error', utils.displayError);

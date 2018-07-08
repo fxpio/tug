@@ -24,7 +24,7 @@ program
 
 utils.spawn('node bin/config -e')
     .then(async () => {
-        let storage = createStorage(program);
+        let storage = await createStorage(program);
         let key = program.key;
 
         if (typeof key !== 'string' || '' === key) {

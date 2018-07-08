@@ -23,7 +23,7 @@ program
 
 utils.spawn('node bin/config -e')
     .then(async () => {
-        let storage = createStorage(program);
+        let storage = await createStorage(program);
 
         return await storage.get('github-token');
     })
