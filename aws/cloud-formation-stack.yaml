@@ -1,6 +1,15 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Serverless Composer repository for private PHP packages hosted on Github
+
+Parameters:
+  GithubToken:
+    Description: GitHub OAuth token (see the doc for help https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line)
+    Type: String
+    NoEcho: true
+    AllowedPattern: '^[0-9a-f]{40}$'
+    ConstraintDescription: Must be a 40 char GitHub token
+
 Resources:
   Endpoint:
     Type: AWS::Serverless::Api
@@ -157,7 +166,8 @@ Resources:
             Ref: Storage
           AWS_SQS_QUEUE_ENDPOINT:
             Ref: Queue
-          GITHUB_TOKEN: {GITHUB_TOKEN}
+          GITHUB_TOKEN:
+            Ref: GithubToken
       Events:
         ProxyApiRoot:
           Type: Api
