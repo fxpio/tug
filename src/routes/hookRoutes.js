@@ -11,8 +11,8 @@ import Authenticate from '../middlewares/auth/Authenticate';
 import GithubWebhookAuth from '../middlewares/auth/strategies/GithubWebhookAuth';
 import QueueAuth from '../middlewares/auth/strategies/QueueAuth';
 import {asyncHandler} from '../utils/handler';
-import {githubHook} from '../controllers/githubHooks';
-import {queueHook} from '../controllers/queueHooks';
+import {githubHook} from '../controllers/hooks/githubController';
+import {queueHook} from '../controllers/hooks/queueController';
 
 /**
  * Generate the routes.

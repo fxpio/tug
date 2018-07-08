@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {getGithubEvent} from '../utils/apiGithub';
+import {getGithubEvent} from '../../utils/apiGithub';
 
 /**
  * Display the list of all packages in the "provider" format.
