@@ -13,7 +13,7 @@ import auth from 'basic-auth';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class BasicToken extends AuthStrategy
+export default class BasicTokenAuth extends AuthStrategy
 {
     /**
      * Constructor.
