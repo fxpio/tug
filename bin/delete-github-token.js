@@ -13,21 +13,26 @@
 
 require('dotenv').config();
 const program = require('commander');
-const createStorage = require('./utils/storage').createStorage;
+const fetch = require('node-fetch');
 const utils = require('./utils/utils');
+const getEndpoint = require('./utils/endpoint').getEndpoint;
+const validateResponse = require('./utils/endpoint').validateResponse;
+const createHeaders = require('./utils/endpoint').createHeaders;
 
 program
-    .description('Delete the Github token')
-    .option('-l, --local', 'Use the local storage', false)
+    .description('Delete the token for Github Webhooks')
+    .option('-e, --endpoint [url]', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')
-    .then(async () => {
-        let storage = await createStorage(program);
-
-        await storage.delete('github-token');
+    .then(() => getEndpoint(program))
+    .then((endpoint) => {
+        return fetch(endpoint + '/manager/github-token', {
+            method: 'DELETE',
+            headers: createHeaders()
+        })
     })
-    .then(() => {
-        console.info(`The Github token was deleted successfully`)
-    })
+    .then(async (res) => await validateResponse(res))
+    .then(async (res) => (await res.json()).message)
+    .then((mess) => console.info(mess))
     .catch(utils.displayError);

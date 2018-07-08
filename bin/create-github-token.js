@@ -13,25 +13,31 @@
 
 require('dotenv').config();
 const program = require('commander');
+const fetch = require('node-fetch');
 const utils = require('./utils/utils');
-const createStorage = require('./utils/storage').createStorage;
+const getEndpoint = require('./utils/endpoint').getEndpoint;
+const validateResponse = require('./utils/endpoint').validateResponse;
+const createHeaders = require('./utils/endpoint').createHeaders;
+
 
 program
-    .description('Create or generate a Github token')
-    .option('-l, --local', 'Use the local storage', false)
-    .option('--key [key]', 'Your Github token, if empty a key will be generated')
+    .description('Create or generate a token for Github Webhooks')
+    .option('-e, --endpoint [url]', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
+    .option('-t, --token [token]', 'Your token, if empty a key will be generated')
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')
-    .then(async () => {
-        let storage = await createStorage(program);
-        let key = typeof program.key !== 'string' || '' === program.key ? utils.generateId(40) : program.key;
-
-        await storage.put('github-token', key);
-
-        return key;
+    .then(() => getEndpoint(program))
+    .then((endpoint) => {
+        return fetch(endpoint + '/manager/github-token', {
+            method: 'POST',
+            body: JSON.stringify({
+                token: program.token
+            }),
+            headers: createHeaders()
+        })
     })
-    .then((res) => {
-        console.info(`The Github token "${res}" was created successfully`)
-    })
+    .then(async (res) => await validateResponse(res))
+    .then(async (res) => (await res.json()).message)
+    .then((mess) => console.info(mess))
     .catch(utils.displayError);

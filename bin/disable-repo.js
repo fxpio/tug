@@ -12,34 +12,31 @@
 'use strict';
 
 require('dotenv').config();
+const fetch = require('node-fetch');
 const program = require('commander');
-const createStorage = require('./utils/storage').createStorage;
 const utils = require('./utils/utils');
+const getEndpoint = require('./utils/endpoint').getEndpoint;
+const validateResponse = require('./utils/endpoint').validateResponse;
+const createHeaders = require('./utils/endpoint').createHeaders;
 
 program
     .description('Disable the Github repository')
-    .option('-l, --local', 'Use the local storage', false)
+    .option('-e, --endpoint [url]', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
     .option('-r, --repository [name]', 'The repository name (<username-organization>/<repository>)')
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')
-    .then(async () => {
-        let storage = await createStorage(program);
-        let repo = program.repository;
-
-        if (typeof repo !== 'string' || '' === repo) {
-            throw new Error('The "--repository" option is required');
-        }
-
-        if (!repo.match(/\//)) {
-            throw new Error('The repository name must be formated with "<username-or-organization-name>/<repository-name>"');
-        }
-
-        await storage.delete('repositories/' + repo + '/');
-
-        return repo;
+    .then(() => getEndpoint(program))
+    .then((endpoint) => {
+        return fetch(endpoint + '/manager/repositories', {
+            method: 'DELETE',
+            body: JSON.stringify({
+                repository: program.repository
+            }),
+            headers: createHeaders()
+        })
     })
-    .then((res) => {
-        console.info(`The repository "${res}" were disabled successfully`)
-    })
+    .then(async (res) => await validateResponse(res))
+    .then(async (res) => (await res.json()).message)
+    .then((mess) => console.info(mess))
     .catch(utils.displayError);

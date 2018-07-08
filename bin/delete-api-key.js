@@ -13,29 +13,30 @@
 
 require('dotenv').config();
 const program = require('commander');
-const createStorage = require('./utils/storage').createStorage;
+const fetch = require('node-fetch');
 const utils = require('./utils/utils');
+const getEndpoint = require('./utils/endpoint').getEndpoint;
+const validateResponse = require('./utils/endpoint').validateResponse;
+const createHeaders = require('./utils/endpoint').createHeaders;
 
 program
     .description('Delete a API key')
-    .option('-l, --local', 'Use the local storage', false)
-    .option('--key [key]', 'The API key')
+    .option('-e, --endpoint [url]', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
+    .option('-t, --token [token]', 'The API key')
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')
-    .then(async () => {
-        let storage = await createStorage(program);
-        let key = program.key;
-
-        if (typeof key !== 'string' || '' === key) {
-            throw new Error('The "--key" option with the api key value is required');
-        }
-
-        await storage.delete('api-keys/' + key + '/');
-
-        return key;
+    .then(() => getEndpoint(program))
+    .then((endpoint) => {
+        return fetch(endpoint + '/manager/api-keys', {
+            method: 'DELETE',
+            body: JSON.stringify({
+                token: program.token
+            }),
+            headers: createHeaders()
+        })
     })
-    .then((res) => {
-        console.info(`The API key "${res}" was deleted successfully`)
-    })
+    .then(async (res) => await validateResponse(res))
+    .then(async (res) => (await res.json()).message)
+    .then((mess) => console.info(mess))
     .catch(utils.displayError);

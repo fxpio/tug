@@ -13,25 +13,26 @@
 
 require('dotenv').config();
 const program = require('commander');
+const fetch = require('node-fetch');
 const utils = require('./utils/utils');
-const createStorage = require('./utils/storage').createStorage;
+const getEndpoint = require('./utils/endpoint').getEndpoint;
+const validateResponse = require('./utils/endpoint').validateResponse;
+const createHeaders = require('./utils/endpoint').createHeaders;
 
 program
-    .description('Create or generate a Github token')
-    .option('-l, --local', 'Use the local storage', false)
+    .description('Show your token for Github Webhooks')
+    .option('-e, --endpoint [url]', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')
-    .then(async () => {
-        let storage = await createStorage(program);
-
-        return await storage.get('github-token');
+    .then(() => getEndpoint(program))
+    .then((endpoint) => {
+        return fetch(endpoint + '/manager/github-token', {
+            method: 'GET',
+            headers: createHeaders()
+        })
     })
-    .then((res) => {
-        if (null === res) {
-            console.info(`The Github token is not generated`);
-        } else {
-            console.info(`The Github token is "${res}"`);
-        }
-    })
+    .then(async (res) => await validateResponse(res))
+    .then(async (res) => (await res.json()).message)
+    .then((mess) => console.info(mess))
     .catch(utils.displayError);
