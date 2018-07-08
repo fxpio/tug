@@ -28,7 +28,7 @@ program
     .option('--aws-access-key-id [key]', 'Your AWS Access Key ID (required if AWS Shared Credentials File is not found)', envs['AWS_ACCESS_KEY_ID'])
     .option('--aws-secret-access-key [secret]', 'Your AWS Secret Access Key (required if AWS Shared Credentials File is not found)', envs['AWS_SECRET_ACCESS_KEY'])
     .option('--aws-region [name]', 'Your AWS Region (required if AWS Shared Config File is not found)', envs['AWS_REGION'])
-    .option('--aws-s3-bucket [bucket]', 'Your AWS S3 bucket name where the code must be deployed', envs['AWS_S3_BUCKET'])
+    .option('--aws-s3-bucket-deploy [bucket]', 'Your AWS S3 bucket name where the code must be deployed', envs['AWS_S3_BUCKET_DEPLOY'])
     .option('--aws-stack-name [stack]', 'Your AWS Stack name', envs['AWS_STACK_NAME'])
     .option('--github-token [token]', 'Your Github token', envs['GITHUB_TOKEN'])
     .option('-e, --only-empty', 'Display only questions of empty options', false)
@@ -41,7 +41,7 @@ envs = utils.mergeVariables(envs, {
     AWS_ACCESS_KEY_ID: program.awsAccessKeyId,
     AWS_SECRET_ACCESS_KEY: program.awsSecretAccessKey,
     AWS_REGION: program.awsRegion,
-    AWS_S3_BUCKET: program.awsS3Bucket,
+    AWS_S3_BUCKET_DEPLOY: program.awsS3BucketDeploy,
     AWS_STACK_NAME: program.awsStackName,
     GITHUB_TOKEN: program.githubToken
 });
@@ -156,11 +156,11 @@ if (program.interaction) {
         },
         {
             type : 'input',
-            name : 'awsS3Bucket',
-            default: envs['AWS_S3_BUCKET'],
+            name : 'awsS3BucketDeploy',
+            default: envs['AWS_S3_BUCKET_DEPLOY'],
             message : 'Enter your AWS S3 bucket name:',
             when: function () {
-                return utils.showOnlyEmptyOption(program, envs, 'AWS_S3_BUCKET');
+                return utils.showOnlyEmptyOption(program, envs, 'AWS_S3_BUCKET_DEPLOY');
             },
             validate: function (value) {
                 return utils.requiredOption(value);
@@ -198,7 +198,7 @@ if (program.interaction) {
             AWS_ACCESS_KEY_ID: utils.cleanVariable(answers.awsAccessKeyId),
             AWS_SECRET_ACCESS_KEY: utils.cleanVariable(answers.awsSecretAccessKey),
             AWS_REGION: utils.cleanVariable(answers.awsRegion),
-            AWS_S3_BUCKET: utils.cleanVariable(answers.awsS3Bucket),
+            AWS_S3_BUCKET_DEPLOY: utils.cleanVariable(answers.awsS3BucketDeploy),
             AWS_STACK_NAME: utils.cleanVariable(answers.awsStackName),
             GITHUB_TOKEN: utils.cleanVariable(answers.githubToken)
         });

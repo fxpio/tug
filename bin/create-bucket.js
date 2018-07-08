@@ -25,9 +25,9 @@ utils.spawn('node bin/config -e')
         console.info('Creation of the AWS S3 bucket is started...');
         let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env['AWS_REGION']});
 
-        return s3.createBucket({Bucket: process.env['AWS_S3_BUCKET']}).promise();
+        return s3.createBucket({Bucket: process.env['AWS_S3_BUCKET_DEPLOY']}).promise();
     })
     .then(() => {
-        console.info(`AWS S3 bucket "${process.env['AWS_S3_BUCKET']}" was created with successfully in the "${process.env['AWS_REGION']}" region`);
+        console.info(`AWS S3 bucket "${process.env['AWS_S3_BUCKET_DEPLOY']}" was created with successfully in the "${process.env['AWS_REGION']}" region`);
     })
     .catch(utils.displayError);

@@ -18,5 +18,5 @@ const AwsS3Storage = require('../../src/storages/AwsS3Storage');
  * @return {DataStorage}
  */
 module.exports.createStorage = function createStorage(program) {
-    return program && program.local ? new LocalStorage('./var/' + process.env.AWS_S3_BUCKET): new AwsS3Storage(process.env.AWS_S3_BUCKET, process.env.AWS_REGION);
+    return program && program.local ? new LocalStorage('./var/storage'): new AwsS3Storage(process.env.AWS_S3_BUCKET_DEPLOY, process.env.AWS_REGION);
 };

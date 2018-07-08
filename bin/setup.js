@@ -25,7 +25,7 @@ utils.spawn('node bin/config')
         let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env['AWS_REGION']});
 
         try {
-            await s3.getBucketLocation({Bucket: process.env['AWS_S3_BUCKET']}).promise();
+            await s3.getBucketLocation({Bucket: process.env['AWS_S3_BUCKET_DEPLOY']}).promise();
         } catch (e) {
             return false;
         }
