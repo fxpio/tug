@@ -35,7 +35,7 @@ export default class GithubWebhookAuth extends AuthStrategy
         if (isGithubEvent(req) && body && body.hook && body.hook.config && req.headers['x-hub-signature']) {
             let signature = req.headers['x-hub-signature'],
                 payload = JSON.stringify(body),
-                secret = await this.storage.get('github-token'),
+                secret = await this.storage.get('github-token') || '',
                 computedSignature = `sha1=${crypto.createHmac("sha1", secret).update(payload).digest("hex")}`;
 
             if (crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(computedSignature))) {
