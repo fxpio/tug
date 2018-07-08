@@ -18,8 +18,10 @@ export default class AuthStrategy
      * @param {IncomingMessage} req  The request
      * @param {ServerResponse}  res  The response
      * @param {Function}        next The next callback
+     *
+     * @return {Boolean}
      */
     async logIn(req, res, next) {
-        res.status(401).send();
+        return false;
     }
 }

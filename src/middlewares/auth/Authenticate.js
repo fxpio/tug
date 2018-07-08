@@ -21,7 +21,9 @@ export default class Authenticate
      */
     constructor(strategy) {
         return async function (req, res, next) {
-            await strategy.logIn(req, res, next);
+            if (!await strategy.logIn(req, res, next)) {
+                res.status(401).send();
+            }
         }
     }
 }
