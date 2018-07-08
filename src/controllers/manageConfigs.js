@@ -57,3 +57,24 @@ export async function deleteApiKey(req, res, next) {
     });
     next();
 }
+
+/**
+ * Create the api key.
+ *
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
+ */
+export async function createGithubToken(req, res, next) {
+    /** @type {DataStorage} */
+    let storage = req.app.set('storage');
+    let token = req.body.token ? req.body.token : generateToken(40);
+
+    await storage.put('github-token', token);
+
+    res.json({
+        message: `The Github token "${token}" was created successfully`,
+        token: token
+    });
+    next();
+}

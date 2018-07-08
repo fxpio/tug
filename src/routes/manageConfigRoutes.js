@@ -10,7 +10,7 @@
 import Authenticate from '../middlewares/auth/Authenticate';
 import BasicIamAuth from '../middlewares/auth/strategies/BasicIamAuth';
 import {asyncHandler} from '../utils/handler';
-import {createApiKey, deleteApiKey} from '../controllers/manageConfigs';
+import {createApiKey, createGithubToken, deleteApiKey} from '../controllers/manageConfigs';
 
 /**
  * Generate the routes.
@@ -25,6 +25,8 @@ export default function(router, debug) {
 
     router.post('/api-keys', asyncHandler(createApiKey));
     router.delete('/api-keys', asyncHandler(deleteApiKey));
+
+    router.post('/github-token', asyncHandler(createGithubToken));
 
     return router;
 }
