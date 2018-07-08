@@ -48,7 +48,7 @@ export async function deleteApiKey(req, res, next) {
         return;
     }
 
-    await storage.delete('api-keys/' + token);
+    await storage.delete('api-keys/' + token + '/');
 
     res.json({
         message: `The API key "${token}" was deleted successfully`,

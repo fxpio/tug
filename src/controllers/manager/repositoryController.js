@@ -55,7 +55,7 @@ export async function disableRepository(req, res, next) {
         return;
     }
 
-    await storage.delete('repositories/' + repository);
+    await storage.delete('repositories/' + repository + '/');
 
     res.json({
         message: `The repository "${repository}" were disabled successfully`,

@@ -40,7 +40,7 @@ export async function deleteGithubToken(req, res, next) {
     /** @type {DataStorage} */
     let storage = req.app.set('storage');
 
-    await storage.delete('github-token');
+    await storage.delete('github-token' + '/');
 
     res.json({
         message: `The token for Github Webhooks was deleted successfully`
