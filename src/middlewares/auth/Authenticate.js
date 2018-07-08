@@ -27,7 +27,9 @@ export default class Authenticate
             } else if (nextRoute) {
                 next('route');
             } else {
-                res.status(401).send();
+                res.status(401).json({
+                    message: 'Your credentials are invalid'
+                });
             }
         }
     }
