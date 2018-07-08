@@ -21,7 +21,7 @@ import {showError404, showError500} from "./middlewares/errors";
 import {isProd} from './utils/server';
 import packageRoutes from './routes/packageRoutes';
 import hookRoutes from './routes/hookRoutes';
-import manageConfigRoutes from './routes/manageConfigRoutes';
+import managerRoutes from './routes/managerRoutes';
 
 const app = express();
 let storage,
@@ -44,7 +44,7 @@ if (isProd()) {
 app.set('storage', storage);
 app.set('queue', queue);
 app.use('/', hookRoutes(express.Router({}), app.set('storage')));
-app.use('/manager/', manageConfigRoutes(express.Router({}), !isProd()));
+app.use('/manager/', managerRoutes(express.Router({}), !isProd()));
 app.use('/', packageRoutes(express.Router({}), app.set('storage')));
 app.use(logErrors);
 app.use(showError404);
