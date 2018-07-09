@@ -22,6 +22,24 @@ export function showError404(req, res) {
 }
 
 /**
+ * Display the 400 error for json errors.
+ *
+ * @param {Error}           err  The error
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
+ */
+export function showJsonError400(err, req, res, next) {
+    if (err instanceof SyntaxError && err.status === 400) {
+        return res.status(400).json({
+            message: 'The body of your request is not a valid JSON'
+        });
+    }
+
+    next(err);
+}
+
+/**
  * Display the 500 error.
  *
  * @param {Error}           err  The error
