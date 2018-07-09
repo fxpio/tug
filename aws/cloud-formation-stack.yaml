@@ -161,7 +161,6 @@ Resources:
         - Arn
       Environment:
         Variables:
-          NODE_ENV: production
           AWS_DYNAMODB_TABLE:
             Ref: Database
           AWS_S3_BUCKET:

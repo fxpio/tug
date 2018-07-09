@@ -16,8 +16,6 @@ const prod = 'production' === process.env.NODE_ENV || argv._.includes('productio
 const mode = prod ? 'production' : 'development';
 const entry = !argv.watch ? 'src/lambda.js' : 'src/local.js';
 
-process.env.NODE_ENV = mode;
-
 module.exports = {
     target: 'node',
     mode: mode,
