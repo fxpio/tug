@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
 import {getGithubEvent} from '../../utils/apiGithub';
 
 /**
@@ -17,8 +18,8 @@ import {getGithubEvent} from '../../utils/apiGithub';
  * @param {Function}        next The next callback
  */
 export async function githubHook(req, res, next) {
-    /** @type {DataStorage} */
-    let storage = req.app.set('storage');
+    /** @type {CodeRepositoryRepository} repo */
+    let repo = req.app.set('db').getRepository(CodeRepositoryRepository);
     /** @type {MessageQueue} */
     let queue = req.app.set('queue');
     let body = req.body,
@@ -28,7 +29,7 @@ export async function githubHook(req, res, next) {
     if ('ping' === type) {
         if (body.hook && 'Repository' === body.hook.type && body.repository && body.repository['full_name']) {
             // enable the repository
-            await storage.put('repositories/' + body.repository['full_name'] + '/');
+            await repo.put({id: body.repository['full_name']});
             // send refresh all packages in queue
             await queue.send({
                 type: 'refresh-packages',

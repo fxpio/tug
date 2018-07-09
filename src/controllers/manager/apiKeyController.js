@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import ApiKeyRepository from '../../db/repositories/ApiKeyRepository';
 import {generateToken} from '../../utils/token';
 
 /**
@@ -17,11 +18,11 @@ import {generateToken} from '../../utils/token';
  * @param {Function}        next The next callback
  */
 export async function createApiKey(req, res, next) {
-    /** @type {DataStorage} */
-    let storage = req.app.set('storage');
+    /** @type {ApiKeyRepository} repo */
+    let repo = req.app.set('db').getRepository(ApiKeyRepository);
     let token = req.body.token ? req.body.token : generateToken(40);
 
-    await storage.put('api-keys/' + token);
+    await repo.put({id: token});
 
     res.json({
         message: `The API key "${token}" was created successfully`,
@@ -37,8 +38,8 @@ export async function createApiKey(req, res, next) {
  * @param {Function}        next The next callback
  */
 export async function deleteApiKey(req, res, next) {
-    /** @type {DataStorage} */
-    let storage = req.app.set('storage');
+    /** @type {ApiKeyRepository} repo */
+    let repo = req.app.set('db').getRepository(ApiKeyRepository);
     let token = req.body.token;
 
     if (!token) {
@@ -48,7 +49,7 @@ export async function deleteApiKey(req, res, next) {
         return;
     }
 
-    await storage.delete('api-keys/' + token + '/');
+    await repo.delete(token);
 
     res.json({
         message: `The API key "${token}" was deleted successfully`,

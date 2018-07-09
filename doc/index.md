@@ -7,6 +7,7 @@ This document contains information on how to download, install, and start the AP
 
 - [AWS API Gateway](https://aws.amazon.com/api-gateway)
 - [AWS Lambda Nodejs](https://aws.amazon.com/lambda)
+- [AWS DynamoDB](https://aws.amazon.com/dynamodb)
 - [AWS S3](https://aws.amazon.com/s3)
 - [AWS SQS](https://aws.amazon.com/sqs)
 - [AWS Cloud Formation](https://aws.amazon.com/cloudformation)
@@ -25,6 +26,8 @@ This project requires:
 - an active account for [Github](https://github.com)
 - the installation of the applications bellow on your local machine:
   - [Nodejs](https://nodejs.org)
+  - [NPM](https://www.npmjs.com) or [Yarn](https://yarnpkg.com) (to install dependencies)
+  - [Java](https://www.java.com) (optional, to run database in local)
   - [Git](https://git-scm.com) (optional)
 
 ### Services credentials
@@ -85,7 +88,8 @@ $ yarn run setup
 
 1. `$ yarn install`
 2. `$ node bin/config`
-3. `$ node bin/serve` (The Express server runs on `http://localhost:3000` by default)
+3. `$ node bin/serve` (by default, the Express server runs on `http://localhost:3000`, and the AWS DynamoDB local
+   server runs on `http://localhost:3001`)
 
 ### 2.1. Create the SSL certificate (optional)
          
@@ -112,7 +116,7 @@ Create the domain in API Gateway with:
 Create a DNS entry for your custom domain, map it with the domain target of the API Gateway  with a `CNAME` type.
 
 
-## 3) Create the Github token
+## 3) Create the token for Github Webhooks
 
 Run the command:
 
@@ -122,7 +126,7 @@ $ node bin/create-github-token
 
 > **Note:**
 >
-> The Github token is stored in the S3 bucket with the key `github-token`.
+> The token for Github Webhooks is stored in the DynamoDB with the key `config:github-token` and the `token` attribute.
 
 
 ## 4) Configure the Github Webhook
@@ -131,14 +135,14 @@ In each repository or in a organization, create the webhook with:
 
 - Payload URL: `https://<your-custom-domain-for-satis>`
 - Content type: `application/json`
-- Secret: `<your-created-github-token-in-step-3>`
+- Secret: `<your-created-token-for-github-webhooks-in-step-3>`
 - Which events would you like to trigger this webhook? `Let me select individual events.`:
   - `Branch or tag creation`
   - `Branch or tag deletion`
   - `Pushes`
 
 
-## 5) Create the first API key
+## 5) Create your first API key
 
 Run the command:
 
@@ -148,7 +152,7 @@ $ node bin/create-api-key
 
 > **Note:**
 >
-> The API key is stored in the S3 bucket with the prefix `api-keys/`.
+> The API keys are stored in the DynamoDB with the prefix `api-keys:`.
 
 
 ## 6) Enjoy!
@@ -180,9 +184,9 @@ or `npm run bin/node bin/<command-name>`:
 - `delete-stack`: Delete the AWS Cloud Formation stack
 - `create-api-key`: Create a API key
 - `delete-api-key`: Delete a API key
-- `show-github-token`: Show the Github token
-- `create-github-token`: Create the Github token
-- `delete-github-token`: Delete the Github token
+- `show-github-token`: Show the token for the Github Webhooks
+- `create-github-token`: Create the token for the Github Webhooks
+- `delete-github-token`: Delete the token for the Github Webhooks
 - `enable-repo`: Enable manually the Github repository
 - `disable-repo`: Disable manually the Github repository
 

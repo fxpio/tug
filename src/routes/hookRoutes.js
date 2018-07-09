@@ -17,13 +17,12 @@ import {queueHook} from '../controllers/hooks/queueController';
 /**
  * Generate the routes.
  *
- * @param {Router}      router  The router
- * @param {DataStorage} storage The storage
+ * @param {Router} router The router
  *
  * @return {Router}
  */
-export default function(router, storage) {
-    router.post('/', asyncHandler(new Authenticate(new GithubWebhookAuth(storage), true)), asyncHandler(githubHook));
+export default function(router) {
+    router.post('/', asyncHandler(new Authenticate(new GithubWebhookAuth(), true)), asyncHandler(githubHook));
     router.get('/', asyncHandler(new Authenticate(new QueueAuth(), true)), asyncHandler(queueHook));
 
     return router;

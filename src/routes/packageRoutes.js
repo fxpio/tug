@@ -14,13 +14,12 @@ import {asyncHandler} from '../utils/handler';
 /**
  * Generate the routes.
  *
- * @param {Router}      router  The router
- * @param {DataStorage} storage The storage
+ * @param {Router} router The router
  *
  * @return {Router}
  */
-export default function packageRoutes(router, storage) {
-    router.use(asyncHandler(new Authenticate(new BasicTokenAuth(storage))));
+export default function packageRoutes(router) {
+    router.use(asyncHandler(new Authenticate(new BasicTokenAuth())));
 
     return router;
 }

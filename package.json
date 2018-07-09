@@ -44,6 +44,7 @@
     "@babel/preset-env": "^7.0.0-beta.52",
     "@babel/register": "^7.0.0-beta.52",
     "archiver": "^2.1.1",
+    "async": "^2.6.1",
     "ava": "^1.0.0-beta.6",
     "aws-sdk": "^2.263.1",
     "babel-loader": "^8.0.0-beta.4",

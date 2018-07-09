@@ -8,6 +8,7 @@
  */
 
 import AuthStrategy from './AuthStrategy';
+import ApiKeyRepository from '../../../db/repositories/ApiKeyRepository';
 import auth from 'basic-auth';
 
 /**
@@ -16,21 +17,13 @@ import auth from 'basic-auth';
 export default class BasicTokenAuth extends AuthStrategy
 {
     /**
-     * Constructor.
-     *
-     * @param {DataStorage} storage The storage
-     */
-    constructor(storage) {
-        super();
-        this.storage = storage;
-    }
-
-    /**
      * @inheritDoc
      */
     async logIn(req) {
+        /** @type {ApiKeyRepository} repo */
+        let repo = req.app.set('db').getRepository(ApiKeyRepository);
         let user = auth(req);
 
-        return user && 'token' === user.name && await this.storage.has('api-keys/' + user.pass);
+        return user && 'token' === user.name && await repo.has(user.pass);
     }
 }

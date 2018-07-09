@@ -9,6 +9,7 @@
 
 import crypto from 'crypto';
 import AuthStrategy from './AuthStrategy';
+import ConfigRepository from '../../../db/repositories/ConfigRepository';
 import {isGithubEvent} from "../../../utils/apiGithub";
 
 /**
@@ -17,25 +18,18 @@ import {isGithubEvent} from "../../../utils/apiGithub";
 export default class GithubWebhookAuth extends AuthStrategy
 {
     /**
-     * Constructor.
-     *
-     * @param {DataStorage} storage The storage
-     */
-    constructor(storage) {
-        super();
-        this.storage = storage;
-    }
-
-    /**
      * @inheritDoc
      */
     async logIn(req) {
         let body = req.body;
 
         if (isGithubEvent(req) && body && body.hook && body.hook.config && req.headers['x-hub-signature']) {
+            /** @type {ConfigRepository} repo */
+            let repo = req.app.set('db').getRepository(ConfigRepository);
             let signature = req.headers['x-hub-signature'],
                 payload = JSON.stringify(body),
-                secret = await this.storage.get('github-token') || '',
+                config = await repo.get('github-token'),
+                secret = config ? config.token : '',
                 computedSignature = `sha1=${crypto.createHmac("sha1", secret).update(payload).digest("hex")}`;
 
             if (crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(computedSignature))) {

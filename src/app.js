@@ -12,6 +12,10 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import compression from 'compression';
 import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
+import AwsDynamoDbDatabase from './db/AwsDynamoDbDatabase';
+import ConfigRepository from './db/repositories/ConfigRepository';
+import ApiKeyRepository from './db/repositories/ApiKeyRepository';
+import CodeRepositoryRepository from './db/repositories/CodeRepositoryRepository';
 import LocalStorage from './storages/LocalStorage';
 import AwsS3Storage from './storages/AwsS3Storage';
 import LocalMessageQueue from './queues/LocalMessageQueue';
@@ -24,7 +28,8 @@ import hookRoutes from './routes/hookRoutes';
 import managerRoutes from './routes/managerRoutes';
 
 const app = express();
-let storage,
+let db,
+    storage,
     queue;
 
 app.use(cors());
@@ -41,11 +46,17 @@ if (isProd()) {
     queue = new LocalMessageQueue();
 }
 
+db = new AwsDynamoDbDatabase(process.env.AWS_DYNAMODB_TABLE, process.env.AWS_REGION, process.env.AWS_DYNAMODB_URL);
+db.setRepository(ConfigRepository);
+db.setRepository(ApiKeyRepository);
+db.setRepository(CodeRepositoryRepository);
+
+app.set('db', db);
 app.set('storage', storage);
 app.set('queue', queue);
-app.use('/', hookRoutes(express.Router({}), app.set('storage')));
+app.use('/', hookRoutes(express.Router({})));
 app.use('/manager/', managerRoutes(express.Router({}), !isProd()));
-app.use('/', packageRoutes(express.Router({}), app.set('storage')));
+app.use('/', packageRoutes(express.Router({})));
 app.use(logErrors);
 app.use(showJsonError400);
 app.use(showError404);

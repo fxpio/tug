@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
+
 /**
  * Enable the repository.
  *
@@ -15,8 +17,8 @@
  * @param {Function}        next The next callback
  */
 export async function enableRepository(req, res, next) {
-    /** @type {DataStorage} */
-    let storage = req.app.set('storage');
+    /** @type {CodeRepositoryRepository} repo */
+    let repo = req.app.set('db').getRepository(CodeRepositoryRepository);
     let repository = req.body.repository;
 
     let err = validateRepository(repository);
@@ -27,7 +29,7 @@ export async function enableRepository(req, res, next) {
         return;
     }
 
-    await storage.put('repositories/' + repository);
+    await repo.put({id: repository});
 
     res.json({
         message: `The repository "${repository}" were enabled successfully`,
@@ -43,8 +45,8 @@ export async function enableRepository(req, res, next) {
  * @param {Function}        next The next callback
  */
 export async function disableRepository(req, res, next) {
-    /** @type {DataStorage} */
-    let storage = req.app.set('storage');
+    /** @type {CodeRepositoryRepository} repo */
+    let repo = req.app.set('db').getRepository(CodeRepositoryRepository);
     let repository = req.body.repository;
 
     let err = validateRepository(repository);
@@ -55,7 +57,7 @@ export async function disableRepository(req, res, next) {
         return;
     }
 
-    await storage.delete('repositories/' + repository + '/');
+    await repo.delete(repository);
 
     res.json({
         message: `The repository "${repository}" were disabled successfully`,

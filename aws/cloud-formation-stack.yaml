@@ -162,6 +162,8 @@ Resources:
       Environment:
         Variables:
           NODE_ENV: production
+          AWS_DYNAMODB_TABLE:
+            Ref: Database
           AWS_S3_BUCKET:
             Ref: Storage
           AWS_SQS_QUEUE_URL:
@@ -200,6 +202,20 @@ Resources:
   Storage:
     Type: "AWS::S3::Bucket"
     DeletionPolicy: Retain
+
+  Database:
+    Type: "AWS::DynamoDB::Table"
+    DeletionPolicy: Retain
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
 
   LambdaPermission:
     Type: AWS::Lambda::Permission
@@ -270,6 +286,27 @@ Resources:
                 - Ref: AWS::AccountId
                 - ':'
                 - '*'
+      - PolicyName: DynamoDbAccess
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Action:
+            - dynamodb:PutItem
+            - dynamodb:DeleteItem
+            - dynamodb:GetItem
+            - dynamodb:Scan
+            - dynamodb:Query
+            Effect: Allow
+            Resource:
+              Fn::Join:
+              - ''
+              - - 'arn:aws:dynamodb:'
+                - Ref: AWS::Region
+                - ':'
+                - Ref: AWS::AccountId
+                - ':'
+                - 'table/'
+                - Ref: Database
       - PolicyName: S3AccessList
         PolicyDocument:
           Version: '2012-10-17'
@@ -347,6 +384,18 @@ Outputs:
         - Ref: AWS::Region
         - '#queue-browser:selected='
         - Ref: Queue
+
+  DynamoDbConsoleUrl:
+    Description: Console URL for the Dynamo DB.
+    Value:
+      Fn::Join:
+      - ''
+      - - https://
+        - Ref: AWS::Region
+        - .console.aws.amazon.com/dynamodb/home?region=
+        - Ref: AWS::Region
+        - '#tables:selected='
+        - Ref: Database
 
   S3ConsoleUrl:
     Description: Console URL for the S3 bucket.

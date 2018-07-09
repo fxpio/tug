@@ -17,5 +17,5 @@ If the Github Webhook is defined on the organization, you must enable the Github
 
 > **Note:**
 >
-> The enabled repositories are stored in the S3 bucket with the prefix
-> `repositories/<username-or-organization-name>/<repository-name>`.
+> The enabled repositories are stored in the DynamoDB with the prefix
+> `repositories:<username-or-organization-name>/<repository-name>`.

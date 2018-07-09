@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import ConfigRepository from '../../db/repositories/ConfigRepository';
 import {generateToken} from '../../utils/token';
 
 /**
@@ -17,11 +18,11 @@ import {generateToken} from '../../utils/token';
  * @param {Function}        next The next callback
  */
 export async function createGithubToken(req, res, next) {
-    /** @type {DataStorage} */
-    let storage = req.app.set('storage');
+    /** @type {ConfigRepository} repo */
+    let repo = req.app.set('db').getRepository(ConfigRepository);
     let token = req.body.token ? req.body.token : generateToken(40);
 
-    await storage.put('github-token', token);
+    await repo.put({id: 'github-token', token: token});
 
     res.json({
         message: `The token "${token}" for Github Webhooks was created successfully`,
@@ -37,10 +38,10 @@ export async function createGithubToken(req, res, next) {
  * @param {Function}        next The next callback
  */
 export async function deleteGithubToken(req, res, next) {
-    /** @type {DataStorage} */
-    let storage = req.app.set('storage');
+    /** @type {ConfigRepository} repo */
+    let repo = req.app.set('db').getRepository(ConfigRepository);
 
-    await storage.delete('github-token' + '/');
+    await repo.delete('github-token');
 
     res.json({
         message: `The token for Github Webhooks was deleted successfully`
@@ -55,10 +56,11 @@ export async function deleteGithubToken(req, res, next) {
  * @param {Function}        next The next callback
  */
 export async function showGithubToken(req, res, next) {
-    /** @type {DataStorage} */
-    let storage = req.app.set('storage');
+    /** @type {ConfigRepository} repo */
+    let repo = req.app.set('db').getRepository(ConfigRepository);
 
-    let token = await storage.get('github-token');
+    let data = await repo.get('github-token');
+    let token = data && data.token ? data.token : null;
     let message = token ? `The token for Github Webhooks is "${token}"` : `The token for Github Webhooks is not generated`;
 
     res.json({
