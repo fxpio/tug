@@ -15,7 +15,7 @@ require('dotenv').config();
 const path = require('path');
 const fs = require('fs-extra');
 const program = require('commander');
-const AwsS3Storage = require('./../src/storages/AwsS3Storage');
+const AWS = require('aws-sdk');
 const archiver = require('./utils/archiver');
 const utils = require('./utils/utils');
 
@@ -62,12 +62,18 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
                 return newPath;
             })
             .then(async (filePath) => {
-                let storage = new AwsS3Storage(process.env.AWS_S3_BUCKET_DEPLOY, process.env.AWS_REGION);
+                let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env.AWS_REGION});
                 let fileStream = fs.createReadStream(filePath);
-
                 fileStream.on('error', utils.displayError);
 
-                return storage.put(utils.fixWinSlash(filePath), fileStream);
+                let params = {
+                    Bucket: process.env.AWS_S3_BUCKET_DEPLOY,
+                    Key: utils.fixWinSlash(filePath).replace(/\/$/g, ''),
+                    Body: fileStream
+                };
+                await s3.upload(params).promise();
+
+                return params.Key;
             })
             .then((key) => {
                 s3Keys['S3_LAMBDA_CODE_URI'] = 's3://' + process.env.AWS_S3_BUCKET_DEPLOY + '/' + key;
