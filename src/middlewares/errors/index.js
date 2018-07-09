@@ -10,7 +10,7 @@
 import {isProd} from '../../utils/server';
 
 /**
- * Display the list of all packages in the "provider" format.
+ * Display the 404 error.
  *
  * @param {IncomingMessage} req The request
  * @param {ServerResponse}  res The response
@@ -22,7 +22,7 @@ export function showError404(req, res) {
 }
 
 /**
- * Display the list of all packages in the "provider" format.
+ * Display the 500 error.
  *
  * @param {Error}           err  The error
  * @param {IncomingMessage} req  The request
