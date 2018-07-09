@@ -8,6 +8,7 @@
  */
 
 const fs = require('fs');
+const http = require('https');
 const os = require('os');
 const ini = require('ini');
 const crypto = require('crypto');
@@ -356,6 +357,47 @@ function retryPromise(fn, prev) {
 }
 
 /**
+ * Download the file.
+ *
+ * @param {string} url  The URL of file
+ * @param {string} dest The local destination
+ *
+ * @return {Promise<any>}
+ */
+function downloadFile(url, dest) {
+    return new Promise((resolve, reject) => {
+        let responseSent = false;
+
+        http.get(url, response => {
+            if (200 === response.statusCode) {
+                let file = fs.createWriteStream(dest);
+
+                response.pipe(file);
+                file.on('finish', () => {
+                    file.close(() => {
+                        if(responseSent) {
+                            return;
+                        }
+
+                        responseSent = true;
+                        resolve();
+                    });
+                });
+            } else {
+                reject('Response status was ' + response.statusCode + ' ' + response.statusMessage);
+            }
+        }).on('error', err => {
+            if(responseSent) {
+                return;
+            }
+
+            responseSent = true;
+            reject(err);
+        });
+    });
+}
+
+/**
  * Generate a pseudo id.
  *
  * @param {Number} [size] The size of id
@@ -401,5 +443,6 @@ module.exports = {
     fixWinSlash: fixWinSlash,
     retryPromise: retryPromise,
     generateId: generateId,
+    downloadFile: downloadFile,
     displayError: displayError
 };
