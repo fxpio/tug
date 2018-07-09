@@ -206,7 +206,7 @@ function spawn(command, envs, exitOnError, verbose) {
         }
 
         res.on('exit', function (code) {
-            if ('' !== errorData) {
+            if ('' !== errorData && false !== verbose) {
                 console.info(errorData.replace(/\n$/, ''));
             }
 
