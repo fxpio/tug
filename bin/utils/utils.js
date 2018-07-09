@@ -14,9 +14,9 @@ const ini = require('ini');
 const crypto = require('crypto');
 const childProcess = require('child_process');
 
-function removeDir(path) {
+module.exports.removeDir = function(path) {
     if (fs.existsSync(path)) {
-        fs.readdirSync(path).forEach(function(file, index){
+        fs.readdirSync(path).forEach(function(file){
             let curPath = path + '/' + file;
 
             if (fs.lstatSync(curPath).isDirectory()) {
@@ -28,7 +28,7 @@ function removeDir(path) {
 
         fs.rmdirSync(path);
     }
-}
+};
 
 /**
  * Replace all occurrence of env variables
@@ -38,11 +38,11 @@ function removeDir(path) {
  *
  * @return {string}
  */
-function replaceVariables(content, envs) {
-    let reg = /\{([A-Z0-9_]+)\}/g;
+module.exports.replaceVariables = function(content, envs) {
+    let reg = /{([A-Z0-9_]+)}/g;
     let m;
 
-    envs = mergeVariables(process.env, envs || {});
+    envs = module.exports.mergeVariables(process.env, envs || {});
 
     do {
         m = reg.exec(content);
@@ -57,7 +57,7 @@ function replaceVariables(content, envs) {
     } while (m);
 
     return content;
-}
+};
 
 /**
  * Read the dot env file.
@@ -66,7 +66,7 @@ function replaceVariables(content, envs) {
  *
  * @return {object}
  */
-function readEnvVariables(path) {
+module.exports.readEnvVariables = function(path) {
     if (!fs.existsSync(path)) {
         return {};
     }
@@ -83,7 +83,7 @@ function readEnvVariables(path) {
     }
 
     return envs;
-}
+};
 
 /**
  * Merge the multiple env variables.
@@ -92,7 +92,7 @@ function readEnvVariables(path) {
  *
  * @return {object}
  */
-function mergeVariables(...variables) {
+module.exports.mergeVariables = function(...variables) {
     let envs = {};
 
     for (let i = 0; i < variables.length; ++i) {
@@ -107,7 +107,7 @@ function mergeVariables(...variables) {
     }
 
     return envs;
-}
+};
 
 /**
  * Clean the variable value.
@@ -116,9 +116,9 @@ function mergeVariables(...variables) {
  *
  * @return {string|null}
  */
-function cleanVariable(value) {
+module.exports.cleanVariable = function(value) {
     return undefined !== value && '' !== value ? value : null;
-}
+};
 
 /**
  * Write the env variables in dot env file.
@@ -126,7 +126,7 @@ function cleanVariable(value) {
  * @param {string} path      The path of dot env file
  * @param {object} variables The env variables
  */
-function writeVariables(path, variables) {
+module.exports.writeVariables = function(path, variables) {
     let data = '';
     let keys = Object.keys(variables);
 
@@ -137,7 +137,7 @@ function writeVariables(path, variables) {
     }
 
     fs.writeFileSync(path, data);
-}
+};
 
 /**
  * Find the AWS credentials in the AWS Shared File.
@@ -146,7 +146,7 @@ function writeVariables(path, variables) {
  *
  * @return {object}
  */
-function findAwsVariables(envs) {
+module.exports.findAwsVariables = function(envs) {
     let pathCredentials = os.homedir() + '/.aws/credentials',
         pathConfig = os.homedir() + '/.aws/config',
         awsCredentials = {},
@@ -164,11 +164,11 @@ function findAwsVariables(envs) {
     }
 
     if (undefined !== awsCredentials[envs['AWS_PROFILE']]) {
-        awsAllConfig = mergeVariables(awsAllConfig, awsCredentials[envs['AWS_PROFILE']]);
+        awsAllConfig = module.exports.mergeVariables(awsAllConfig, awsCredentials[envs['AWS_PROFILE']]);
     }
 
     if (undefined !== awsConfig[envs['AWS_PROFILE']]) {
-        awsAllConfig = mergeVariables(awsAllConfig, awsConfig[envs['AWS_PROFILE']]);
+        awsAllConfig = module.exports.mergeVariables(awsAllConfig, awsConfig[envs['AWS_PROFILE']]);
     }
 
     let keys = Object.keys(awsAllConfig);
@@ -178,7 +178,7 @@ function findAwsVariables(envs) {
     }
 
     return awsEnvs;
-}
+};
 
 /**
  * Run the external command and replace the env variables by their values.
@@ -191,9 +191,9 @@ function findAwsVariables(envs) {
  *
  * @return {Promise}
  */
-function spawn(command, envs, exitOnError, verbose, options) {
+module.exports.spawn = function(command, envs, exitOnError, verbose, options) {
     return new Promise((resolve, reject) => {
-        let args = replaceVariables(command, envs).split(' ');
+        let args = module.exports.replaceVariables(command, envs).split(' ');
         let cmd = args.shift();
         let res = childProcess.spawn(cmd, args, Object.assign({}, {
             shell: true,
@@ -222,7 +222,7 @@ function spawn(command, envs, exitOnError, verbose, options) {
             resolve(code);
         });
     });
-}
+};
 
 /**
  * Run the external command in sync.
@@ -233,9 +233,9 @@ function spawn(command, envs, exitOnError, verbose, options) {
  *
  * @return {string|null}
  */
-function execSync(command, envs, options) {
+module.exports.execSync = function(command, envs, options) {
     let res = null;
-    command = replaceVariables(command, envs || {});
+    command = module.exports.replaceVariables(command, envs || {});
 
     try {
         let resCmd = childProcess.execSync(command, Object.assign({
@@ -248,7 +248,7 @@ function execSync(command, envs, options) {
     } catch (e) {}
 
     return res;
-}
+};
 
 /**
  * Validate the required option.
@@ -260,13 +260,13 @@ function execSync(command, envs, options) {
  *
  * @return {string|boolean}
  */
-function requiredOption(value, message) {
+module.exports.requiredOption = function(value, message) {
     if (undefined === value || null === value || (typeof value === 'string' && 0 === value.length)) {
         return undefined !== message ? message : 'This option is required';
     }
 
     return true;
-}
+};
 
 /**
  *
@@ -275,9 +275,9 @@ function requiredOption(value, message) {
  * @param {string}            envName The required environment variable
  * @return {boolean}
  */
-function showOnlyEmptyOption(program, envs, envName) {
+module.exports.showOnlyEmptyOption = function(program, envs, envName) {
     return true !== program.onlyEmpty || (true === program.onlyEmpty && null === envs[envName]);
-}
+};
 
 /**
  * Check if 2 objects are same.
@@ -287,7 +287,7 @@ function showOnlyEmptyOption(program, envs, envName) {
  *
  * @return {boolean}
  */
-function isSameObject(object1, object2) {
+module.exports.isSameObject = function(object1, object2) {
     let keys1 = Object.keys(object1),
         keys2 = Object.keys(object2);
 
@@ -302,7 +302,7 @@ function isSameObject(object1, object2) {
     }
 
     return true;
-}
+};
 
 /**
  * Get the checksum of file.
@@ -312,7 +312,7 @@ function isSameObject(object1, object2) {
  *
  * @return {Promise}
  */
-function checksumFile(path, algorithm) {
+module.exports.checksumFile = function(path, algorithm) {
     algorithm = algorithm || 'sha1';
 
     return new Promise((resolve, reject) => {
@@ -323,7 +323,7 @@ function checksumFile(path, algorithm) {
                 resolve(this.read());
             });
     });
-}
+};
 
 /**
  * Replace the antislash by slash.
@@ -332,9 +332,9 @@ function checksumFile(path, algorithm) {
  *
  * @return {string}
  */
-function fixWinSlash(str) {
+module.exports.fixWinSlash = function(str) {
     return str.replace(/\\/g, '/');
-}
+};
 
 /**
  * Retry the function.
@@ -344,17 +344,17 @@ function fixWinSlash(str) {
  *
  * @return {Promise}
  */
-function retryPromise(fn, prev) {
+module.exports.retryPromise = function(fn, prev) {
     return new Promise((current) => {
-        let resolve = _ => (prev && prev()) || current();
+        let resolve = () => (prev && prev()) || current();
 
         fn(resolve, delay => {
-            setTimeout(_ => {
-                retryPromise(fn, resolve);
+            setTimeout(() => {
+                return module.exports.retryPromise(fn, resolve);
             }, delay);
         });
     });
-}
+};
 
 /**
  * Download the file.
@@ -364,7 +364,7 @@ function retryPromise(fn, prev) {
  *
  * @return {Promise<any>}
  */
-function downloadFile(url, dest) {
+module.exports.downloadFile = function(url, dest) {
     return new Promise((resolve, reject) => {
         let responseSent = false;
 
@@ -395,7 +395,7 @@ function downloadFile(url, dest) {
             reject(err);
         });
     });
-}
+};
 
 /**
  * Generate a pseudo id.
@@ -404,7 +404,7 @@ function downloadFile(url, dest) {
  *
  * @return {string}
  */
-function generateId(size) {
+module.exports.generateId = function(size) {
     let ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let id = '';
     size = size || 10;
@@ -414,35 +414,14 @@ function generateId(size) {
     }
 
     return id;
-}
+};
 
 /**
  * Helper to catch and display the error.
  *
  * @param {object} e The error
  */
-function displayError(e) {
+module.exports.displayError = function(e) {
     console.error('Error:', undefined !== e.message ? e.message : e);
     process.exit(1);
-}
-
-module.exports = {
-    removeDir: removeDir,
-    replaceVariables: replaceVariables,
-    readEnvVariables: readEnvVariables,
-    mergeVariables: mergeVariables,
-    cleanVariable: cleanVariable,
-    findAwsVariables: findAwsVariables,
-    writeVariables: writeVariables,
-    spawn: spawn,
-    execSync: execSync,
-    requiredOption: requiredOption,
-    showOnlyEmptyOption: showOnlyEmptyOption,
-    isSameObject: isSameObject,
-    checksumFile: checksumFile,
-    fixWinSlash: fixWinSlash,
-    retryPromise: retryPromise,
-    generateId: generateId,
-    downloadFile: downloadFile,
-    displayError: displayError
 };
