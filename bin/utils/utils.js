@@ -186,17 +186,18 @@ function findAwsVariables(envs) {
  * @param {object}   [envs]        The env variables
  * @param {boolean}  [exitOnError] Exit the process on error
  * @param {boolean}  [verbose]     Display the output of command
+ * @param {Object}   [options]     The options of spawn function
  *
  * @return {Promise}
  */
-function spawn(command, envs, exitOnError, verbose) {
+function spawn(command, envs, exitOnError, verbose, options) {
     return new Promise((resolve, reject) => {
         let args = replaceVariables(command, envs).split(' ');
         let cmd = args.shift();
-        let res = childProcess.spawn(cmd, args, {
+        let res = childProcess.spawn(cmd, args, Object.assign({}, {
             shell: true,
             stdio: false === verbose ? 'pipe' : 'inherit'
-        });
+        }, options || {}));
         let errorData = '';
 
         if (false === verbose) {
