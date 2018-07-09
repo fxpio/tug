@@ -35,7 +35,7 @@ if (isProd()) {
     app.use(compression());
     app.use(awsServerlessExpressMiddleware.eventContext());
     storage = new AwsS3Storage(process.env.AWS_S3_BUCKET, process.env.AWS_REGION);
-    queue = new AwsSqsMessageQueue(process.env.AWS_SQS_QUEUE_ENDPOINT);
+    queue = new AwsSqsMessageQueue(process.env.AWS_SQS_QUEUE_URL);
 } else {
     storage = new LocalStorage('./var/storage');
     queue = new LocalMessageQueue();

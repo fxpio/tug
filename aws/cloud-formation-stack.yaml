@@ -164,7 +164,7 @@ Resources:
           NODE_ENV: production
           AWS_S3_BUCKET:
             Ref: Storage
-          AWS_SQS_QUEUE_ENDPOINT:
+          AWS_SQS_QUEUE_URL:
             Ref: Queue
           GITHUB_TOKEN:
             Ref: GithubToken
