@@ -37,6 +37,8 @@ export default class RepositoryManager
      *
      * @param {String}      url    The repository url
      * @param {String|null} [type] The vcs type
+     *
+     * @return {Object}
      */
     async register(url, type = null) {
         type = await this.getVcsType(url, type);

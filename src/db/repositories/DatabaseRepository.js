@@ -41,10 +41,10 @@ export default class DatabaseRepository
      *
      * @param {String} id The id
      *
-     * @return {Promise<String|null>}
+     * @return {Promise<Object|null>}
      */
     async get(id) {
-        return this.client.get(this.getPrefixedId(id));
+        return this.cleanPrefix(await this.client.get(this.getPrefixedId(id)));
     }
 
     /**
@@ -52,14 +52,18 @@ export default class DatabaseRepository
      *
      * @param {Object} data The data
      *
-     * @return {Promise<String>}
+     * @return {Promise<Object>}
      */
     async put(data) {
         if (data.id) {
             data.id = this.getPrefixedId(data.id);
         }
 
-        return this.client.put(data);
+        if (this.prefix) {
+            data.model = this.prefix;
+        }
+
+        return this.cleanPrefix(await this.client.put(data));
     }
 
     /**
@@ -70,7 +74,7 @@ export default class DatabaseRepository
      * @return {Promise<String>}
      */
     async delete(id) {
-        return this.client.delete(this.getPrefixedId(id));
+        return this.cleanPrefix(await this.client.delete(this.getPrefixedId(id)));
     }
 
     /**
@@ -82,11 +86,13 @@ export default class DatabaseRepository
      * @return {Promise<Results>}
      */
     async find(criteria, startId = null) {
-        if (criteria.id) {
-            criteria.id = this.getPrefixedId(criteria.id);
+        let res = await this.client.find(this.prepareCriteria(criteria), startId);
+
+        for (let item of res.getRows()) {
+            this.cleanPrefix(item);
         }
 
-        return this.client.find(criteria, this.prefix, startId);
+        return res;
     }
 
     /**
@@ -97,11 +103,26 @@ export default class DatabaseRepository
      * @return {Promise<Object>}
      */
     async findOne(criteria) {
+        return this.cleanPrefix(await this.client.findOne(this.prepareCriteria(criteria)));
+    }
+
+    /**
+     * Prepare the criteria.
+     *
+     * @param {Object} criteria The criteria
+     *
+     * @return {Object}
+     */
+    prepareCriteria(criteria) {
         if (criteria.id) {
             criteria.id = this.getPrefixedId(criteria.id);
         }
 
-        return this.client.findOne(criteria, this.prefix);
+        if (this.prefix) {
+            criteria.model = this.prefix;
+        }
+
+        return criteria;
     }
 
     /**
@@ -113,6 +134,23 @@ export default class DatabaseRepository
      */
     getPrefixedId(id) {
         return this.prefix ? this.prefix + ':' + id : id;
+    }
+
+    /**
+     * Clean the prefix on the data id.
+     *
+     * @param {Object|String|null} data The data
+     *
+     * @return {Object|String|null}
+     */
+    cleanPrefix(data) {
+        if (this.prefix && null !== data && typeof data === 'object' && data.id && typeof data.id === 'string') {
+            data.id = data.id.replace(new RegExp('^' + this.prefix + ':', 'g'), '');
+        } else if (typeof data === 'string') {
+            data = data.replace(new RegExp('^' + this.prefix + ':', 'g'), '');
+        }
+
+        return data;
     }
 
     /**

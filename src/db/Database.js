@@ -89,12 +89,12 @@ export default class Database
      *
      * @param {Object} data The data
      *
-     * @return {Promise<String>}
+     * @return {Promise<Object>}
      */
     async put(data) {
         Database.validateData(data);
 
-        return data.id;
+        return data;
     }
 
     /**
@@ -112,24 +112,22 @@ export default class Database
      * Find the records.
      *
      * @param {Object}      criteria The criteria
-     * @param {String|null} prefix   The prefix id
      * @param {String|null} startId  The start id
      *
      * @return {Promise<Results>}
      */
-    async find(criteria, prefix = null, startId = null) {
+    async find(criteria, startId = null) {
         return new Results([], 0);
     }
 
     /**
      * Find one record.
      *
-     * @param {Object}      criteria The criteria
-     * @param {String|null} prefix   The prefix id
+     * @param {Object} criteria The criteria
      *
      * @return {Promise<Object|null>}
      */
-    async findOne(criteria, prefix = null) {
+    async findOne(criteria) {
         return null;
     }
 

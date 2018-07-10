@@ -29,11 +29,11 @@ export async function githubHook(req, res, next) {
     if ('ping' === type) {
         if (body.hook && 'Repository' === body.hook.type && body.repository && body.repository['clone_url']) {
             // enable the repository
-            await repoManager.register(body.repository['clone_url'], 'vcs-github');
+            let data = await repoManager.register(body.repository['clone_url'], 'vcs-github');
             // send refresh all packages in queue
             await queue.send({
                 type: 'refresh-packages',
-                repository: id
+                repository: data.id
             });
 
             message += ' The scan of the Composer packages has started';

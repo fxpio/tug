@@ -10,31 +10,20 @@
 import AWS from 'aws-sdk';
 
 /**
- * Clean the prefix of id.
+ * Convert the criteria into dynamo db parameters for query.
  *
- * @param {Object}      data   The data
- * @param {String|null} prefix The prefix
+ * @param {object} criteria  The criteria
+ * @param {String} indexName The model index name
  *
  * @return {Object}
  */
-export function cleanModelPrefix(data, prefix = null) {
-    if (prefix && typeof data === 'object' && data.id && typeof data.id === 'string') {
-        data.id = data.id.replace(new RegExp('^' + prefix + ':', 'g'), '');
-    }
-
-    return data;
-}
-
-/**
- *
- * @param {object} criteria  The criteria
- * @param {String} model     The model type
- * @param {String} indexName The model index name
- */
-export function convertQueryCriteria(criteria, model, indexName = 'model-index') {
+export function convertQueryCriteria(criteria, indexName = 'model-index') {
     let exp = [],
+        model = criteria && criteria.model ? criteria.model : null,
         keys = {'#model': 'model'},
         values = {':model': {'S': model}};
+
+    delete criteria.model;
 
     for (let key of Object.keys(criteria)) {
         exp.push('#' + key + ' = :' + key);
@@ -52,23 +41,16 @@ export function convertQueryCriteria(criteria, model, indexName = 'model-index')
 }
 
 /**
- * Convert the criteria into dynamo db parameters.
+ * Convert the criteria into dynamo db parameters for scan.
  *
- * @param {Object}      criteria The criteria
- * @param {String|null} prefix   The prefix id
+ * @param {Object} criteria The criteria
  *
- * @return {{FilterExpression: string, ExpressionAttributeNames, ExpressionAttributeValues}}
+ * @return {Object}
  */
-export function convertScanCriteria(criteria, prefix = null) {
+export function convertScanCriteria(criteria) {
     let exp = [],
         keys = {},
         values = {};
-
-    if (prefix) {
-        exp.push('begins_with(#id, :idPrefix)');
-        keys['#id'] = 'id';
-        values[':idPrefix'] = {'S' : prefix+':'};
-    }
 
     for (let key of Object.keys(criteria)) {
         exp.push('#' + key + ' = :' + key);

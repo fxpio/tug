@@ -9,7 +9,7 @@
 
 import AWS from 'aws-sdk';
 import Database from './Database';
-import {cleanModelPrefix, convertQueryCriteria} from './dynamodb/utils';
+import {convertQueryCriteria} from './dynamodb/utils';
 import Results from './Results';
 
 /**
@@ -50,7 +50,7 @@ export default class AwsDynamoDbDatabase extends Database
             TableName: this.tableName,
             Key: {
                 'id': {
-                    'S': id+''
+                    'S': id
                 }
             }
         };
@@ -70,7 +70,7 @@ export default class AwsDynamoDbDatabase extends Database
         };
         await this.client.putItem(params).promise();
 
-        return data.id;
+        return data;
     }
 
     /**
@@ -89,8 +89,8 @@ export default class AwsDynamoDbDatabase extends Database
     /**
      * @inheritDoc
      */
-    async find(criteria, prefix = null, startId = null) {
-        let params = Object.assign(convertQueryCriteria(criteria, prefix), {
+    async find(criteria, startId = null) {
+        let params = Object.assign(convertQueryCriteria(criteria), {
             TableName: this.tableName,
             ExclusiveStartKey: startId ? startId : null
         });
@@ -98,7 +98,7 @@ export default class AwsDynamoDbDatabase extends Database
         let res = await this.client.query(params).promise();
         let resValues = [];
         for (let item of res.Items) {
-            resValues.push(cleanModelPrefix(AwsDynamoDbDatabase.unmarshall(item), prefix));
+            resValues.push(AwsDynamoDbDatabase.unmarshall(item));
         }
 
         return new Results(resValues, res.Count, res.LastEvaluatedKey ? res.LastEvaluatedKey.id.S : null);
@@ -107,14 +107,14 @@ export default class AwsDynamoDbDatabase extends Database
     /**
      * @inheritDoc
      */
-    async findOne(criteria, prefix = null) {
-        let params = Object.assign(convertQueryCriteria(criteria, prefix), {
+    async findOne(criteria) {
+        let params = Object.assign(convertQueryCriteria(criteria), {
             TableName: this.tableName
         });
 
         let res = await this.client.query(params).promise();
 
-        return res.Count > 0 ? cleanModelPrefix(AwsDynamoDbDatabase.unmarshall(res.Items[0]), prefix) : null;
+        return res.Count > 0 ? AwsDynamoDbDatabase.unmarshall(res.Items[0]) : null;
     }
 
     /**
