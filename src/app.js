@@ -55,7 +55,7 @@ app.set('db', db);
 app.set('storage', storage);
 app.set('queue', queue);
 app.use('/', hookRoutes(express.Router({})));
-app.use('/manager/', managerRoutes(express.Router({}), !isProd()));
+app.use('/manager/', managerRoutes(express.Router({})));
 app.use('/', packageRoutes(express.Router({})));
 app.use(logErrors);
 app.use(showJsonError400);

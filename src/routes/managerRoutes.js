@@ -10,6 +10,7 @@
 import Authenticate from '../middlewares/auth/Authenticate';
 import BasicIamAuth from '../middlewares/auth/strategies/BasicIamAuth';
 import {asyncHandler} from '../utils/handler';
+import {isProd} from '../utils/server';
 import {createApiKey, deleteApiKey} from '../controllers/manager/apiKeyController';
 import {createGithubToken, deleteGithubToken, showGithubToken} from '../controllers/manager/githubTokenController';
 import {disableRepository, enableRepository} from '../controllers/manager/repositoryController';
@@ -17,13 +18,12 @@ import {disableRepository, enableRepository} from '../controllers/manager/reposi
 /**
  * Generate the routes.
  *
- * @param {Router}  router The router
- * @param {boolean} debug  The debug mode
+ * @param {Router} router The router
  *
  * @return {Router}
  */
-export default function(router, debug) {
-    router.use(asyncHandler(new Authenticate(new BasicIamAuth(debug))));
+export default function(router) {
+    router.use(asyncHandler(new Authenticate(new BasicIamAuth(!isProd()))));
 
     router.post('/api-keys', asyncHandler(createApiKey));
     router.delete('/api-keys', asyncHandler(deleteApiKey));
