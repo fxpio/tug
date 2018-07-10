@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
+import RepositoryManager from '../../composer/repositories/RepositoryManager';
 import {getGithubEvent} from '../../utils/apiGithub';
 
 /**
@@ -18,8 +18,8 @@ import {getGithubEvent} from '../../utils/apiGithub';
  * @param {Function}        next The next callback
  */
 export async function githubHook(req, res, next) {
-    /** @type {CodeRepositoryRepository} repo */
-    let repo = req.app.set('db').getRepository(CodeRepositoryRepository);
+    /** @type {RepositoryManager} repoManager */
+    let repoManager = req.app.set('repository-manager');
     /** @type {MessageQueue} */
     let queue = req.app.set('queue');
     let body = req.body,
@@ -27,13 +27,13 @@ export async function githubHook(req, res, next) {
         message = 'Hello Github!';
 
     if ('ping' === type) {
-        if (body.hook && 'Repository' === body.hook.type && body.repository && body.repository['full_name']) {
+        if (body.hook && 'Repository' === body.hook.type && body.repository && body.repository['clone_url']) {
             // enable the repository
-            await repo.put({id: body.repository['full_name']});
+            await repoManager.register(body.repository['clone_url'], 'vcs-github');
             // send refresh all packages in queue
             await queue.send({
                 type: 'refresh-packages',
-                repository: body.repository['full_name']
+                repository: id
             });
 
             message += ' The scan of the Composer packages has started';

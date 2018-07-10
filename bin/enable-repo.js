@@ -22,7 +22,8 @@ const createHeaders = require('./utils/endpoint').createHeaders;
 program
     .description('Enable the Github repository')
     .option('-e, --endpoint [url]', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
-    .option('-r, --repository [name]', 'The repository name (<username-organization>/<repository>)')
+    .option('-u, --url [url]', 'The repository URL')
+    .option('-t, --type [type]', 'The repository VCS type')
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')
@@ -31,7 +32,8 @@ utils.spawn('node bin/config -e')
         return fetch(endpoint + '/manager/repositories', {
             method: 'POST',
             body: JSON.stringify({
-                repository: program.repository
+                url: program.url,
+                type: program.type
             }),
             headers: createHeaders()
         })

@@ -22,7 +22,7 @@ const createHeaders = require('./utils/endpoint').createHeaders;
 program
     .description('Disable the Github repository')
     .option('-e, --endpoint [url]', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
-    .option('-r, --repository [name]', 'The repository name (<username-organization>/<repository>)')
+    .option('-u, --url [url]', 'The repository URL')
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')
@@ -31,7 +31,7 @@ utils.spawn('node bin/config -e')
         return fetch(endpoint + '/manager/repositories', {
             method: 'DELETE',
             body: JSON.stringify({
-                repository: program.repository
+                url: program.url
             }),
             headers: createHeaders()
         })

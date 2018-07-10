@@ -16,11 +16,12 @@ import AwsDynamoDbDatabase from './db/AwsDynamoDbDatabase';
 import ConfigRepository from './db/repositories/ConfigRepository';
 import ApiKeyRepository from './db/repositories/ApiKeyRepository';
 import CodeRepositoryRepository from './db/repositories/CodeRepositoryRepository';
+import ConfigManager from './configs/ConfigManager';
+import RepositoryManager from './composer/repositories/RepositoryManager';
 import LocalStorage from './storages/LocalStorage';
 import AwsS3Storage from './storages/AwsS3Storage';
 import LocalMessageQueue from './queues/LocalMessageQueue';
 import AwsSqsMessageQueue from './queues/AwsSqsMessageQueue';
-import ConfigManager from './configs/ConfigManager';
 import {logErrors} from './middlewares/logs';
 import {showError404, showError500, showJsonError400} from './middlewares/errors';
 import {isProd} from './utils/server';
@@ -30,6 +31,8 @@ import managerRoutes from './routes/managerRoutes';
 
 const app = express();
 let db,
+    configManager,
+    repoManager,
     storage,
     queue;
 
@@ -52,7 +55,11 @@ db.setRepository(ConfigRepository);
 db.setRepository(ApiKeyRepository);
 db.setRepository(CodeRepositoryRepository);
 
-app.set('config-manager', new ConfigManager(db.getRepository(ConfigRepository)));
+configManager = new ConfigManager(db.getRepository(ConfigRepository));
+repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository));
+
+app.set('config-manager', configManager);
+app.set('repository-manager', repoManager);
 app.set('db', db);
 app.set('storage', storage);
 app.set('queue', queue);

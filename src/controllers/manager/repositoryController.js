@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
+import RepositoryManager from '../../composer/repositories/RepositoryManager';
 
 /**
  * Enable the repository.
@@ -17,11 +17,19 @@ import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryReposi
  * @param {Function}        next The next callback
  */
 export async function enableRepository(req, res, next) {
-    /** @type {CodeRepositoryRepository} repo */
-    let repo = req.app.set('db').getRepository(CodeRepositoryRepository);
-    let repository = req.body.repository;
+    /** @type {RepositoryManager} repoManager */
+    let repoManager = req.app.set('repository-manager');
+    let url = req.body.url;
+    let type = req.body.type;
+    let err = validateRepository(url);
+    let repo;
 
-    let err = validateRepository(repository);
+    try {
+        repo = await repoManager.register(url, type);
+    } catch (e) {
+        err = e;
+    }
+
     if (err) {
         res.status(400).json({
             message: err.message
@@ -29,11 +37,10 @@ export async function enableRepository(req, res, next) {
         return;
     }
 
-    await repo.put({id: repository});
-
     res.json({
-        message: `The repository "${repository}" were enabled successfully`,
-        repository: repository
+        message: `The "${repo.type}" repository with the URL "${repo.url}" were enabled successfully`,
+        url: repo.url,
+        type: repo.type
     });
 }
 
@@ -45,11 +52,17 @@ export async function enableRepository(req, res, next) {
  * @param {Function}        next The next callback
  */
 export async function disableRepository(req, res, next) {
-    /** @type {CodeRepositoryRepository} repo */
-    let repo = req.app.set('db').getRepository(CodeRepositoryRepository);
-    let repository = req.body.repository;
+    /** @type {RepositoryManager} repoManager */
+    let repoManager = req.app.set('repository-manager');
+    let url = req.body.url;
+    let err = validateRepository(url);
 
-    let err = validateRepository(repository);
+    try {
+        await repoManager.unregister(url);
+    } catch (e) {
+        err = e;
+    }
+
     if (err) {
         res.status(400).json({
             message: err.message
@@ -57,28 +70,24 @@ export async function disableRepository(req, res, next) {
         return;
     }
 
-    await repo.delete(repository);
-
     res.json({
-        message: `The repository "${repository}" were disabled successfully`,
-        repository: repository
+        message: `The repository with the URL "${url}" were disabled successfully`,
+        url: url
     });
 }
 
 /**
- * Validate the repository.
+ * Validate the repository URL.
  *
- * @param {string} repository
+ * @param {string} url
  *
  * @return {Error|null}
  */
-function validateRepository(repository) {
+function validateRepository(url) {
     let err = null;
 
-    if (!repository) {
-        err = new Error('The "repository" body attribute is required');
-    } else if (!repository.match(/\//)) {
-        err = new Error('The repository name must be formated with "<username-or-organization-name>/<repository-name>"');
+    if (!url) {
+        err = new Error('The "url" body attribute is required');
     }
 
     return err;
