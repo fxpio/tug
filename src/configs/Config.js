@@ -16,7 +16,8 @@ export default class Config
 {
     static defaultConfig = {
         'github-domains': ['github.com'],
-        'github-oauth': {}
+        'github-oauth': {},
+        'github-webhook': {}
     };
 
     constructor() {
@@ -26,10 +27,14 @@ export default class Config
     /**
      * Merge the new config values with the existing ones (overriding).
      *
-     * @param {Object} config The new config
+     * @param {Config|Object} config The new config
      */
     merge(config) {
-        this.config = merge(this.config, config);
+        if (config instanceof Config) {
+            this.config = merge(this.config, config.all());
+        } else if (typeof config === 'object') {
+            this.config = merge(this.config, config);
+        }
     }
 
     /**

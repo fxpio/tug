@@ -24,6 +24,7 @@ program
     .description('Create or generate a token for Github Webhooks')
     .option('-e, --endpoint [url]', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
     .option('-t, --token [token]', 'Your token, if empty a key will be generated')
+    .option('-h, --host [host]', 'Your Github Enterprise host, if empty the host "github.com" is used')
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')
@@ -32,7 +33,8 @@ utils.spawn('node bin/config -e')
         return fetch(endpoint + '/manager/github-token', {
             method: 'POST',
             body: JSON.stringify({
-                token: program.token
+                token: program.token,
+                host: program.host
             }),
             headers: createHeaders()
         })

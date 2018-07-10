@@ -20,6 +20,7 @@ import LocalStorage from './storages/LocalStorage';
 import AwsS3Storage from './storages/AwsS3Storage';
 import LocalMessageQueue from './queues/LocalMessageQueue';
 import AwsSqsMessageQueue from './queues/AwsSqsMessageQueue';
+import ConfigManager from './configs/ConfigManager';
 import {logErrors} from './middlewares/logs';
 import {showError404, showError500, showJsonError400} from './middlewares/errors';
 import {isProd} from './utils/server';
@@ -51,6 +52,7 @@ db.setRepository(ConfigRepository);
 db.setRepository(ApiKeyRepository);
 db.setRepository(CodeRepositoryRepository);
 
+app.set('config-manager', new ConfigManager(db.getRepository(ConfigRepository)));
 app.set('db', db);
 app.set('storage', storage);
 app.set('queue', queue);
