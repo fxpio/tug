@@ -9,6 +9,8 @@
 
 import AWS from 'aws-sdk';
 import Database from './Database';
+import {cleanModelPrefix, convertQueryCriteria} from './dynamodb/utils';
+import Results from './Results';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -82,6 +84,37 @@ export default class AwsDynamoDbDatabase extends Database
         await this.client.deleteItem(params).promise();
 
         return id;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    async find(criteria, prefix = null, startId = null) {
+        let params = Object.assign(convertQueryCriteria(criteria, prefix), {
+            TableName: this.tableName,
+            ExclusiveStartKey: startId ? startId : null
+        });
+
+        let res = await this.client.query(params).promise();
+        let resValues = [];
+        for (let item of res.Items) {
+            resValues.push(cleanModelPrefix(AwsDynamoDbDatabase.unmarshall(item), prefix));
+        }
+
+        return new Results(resValues, res.Count, res.LastEvaluatedKey ? res.LastEvaluatedKey.id.S : null);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    async findOne(criteria, prefix = null) {
+        let params = Object.assign(convertQueryCriteria(criteria, prefix), {
+            TableName: this.tableName
+        });
+
+        let res = await this.client.query(params).promise();
+
+        return res.Count > 0 ? cleanModelPrefix(AwsDynamoDbDatabase.unmarshall(res.Items[0]), prefix) : null;
     }
 
     /**

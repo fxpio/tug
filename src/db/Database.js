@@ -8,6 +8,7 @@
  */
 
 import DatabaseRepository from './repositories/DatabaseRepository';
+import Results from './Results';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -105,6 +106,31 @@ export default class Database
      */
     async delete(id) {
         return id;
+    }
+
+    /**
+     * Find the records.
+     *
+     * @param {Object}      criteria The criteria
+     * @param {String|null} prefix   The prefix id
+     * @param {String|null} startId  The start id
+     *
+     * @return {Promise<Results>}
+     */
+    async find(criteria, prefix = null, startId = null) {
+        return new Results([], 0);
+    }
+
+    /**
+     * Find one record.
+     *
+     * @param {Object}      criteria The criteria
+     * @param {String|null} prefix   The prefix id
+     *
+     * @return {Promise<Object|null>}
+     */
+    async findOne(criteria, prefix = null) {
+        return null;
     }
 
     /**

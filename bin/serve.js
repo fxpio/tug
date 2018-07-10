@@ -77,8 +77,28 @@ utils.spawn('node bin/config -e')
                     console.info('Creation of the table in AWS DynamoDB...');
                     await db.createTable({
                         TableName: process.env.AWS_DYNAMODB_TABLE,
-                        AttributeDefinitions: [{AttributeName: 'id', AttributeType: 'S'}],
-                        KeySchema: [{AttributeName: 'id', KeyType: 'HASH'}],
+                        AttributeDefinitions: [
+                            {AttributeName: 'id', AttributeType: 'S'},
+                            {AttributeName: 'model', AttributeType: 'S'}
+                        ],
+                        KeySchema: [
+                            {AttributeName: 'id', KeyType: 'HASH'}
+                        ],
+                        GlobalSecondaryIndexes: [
+                            {
+                                IndexName: 'model-index',
+                                KeySchema: [
+                                    {AttributeName: 'model', KeyType: 'HASH'}
+                                ],
+                                Projection: {
+                                    ProjectionType: 'ALL'
+                                },
+                                ProvisionedThroughput: {
+                                    ReadCapacityUnits: 1,
+                                    WriteCapacityUnits: 1
+                                }
+                            }
+                        ],
                         ProvisionedThroughput: {
                             ReadCapacityUnits: 1,
                             WriteCapacityUnits: 1

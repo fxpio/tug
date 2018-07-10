@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+import Results from '../Results';
+
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
@@ -69,6 +71,37 @@ export default class DatabaseRepository
      */
     async delete(id) {
         return this.client.delete(this.getPrefixedId(id));
+    }
+
+    /**
+     * Find the records.
+     *
+     * @param {Object}      criteria The criteria
+     * @param {String|null} startId  The start id
+     *
+     * @return {Promise<Results>}
+     */
+    async find(criteria, startId = null) {
+        if (criteria.id) {
+            criteria.id = this.getPrefixedId(criteria.id);
+        }
+
+        return this.client.find(criteria, this.prefix, startId);
+    }
+
+    /**
+     * Find one record.
+     *
+     * @param {Object} criteria The criteria
+     *
+     * @return {Promise<Object>}
+     */
+    async findOne(criteria) {
+        if (criteria.id) {
+            criteria.id = this.getPrefixedId(criteria.id);
+        }
+
+        return this.client.findOne(criteria, this.prefix);
     }
 
     /**

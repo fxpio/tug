@@ -209,9 +209,21 @@ Resources:
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
+        - AttributeName: model
+          AttributeType: S
       KeySchema:
         - AttributeName: id
           KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: model-index
+          KeySchema:
+            - AttributeName: model
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
@@ -297,15 +309,25 @@ Resources:
             - dynamodb:Query
             Effect: Allow
             Resource:
-              Fn::Join:
-              - ''
-              - - 'arn:aws:dynamodb:'
-                - Ref: AWS::Region
-                - ':'
-                - Ref: AWS::AccountId
-                - ':'
-                - 'table/'
-                - Ref: Database
+              - Fn::Join:
+                - ''
+                - - 'arn:aws:dynamodb:'
+                  - Ref: AWS::Region
+                  - ':'
+                  - Ref: AWS::AccountId
+                  - ':'
+                  - 'table/'
+                  - Ref: Database
+              - Fn::Join:
+                - ''
+                - - 'arn:aws:dynamodb:'
+                  - Ref: AWS::Region
+                  - ':'
+                  - Ref: AWS::AccountId
+                  - ':'
+                  - 'table/'
+                  - Ref: Database
+                  - '/index/*'
       - PolicyName: S3AccessList
         PolicyDocument:
           Version: '2012-10-17'
