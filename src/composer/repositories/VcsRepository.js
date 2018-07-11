@@ -93,7 +93,7 @@ export default class VcsRepository
             }
         }
 
-        if (!validType) {
+        if (!validType || !this.drivers[validType].supports(this.config, this.url)) {
             throw new VcsDriverNotFoundError('No driver found to handle VCS repository ' + this.url);
         }
 
