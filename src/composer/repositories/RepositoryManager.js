@@ -44,7 +44,7 @@ export default class RepositoryManager
         type = await this.getVcsType(url, type);
 
         if (null === type) {
-            throw new Error(`The repository with the URL "${url}" is not supported`);
+            throw new RepositoryNotSupportedError(`The repository with the URL "${url}" is not supported`);
         }
 
         let item = await this.codeRepoRepo.findOne({url: url});
@@ -73,7 +73,7 @@ export default class RepositoryManager
         let type = await this.getVcsType(url);
 
         if (null === type) {
-            throw new Error(`The repository with the URL "${url}" is not supported`);
+            throw new RepositoryNotSupportedError(`The repository with the URL "${url}" is not supported`);
         }
 
         let item = await this.codeRepoRepo.findOne({url: url});
