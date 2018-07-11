@@ -23,6 +23,7 @@ export default class Constraint
         this.operator = operator;
         this.value = value;
         this.useValue = useValue;
+        this.values = {};
     }
 
     /**
@@ -41,6 +42,15 @@ export default class Constraint
      */
     hasValue() {
         return this.useValue;
+    }
+
+    /**
+     * Get the custom values.
+     *
+     * @return {Object}
+     */
+    getCustomValues() {
+        return this.values;
     }
 
     /**

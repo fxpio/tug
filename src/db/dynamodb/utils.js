@@ -35,6 +35,11 @@ export function convertQueryCriteria(criteria, indexName = 'model-index') {
         if (constraint.hasValue()) {
             values[':' + key] = AWS.DynamoDB.Converter.marshall({val: constraint.getValue()}).val;
         }
+
+        let customValues = constraint.getCustomValues();
+        for (let key of Object.keys(customValues)){
+            values[':' + key] = AWS.DynamoDB.Converter.marshall({val: customValues[key]}).val;
+        }
     }
 
     return {
