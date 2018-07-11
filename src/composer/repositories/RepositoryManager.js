@@ -38,17 +38,17 @@ export default class RepositoryManager
      * @param {String}      url    The repository url
      * @param {String|null} [type] The vcs type
      *
-     * @return {Object}
+     * @return {VcsRepository}
      */
     async register(url, type = null) {
         let repo = await this.createVcsRepository(url, type);
         let data = await repo.getData();
 
         if (!data) {
-            data = await this.codeRepoRepo.put(await repo.createData());
+            await this.codeRepoRepo.put(repo.createData());
         }
 
-        return data;
+        return repo;
     }
 
     /**
@@ -79,10 +79,11 @@ export default class RepositoryManager
      * @return {Promise<VcsRepository>}
      */
     async createVcsRepository(url, type = null) {
-        let repo = new VcsRepository({url: url, type: type}, this.configManager, this.codeRepoRepo, this.cache);
+        let config = await this.configManager.get();
+        let repo = new VcsRepository({url: url, type: type}, config, this.codeRepoRepo, this.cache);
 
         try {
-            await repo.getDriver();
+            repo.getDriver();
         } catch (e) {
             if (e instanceof VcsDriverNotFoundError) {
                 throw new RepositoryNotSupportedError(`The repository with the URL "${url}" is not supported`);

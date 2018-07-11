@@ -23,6 +23,7 @@ export async function enableRepository(req, res, next) {
     let url = req.body.url;
     let type = req.body.type;
     let err = validateRepository(url);
+    /** @type VcsRepository repo */
     let repo;
 
     try {
@@ -43,9 +44,9 @@ export async function enableRepository(req, res, next) {
     }
 
     res.json({
-        message: `The "${repo.type}" repository with the URL "${repo.url}" were enabled successfully`,
-        url: repo.url,
-        type: repo.type
+        message: `The "${repo.getDriverType()}" repository with the URL "${repo.getUrl()}" were enabled successfully`,
+        url: repo.getUrl(),
+        type: repo.getDriverType()
     });
 }
 
