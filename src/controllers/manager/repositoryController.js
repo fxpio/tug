@@ -63,7 +63,7 @@ export async function disableRepository(req, res, next) {
     let err = validateRepository(url);
 
     try {
-        await repoManager.unregister(url);
+        url = await repoManager.unregister(url);
     } catch (e) {
         if (e instanceof RepositoryNotSupportedError) {
             err = e;

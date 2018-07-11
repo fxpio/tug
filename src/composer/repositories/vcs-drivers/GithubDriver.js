@@ -15,24 +15,15 @@ import VcsDriver from './VcsDriver';
 export default class GithubDriver extends VcsDriver
 {
     /**
-     * @inheritDoc
+     * Constructor.
+     *
+     * @param {Object}      repoConfig The repository config
+     * @param {Config}      config     The config
+     * @param {DataStorage} cache      The data storage of cache
      */
-    static supports(config, url) {
-        let matches = url.match(/^((?:https?|git):\/\/([^\/]+)\/|git@([^:]+):)([^\/]+)\/(.+?)(?:\.git|\/)?$/);
+    constructor(repoConfig, config, cache) {
+        super(repoConfig, config, cache);
 
-        if (!matches) {
-            return false;
-        }
-
-        let originUrl = undefined !== matches[2] ? matches[2] : matches[3];
-
-        return config.get('github-domains').includes(originUrl.replace(/^www\./i, ''));
-    }
-
-    /**
-     * @inheritDoc
-     */
-    initialize() {
         let match = this.url.match(/^(?:(?:https?|git):\/\/([^\/]+)\/|git@([^:]+):)([^\/]+)\/(.+?)(?:\.git|\/)?$/);
 
         this.owner = match[3];
@@ -45,5 +36,20 @@ export default class GithubDriver extends VcsDriver
 
         this.url = 'https://' + this.originUrl + '/' + this.owner + '/' + this.repository + '.git';
         this.repoConfig['url'] = this.url;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    static supports(config, url) {
+        let matches = url.match(/^((?:https?|git):\/\/([^\/]+)\/|git@([^:]+):)([^\/]+)\/(.+?)(?:\.git|\/)?$/);
+
+        if (!matches) {
+            return false;
+        }
+
+        let originUrl = undefined !== matches[2] ? matches[2] : matches[3];
+
+        return config.get('github-domains').includes(originUrl.replace(/^www\./i, ''));
     }
 }

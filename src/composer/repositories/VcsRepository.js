@@ -10,14 +10,15 @@
 import ConfigManager from '../../configs/ConfigManager';
 import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
 import DataStorage from '../../storages/DataStorage';
-import Repository from './Repository';
 import VcsDriver from './vcs-drivers/VcsDriver';
 import GithubDriver from './vcs-drivers/GithubDriver';
+import VcsDriverNotFoundError from './VcsDriverNotFoundError';
+import {URL} from 'url';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class VcsRepository extends Repository
+export default class VcsRepository
 {
     /**
      * Constructor.
@@ -29,7 +30,6 @@ export default class VcsRepository extends Repository
      * @param {Object<String, Function>} drivers       The map of vcs driver with their names
      */
     constructor(repoConfig, configManager, codeRepoRepo, cache, drivers = null) {
-        super();
         this.drivers = drivers ? drivers : {
             'github': GithubDriver
         };
@@ -41,29 +41,18 @@ export default class VcsRepository extends Repository
         this.url = this.repoConfig['url'];
         this.driverType = this.repoConfig['type'] ? this.repoConfig['type'] : null;
         this.driver = null;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    async initialize() {
-        await super.initialize();
-        this.driver = this.getDriver();
-
-        if (!this.driver) {
-            throw new Error('No driver found to handle VCS repository ' + this.url);
-        }
+        this.repoData = null;
     }
 
     /**
      * Get the vcs driver.
      *
-     * @return {Promise<VcsDriver|null>}
+     * @return {Promise<VcsDriver>}
+     *
+     * @throws VcsDriverNotFoundError When the vcs driver is not found
      */
     async getDriver() {
-        if (false === this.driver) {
-            return null;
-        } else if (this.driver) {
+        if (this.driver) {
             return this.driver;
         }
 
@@ -92,22 +81,72 @@ export default class VcsRepository extends Repository
             }
         }
 
-        this.driver = validType ? new this.drivers[validType](this.repoConfig, config, this.cache) : false;
-        this.driverType = validType ? 'vcs-' + validType : null;
-        this.repoConfig['type'] = this.driverType;
-        this.url = this.driver ? this.driver.getUrl() : this.url;
+        if (!validType) {
+            throw new VcsDriverNotFoundError('No driver found to handle VCS repository ' + this.url);
+        }
 
-        return this.driver ? this.driver : null;
+        this.driver = new this.drivers[validType](this.repoConfig, config, this.cache);
+        this.driverType = 'vcs-' + validType;
+        this.repoConfig['type'] = this.driverType;
+        this.url = this.driver.getUrl();
+
+        return this.driver;
     }
 
     /**
      * Get the vcs driver type.
      *
-     * @return {Promise<String|null>}
+     * @return {Promise<String>}
      */
     async getDriverType() {
         await this.getDriver();
 
         return this.driverType;
+    }
+
+    /**
+     * Get the data of repository.
+     *
+     * @return {Promise<Object|null>}
+     */
+    async getData() {
+        if (false === this.repoData) {
+            return null;
+        } else if (this.repoData) {
+            return this.repoData;
+        }
+
+        let driver = await this.getDriver();
+        if (!driver) {
+            this.repoData = false;
+            return null;
+        }
+
+        let url = driver.getUrl();
+        let item = await this.codeRepoRepo.findOne({url: url});
+
+        if (item) {
+            this.repoData = item;
+            return item;
+        }
+
+        this.repoData = false;
+        return null;
+    }
+
+    /**
+     * Create the data repository.
+     *
+     * @return {Promise<{Object}>}
+     */
+    async createData() {
+        let type = await this.getDriverType();
+        let repoUrl = new URL(this.url);
+
+        return {
+            id: type + ':' + repoUrl.host + ':' + repoUrl.pathname.replace(/^\/|(\.[a-zA-Z0-9]{1,5})$/g, ''),
+            type: type,
+            url: this.url
+        };
     }
 }

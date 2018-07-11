@@ -10,17 +10,16 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Repository
+export default class VcsDriverNotFoundError extends Error
 {
     /**
      * Constructor.
+     *
+     * @param {String} message
+     * @param {String} [fileName}
+     * @param {Number} [lineNumber}
      */
-    constructor() {
-    }
-
-    /**
-     * Initializes the repository.
-     */
-    async initialize() {
+    constructor(message, fileName, lineNumber) {
+        super(message, fileName, lineNumber);
     }
 }

@@ -30,8 +30,6 @@ export default class VcsDriver
         this.config = config;
         this.cache = cache;
         this.infoCache = {};
-
-        this.initialize();
     }
 
     /**
@@ -45,12 +43,6 @@ export default class VcsDriver
      */
     static supports(config, url, deep = false) {
         return false;
-    }
-
-    /**
-     * Initializes the driver.
-     */
-    initialize() {
     }
 
     /**
