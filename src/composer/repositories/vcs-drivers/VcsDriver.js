@@ -20,11 +20,18 @@ export default class VcsDriver
     /**
      * Constructor.
      *
-     * @param {Config}      config  The config
-     * @param {DataStorage} storage The cache data storage
+     * @param {Object}      repoConfig The repository config
+     * @param {Config}      config     The config
+     * @param {DataStorage} cache      The data storage of cache
      */
-    constructor(config, storage) {
+    constructor(repoConfig, config, cache) {
+        this.url = repoConfig['url'];
+        this.repoConfig = repoConfig;
         this.config = config;
+        this.cache = cache;
+        this.infoCache = {};
+
+        this.initialize();
     }
 
     /**
@@ -38,5 +45,20 @@ export default class VcsDriver
      */
     static supports(config, url, deep = false) {
         return false;
+    }
+
+    /**
+     * Initializes the driver.
+     */
+    initialize() {
+    }
+
+    /**
+     * Return the URL of the repository.
+     *
+     * @return {string}
+     */
+    getUrl() {
+        return this.url;
     }
 }

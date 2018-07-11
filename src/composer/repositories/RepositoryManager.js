@@ -7,14 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import GithubDriver from "./vcs-drivers/GithubDriver";
 import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
 import ConfigManager from '../../configs/ConfigManager';
+import DataStorage from '../../storages/DataStorage';
+import Repository from './Repository';
+import VcsRepository from './VcsRepository';
+import RepositoryNotSupportedError from './RepositoryNotSupportedError';
 import {URL} from 'url';
-
-const VCS_DRIVERS = {
-    'github': GithubDriver
-};
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -26,10 +25,12 @@ export default class RepositoryManager
      *
      * @param {ConfigManager}            configManager The config
      * @param {CodeRepositoryRepository} codeRepoRepo  The database repository of code repository
+     * @param {DataStorage}              cache         The data storage of cache
      */
-    constructor(configManager, codeRepoRepo) {
+    constructor(configManager, codeRepoRepo, cache) {
         this.configManager = configManager;
         this.codeRepoRepo = codeRepoRepo;
+        this.cache = cache;
     }
 
     /**
@@ -41,19 +42,20 @@ export default class RepositoryManager
      * @return {Object}
      */
     async register(url, type = null) {
-        type = await this.getVcsType(url, type);
+        let repo = new VcsRepository({url: url, type: type}, this.configManager, this.codeRepoRepo, this.cache);
+        type = await repo.getDriverType();
 
         if (null === type) {
             throw new RepositoryNotSupportedError(`The repository with the URL "${url}" is not supported`);
         }
 
+        url = (await repo.getDriver()).getUrl();
         let item = await this.codeRepoRepo.findOne({url: url});
 
         if (null === item) {
             let repoUrl = new URL(url);
             item = {
-                id: type + ':' + repoUrl.host + ':' + repoUrl.pathname.replace(/^\/|.[a-zA-Z0-9]{1,5}$/g, ''),
-                model: this.codeRepoRepo.getPrefixedId('').replace(/:$/g, ''),
+                id: type + ':' + repoUrl.host + ':' + repoUrl.pathname.replace(/^\/|(\.[a-zA-Z0-9]{1,5})$/g, ''),
                 type: type,
                 url: url
             };
@@ -70,7 +72,8 @@ export default class RepositoryManager
      * @param {String} url The repository url
      */
     async unregister(url) {
-        let type = await this.getVcsType(url);
+        let repo = new VcsRepository({url: url}, this.configManager, this.codeRepoRepo, this.cache);
+        let type = await repo.getDriverType();
 
         if (null === type) {
             throw new RepositoryNotSupportedError(`The repository with the URL "${url}" is not supported`);
@@ -81,38 +84,5 @@ export default class RepositoryManager
         if (null !== item) {
             await this.codeRepoRepo.delete(item.id);
         }
-    }
-
-    /**
-     * Get the VCS type for the repository URL is supported.
-     *
-     * @param {String}      url    URL to validate/check
-     * @param {String|null} [type] The vcs type
-     *
-     * @return {String|null}
-     */
-    async getVcsType(url, type = null) {
-        type = type ? type.replace(/^vcs-/g, '') : type;
-
-        if (url && type && VCS_DRIVERS[type]) {
-            return 'vcs-' + type;
-        }
-
-        let config = await this.configManager.get();
-        let types = Object.keys(VCS_DRIVERS);
-
-        for (let i = 0; i < types.length; ++i) {
-            if (VCS_DRIVERS[types[i]].supports(config, url)) {
-                return 'vcs-' + types[i];
-            }
-        }
-
-        for (let i = 0; i < types.length; ++i) {
-            if (VCS_DRIVERS[types[i]].supports(config, url, true)) {
-                return 'vcs-' + types[i];
-            }
-        }
-
-        return null;
     }
 }

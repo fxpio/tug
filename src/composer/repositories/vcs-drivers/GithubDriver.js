@@ -28,4 +28,22 @@ export default class GithubDriver extends VcsDriver
 
         return config.get('github-domains').includes(originUrl.replace(/^www\./i, ''));
     }
+
+    /**
+     * @inheritDoc
+     */
+    initialize() {
+        let match = this.url.match(/^(?:(?:https?|git):\/\/([^\/]+)\/|git@([^:]+):)([^\/]+)\/(.+?)(?:\.git|\/)?$/);
+
+        this.owner = match[3];
+        this.repository = match[4];
+        this.originUrl = undefined !== match[1] ? match[1] : match[2];
+
+        if ('www.github.com' === this.originUrl) {
+            this.originUrl = 'github.com';
+        }
+
+        this.url = 'https://' + this.originUrl + '/' + this.owner + '/' + this.repository + '.git';
+        this.repoConfig['url'] = this.url;
+    }
 }

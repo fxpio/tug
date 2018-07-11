@@ -56,7 +56,7 @@ db.setRepository(ApiKeyRepository);
 db.setRepository(CodeRepositoryRepository);
 
 configManager = new ConfigManager(db.getRepository(ConfigRepository));
-repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository));
+repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository), storage);
 
 app.set('config-manager', configManager);
 app.set('repository-manager', repoManager);
