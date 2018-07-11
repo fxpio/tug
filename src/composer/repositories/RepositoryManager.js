@@ -9,6 +9,9 @@
 
 import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
 import AttributeExists from '../../db/constraints/AttributeExists';
+import And from '../../db/constraints/And';
+import Not from '../../db/constraints/Not';
+import In from '../../db/constraints/In';
 import ConfigManager from '../../configs/ConfigManager';
 import DataStorage from '../../storages/DataStorage';
 import VcsRepository from './VcsRepository';
@@ -31,7 +34,8 @@ export default class RepositoryManager
         this.configManager = configManager;
         this.codeRepoRepo = codeRepoRepo;
         this.cache = cache;
-        this.cacheRepositories = null;
+        this.cacheRepositories = {};
+        this.allRepoRetrieves = false;
     }
 
     /**
@@ -85,7 +89,10 @@ export default class RepositoryManager
         if (repoData) {
             let config = await this.configManager.get();
             let repoConfig = {url: repoData.url, type: repoData.type, data: repoData};
-            return new VcsRepository(repoConfig, config, this.codeRepoRepo, this.cache);
+            let repo = new VcsRepository(repoConfig, config, this.codeRepoRepo, this.cache);
+            this.cacheRepositories[repoData.packageName] = repo;
+
+            return repo;
         }
 
         return null;
@@ -97,10 +104,17 @@ export default class RepositoryManager
      * @return {Object<String, VcsRepository>}
      */
     async getRepositories() {
-        if (!this.cacheRepositories) {
-            this.cacheRepositories = {};
+        if (!this.allRepoRetrieves) {
+            this.allRepoRetrieves = true;
             let config = await this.configManager.get();
-            let res = await this.codeRepoRepo.find({packageName: new AttributeExists()});
+            let packageConstraint = new AttributeExists();
+            let packagesNames = Object.keys(this.cacheRepositories);
+
+            if (packagesNames.length > 0) {
+                packageConstraint = new And([packageConstraint, new Not(new In(packagesNames))]);
+            }
+
+            let res = await this.codeRepoRepo.find({packageName: packageConstraint});
 
             for (let repoData of res.results) {
                 let repoConfig = {url: repoData.url, type: repoData.type, data: repoData};
