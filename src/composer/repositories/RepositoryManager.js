@@ -73,6 +73,25 @@ export default class RepositoryManager
     }
 
     /**
+     * Find a vcs repository for a package name.
+     *
+     * @param {String} packageName The package name
+     *
+     * @return {VcsRepository|null}
+     */
+    async findRepository(packageName) {
+        let repoData = await this.codeRepoRepo.findOne({packageName: packageName});
+
+        if (repoData) {
+            let config = await this.configManager.get();
+            let repoConfig = {url: repoData.url, type: repoData.type, data: repoData};
+            return new VcsRepository(repoConfig, config, this.codeRepoRepo, this.cache);
+        }
+
+        return null;
+    }
+
+    /**
      * Get all initialized vcs repositories.
      *
      * @return {Object<String, VcsRepository>}
