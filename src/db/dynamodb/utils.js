@@ -8,6 +8,8 @@
  */
 
 import AWS from 'aws-sdk';
+import Constraint from '../constraints/Constraint';
+import Equal from '../constraints/Equal';
 
 /**
  * Convert the criteria into dynamo db parameters for query.
@@ -26,9 +28,13 @@ export function convertQueryCriteria(criteria, indexName = 'model-index') {
     delete criteria.model;
 
     for (let key of Object.keys(criteria)) {
-        exp.push('#' + key + ' = :' + key);
+        let constraint = criteria[key] instanceof Constraint ? criteria[key] : new Equal(criteria[key]);
+        exp.push(constraint.format('#' + key, ':' + key));
         keys['#' + key] = key;
-        values[':' + key] = AWS.DynamoDB.Converter.marshall({val: criteria[key]}).val;
+
+        if (constraint.hasValue()) {
+            values[':' + key] = AWS.DynamoDB.Converter.marshall({val: constraint.getValue()}).val;
+        }
     }
 
     return {
@@ -53,9 +59,13 @@ export function convertScanCriteria(criteria) {
         values = {};
 
     for (let key of Object.keys(criteria)) {
-        exp.push('#' + key + ' = :' + key);
+        let constraint = criteria[key] instanceof Constraint ? criteria[key] : new Equal(criteria[key]);
+        exp.push(constraint.format('#' + key, ':' + key));
         keys['#' + key] = key;
-        values[':' + key] = AWS.DynamoDB.Converter.marshall({val: criteria[key]}).val;
+
+        if (constraint.hasValue()) {
+            values[':' + key] = AWS.DynamoDB.Converter.marshall({val: constraint.getValue()}).val;
+        }
     }
 
     return {
