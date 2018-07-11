@@ -42,6 +42,12 @@ export default class VcsRepository
         this.driverType = this.repoConfig['type'] ? this.repoConfig['type'] : null;
         this.driver = null;
         this.repoData = null;
+
+        if (this.repoConfig.data) {
+            this.repoData = this.repoConfig.data;
+            delete this.repoConfig.data;
+            this.getDriver();
+        }
     }
 
     /**

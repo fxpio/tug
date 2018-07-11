@@ -8,6 +8,7 @@
  */
 
 import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
+import AttributeExists from '../../db/constraints/AttributeExists';
 import ConfigManager from '../../configs/ConfigManager';
 import DataStorage from '../../storages/DataStorage';
 import VcsRepository from './VcsRepository';
@@ -30,6 +31,7 @@ export default class RepositoryManager
         this.configManager = configManager;
         this.codeRepoRepo = codeRepoRepo;
         this.cache = cache;
+        this.cacheRepositories = null;
     }
 
     /**
@@ -68,6 +70,26 @@ export default class RepositoryManager
         }
 
         return url;
+    }
+
+    /**
+     * Get all initialized vcs repositories.
+     *
+     * @return {Object<String, VcsRepository>}
+     */
+    async getRepositories() {
+        if (!this.cacheRepositories) {
+            this.cacheRepositories = {};
+            let config = await this.configManager.get();
+            let res = await this.codeRepoRepo.find({packageName: new AttributeExists()});
+
+            for (let repoData of res.results) {
+                let repoConfig = {url: repoData.url, type: repoData.type, data: repoData};
+                this.cacheRepositories[repoData.packageName] = new VcsRepository(repoConfig, config, this.codeRepoRepo, this.cache);
+            }
+        }
+
+        return this.cacheRepositories;
     }
 
     /**
