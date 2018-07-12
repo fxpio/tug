@@ -78,6 +78,10 @@ export default class RepositoryManager
      * @return {VcsRepository|null}
      */
     async findRepository(packageName) {
+        if (this.cacheRepositories[packageName]) {
+            return this.cacheRepositories[packageName];
+        }
+
         let repoData = await this.codeRepoRepo.findOne({packageName: packageName});
 
         if (repoData) {
