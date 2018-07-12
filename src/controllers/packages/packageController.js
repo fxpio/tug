@@ -9,6 +9,7 @@
 
 import RepositoryManager from '../../composer/repositories/RepositoryManager';
 import PackageManager from '../../composer/packages/PackageManager';
+import Cache from '../../caches/Cache';
 import {showError404} from '../../middlewares/errors';
 
 /**
@@ -19,9 +20,19 @@ import {showError404} from '../../middlewares/errors';
  * @param {Function}        next The next callback
  */
 export async function showRootPackages(req, res, next) {
+    /** @type Cache cache */
+    let cache = req.app.set('cache');
     /** @type RepositoryManager manager */
     let manager = req.app.set('repository-manager');
     let includes = {};
+
+    let content = await cache.getRootPackages();
+    if (content) {
+        res.set('Content-Type', 'application/json; charset=utf-8');
+        res.send(content);
+        return;
+    }
+
     let repos = await manager.getRepositories();
 
     for (let key of Object.keys(repos)) {
@@ -33,10 +44,8 @@ export async function showRootPackages(req, res, next) {
         };
     }
 
-    res.json({
-        packages: {},
-        includes: includes
-    });
+    res.set('Content-Type', 'application/json; charset=utf-8');
+    res.send(await cache.setRootPackages({packages: {}, includes: includes}));
 }
 
 /**
@@ -69,6 +78,8 @@ export async function showPackageVersion(req, res, next) {
  * @param {Function}        next The next callback
  */
 export async function showPackageVersions(req, res, next) {
+    /** @type Cache cache */
+    let cache = req.app.set('cache');
     /** @type PackageManager manager */
     let manager = req.app.set('package-manager');
     let packageName = req.params.vendor + '/' + req.params.package;
@@ -80,12 +91,20 @@ export async function showPackageVersions(req, res, next) {
         hash = matchHash[2];
     }
 
+    let content = await cache.getPackageVersions(packageName, hash);
+    if (content) {
+        res.set('Content-Type', 'application/json; charset=utf-8');
+        res.send(content);
+        return;
+    }
+
     let resPackages = await manager.findPackages(packageName, hash);
 
     if (Object.keys(resPackages).length > 0) {
         let data = {packages: {}};
         data.packages[packageName] = resPackages;
-        res.json(data);
+        res.set('Content-Type', 'application/json; charset=utf-8');
+        res.send(await cache.setPackageVersions(data, hash));
         return;
     }
 
