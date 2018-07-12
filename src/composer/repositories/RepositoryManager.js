@@ -9,7 +9,6 @@
 
 import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
 import ConfigManager from '../../configs/ConfigManager';
-import DataStorage from '../../storages/DataStorage';
 import VcsRepository from './VcsRepository';
 import RepositoryNotSupportedError from './RepositoryNotSupportedError';
 import VcsDriverNotFoundError from './VcsDriverNotFoundError';
@@ -25,12 +24,10 @@ export default class RepositoryManager
      *
      * @param {ConfigManager}            configManager The config
      * @param {CodeRepositoryRepository} codeRepoRepo  The database repository of code repository
-     * @param {DataStorage}              cache         The data storage of cache
      */
-    constructor(configManager, codeRepoRepo, cache) {
+    constructor(configManager, codeRepoRepo) {
         this.configManager = configManager;
         this.codeRepoRepo = codeRepoRepo;
-        this.cache = cache;
         this.cacheRepositories = {};
         this.allRepoRetrieves = false;
     }
@@ -86,7 +83,7 @@ export default class RepositoryManager
         if (repoData) {
             let config = await this.configManager.get();
             let repoConfig = {url: repoData.url, type: repoData.type, data: repoData};
-            let repo = new VcsRepository(repoConfig, config, this.codeRepoRepo, this.cache);
+            let repo = new VcsRepository(repoConfig, config, this.codeRepoRepo);
             this.cacheRepositories[repoData.packageName] = repo;
 
             return repo;
@@ -104,7 +101,7 @@ export default class RepositoryManager
         if (!this.allRepoRetrieves) {
             this.allRepoRetrieves = true;
             let config = await this.configManager.get();
-            this.cacheRepositories = retrieveAllRepositories(config, this.codeRepoRepo, this.cache, this.cacheRepositories);
+            this.cacheRepositories = retrieveAllRepositories(config, this.codeRepoRepo, this.cacheRepositories);
         }
 
         return this.cacheRepositories;
@@ -120,7 +117,7 @@ export default class RepositoryManager
      */
     async createVcsRepository(url, type = null) {
         let config = await this.configManager.get();
-        let repo = new VcsRepository({url: url, type: type}, config, this.codeRepoRepo, this.cache);
+        let repo = new VcsRepository({url: url, type: type}, config, this.codeRepoRepo);
 
         try {
             repo.getDriver();

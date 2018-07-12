@@ -9,7 +9,6 @@
 
 import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
 import Config from '../../configs/Config';
-import DataStorage from '../../storages/DataStorage';
 import AttributeExists from '../../db/constraints/AttributeExists';
 import And from '../../db/constraints/And';
 import Not from '../../db/constraints/Not';
@@ -21,13 +20,12 @@ import VcsRepository from './VcsRepository';
  *
  * @param {Config}                   config       The config
  * @param {CodeRepositoryRepository} codeRepoRepo The database repository of composer repository
- * @param {DataStorage}              cache        The cache storage
  * @param {Object}                   repositories The repositories
  * @param {String|null}              lastId       The last id of previous request
  *
  * @return {Promise<Object>}
  */
-export async function retrieveAllRepositories(config, codeRepoRepo, cache, repositories, lastId = null) {
+export async function retrieveAllRepositories(config, codeRepoRepo, repositories, lastId = null) {
     let packageConstraint = new AttributeExists();
     let packagesNames = Object.keys(repositories);
 
@@ -39,11 +37,11 @@ export async function retrieveAllRepositories(config, codeRepoRepo, cache, repos
 
     for (let repoData of res.results) {
         let repoConfig = {url: repoData.url, type: repoData.type, data: repoData};
-        repositories[repoData.packageName] = new VcsRepository(repoConfig, config, codeRepoRepo, cache);
+        repositories[repoData.packageName] = new VcsRepository(repoConfig, config, codeRepoRepo);
     }
 
     if (res.lastId) {
-        repositories = retrieveAllRepositories(config, codeRepoRepo, cache, repositories, res.lastId);
+        repositories = retrieveAllRepositories(config, codeRepoRepo, repositories, res.lastId);
     }
 
     return repositories;
