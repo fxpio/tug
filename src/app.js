@@ -19,6 +19,7 @@ import CodeRepositoryRepository from './db/repositories/CodeRepositoryRepository
 import PackageRepository from './db/repositories/PackageRepository';
 import ConfigManager from './configs/ConfigManager';
 import RepositoryManager from './composer/repositories/RepositoryManager';
+import PackageManager from './composer/packages/PackageManager';
 import LocalStorage from './storages/LocalStorage';
 import AwsS3Storage from './storages/AwsS3Storage';
 import LocalMessageQueue from './queues/LocalMessageQueue';
@@ -59,9 +60,11 @@ db.setRepository(PackageRepository);
 
 configManager = new ConfigManager(db.getRepository(ConfigRepository));
 repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository), storage);
+packageManager = new PackageManager(repoManager, db.getRepository(PackageRepository));
 
 app.set('config-manager', configManager);
 app.set('repository-manager', repoManager);
+app.set('package-manager', packageManager);
 app.set('db', db);
 app.set('storage', storage);
 app.set('queue', queue);
