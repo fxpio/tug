@@ -8,7 +8,6 @@
  */
 
 import Config from '../../../configs/Config';
-import DataStorage from '../../../storages/DataStorage';
 
 /**
  * A driver implementation for driver.
@@ -20,15 +19,13 @@ export default class VcsDriver
     /**
      * Constructor.
      *
-     * @param {Object}      repoConfig The repository config
-     * @param {Config}      config     The config
-     * @param {DataStorage} cache      The data storage of cache
+     * @param {Object} repoConfig The repository config
+     * @param {Config} config     The config
      */
-    constructor(repoConfig, config, cache) {
+    constructor(repoConfig, config) {
         this.url = repoConfig['url'];
         this.repoConfig = repoConfig;
         this.config = config;
-        this.cache = cache;
         this.infoCache = {};
     }
 

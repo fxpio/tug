@@ -22,6 +22,7 @@ import RepositoryManager from './composer/repositories/RepositoryManager';
 import PackageManager from './composer/packages/PackageManager';
 import LocalStorage from './storages/LocalStorage';
 import AwsS3Storage from './storages/AwsS3Storage';
+import Cache from './caches/Cache';
 import LocalMessageQueue from './queues/LocalMessageQueue';
 import AwsSqsMessageQueue from './queues/AwsSqsMessageQueue';
 import {logErrors} from './middlewares/logs';
@@ -37,6 +38,7 @@ let db,
     repoManager,
     packageManager,
     storage,
+    cache,
     queue;
 
 app.use(cors());
@@ -60,14 +62,16 @@ db.setRepository(CodeRepositoryRepository);
 db.setRepository(PackageRepository);
 
 configManager = new ConfigManager(db.getRepository(ConfigRepository));
-repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository), storage);
+repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository));
 packageManager = new PackageManager(repoManager, db.getRepository(PackageRepository));
+cache = new Cache(storage);
 
 app.set('config-manager', configManager);
 app.set('repository-manager', repoManager);
 app.set('package-manager', packageManager);
 app.set('db', db);
 app.set('storage', storage);
+app.set('cache', cache);
 app.set('queue', queue);
 app.use('/', hookRoutes(express.Router({})));
 app.use('/manager/', managerRoutes(express.Router({})));

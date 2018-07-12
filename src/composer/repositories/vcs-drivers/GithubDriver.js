@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import Config from '../../../configs/Config';
 import VcsDriver from './VcsDriver';
 
 /**
@@ -17,12 +18,11 @@ export default class GithubDriver extends VcsDriver
     /**
      * Constructor.
      *
-     * @param {Object}      repoConfig The repository config
-     * @param {Config}      config     The config
-     * @param {DataStorage} cache      The data storage of cache
+     * @param {Object} repoConfig The repository config
+     * @param {Config} config     The config
      */
-    constructor(repoConfig, config, cache) {
-        super(repoConfig, config, cache);
+    constructor(repoConfig, config) {
+        super(repoConfig, config);
 
         let match = this.url.match(/^(?:(?:https?|git):\/\/([^\/]+)\/|git@([^:]+):)([^\/]+)\/(.+?)(?:\.git|\/)?$/);
 

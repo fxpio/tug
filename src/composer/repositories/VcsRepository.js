@@ -9,7 +9,6 @@
 
 import Config from '../../configs/Config';
 import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
-import DataStorage from '../../storages/DataStorage';
 import VcsDriver from './vcs-drivers/VcsDriver';
 import GithubDriver from './vcs-drivers/GithubDriver';
 import GitlabDriver from './vcs-drivers/GitlabDriver';
@@ -27,16 +26,14 @@ export default class VcsRepository
      * @param {Object}                   repoConfig    The config of composer repository
      * @param {Config}                   config        The config
      * @param {CodeRepositoryRepository} codeRepoRepo  The database repository for composer repository
-     * @param {DataStorage}              cache         The data storage of cache
      * @param {Object<String, Function>} drivers       The map of vcs driver with their names
      */
-    constructor(repoConfig, config, codeRepoRepo, cache, drivers = null) {
+    constructor(repoConfig, config, codeRepoRepo, drivers = null) {
         this.drivers = drivers ? drivers : {
             'github': GithubDriver,
             'gitlab': GitlabDriver
         };
 
-        this.cache = cache;
         this.codeRepoRepo = codeRepoRepo;
         this.config = config;
         this.repoConfig = repoConfig;
@@ -105,7 +102,7 @@ export default class VcsRepository
             throw new VcsDriverNotFoundError('No driver found to handle VCS repository ' + this.url);
         }
 
-        this.driver = new this.drivers[validType](this.repoConfig, this.config, this.cache);
+        this.driver = new this.drivers[validType](this.repoConfig, this.config);
         this.driverType = 'vcs-' + validType;
         this.repoConfig['type'] = this.driverType;
         this.url = this.driver.getUrl();

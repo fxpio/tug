@@ -7,8 +7,40 @@
  * file that was distributed with this source code.
  */
 
+import RepositoryManager from '../../composer/repositories/RepositoryManager';
 import PackageManager from '../../composer/packages/PackageManager';
+import Cache from '../../caches/Cache';
 import {showError404} from '../../middlewares/errors';
+
+/**
+ * Display the root packages.
+ *
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
+ */
+export async function showRootPackages(req, res, next) {
+    /** @type Cache cache */
+    let cache = req.app.set('cache');
+    /** @type RepositoryManager manager */
+    let manager = req.app.set('repository-manager');
+    let includes = {};
+
+    let content = await cache.getRootPackages();
+
+    if (!content) {
+        let repos = await manager.getRepositories();
+        for (let key of Object.keys(repos)) {
+            let name = (await repos[key].getPackageName());
+            let hash = await repos[key].getLastHash();
+            includes[`p/${name}$${hash}.json`] = {'sha1': hash};
+        }
+        content = JSON.stringify({packages: {}, includes: includes});
+    }
+
+    res.set('Content-Type', 'application/json; charset=utf-8');
+    res.send(await cache.setRootPackages(content));
+}
 
 /**
  * Display the package definition for a specific version.
@@ -26,6 +58,50 @@ export async function showPackageVersion(req, res, next) {
 
     if (resPackage) {
         res.json(resPackage);
+        return;
+    }
+
+    showError404(req, res);
+}
+
+/**
+ * Display the list of all package versions.
+ *
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
+ */
+export async function showPackageVersions(req, res, next) {
+    /** @type Cache cache */
+    let cache = req.app.set('cache');
+    /** @type PackageManager manager */
+    let manager = req.app.set('package-manager');
+    let packageName = req.params.vendor + '/' + req.params.package;
+    let hash = null;
+    let matchHash = packageName.match(/([a-zA-Z0-9\-_\/]+)\$([\w\d]+)/);
+
+    if (matchHash) {
+        packageName = matchHash[1];
+        hash = matchHash[2];
+    }
+
+    let content = await cache.getPackageVersions(packageName, hash);
+
+    if (!content) {
+        let resPackages = await manager.findPackages(packageName, hash);
+        if (Object.keys(resPackages).length > 0) {
+            let data = {packages: {}};
+            data.packages[packageName] = resPackages;
+            content = JSON.stringify(data);
+        }
+    }
+
+    if (content) {
+        if (hash) {
+            await cache.setPackageVersions(packageName, hash, content);
+        }
+        res.set('Content-Type', 'application/json; charset=utf-8');
+        res.send(content);
         return;
     }
 
