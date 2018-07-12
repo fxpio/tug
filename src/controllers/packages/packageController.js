@@ -8,6 +8,7 @@
  */
 
 import PackageManager from '../../composer/packages/PackageManager';
+import {showError404} from '../../middlewares/errors';
 
 /**
  * Display the package definition for a specific version.
@@ -28,7 +29,5 @@ export async function showPackageVersion(req, res, next) {
         return;
     }
 
-    res.status(404).json({
-        message: 'Not found'
-    });
+    showError404(req, res);
 }
