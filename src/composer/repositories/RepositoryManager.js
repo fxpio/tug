@@ -8,6 +8,10 @@
  */
 
 import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
+import AttributeExists from '../../db/constraints/AttributeExists';
+import And from '../../db/constraints/And';
+import Not from '../../db/constraints/Not';
+import In from '../../db/constraints/In';
 import ConfigManager from '../../configs/ConfigManager';
 import DataStorage from '../../storages/DataStorage';
 import VcsRepository from './VcsRepository';
@@ -30,6 +34,8 @@ export default class RepositoryManager
         this.configManager = configManager;
         this.codeRepoRepo = codeRepoRepo;
         this.cache = cache;
+        this.cacheRepositories = {};
+        this.allRepoRetrieves = false;
     }
 
     /**
@@ -38,17 +44,17 @@ export default class RepositoryManager
      * @param {String}      url    The repository url
      * @param {String|null} [type] The vcs type
      *
-     * @return {Object}
+     * @return {VcsRepository}
      */
     async register(url, type = null) {
         let repo = await this.createVcsRepository(url, type);
         let data = await repo.getData();
 
         if (!data) {
-            data = await this.codeRepoRepo.put(await repo.createData());
+            await this.codeRepoRepo.put(repo.createData());
         }
 
-        return data;
+        return repo;
     }
 
     /**
@@ -71,6 +77,55 @@ export default class RepositoryManager
     }
 
     /**
+     * Find a vcs repository for a package name.
+     *
+     * @param {String} packageName The package name
+     *
+     * @return {VcsRepository|null}
+     */
+    async findRepository(packageName) {
+        let repoData = await this.codeRepoRepo.findOne({packageName: packageName});
+
+        if (repoData) {
+            let config = await this.configManager.get();
+            let repoConfig = {url: repoData.url, type: repoData.type, data: repoData};
+            let repo = new VcsRepository(repoConfig, config, this.codeRepoRepo, this.cache);
+            this.cacheRepositories[repoData.packageName] = repo;
+
+            return repo;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get all initialized vcs repositories.
+     *
+     * @return {Object<String, VcsRepository>}
+     */
+    async getRepositories() {
+        if (!this.allRepoRetrieves) {
+            this.allRepoRetrieves = true;
+            let config = await this.configManager.get();
+            let packageConstraint = new AttributeExists();
+            let packagesNames = Object.keys(this.cacheRepositories);
+
+            if (packagesNames.length > 0) {
+                packageConstraint = new And([packageConstraint, new Not(new In(packagesNames))]);
+            }
+
+            let res = await this.codeRepoRepo.find({packageName: packageConstraint});
+
+            for (let repoData of res.results) {
+                let repoConfig = {url: repoData.url, type: repoData.type, data: repoData};
+                this.cacheRepositories[repoData.packageName] = new VcsRepository(repoConfig, config, this.codeRepoRepo, this.cache);
+            }
+        }
+
+        return this.cacheRepositories;
+    }
+
+    /**
      * Create a vcs repository.
      *
      * @param {String}      url    The repository url
@@ -79,10 +134,11 @@ export default class RepositoryManager
      * @return {Promise<VcsRepository>}
      */
     async createVcsRepository(url, type = null) {
-        let repo = new VcsRepository({url: url, type: type}, this.configManager, this.codeRepoRepo, this.cache);
+        let config = await this.configManager.get();
+        let repo = new VcsRepository({url: url, type: type}, config, this.codeRepoRepo, this.cache);
 
         try {
-            await repo.getDriver();
+            repo.getDriver();
         } catch (e) {
             if (e instanceof VcsDriverNotFoundError) {
                 throw new RepositoryNotSupportedError(`The repository with the URL "${url}" is not supported`);
