@@ -35,6 +35,7 @@ const app = express();
 let db,
     configManager,
     repoManager,
+    packageManager,
     storage,
     queue;
 
