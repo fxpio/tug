@@ -9,6 +9,7 @@
 
 import RepositoryManager from '../repositories/RepositoryManager';
 import VersionParser from '../semver/VersionParser';
+import {retrieveAllVersions} from './utils';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -37,7 +38,7 @@ export default class PackageManager
      */
     async findPackage(packageName, version) {
         let packageData = null;
-        let repo = this.repoManager.findRepository(packageName);
+        let repo = await this.repoManager.findRepository(packageName);
 
         if (repo) {
             try {
@@ -54,5 +55,24 @@ export default class PackageManager
         }
 
         return packageData;
+    }
+
+    /**
+     * Find all versions of package.
+     *
+     * @param {String}      packageName The package name
+     * @param {String|null} hash        The hash
+     *
+     * @return {Promise<Object>}
+     */
+    async findPackages(packageName, hash = null) {
+        let res = {};
+        let repo = await this.repoManager.findRepository(packageName);
+
+        if (repo && (!hash || hash === (await repo.getData()).lastHash)) {
+            res = await retrieveAllVersions(packageName, this.packageRepo, {});
+        }
+
+        return res;
     }
 }
