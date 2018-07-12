@@ -171,5 +171,4 @@ export default class VcsRepository
 
         return this.repoData;
     }
-    }
 }
