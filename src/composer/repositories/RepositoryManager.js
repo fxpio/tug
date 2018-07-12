@@ -45,7 +45,8 @@ export default class RepositoryManager
         let data = await repo.getData();
 
         if (!data) {
-            await this.codeRepoRepo.put(repo.createData());
+            repo.createData();
+            await this.update(repo);
         }
 
         return repo;
@@ -94,6 +95,24 @@ export default class RepositoryManager
         }
 
         return null;
+    }
+
+    /**
+     * Update the data of repository.
+     *
+     * @param {VcsRepository} repository The repository
+     *
+     * @return {Promise<boolean>}
+     */
+    async update(repository) {
+        let data = await repository.getData();
+
+        if (data) {
+            await this.codeRepoRepo.put(data);
+            return true;
+        }
+
+        return false;
     }
 
     /**
