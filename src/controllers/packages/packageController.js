@@ -103,8 +103,12 @@ export async function showPackageVersions(req, res, next) {
     if (Object.keys(resPackages).length > 0) {
         let data = {packages: {}};
         data.packages[packageName] = resPackages;
+        let content = JSON.stringify(data);
+        if (hash) {
+            await cache.setPackageVersions(packageName, hash, content);
+        }
         res.set('Content-Type', 'application/json; charset=utf-8');
-        res.send(await cache.setPackageVersions(packageName, hash, JSON.stringify(data)));
+        res.send(content);
         return;
     }
 
