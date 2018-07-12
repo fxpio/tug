@@ -7,8 +7,37 @@
  * file that was distributed with this source code.
  */
 
+import RepositoryManager from '../../composer/repositories/RepositoryManager';
 import PackageManager from '../../composer/packages/PackageManager';
 import {showError404} from '../../middlewares/errors';
+
+/**
+ * Display the root packages.
+ *
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
+ */
+export async function showRootPackages(req, res, next) {
+    /** @type RepositoryManager manager */
+    let manager = req.app.set('repository-manager');
+    let includes = {};
+    let repos = await manager.getRepositories();
+
+    for (let key of Object.keys(repos)) {
+        let name = (await repos[key].getPackageName());
+        let hash = await repos[key].getLastHash();
+
+        includes[`p/${name}$${hash}.json`] = {
+            'sha1': hash
+        };
+    }
+
+    res.json({
+        packages: {},
+        includes: includes
+    });
+}
 
 /**
  * Display the package definition for a specific version.
