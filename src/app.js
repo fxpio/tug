@@ -72,9 +72,9 @@ app.use('/', hookRoutes(express.Router({})));
 app.use('/manager/', managerRoutes(express.Router({})));
 app.use('/', packageRoutes(express.Router({})));
 app.use(showUriError404);
-app.use(logErrors);
 app.use(showJsonError400);
 app.use(showError404);
+app.use(logErrors);
 app.use(showError500);
 
 export default app;
