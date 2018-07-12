@@ -16,6 +16,7 @@ import AwsDynamoDbDatabase from './db/AwsDynamoDbDatabase';
 import ConfigRepository from './db/repositories/ConfigRepository';
 import ApiKeyRepository from './db/repositories/ApiKeyRepository';
 import CodeRepositoryRepository from './db/repositories/CodeRepositoryRepository';
+import PackageRepository from './db/repositories/PackageRepository';
 import ConfigManager from './configs/ConfigManager';
 import RepositoryManager from './composer/repositories/RepositoryManager';
 import LocalStorage from './storages/LocalStorage';
@@ -54,6 +55,7 @@ db = new AwsDynamoDbDatabase(process.env.AWS_DYNAMODB_TABLE, process.env.AWS_REG
 db.setRepository(ConfigRepository);
 db.setRepository(ApiKeyRepository);
 db.setRepository(CodeRepositoryRepository);
+db.setRepository(PackageRepository);
 
 configManager = new ConfigManager(db.getRepository(ConfigRepository));
 repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository), storage);
