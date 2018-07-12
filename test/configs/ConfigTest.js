@@ -16,6 +16,9 @@ test('test config to get default values', t => {
 
     t.deepEqual(config.get('github-domains'), ['github.com']);
     t.deepEqual(config.get('github-oauth'), {});
+
+    t.deepEqual(config.get('gitlab-domains'), ['gitlab.com']);
+    t.deepEqual(config.get('gitlab-oauth'), {});
 });
 
 test('test config to get default all values', t => {
@@ -37,6 +40,11 @@ test('test config to check if key exists', t => {
     t.true(config.has('github-oauth'));
     t.false(config.has('invalid-key'));
     t.false(config.has('github-oauth[invalid-key]'));
+
+    t.true(config.has('gitlab-domains'));
+    t.true(config.has('gitlab-oauth'));
+    t.false(config.has('invalid-key'));
+    t.false(config.has('gitlab-oauth[invalid-key]'));
 });
 
 test('test config to merge with new config', t => {
@@ -53,4 +61,16 @@ test('test config to merge with new config', t => {
 
     t.deepEqual(config.get('github-oauth[github.com]'), 'MY_TOKEN');
     t.deepEqual(config.get('github-oauth["github.com"]'), 'MY_TOKEN');
+
+    t.deepEqual(config.get('gitlab-oauth[gitlab.com]'), null);
+    t.deepEqual(config.get('gitlab-oauth["gitlab.com"]'), null);
+
+    config.merge({
+        'gitlab-oauth': {
+            'gitlab.com': 'MY_TOKEN'
+        }
+    });
+
+    t.deepEqual(config.get('gitlab-oauth[gitlab.com]'), 'MY_TOKEN');
+    t.deepEqual(config.get('gitlab-oauth["gitlab.com"]'), 'MY_TOKEN');
 });

@@ -17,7 +17,10 @@ export default class Config
     static defaultConfig = {
         'github-domains': ['github.com'],
         'github-oauth': {},
-        'github-webhook': {}
+        'github-webhook': {},
+        'gitlab-domains': ['gitlab.com'],
+        'gitlab-oauth': {},
+        'gitlab-webhook': {}
     };
 
     constructor() {

@@ -12,6 +12,7 @@ import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryReposi
 import DataStorage from '../../storages/DataStorage';
 import VcsDriver from './vcs-drivers/VcsDriver';
 import GithubDriver from './vcs-drivers/GithubDriver';
+import GitlabDriver from './vcs-drivers/GitlabDriver';
 import VcsDriverNotFoundError from './VcsDriverNotFoundError';
 import {URL} from 'url';
 
@@ -31,7 +32,8 @@ export default class VcsRepository
      */
     constructor(repoConfig, configManager, codeRepoRepo, cache, drivers = null) {
         this.drivers = drivers ? drivers : {
-            'github': GithubDriver
+            'github': GithubDriver,
+            'gitlab': GitlabDriver
         };
 
         this.cache = cache;
