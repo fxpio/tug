@@ -95,13 +95,16 @@ export default class RepositoryManager
     /**
      * Get all initialized vcs repositories.
      *
+     * @param {Boolean} forceAll Check if all repositories must be returned
+     *                           or only returns the initialized repositories
+     *
      * @return {Object<String, VcsRepository>}
      */
-    async getRepositories() {
+    async getRepositories(forceAll = false) {
         if (!this.allRepoRetrieves) {
             this.allRepoRetrieves = true;
             let config = await this.configManager.get();
-            this.cacheRepositories = retrieveAllRepositories(config, this.codeRepoRepo, this.cacheRepositories);
+            this.cacheRepositories = retrieveAllRepositories(config, this.codeRepoRepo, this.cacheRepositories, forceAll);
         }
 
         return this.cacheRepositories;
