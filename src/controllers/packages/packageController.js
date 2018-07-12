@@ -45,7 +45,7 @@ export async function showRootPackages(req, res, next) {
     }
 
     res.set('Content-Type', 'application/json; charset=utf-8');
-    res.send(await cache.setRootPackages({packages: {}, includes: includes}));
+    res.send(await cache.setRootPackages(JSON.stringify({packages: {}, includes: includes})));
 }
 
 /**
@@ -104,7 +104,7 @@ export async function showPackageVersions(req, res, next) {
         let data = {packages: {}};
         data.packages[packageName] = resPackages;
         res.set('Content-Type', 'application/json; charset=utf-8');
-        res.send(await cache.setPackageVersions(data, hash));
+        res.send(await cache.setPackageVersions(packageName, hash, JSON.stringify(data)));
         return;
     }
 

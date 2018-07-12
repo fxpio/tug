@@ -35,15 +35,14 @@ export default class Cache
     /**
      * Set the root packages in cache.
      *
-     * @param {Object} data The data of root packages
+     * @param {String} content The content of root packages
      *
      * @return {Promise<String>}
      */
-    async setRootPackages(data) {
-        let dataStr = JSON.stringify(data);
-        await this.storage.put('cache/packages.json', dataStr);
+    async setRootPackages(content) {
+        await this.storage.put('cache/packages.json', content);
 
-        return dataStr;
+        return content;
     }
 
     /**
@@ -76,16 +75,16 @@ export default class Cache
     /**
      * Set the package versions in cache.
      *
-     * @param {Object} data The data of package versions
-     * @param {String} hash The hash
+     * @param {String} packageName The package name
+     * @param {String} hash        The hash
+     * @param {String} content     The content of package versions
      *
      * @return {Promise<String>}
      */
-    async setPackageVersions(data, hash) {
-        let dataStr = JSON.stringify(data);
-        await this.storage.put('cache/packages/' + Object.keys(data.packages)[0] + '/all$' + hash + '.json', dataStr);
+    async setPackageVersions(packageName, hash, content) {
+        await this.storage.put('cache/packages/' + packageName + '/all$' + hash + '.json', content);
 
-        return dataStr;
+        return content;
     }
 
     /**
