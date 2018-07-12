@@ -10,6 +10,7 @@
 import Authenticate from '../middlewares/auth/Authenticate';
 import BasicTokenAuth from '../middlewares/auth/strategies/BasicTokenAuth';
 import {asyncHandler} from '../utils/handler';
+import {showPackageVersion} from '../controllers/packages/packageController';
 
 /**
  * Generate the routes.
@@ -20,6 +21,8 @@ import {asyncHandler} from '../utils/handler';
  */
 export default function packageRoutes(router) {
     router.use(asyncHandler(new Authenticate(new BasicTokenAuth())));
+
+    router.get('/p/:vendor/:package/:version.json', asyncHandler(showPackageVersion));
 
     return router;
 }

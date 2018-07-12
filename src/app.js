@@ -16,14 +16,16 @@ import AwsDynamoDbDatabase from './db/AwsDynamoDbDatabase';
 import ConfigRepository from './db/repositories/ConfigRepository';
 import ApiKeyRepository from './db/repositories/ApiKeyRepository';
 import CodeRepositoryRepository from './db/repositories/CodeRepositoryRepository';
+import PackageRepository from './db/repositories/PackageRepository';
 import ConfigManager from './configs/ConfigManager';
 import RepositoryManager from './composer/repositories/RepositoryManager';
+import PackageManager from './composer/packages/PackageManager';
 import LocalStorage from './storages/LocalStorage';
 import AwsS3Storage from './storages/AwsS3Storage';
 import LocalMessageQueue from './queues/LocalMessageQueue';
 import AwsSqsMessageQueue from './queues/AwsSqsMessageQueue';
 import {logErrors} from './middlewares/logs';
-import {showError404, showError500, showJsonError400} from './middlewares/errors';
+import {showError404, showError500, showJsonError400, showUriError404} from './middlewares/errors';
 import {isProd} from './utils/server';
 import packageRoutes from './routes/packageRoutes';
 import hookRoutes from './routes/hookRoutes';
@@ -33,6 +35,7 @@ const app = express();
 let db,
     configManager,
     repoManager,
+    packageManager,
     storage,
     queue;
 
@@ -54,21 +57,25 @@ db = new AwsDynamoDbDatabase(process.env.AWS_DYNAMODB_TABLE, process.env.AWS_REG
 db.setRepository(ConfigRepository);
 db.setRepository(ApiKeyRepository);
 db.setRepository(CodeRepositoryRepository);
+db.setRepository(PackageRepository);
 
 configManager = new ConfigManager(db.getRepository(ConfigRepository));
 repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository), storage);
+packageManager = new PackageManager(repoManager, db.getRepository(PackageRepository));
 
 app.set('config-manager', configManager);
 app.set('repository-manager', repoManager);
+app.set('package-manager', packageManager);
 app.set('db', db);
 app.set('storage', storage);
 app.set('queue', queue);
 app.use('/', hookRoutes(express.Router({})));
 app.use('/manager/', managerRoutes(express.Router({})));
 app.use('/', packageRoutes(express.Router({})));
-app.use(logErrors);
+app.use(showUriError404);
 app.use(showJsonError400);
 app.use(showError404);
+app.use(logErrors);
 app.use(showError500);
 
 export default app;

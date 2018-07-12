@@ -8,15 +8,12 @@
  */
 
 import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
-import AttributeExists from '../../db/constraints/AttributeExists';
-import And from '../../db/constraints/And';
-import Not from '../../db/constraints/Not';
-import In from '../../db/constraints/In';
 import ConfigManager from '../../configs/ConfigManager';
 import DataStorage from '../../storages/DataStorage';
 import VcsRepository from './VcsRepository';
 import RepositoryNotSupportedError from './RepositoryNotSupportedError';
 import VcsDriverNotFoundError from './VcsDriverNotFoundError';
+import {retrieveAllRepositories} from "./utils";
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -107,19 +104,7 @@ export default class RepositoryManager
         if (!this.allRepoRetrieves) {
             this.allRepoRetrieves = true;
             let config = await this.configManager.get();
-            let packageConstraint = new AttributeExists();
-            let packagesNames = Object.keys(this.cacheRepositories);
-
-            if (packagesNames.length > 0) {
-                packageConstraint = new And([packageConstraint, new Not(new In(packagesNames))]);
-            }
-
-            let res = await this.codeRepoRepo.find({packageName: packageConstraint});
-
-            for (let repoData of res.results) {
-                let repoConfig = {url: repoData.url, type: repoData.type, data: repoData};
-                this.cacheRepositories[repoData.packageName] = new VcsRepository(repoConfig, config, this.codeRepoRepo, this.cache);
-            }
+            this.cacheRepositories = retrieveAllRepositories(config, this.codeRepoRepo, this.cache, this.cacheRepositories);
         }
 
         return this.cacheRepositories;
