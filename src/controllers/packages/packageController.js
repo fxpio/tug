@@ -27,25 +27,19 @@ export async function showRootPackages(req, res, next) {
     let includes = {};
 
     let content = await cache.getRootPackages();
-    if (content) {
-        res.set('Content-Type', 'application/json; charset=utf-8');
-        res.send(content);
-        return;
-    }
 
-    let repos = await manager.getRepositories();
-
-    for (let key of Object.keys(repos)) {
-        let name = (await repos[key].getPackageName());
-        let hash = await repos[key].getLastHash();
-
-        includes[`p/${name}$${hash}.json`] = {
-            'sha1': hash
-        };
+    if (!content) {
+        let repos = await manager.getRepositories();
+        for (let key of Object.keys(repos)) {
+            let name = (await repos[key].getPackageName());
+            let hash = await repos[key].getLastHash();
+            includes[`p/${name}$${hash}.json`] = {'sha1': hash};
+        }
+        content = JSON.stringify({packages: {}, includes: includes});
     }
 
     res.set('Content-Type', 'application/json; charset=utf-8');
-    res.send(await cache.setRootPackages(JSON.stringify({packages: {}, includes: includes})));
+    res.send(await cache.setRootPackages(content));
 }
 
 /**
@@ -92,18 +86,17 @@ export async function showPackageVersions(req, res, next) {
     }
 
     let content = await cache.getPackageVersions(packageName, hash);
-    if (content) {
-        res.set('Content-Type', 'application/json; charset=utf-8');
-        res.send(content);
-        return;
+
+    if (!content) {
+        let resPackages = await manager.findPackages(packageName, hash);
+        if (Object.keys(resPackages).length > 0) {
+            let data = {packages: {}};
+            data.packages[packageName] = resPackages;
+            content = JSON.stringify(data);
+        }
     }
 
-    let resPackages = await manager.findPackages(packageName, hash);
-
-    if (Object.keys(resPackages).length > 0) {
-        let data = {packages: {}};
-        data.packages[packageName] = resPackages;
-        let content = JSON.stringify(data);
+    if (content) {
         if (hash) {
             await cache.setPackageVersions(packageName, hash, content);
         }
