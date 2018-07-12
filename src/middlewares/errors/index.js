@@ -22,6 +22,23 @@ export function showError404(req, res) {
 }
 
 /**
+ * Display the 404 error for URI errors.
+ *
+ * @param {Error}           err  The error
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
+ */
+export function showUriError404(err, req, res, next) {
+    if (err instanceof URIError) {
+        showError404(req, res);
+        return;
+    }
+
+    next(err);
+}
+
+/**
  * Display the 400 error for json errors.
  *
  * @param {Error}           err  The error
