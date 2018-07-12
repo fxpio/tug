@@ -75,50 +75,20 @@ AWS Cloud Formation, with API Gateway, Lambda, SQS and IAM.
 $ yarn run setup
 ```
 
-> You will be prompted to enter your credentials for AWS and Github services, as well as some other settings.
+> **Notes:**
+> - You will be prompted to enter your credentials for AWS and Github services, as well as some other settings.
+> - If you prefer run the commands separately or run the dev server in local, see [this page](alternate-installations.md)
 
-**If you prefer run the commands separately, execute the commands:**
+Great! Now you can go to the AWS console of CloudFormation to track the deployment status of the stack.
 
-1. `$ yarn install`
-2. `$ node bin/config`
-3. `$ node bin/create-bucket`
-4. `$ node bin/package-deploy`
-
-**To run the dev server in local, only execute the commands:**
-
-1. `$ yarn install`
-2. `$ node bin/config`
-3. `$ node bin/serve` (by default, the Express server runs on `http://localhost:3000`, and the AWS DynamoDB local
-   server runs on `http://localhost:3001`)
-
-### 2.1. Create the SSL certificate (optional)
-         
-Create the domain certificate in AWS Certificate Manager in your AWS region if you want to use a regional endpoint,
-or in the `us-west-1` region if you want to use the Edge Optimized endpoint:
-
-1. Add the root domain: `satis.example.tld` (example)
-2. Validate and request the certificate
-
-### 2.2. Create the domain in API Gateway (optional)
-
-Create the domain in API Gateway with:
-
-- Domain: `<your-custom-domain-for-satis>`
-- Configuration of the endpoint: `Edge Optimized` or `Regional`
-- ACM Certificate: `<your-certificate-for-satis-domain>`
-- Base Path Mapping:
-  - Path: ``
-  - Destination: `<your-satis-gateway-api>`
-  - Stage: `prod`
-
-### 2.3. Configure your DNS zone (optional)
-
-Create a DNS entry for your custom domain, map it with the domain target of the API Gateway  with a `CNAME` type.
+When the deployment process is complete, you can directly use the endpoint of
+`https://<lambda-id>.execute-api.<region>.amazonaws.com/prod/`, or create your SSL certificate to use with
+a custom domain. In this case, see [this page](custom-domain-ssl.md).
 
 
 ## 3) Create the token for Github Webhooks
 
-Run the command:
+To create a token to use in Github webhooks, run the command:
 
 ```
 $ node bin/create-github-token
@@ -126,7 +96,8 @@ $ node bin/create-github-token
 
 > **Note:**
 >
-> The token for Github Webhooks is stored in the DynamoDB with the key `config:github-token` and the `token` attribute.
+> The token for Github Webhooks is stored in the DynamoDB with the id `config:global` and the
+> `github-webhook."github.com"` attribute.
 
 
 ## 4) Configure the Github Webhook
@@ -144,7 +115,9 @@ In each repository or in a organization, create the webhook with:
 
 ## 5) Create your first API key
 
-Run the command:
+The API keys are to be used with Composer to allow the connection with your Satis Serverless.
+
+To create a new API key, run the command:
 
 ```
 $ node bin/create-api-key
@@ -162,34 +135,8 @@ more about using this project.
 
 The following documents are available:
 
+- [Configure your custom domain with SSL](custom-domain-ssl.md)
 - [Using Satis Serverless in your project](include-in-project.md)
 - [Manage the packages](manage-packages.md)
-
-### Available commands
-
-All commands below are executable via `node bin/<command-name>`, `yarn run bin/node bin/<command-name>`
-or `npm run bin/node bin/<command-name>`:
-
-- `setup`: Install dependencies, configure the project, create the S3 bucket, package and deploy in
-  AWS Cloud Formation, with API Gateway, Lambda and IAM
-- `config`: Configure the project
-- `deconfig`: Remove the custom configuration
-- `serve`: Run the server in local
-- `create-bucket`: Create the S3 bucket
-- `delete-bucket`: Delete the S3 bucket
-- `build`: Build the project (configure the project before, if it's not the case)
-- `package`: Package the built project in S3 for AWS Cloud Formation (builds the project before, if it's not the case)
-- `deploy`: Deploy the packaged project in AWS Cloud Formation
-- `package-deploy`: Package and deploy the project
-- `delete-stack`: Delete the AWS Cloud Formation stack
-- `create-api-key`: Create a API key
-- `delete-api-key`: Delete a API key
-- `show-github-token`: Show the token for the Github Webhooks
-- `create-github-token`: Create the token for the Github Webhooks
-- `delete-github-token`: Delete the token for the Github Webhooks
-- `enable-repo`: Enable manually the Github repository
-- `disable-repo`: Disable manually the Github repository
-
-> **Note:**
->
-> Each command has the `--help` option (`-h` alias) to display all informations about the command.
+- [Alternative installations](alternate-installations.md)
+- [Available commands](available-commands.md)
