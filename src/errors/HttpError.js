@@ -7,19 +7,32 @@
  * file that was distributed with this source code.
  */
 
+import FxpServerlessError from './FxpServerlessError';
+
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class VcsDriverNotFoundError extends Error
+export default class HttpError extends FxpServerlessError
 {
     /**
      * Constructor.
      *
      * @param {String} message
+     * @param {Number} statusCode
      * @param {String} [fileName}
      * @param {Number} [lineNumber}
      */
-    constructor(message, fileName, lineNumber) {
+    constructor(message, statusCode, fileName, lineNumber) {
         super(message, fileName, lineNumber);
+        this.statusCode = statusCode;
+    }
+
+    /**
+     * Get the http status code.
+     *
+     * @return {Number}
+     */
+    getStatusCode() {
+        return this.statusCode;
     }
 }

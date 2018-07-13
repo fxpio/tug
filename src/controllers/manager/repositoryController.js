@@ -8,7 +8,7 @@
  */
 
 import RepositoryManager from '../../composer/repositories/RepositoryManager';
-import RepositoryError from '../../composer/repositories/RepositoryError'
+import ValidationError from '../../errors/ValidationError';
 
 /**
  * Enable the repository.
@@ -18,30 +18,14 @@ import RepositoryError from '../../composer/repositories/RepositoryError'
  * @param {Function}        next The next callback
  */
 export async function enableRepository(req, res, next) {
+    validateBody(req, 'url');
+
     /** @type {RepositoryManager} repoManager */
     let repoManager = req.app.set('repository-manager');
     let url = req.body.url;
     let type = req.body.type;
-    let err = validateRepository(url);
     /** @type VcsRepository repo */
-    let repo;
-
-    try {
-        repo = await repoManager.register(url, type);
-    } catch (e) {
-        if (e instanceof RepositoryError) {
-            err = e;
-        } else {
-            throw e;
-        }
-    }
-
-    if (err) {
-        res.status(400).json({
-            message: err.message
-        });
-        return;
-    }
+    let repo = await repoManager.register(url, type);
 
     res.json({
         message: `The "${repo.getType()}" repository with the URL "${repo.getUrl()}" were enabled successfully`,
@@ -58,27 +42,11 @@ export async function enableRepository(req, res, next) {
  * @param {Function}        next The next callback
  */
 export async function disableRepository(req, res, next) {
+    validateBody(req, 'url');
+
     /** @type {RepositoryManager} repoManager */
     let repoManager = req.app.set('repository-manager');
-    let url = req.body.url;
-    let err = validateRepository(url);
-
-    try {
-        url = await repoManager.unregister(url);
-    } catch (e) {
-        if (e instanceof RepositoryError) {
-            err = e;
-        } else {
-            throw e;
-        }
-    }
-
-    if (err) {
-        res.status(400).json({
-            message: err.message
-        });
-        return;
-    }
+    let url = await repoManager.unregister(req.body.url);
 
     res.json({
         message: `The repository with the URL "${url}" were disabled successfully`,
@@ -94,28 +62,12 @@ export async function disableRepository(req, res, next) {
  * @param {Function}        next The next callback
  */
 export async function refreshPackages(req, res, next) {
+    validateBody(req, 'url');
+
     /** @type {RepositoryManager} repoManager */
     let repoManager = req.app.set('repository-manager');
-    let url = req.body.url;
     let force = req.body.force;
-    let err = validateRepository(url);
-
-    try {
-        url = (await repoManager.refreshPackages(url, true === force)).getUrl();
-    } catch (e) {
-        if (e instanceof RepositoryError) {
-            err = e;
-        } else {
-            throw e;
-        }
-    }
-
-    if (err) {
-        res.status(400).json({
-            message: err.message
-        });
-        return;
-    }
+    let url = (await repoManager.refreshPackages(req.body.url, true === force)).getUrl();
 
     res.json({
         message: `Refreshing of all packages has started for the repository "${url}"`,
@@ -124,18 +76,15 @@ export async function refreshPackages(req, res, next) {
 }
 
 /**
- * Validate the repository URL.
+ * Validate the request body of repository.
  *
- * @param {string} url
- *
- * @return {Error|null}
+ * @param {IncomingMessage} req   The request
+ * @param {String}          field The required filed
  */
-function validateRepository(url) {
-    let err = null;
-
-    if (!url) {
-        err = new Error('The "url" body attribute is required');
+function validateBody(req, field) {
+    if (!req.body[field]) {
+        let errorFields = {};
+        errorFields[field] = `The value is required`;
+        throw new ValidationError(errorFields, `The "${field}" body attribute is required`);
     }
-
-    return err;
 }

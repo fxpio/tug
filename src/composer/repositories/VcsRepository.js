@@ -10,7 +10,7 @@
 import Config from '../../configs/Config';
 import VcsDriver from './vcs-drivers/VcsDriver';
 import GithubDriver from './vcs-drivers/GithubDriver';
-import VcsDriverNotFoundError from './VcsDriverNotFoundError';
+import VcsDriverNotFoundError from '../../errors/VcsDriverNotFoundError';
 import {URL} from 'url';
 
 /**

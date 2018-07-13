@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+import HttpError from '../../errors/HttpError';
+
 /**
  * Display the list of all packages in the "provider" format.
  *
@@ -16,6 +18,9 @@
  * @param {Function}        next The next callback
  */
 export function logErrors(err, req, res, next) {
-    console.error(err.stack);
+    if (!(err instanceof HttpError)) {
+        console.error('[CRITICAL]', err.stack);
+    }
+
     next(err);
 }

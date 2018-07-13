@@ -8,70 +8,75 @@
  */
 
 import {isProd} from '../../utils/server';
+import HttpNotFoundError from "../../errors/HttpNotFoundError";
+import HttpError from "../../errors/HttpError";
+import ValidationError from "../../errors/ValidationError";
+import HttpBadRequestError from "../../errors/HttpBadRequestError";
 
 /**
- * Display the 404 error.
+ * Display the http not found error.
  *
  * @param {IncomingMessage} req The request
  * @param {ServerResponse}  res The response
  */
-export function showError404(req, res) {
-    res.status(404).json({
-        message: 'Not found'
-    });
+export function convertRouteNotFound(req, res) {
+    throw new HttpNotFoundError();
 }
 
 /**
- * Display the 404 error for URI errors.
+ * Display the http not found error for URI errors.
  *
  * @param {Error}           err  The error
  * @param {IncomingMessage} req  The request
  * @param {ServerResponse}  res  The response
  * @param {Function}        next The next callback
  */
-export function showUriError404(err, req, res, next) {
+export function convertURIError(err, req, res, next) {
     if (err instanceof URIError) {
-        showError404(req, res);
-        return;
+        throw new HttpNotFoundError();
     }
-
     next(err);
 }
 
 /**
- * Display the 400 error for json errors.
+ * Display the http bad request error for JSON Syntax errors.
  *
  * @param {Error}           err  The error
  * @param {IncomingMessage} req  The request
  * @param {ServerResponse}  res  The response
  * @param {Function}        next The next callback
  */
-export function showJsonError400(err, req, res, next) {
+export function convertJsonSyntaxError(err, req, res, next) {
     if (err instanceof SyntaxError && err.status === 400) {
-        return res.status(400).json({
-            message: 'The body of your request is not a valid JSON'
-        });
+        throw new HttpBadRequestError('The body of your request is not a valid JSON');
     }
-
     next(err);
 }
 
 /**
- * Display the 500 error.
+ * Display the http error or the 500 error if it isn't a http error.
  *
  * @param {Error}           err  The error
  * @param {IncomingMessage} req  The request
  * @param {ServerResponse}  res  The response
  * @param {Function}        next The next callback
  */
-export function showError500(err, req, res, next) {
+export function showError(err, req, res, next) {
     let data = {
+        code: 500,
         message: 'Internal error'
     };
 
-    if (!isProd()) {
+    if (err instanceof HttpError) {
+        data.message = err.message;
+        data.code = err.getStatusCode();
+
+        if (err instanceof ValidationError) {
+            data.errors = err.getFieldErrors();
+        }
+    } else if (!isProd()) {
         data.error = err.message
     }
 
-    res.status(500).json(data);
+    res.status(data.code).json(data);
 }

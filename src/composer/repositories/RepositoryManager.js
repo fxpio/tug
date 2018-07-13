@@ -10,9 +10,9 @@
 import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
 import ConfigManager from '../../configs/ConfigManager';
 import VcsRepository from './VcsRepository';
-import RepositoryNotSupportedError from './RepositoryNotSupportedError';
-import RepositoryNotFoundError from './RepositoryNotFoundError';
-import VcsDriverNotFoundError from './VcsDriverNotFoundError';
+import RepositoryNotSupportedError from '../../errors/RepositoryNotSupportedError';
+import RepositoryNotFoundError from '../../errors/RepositoryNotFoundError';
+import VcsDriverNotFoundError from '../../errors/VcsDriverNotFoundError';
 import {retrieveAllRepositories} from '../../utils/repository';
 
 /**

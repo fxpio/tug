@@ -10,7 +10,7 @@
 import RepositoryManager from '../../composer/repositories/RepositoryManager';
 import PackageManager from '../../composer/packages/PackageManager';
 import Cache from '../../caches/Cache';
-import {showError404} from '../../middlewares/errors';
+import HttpNotFoundError from '../../errors/HttpNotFoundError';
 
 /**
  * Display the root packages.
@@ -61,7 +61,7 @@ export async function showPackageVersion(req, res, next) {
         return;
     }
 
-    showError404(req, res);
+    throw new HttpNotFoundError();
 }
 
 /**
@@ -105,5 +105,5 @@ export async function showPackageVersions(req, res, next) {
         return;
     }
 
-    showError404(req, res);
+    throw new HttpNotFoundError();
 }
