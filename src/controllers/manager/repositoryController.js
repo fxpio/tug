@@ -8,7 +8,7 @@
  */
 
 import RepositoryManager from '../../composer/repositories/RepositoryManager';
-import RepositoryNotSupportedError from '../../composer/repositories/RepositoryNotSupportedError'
+import RepositoryError from '../../composer/repositories/RepositoryError'
 
 /**
  * Enable the repository.
@@ -29,7 +29,7 @@ export async function enableRepository(req, res, next) {
     try {
         repo = await repoManager.register(url, type);
     } catch (e) {
-        if (e instanceof RepositoryNotSupportedError) {
+        if (e instanceof RepositoryError) {
             err = e;
         } else {
             throw e;
@@ -66,7 +66,7 @@ export async function disableRepository(req, res, next) {
     try {
         url = await repoManager.unregister(url);
     } catch (e) {
-        if (e instanceof RepositoryNotSupportedError) {
+        if (e instanceof RepositoryError) {
             err = e;
         } else {
             throw e;

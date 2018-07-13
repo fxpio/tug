@@ -7,12 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import RepositoryError from './RepositoryError';
-
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class RepositoryNotSupportedError extends RepositoryError
+export default class RepositoryError extends Error
 {
     /**
      * Constructor.
