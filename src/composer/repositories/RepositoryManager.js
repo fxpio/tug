@@ -73,6 +73,26 @@ export default class RepositoryManager
     }
 
     /**
+     * Refresh the packages.
+     *
+     * @param {String} url The repository url
+     *
+     * @return {Promise<VcsRepository>}
+     *
+     * @throws RepositoryNotFoundError When the repository is not found
+     */
+    async refreshPackages(url) {
+        let repo = await this.createVcsRepository(url);
+        let existingRepo = await this.getRepository(repo.getUrl());
+
+        if (!existingRepo) {
+            throw new RepositoryNotFoundError(`The repository with the url "${repo.getUrl()}" is not found`);
+        }
+
+        return existingRepo;
+    }
+
+    /**
      * Find a vcs repository for a package name.
      *
      * @param {String} packageName The package name
