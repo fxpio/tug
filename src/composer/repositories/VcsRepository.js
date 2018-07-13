@@ -10,6 +10,7 @@
 import Config from '../../configs/Config';
 import VcsDriver from './vcs-drivers/VcsDriver';
 import GithubDriver from './vcs-drivers/GithubDriver';
+import RepositoryError from '../../errors/RepositoryError';
 import VcsDriverNotFoundError from '../../errors/VcsDriverNotFoundError';
 import {URL} from 'url';
 
@@ -35,7 +36,7 @@ export default class VcsRepository
         this.driver = null;
 
         if (!this.repoData['url']) {
-            throw new Error('The "url" attribute of vcs repository is required');
+            throw new RepositoryError('The "url" attribute of vcs repository is required');
         }
     }
 

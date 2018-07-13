@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import DatabaseError from '../errors/DatabaseError';
 import DatabaseRepository from './repositories/DatabaseRepository';
 import Results from './Results';
 
@@ -52,11 +53,11 @@ export default class Database
         } else if (repository.hasOwnProperty('getName')) {
             name = repository.getName();
         } else {
-            throw new Error(`The repository attribute must be a string or a function, given type "${type}"`);
+            throw new DatabaseError(`The repository attribute must be a string or a function, given type "${type}"`);
         }
 
         if (!this.repositories[name]) {
-            throw new Error(`The repository "${name}" does not exist`);
+            throw new DatabaseError(`The repository "${name}" does not exist`);
         }
 
         return this.repositories[name];
@@ -138,7 +139,7 @@ export default class Database
      */
     static validateData(data) {
         if (typeof data !== 'object' || !data.id) {
-            throw new Error('The data must be an object with the required "id" property');
+            throw new DatabaseError('The data must be an object with the required "id" property');
         }
     }
 };
