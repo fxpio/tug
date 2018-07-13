@@ -7,8 +7,10 @@
  * file that was distributed with this source code.
  */
 
+import Joi from 'joi';
 import ApiKeyRepository from '../../db/repositories/ApiKeyRepository';
 import {generateToken} from '../../utils/token';
+import {validateForm} from '../../utils/validation';
 
 /**
  * Create the api key.
@@ -18,6 +20,10 @@ import {generateToken} from '../../utils/token';
  * @param {Function}        next The next callback
  */
 export async function createApiKey(req, res, next) {
+    validateForm(req, {
+        token: Joi.string().min(10)
+    });
+
     /** @type {ApiKeyRepository} repo */
     let repo = req.app.set('db').getRepository(ApiKeyRepository);
     let token = req.body.token ? req.body.token : generateToken(40);
@@ -38,6 +44,10 @@ export async function createApiKey(req, res, next) {
  * @param {Function}        next The next callback
  */
 export async function deleteApiKey(req, res, next) {
+    validateForm(req, {
+        token: Joi.string().min(10)
+    });
+
     /** @type {ApiKeyRepository} repo */
     let repo = req.app.set('db').getRepository(ApiKeyRepository);
     let token = req.body.token;

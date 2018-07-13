@@ -7,8 +7,9 @@
  * file that was distributed with this source code.
  */
 
+import Joi from 'joi';
 import RepositoryManager from '../../composer/repositories/RepositoryManager';
-import ValidationError from '../../errors/ValidationError';
+import {validateForm} from '../../utils/validation';
 
 /**
  * Enable the repository.
@@ -18,7 +19,9 @@ import ValidationError from '../../errors/ValidationError';
  * @param {Function}        next The next callback
  */
 export async function enableRepository(req, res, next) {
-    validateBody(req, 'url');
+    validateForm(req, {
+        url: Joi.string().required(),
+    });
 
     /** @type {RepositoryManager} repoManager */
     let repoManager = req.app.set('repository-manager');
@@ -42,7 +45,9 @@ export async function enableRepository(req, res, next) {
  * @param {Function}        next The next callback
  */
 export async function disableRepository(req, res, next) {
-    validateBody(req, 'url');
+    validateForm(req, {
+        url: Joi.string().required(),
+    });
 
     /** @type {RepositoryManager} repoManager */
     let repoManager = req.app.set('repository-manager');
@@ -62,7 +67,10 @@ export async function disableRepository(req, res, next) {
  * @param {Function}        next The next callback
  */
 export async function refreshPackages(req, res, next) {
-    validateBody(req, 'url');
+    validateForm(req, {
+        url: Joi.string().required(),
+        force: Joi.boolean()
+    });
 
     /** @type {RepositoryManager} repoManager */
     let repoManager = req.app.set('repository-manager');
@@ -73,18 +81,4 @@ export async function refreshPackages(req, res, next) {
         message: `Refreshing of all packages has started for the repository "${url}"`,
         url: url
     });
-}
-
-/**
- * Validate the request body of repository.
- *
- * @param {IncomingMessage} req   The request
- * @param {String}          field The required filed
- */
-function validateBody(req, field) {
-    if (!req.body[field]) {
-        let errorFields = {};
-        errorFields[field] = `The value is required`;
-        throw new ValidationError(errorFields, `The "${field}" body attribute is required`);
-    }
 }
