@@ -42,6 +42,8 @@ export default class RepositoryManager
      * @param {String|null} [type] The vcs type
      *
      * @return {VcsRepository}
+     *
+     * @throws RepositoryNotSupportedError When the repository is not supported
      */
     async register(url, type = null) {
         let repo = await this.createVcsRepository(url, type);
@@ -63,6 +65,8 @@ export default class RepositoryManager
      * @param {String} url The repository url
      *
      * @return {String}
+     *
+     * @throws RepositoryNotSupportedError When the repository is not supported
      */
     async unregister(url) {
         let repo = await this.createVcsRepository(url);
@@ -85,7 +89,8 @@ export default class RepositoryManager
      *
      * @return {Promise<VcsRepository>}
      *
-     * @throws RepositoryNotFoundError When the repository is not found
+     * @throws RepositoryNotSupportedError When the repository is not supported
+     * @throws RepositoryNotFoundError     When the repository is not found
      */
     async refreshPackages(url, force = true) {
         let repo = await this.createVcsRepository(url);
@@ -180,6 +185,8 @@ export default class RepositoryManager
      * @param {String|null} [type] The vcs type
      *
      * @return {Promise<VcsRepository>}
+     *
+     * @throws RepositoryNotSupportedError When the repository is not supported
      */
     async createVcsRepository(url, type = null) {
         let config = await this.configManager.get();

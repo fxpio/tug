@@ -15,6 +15,8 @@ import ValidationError from '../errors/ValidationError';
  *
  * @param {IncomingMessage}     req        The request
  * @param {Object<String, Joi>} schemaKeys The map of request body fields
+ *
+ * @throws ValidationError When the request form has errors
  */
 export function validateForm(req, schemaKeys) {
     let schema = Joi.object().keys(schemaKeys);

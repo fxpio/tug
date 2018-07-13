@@ -43,6 +43,9 @@ export default class Database
      * @param {Function|String} repository The repository name
      *
      * @return {DatabaseRepository|*}
+     *
+     * @throws DatabaseError When the repository attribute is not a string or a function
+     * @throws DatabaseError When the repository does not exist
      */
     getRepository(repository) {
         let name = null;
@@ -91,6 +94,8 @@ export default class Database
      * @param {Object} data The data
      *
      * @return {Promise<Object>}
+     *
+     * @throws Error When the data object has not the id property
      */
     async put(data) {
         Database.validateData(data);
@@ -136,6 +141,8 @@ export default class Database
      * Check if the data is valid.
      *
      * @param {*} data The data
+     *
+     * @throws DatabaseError When the data object has not the id property
      */
     static validateData(data) {
         if (typeof data !== 'object' || !data.id) {

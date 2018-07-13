@@ -42,6 +42,8 @@ export default class VersionParser
      * @param {string} [fullVersion] The full version
      *
      * @return {string}
+     *
+     * @throws UnexpectedValueError When the version is invalid
      */
     normalize(version, fullVersion = '') {
         version = version.trim();

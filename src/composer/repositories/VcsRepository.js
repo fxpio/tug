@@ -25,6 +25,8 @@ export default class VcsRepository
      * @param {Object}                   repoData The data config of composer repository
      * @param {Config}                   config   The config
      * @param {Object<String, Function>} drivers  The map of vcs driver with their names
+     *
+     * @throws RepositoryError When the url attribute of repo data is not defined
      */
     constructor(repoData, config, drivers = null) {
         this.drivers = drivers ? drivers : {
