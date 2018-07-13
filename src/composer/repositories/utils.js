@@ -38,14 +38,13 @@ export async function retrieveAllRepositories(config, codeRepoRepo, repositories
     }
 
     if (!forceAll) {
-        criteria.lastHash = new AttributeExists()
+        criteria.lastHash = new AttributeExists();
     }
 
     let res = await codeRepoRepo.find(criteria, lastId);
 
     for (let repoData of res.results) {
-        let repoConfig = {url: repoData.url, type: repoData.type, data: repoData};
-        repositories[repoData.packageName] = new VcsRepository(repoConfig, config, codeRepoRepo);
+        repositories[repoData.packageName] = new VcsRepository(repoData, config);
     }
 
     if (res.lastId) {

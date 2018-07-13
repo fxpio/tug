@@ -44,9 +44,9 @@ export async function enableRepository(req, res, next) {
     }
 
     res.json({
-        message: `The "${repo.getDriverType()}" repository with the URL "${repo.getUrl()}" were enabled successfully`,
+        message: `The "${repo.getType()}" repository with the URL "${repo.getUrl()}" were enabled successfully`,
         url: repo.getUrl(),
-        type: repo.getDriverType()
+        type: repo.getType()
     });
 }
 

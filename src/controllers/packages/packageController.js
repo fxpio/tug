@@ -31,8 +31,8 @@ export async function showRootPackages(req, res, next) {
     if (!content) {
         let repos = await manager.getRepositories();
         for (let key of Object.keys(repos)) {
-            let name = (await repos[key].getPackageName());
-            let hash = await repos[key].getLastHash();
+            let name = repos[key].getPackageName();
+            let hash = repos[key].getLastHash();
             includes[`p/${name}$${hash}.json`] = {'sha1': hash};
         }
         content = JSON.stringify({packages: {}, includes: includes});

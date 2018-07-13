@@ -8,7 +8,6 @@
  */
 
 import Config from '../../configs/Config';
-import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
 import VcsDriver from './vcs-drivers/VcsDriver';
 import GithubDriver from './vcs-drivers/GithubDriver';
 import VcsDriverNotFoundError from './VcsDriverNotFoundError';
@@ -22,42 +21,22 @@ export default class VcsRepository
     /**
      * Constructor.
      *
-     * @param {Object}                   repoConfig    The config of composer repository
-     * @param {Config}                   config        The config
-     * @param {CodeRepositoryRepository} codeRepoRepo  The database repository for composer repository
-     * @param {Object<String, Function>} drivers       The map of vcs driver with their names
+     * @param {Object}                   repoData The data config of composer repository
+     * @param {Config}                   config   The config
+     * @param {Object<String, Function>} drivers  The map of vcs driver with their names
      */
-    constructor(repoConfig, config, codeRepoRepo, drivers = null) {
+    constructor(repoData, config, drivers = null) {
         this.drivers = drivers ? drivers : {
             'github': GithubDriver
         };
 
-        this.codeRepoRepo = codeRepoRepo;
         this.config = config;
-        this.repoConfig = repoConfig;
-        this.url = this.repoConfig['url'];
-        this.driverType = this.repoConfig['type'] ? this.repoConfig['type'] : null;
+        this.repoData = repoData;
         this.driver = null;
-        this.repoData = null;
 
-        if (this.repoConfig.data) {
-            this.repoData = this.repoConfig.data;
-            delete this.repoConfig.data;
-            this.getDriver();
+        if (!this.repoData['url']) {
+            throw new Error('The "url" attribute of vcs repository is required');
         }
-    }
-
-    /**
-     * Get the repository url.
-     *
-     * @return {String}
-     */
-    getUrl() {
-        try {
-            this.getDriver();
-        } catch (e) {}
-
-        return this.url;
     }
 
     /**
@@ -72,15 +51,16 @@ export default class VcsRepository
             return this.driver;
         }
 
+        let url = this.repoData['url'];
         let types = Object.keys(this.drivers);
-        let type = this.driverType ? this.driverType.replace(/^vcs-/g, '') : '';
+        let type = this.repoData['type'] ? this.repoData['type'].replace(/^vcs-/g, '') : '';
         let validType = null;
 
-        if (this.url && this.drivers[type]) {
+        if (url && this.drivers[type]) {
             validType = type;
         } else {
             for (let i = 0; i < types.length; ++i) {
-                if (this.drivers[types[i]].supports(this.config, this.url)) {
+                if (this.drivers[types[i]].supports(this.config, url)) {
                     validType = types[i];
                     break;
                 }
@@ -88,7 +68,7 @@ export default class VcsRepository
 
             if (!validType) {
                 for (let i = 0; i < types.length; ++i) {
-                    if (this.drivers[types[i]].supports(this.config, this.url, true)) {
+                    if (this.drivers[types[i]].supports(this.config, url, true)) {
                         validType = types[i];
                         break;
                     }
@@ -96,14 +76,13 @@ export default class VcsRepository
             }
         }
 
-        if (!validType || !this.drivers[validType].supports(this.config, this.url)) {
-            throw new VcsDriverNotFoundError('No driver found to handle VCS repository ' + this.url);
+        if (!validType || !this.drivers[validType].supports(this.config, url)) {
+            throw new VcsDriverNotFoundError('No driver found to handle VCS repository ' + url);
         }
 
-        this.driver = new this.drivers[validType](this.repoConfig, this.config);
-        this.driverType = 'vcs-' + validType;
-        this.repoConfig['type'] = this.driverType;
-        this.url = this.driver.getUrl();
+        this.driver = new this.drivers[validType](this.repoData, this.config);
+        this.repoData['type'] = 'vcs-' + validType;
+        this.repoData['url'] = this.driver.getUrl();
 
         return this.driver;
     }
@@ -113,58 +92,108 @@ export default class VcsRepository
      *
      * @return {String}
      */
-    getDriverType() {
+    getType() {
         this.getDriver();
 
-        return this.driverType;
+        return this.repoData['type'];
+    }
+
+    /**
+     * Get the repository url.
+     *
+     * @return {String}
+     */
+    getUrl() {
+        this.getDriver();
+
+        return this.repoData['url'];
     }
 
     /**
      * Get the data of repository.
      *
-     * @return {Promise<Object|null>}
-     */
-    async getData() {
-        if (false === this.repoData) {
-            return null;
-        } else if (this.repoData) {
-            return this.repoData;
-        }
-
-        let driver = this.getDriver();
-        if (!driver) {
-            this.repoData = false;
-            return null;
-        }
-
-        let url = driver.getUrl();
-        let item = await this.codeRepoRepo.findOne({url: url});
-
-        if (item) {
-            this.repoData = item;
-            return item;
-        }
-
-        this.repoData = false;
-        return null;
-    }
-
-    /**
-     * Create the data repository.
-     *
      * @return {Object}
      */
-    createData() {
-        let type = this.getDriverType();
-        let repoUrl = new URL(this.url);
+    getData() {
+        let type = this.getType();
 
-        this.repoData = {
-            id: type + ':' + repoUrl.host + ':' + repoUrl.pathname.replace(/^\/|(\.[a-zA-Z0-9]{1,5})$/g, ''),
-            type: type,
-            url: this.url
-        };
+        if (!this.repoData['id']) {
+            let repoUrl = new URL(this.repoData['url']);
+            this.repoData['id'] = type + ':' + repoUrl.host + ':' + repoUrl.pathname.replace(/^\/|(\.[a-zA-Z0-9]{1,5})$/g, '');
+        }
 
         return this.repoData;
     }
+
+    /**
+     * Get the id.
+     *
+     * @return {String}
+     */
+    getId() {
+        return this.getData()['id'];
+    }
+
+    /**
+     * Set the package name.
+     *
+     * @param {String} name The package name
+     */
+    setPackageName(name) {
+        this.repoData['packageName'] = hash;
+    }
+
+    /**
+     * Get the package name.
+     *
+     * @return {String|null}
+     */
+    getPackageName() {
+        return this.repoData['packageName'] ? this.repoData['packageName'] : null;
+    }
+
+    /**
+     * Set the latest hash.
+     *
+     * @param {String} hash The hash
+     */
+    setLastHash(hash) {
+        this.repoData['lastHash'] = hash;
+    }
+
+    /**
+     * Get the last hash of all versions.
+     *
+     * @return {String|null}
+     */
+    getLastHash() {
+        return this.repoData['lastHash'] ? this.repoData['lastHash'] : null;
+    }
+
+    /**
+     * Set the root identifier.
+     *
+     * @param {String} rootIdentifier The root identifier
+     */
+    setRootIdentifier(rootIdentifier) {
+        this.repoData['rootIdentifier'] = rootIdentifier;
+    }
+
+    /**
+     * Get the package name.
+     *
+     * @return {String|null}
+     */
+    getRootIdentifier() {
+        return this.repoData['rootIdentifier'] ? this.repoData['rootIdentifier'] : null;
+    }
+
+    /**
+     * Check if the repository has already been initialized.
+     *
+     * @return {Boolean}
+     */
+    isInitialized() {
+        return null !== this.getPackageName() && null !== this.getLastHash();
     }
 }
