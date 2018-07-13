@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-const fs = require('fs-extra');
-const DataStorage = require('./DataStorage');
+import fs from 'fs-extra';
+import DataStorage from './DataStorage';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-module.exports = class LocalStorage extends DataStorage
+export default class LocalStorage extends DataStorage
 {
     /**
      * Constructor.
