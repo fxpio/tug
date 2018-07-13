@@ -8,10 +8,10 @@
  */
 
 import {isProd} from '../../utils/server';
-import HttpNotFoundError from "../../errors/HttpNotFoundError";
-import HttpError from "../../errors/HttpError";
-import ValidationError from "../../errors/ValidationError";
-import HttpBadRequestError from "../../errors/HttpBadRequestError";
+import HttpNotFoundError from '../../errors/HttpNotFoundError';
+import HttpError from '../../errors/HttpError';
+import ValidationError from '../../errors/ValidationError';
+import HttpBadRequestError from '../../errors/HttpBadRequestError';
 
 /**
  * Display the http not found error.

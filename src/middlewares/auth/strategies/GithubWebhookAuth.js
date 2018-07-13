@@ -10,7 +10,7 @@
 import crypto from 'crypto';
 import AuthStrategy from './AuthStrategy';
 import ConfigRepository from '../../../db/repositories/ConfigRepository';
-import {isGithubEvent} from "../../../utils/apiGithub";
+import {isGithubEvent} from '../../../utils/apiGithub';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

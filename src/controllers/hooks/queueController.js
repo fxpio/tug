@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {getSqsMessageBodies} from "../../utils/apiQueue";
+import {getSqsMessageBodies} from '../../utils/apiQueue';
 
 /**
  * Run the queue receivers when the message comes form the queue.
