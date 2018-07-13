@@ -87,6 +87,43 @@ export async function disableRepository(req, res, next) {
 }
 
 /**
+ * Refresh all packages of a repository.
+ *
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
+ */
+export async function refreshPackages(req, res, next) {
+    /** @type {RepositoryManager} repoManager */
+    let repoManager = req.app.set('repository-manager');
+    let url = req.body.url;
+    let force = req.body.force;
+    let err = validateRepository(url);
+
+    try {
+        url = await repoManager.refreshPackages(url, true === force);
+    } catch (e) {
+        if (e instanceof RepositoryError) {
+            err = e;
+        } else {
+            throw e;
+        }
+    }
+
+    if (err) {
+        res.status(400).json({
+            message: err.message
+        });
+        return;
+    }
+
+    res.json({
+        message: `The repository with the URL "${url}" were disabled successfully`,
+        url: url
+    });
+}
+
+/**
  * Validate the repository URL.
  *
  * @param {string} url
