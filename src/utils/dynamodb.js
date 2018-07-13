@@ -8,8 +8,8 @@
  */
 
 import AWS from 'aws-sdk';
-import Constraint from '../constraints/Constraint';
-import Equal from '../constraints/Equal';
+import Constraint from '../db/constraints/Constraint';
+import Equal from '../db/constraints/Equal';
 
 /**
  * Convert the criteria into dynamo db parameters for query.

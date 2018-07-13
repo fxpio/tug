@@ -13,7 +13,7 @@ import VcsRepository from './VcsRepository';
 import RepositoryNotSupportedError from './RepositoryNotSupportedError';
 import RepositoryNotFoundError from './RepositoryNotFoundError';
 import VcsDriverNotFoundError from './VcsDriverNotFoundError';
-import {retrieveAllRepositories} from './utils';
+import {retrieveAllRepositories} from '../../utils/repository';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

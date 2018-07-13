@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
-import Config from '../../configs/Config';
-import AttributeExists from '../../db/constraints/AttributeExists';
-import And from '../../db/constraints/And';
-import Not from '../../db/constraints/Not';
-import In from '../../db/constraints/In';
-import VcsRepository from './VcsRepository';
+import VcsRepository from '../composer/repositories/VcsRepository';
+import Config from '../configs/Config';
+import CodeRepositoryRepository from '../db/repositories/CodeRepositoryRepository';
+import AttributeExists from '../db/constraints/AttributeExists';
+import And from '../db/constraints/And';
+import Not from '../db/constraints/Not';
+import In from '../db/constraints/In';
 
 /**
  * Retrieves all repositories.

@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import PackageRepository from '../../db/repositories/PackageRepository';
-import Not from '../../db/constraints/Not';
-import In from '../../db/constraints/In';
+import PackageRepository from '../db/repositories/PackageRepository';
+import Not from '../db/constraints/Not';
+import In from '../db/constraints/In';
 
 /**
  * Retrieves all package versions.
