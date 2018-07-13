@@ -101,7 +101,7 @@ export async function refreshPackages(req, res, next) {
     let err = validateRepository(url);
 
     try {
-        url = await repoManager.refreshPackages(url, true === force);
+        url = (await repoManager.refreshPackages(url, true === force)).getUrl();
     } catch (e) {
         if (e instanceof RepositoryError) {
             err = e;
@@ -118,7 +118,7 @@ export async function refreshPackages(req, res, next) {
     }
 
     res.json({
-        message: `The repository with the URL "${url}" were disabled successfully`,
+        message: `Refreshing of all packages has started for the repository "${url}"`,
         url: url
     });
 }
