@@ -80,13 +80,14 @@ export default class RepositoryManager
     /**
      * Refresh the packages.
      *
-     * @param {String} url The repository url
+     * @param {String}  url   The repository url
+     * @param {Boolean} force Check if existing packages must be overridden
      *
      * @return {Promise<VcsRepository>}
      *
      * @throws RepositoryNotFoundError When the repository is not found
      */
-    async refreshPackages(url) {
+    async refreshPackages(url, force = true) {
         let repo = await this.createVcsRepository(url);
         let existingRepo = await this.getRepository(repo.getUrl());
 
@@ -94,7 +95,7 @@ export default class RepositoryManager
             throw new RepositoryNotFoundError(`The repository with the url "${repo.getUrl()}" is not found`);
         }
 
-        await this.queue.send({type: 'refresh-packages', repositoryUrl: existingRepo.getUrl(), force: true});
+        await this.queue.send({type: 'refresh-packages', repositoryUrl: existingRepo.getUrl(), force: force});
 
         return existingRepo;
     }
