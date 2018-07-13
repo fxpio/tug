@@ -62,7 +62,7 @@ db.setRepository(CodeRepositoryRepository);
 db.setRepository(PackageRepository);
 
 configManager = new ConfigManager(db.getRepository(ConfigRepository));
-repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository));
+repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository), queue);
 packageManager = new PackageManager(repoManager, db.getRepository(PackageRepository));
 cache = new Cache(storage);
 

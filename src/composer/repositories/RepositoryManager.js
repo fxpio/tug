@@ -11,6 +11,7 @@ import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryReposi
 import ConfigManager from '../../configs/ConfigManager';
 import VcsRepository from './VcsRepository';
 import RepositoryNotSupportedError from './RepositoryNotSupportedError';
+import RepositoryNotFoundError from './RepositoryNotFoundError';
 import VcsDriverNotFoundError from './VcsDriverNotFoundError';
 import {retrieveAllRepositories} from './utils';
 
@@ -24,10 +25,12 @@ export default class RepositoryManager
      *
      * @param {ConfigManager}            configManager The config
      * @param {CodeRepositoryRepository} codeRepoRepo  The database repository of code repository
+     * @param {MessageQueue}             queue         The message queue
      */
-    constructor(configManager, codeRepoRepo) {
+    constructor(configManager, codeRepoRepo, queue) {
         this.configManager = configManager;
         this.codeRepoRepo = codeRepoRepo;
+        this.queue = queue;
         this.cacheRepositories = {};
         this.allRepoRetrieves = false;
     }
@@ -46,6 +49,7 @@ export default class RepositoryManager
 
         if (!existingRepo) {
             await this.update(repo);
+            await this.queue.send({type: 'refresh-packages', repositoryUrl: repo.url});
 
             return repo;
         }
@@ -67,6 +71,7 @@ export default class RepositoryManager
         if (existingRepo) {
             url = existingRepo.getUrl();
             await this.delete(existingRepo);
+            await this.queue.send({type: 'delete-packages', repositoryUrl: url});
         }
 
         return url;
@@ -88,6 +93,8 @@ export default class RepositoryManager
         if (!existingRepo) {
             throw new RepositoryNotFoundError(`The repository with the url "${repo.getUrl()}" is not found`);
         }
+
+        await this.queue.send({type: 'refresh-packages', repositoryUrl: existingRepo.getUrl(), force: true});
 
         return existingRepo;
     }
