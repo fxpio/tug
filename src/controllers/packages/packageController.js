@@ -9,6 +9,7 @@
 
 import RepositoryManager from '../../composer/repositories/RepositoryManager';
 import PackageManager from '../../composer/packages/PackageManager';
+import PackageBuilder from '../../composer/packages/PackageBuilder';
 import Cache from '../../caches/Cache';
 import HttpNotFoundError from '../../errors/HttpNotFoundError';
 
@@ -74,8 +75,8 @@ export async function showPackageVersion(req, res, next) {
 export async function showPackageVersions(req, res, next) {
     /** @type Cache cache */
     let cache = req.app.set('cache');
-    /** @type PackageManager manager */
-    let manager = req.app.set('package-manager');
+    /** @type PackageBuilder builder */
+    let builder = req.app.set('package-builder');
     let packageName = req.params.vendor + '/' + req.params.package;
     let hash = null;
     let matchHash = packageName.match(/([a-zA-Z0-9\-_\/]+)\$([\w\d]+)/);
@@ -83,30 +84,19 @@ export async function showPackageVersions(req, res, next) {
     if (matchHash) {
         packageName = matchHash[1];
         hash = matchHash[2];
-    }
 
-    let content = await cache.getPackageVersions(packageName, hash);
-
-    if (!content) {
-        let resPackages = await manager.findPackages(packageName, hash);
-        if (Object.keys(resPackages).length > 0) {
-            let data = {packages: {}};
-            data.packages[packageName] = {};
-            for (let version of Object.keys(resPackages)) {
-                let pack = resPackages[version];
-                data.packages[packageName][pack.getVersion()] = pack.getComposer();
-            }
-            content = JSON.stringify(data);
+        let content = await cache.getPackageVersions(packageName, hash);
+        if (!content) {
+            let res = builder.buildVersions(packageName, hash);
+            content = res ? res.content : null;
         }
-    }
 
-    if (content) {
-        if (hash) {
-            await cache.setPackageVersions(packageName, hash, content);
+        if (content) {
+            res.set('Content-Type', 'application/json; charset=utf-8');
+            res.send(content);
+            return;
         }
-        res.set('Content-Type', 'application/json; charset=utf-8');
-        res.send(content);
-        return;
+
     }
 
     throw new HttpNotFoundError();
