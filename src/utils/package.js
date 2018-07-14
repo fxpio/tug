@@ -10,6 +10,7 @@
 import PackageRepository from '../db/repositories/PackageRepository';
 import Not from '../db/constraints/Not';
 import In from '../db/constraints/In';
+import Package from '../composer/packages/Package';
 
 /**
  * Retrieves all package versions.
@@ -19,7 +20,7 @@ import In from '../db/constraints/In';
  * @param {Object}            packages    The packages
  * @param {String|null}       lastId      The last id of previous request
  *
- * @return {Promise<Object>}
+ * @return {Promise<Object<String, Package>>}
  */
 export async function retrieveAllVersions(packageName, packageRepo, packages, lastId = null) {
     let versionNames = Object.keys(packages);
@@ -32,7 +33,8 @@ export async function retrieveAllVersions(packageName, packageRepo, packages, la
     let res = await packageRepo.find(criteria, lastId);
 
     for (let packageData of res.results) {
-        packages[packageData.package.version] = packageData.package;
+        let pack = new Package(packageData);
+        packages[pack.getVersion()] = pack;
     }
 
     if (res.lastId) {

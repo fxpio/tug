@@ -10,6 +10,7 @@
 import RepositoryManager from '../repositories/RepositoryManager';
 import VersionParser from '../semver/VersionParser';
 import {retrieveAllVersions} from '../../utils/package';
+import Package from './Package';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -63,7 +64,7 @@ export default class PackageManager
      * @param {String}      packageName The package name
      * @param {String|null} hash        The hash
      *
-     * @return {Promise<Object>}
+     * @return {Promise<Object<String, Package>>}
      */
     async findPackages(packageName, hash = null) {
         let res = {};

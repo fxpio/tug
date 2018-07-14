@@ -91,7 +91,11 @@ export async function showPackageVersions(req, res, next) {
         let resPackages = await manager.findPackages(packageName, hash);
         if (Object.keys(resPackages).length > 0) {
             let data = {packages: {}};
-            data.packages[packageName] = resPackages;
+            data.packages[packageName] = {};
+            for (let version of Object.keys(resPackages)) {
+                let pack = resPackages[version];
+                data.packages[packageName][pack.getVersion()] = pack.getComposer();
+            }
             content = JSON.stringify(data);
         }
     }
