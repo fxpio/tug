@@ -20,7 +20,7 @@ import {showPackageVersion, showPackageVersions, showRootPackages} from '../cont
  * @return {Router}
  */
 export default function packageRoutes(router) {
-    router.use(asyncHandler(new Authenticate(new BasicTokenAuth())));
+    router.use(asyncHandler(Authenticate.middleware(new BasicTokenAuth())));
 
     router.get('/packages.json', asyncHandler(showRootPackages));
     router.get('/p/:vendor/:package.json', asyncHandler(showPackageVersions));

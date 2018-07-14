@@ -24,7 +24,7 @@ import {disableRepository, enableRepository, refreshPackages} from '../controlle
  * @return {Router}
  */
 export default function(router) {
-    router.use(asyncHandler(new Authenticate(new BasicIamAuth(!isProd()))));
+    router.use(asyncHandler(Authenticate.middleware(new BasicIamAuth(!isProd()))));
 
     router.post('/api-keys', asyncHandler(createApiKey));
     router.delete('/api-keys', asyncHandler(deleteApiKey));

@@ -22,8 +22,8 @@ import {queueHook} from '../controllers/hooks/queueController';
  * @return {Router}
  */
 export default function(router) {
-    router.post('/', asyncHandler(new Authenticate(new GithubWebhookAuth(), true)), asyncHandler(githubHook));
-    router.get('/', asyncHandler(new Authenticate(new QueueAuth(), true)), asyncHandler(queueHook));
+    router.post('/', asyncHandler(Authenticate.middleware(new GithubWebhookAuth(), true)), asyncHandler(githubHook));
+    router.get('/', asyncHandler(Authenticate.middleware(new QueueAuth(), true)), asyncHandler(queueHook));
 
     return router;
 }
