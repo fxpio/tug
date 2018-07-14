@@ -24,17 +24,34 @@ export default class Package
     constructor(packageData) {
         this.packageData = packageData;
 
-        if (!this.packageData['name']) {
-            throw new PackageError('The "name" attribute of package is required');
-        }
-        if (!this.packageData['version']) {
-            throw new PackageError('The "version" attribute of package is required');
-        }
-        if (!this.packageData['versionNormalized']) {
-            throw new PackageError('The "versionNormalized" attribute of package is required');
-        }
         if (!this.packageData['composer']) {
             throw new PackageError('The "composer" attribute of package is required');
+        }
+
+        if (typeof this.packageData['composer'] === 'string') {
+            this.packageData['composer'] = JSON.parse(this.packageData['composer']);
+        }
+
+        if (!this.packageData['name']) {
+            if (this.packageData['composer']['name']) {
+                this.packageData['name'] = this.packageData['composer']['name'];
+            } else {
+                throw new PackageError('The "name" attribute of package is required');
+            }
+        }
+        if (!this.packageData['version']) {
+            if (this.packageData['composer']['version']) {
+                this.packageData['version'] = this.packageData['composer']['version'];
+            } else {
+                throw new PackageError('The "version" attribute of package is required');
+            }
+        }
+        if (!this.packageData['versionNormalized']) {
+            if (this.packageData['composer']['version_normalized']) {
+                this.packageData['versionNormalized'] = this.packageData['composer']['version_normalized'];
+            } else {
+                throw new PackageError('The "versionNormalized" attribute of package is required');
+            }
         }
     }
 
@@ -48,7 +65,10 @@ export default class Package
             this.packageData['id'] = this.getName() + ':' + this.getVersionNormalized();
         }
 
-        return this.packageData;
+        let val = Object.assign({}, this.packageData);
+        val.composer = JSON.stringify(val.composer);
+
+        return val;
     }
 
     /**
