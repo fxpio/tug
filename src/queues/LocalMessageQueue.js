@@ -25,6 +25,10 @@ export default class LocalMessageQueue extends MessageQueue
      * @inheritDoc
      */
     async sendBatch(messages, delay = 0) {
+        if (0 === messages.length) {
+            return;
+        }
+
         await this.receive(messages);
     }
 }

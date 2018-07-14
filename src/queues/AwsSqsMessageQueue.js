@@ -51,6 +51,10 @@ export default class AwsSqsMessageQueue extends MessageQueue
             Entries: []
         };
 
+        if (0 === messages.length) {
+            return;
+        }
+
         for (let i = 0; i < messages.length; ++i) {
             if (i < this.batchSize) {
                 params.Entries.push({
