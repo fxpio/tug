@@ -85,4 +85,13 @@ export default class PackageManager
     async update(pack) {
         await this.packageRepo.put(pack.getData());
     }
+
+    /**
+     * Delete the repository.
+     *
+     * @param {Package} pack The package
+     */
+    async delete(pack) {
+        await this.packageRepo.delete(pack.getId());
+    }
 }
