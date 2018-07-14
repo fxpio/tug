@@ -12,7 +12,7 @@ import BasicIamAuth from '../middlewares/auth/strategies/BasicIamAuth';
 import {asyncHandler} from '../utils/handler';
 import {isProd} from '../utils/server';
 import {createApiKey, deleteApiKey} from '../controllers/manager/apiKeyController';
-import {createGithubOauth} from '../controllers/manager/githubOauthController';
+import {createGithubOauth, showGithubOauth} from '../controllers/manager/githubOauthController';
 import {createGithubToken, deleteGithubToken, showGithubToken} from '../controllers/manager/githubTokenController';
 import {disableRepository, enableRepository, refreshPackages} from '../controllers/manager/repositoryController';
 
@@ -30,6 +30,7 @@ export default function(router) {
     router.delete('/api-keys', asyncHandler(deleteApiKey));
 
     router.post('/github-oauth', asyncHandler(createGithubOauth));
+    router.get('/github-oauth', asyncHandler(showGithubOauth));
 
     router.post('/github-token', asyncHandler(createGithubToken));
     router.get('/github-token', asyncHandler(showGithubToken));
