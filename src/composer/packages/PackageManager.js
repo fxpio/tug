@@ -76,4 +76,13 @@ export default class PackageManager
 
         return res;
     }
+
+    /**
+     * Update the package.
+     *
+     * @param {Package} pack The package
+     */
+    async update(pack) {
+        await this.packageRepo.put(pack.getData());
+    }
 }
