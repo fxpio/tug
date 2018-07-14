@@ -33,12 +33,7 @@ import hookRoutes from './routes/hookRoutes';
 import managerRoutes from './routes/managerRoutes';
 
 const app = express();
-let db,
-    configManager,
-    repoManager,
-    packageManager,
-    storage,
-    cache,
+let storage,
     queue;
 
 app.use(cors());
@@ -55,16 +50,16 @@ if (isProd()) {
     queue = new LocalMessageQueue();
 }
 
-db = new AwsDynamoDbDatabase(process.env.AWS_DYNAMODB_TABLE, process.env.AWS_REGION, process.env.AWS_DYNAMODB_URL);
+let db = new AwsDynamoDbDatabase(process.env.AWS_DYNAMODB_TABLE, process.env.AWS_REGION, process.env.AWS_DYNAMODB_URL);
 db.setRepository(ConfigRepository);
 db.setRepository(ApiKeyRepository);
 db.setRepository(CodeRepositoryRepository);
 db.setRepository(PackageRepository);
 
-configManager = new ConfigManager(db.getRepository(ConfigRepository));
-repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository), queue);
-packageManager = new PackageManager(repoManager, db.getRepository(PackageRepository));
-cache = new Cache(storage);
+let configManager = new ConfigManager(db.getRepository(ConfigRepository));
+let repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository), queue);
+let packageManager = new PackageManager(repoManager, db.getRepository(PackageRepository));
+let cache = new Cache(storage);
 
 app.set('config-manager', configManager);
 app.set('repository-manager', repoManager);
