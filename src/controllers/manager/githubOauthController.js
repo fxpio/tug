@@ -45,6 +45,31 @@ export async function createGithubOauth(req, res, next) {
 }
 
 /**
+ * Delete the github oauth token.
+ *
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
+ */
+export async function deleteGithubOauth(req, res, next) {
+    validateForm(req, {
+        host: Joi.string()
+    });
+
+    /** @type ConfigManager configManager */
+    let configManager = req.app.set('config-manager');
+    let host = req.body.host ? req.body.host : 'github.com';
+
+    let config = (await configManager.get()).all();
+    delete config['github-oauth'][host];
+    await configManager.put(config);
+
+    res.json({
+        message: `The Oauth token to connect the server with your Github account hosted on "${host}" was deleted successfully`
+    });
+}
+
+/**
  * Show the github oauth token.
  *
  * @param {IncomingMessage} req  The request
