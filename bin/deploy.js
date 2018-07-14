@@ -39,6 +39,11 @@ let createAction = function(action) {
                 ParameterKey: 'GithubToken',
                 ParameterValue: process.env.GITHUB_TOKEN ? process.env.GITHUB_TOKEN : null,
                 UsePreviousValue: null === process.env.GITHUB_TOKEN
+            },
+            {
+                ParameterKey: 'GitlabToken',
+                ParameterValue: process.env.GITLAB_TOKEN ? process.env.GITLAB_TOKEN : null,
+                UsePreviousValue: null === process.env.GITLAB_TOKEN
             }
         ],
         TemplateBody: fs.readFileSync(DEPLOY_CLOUDFORMATION_PATH, 'utf8')

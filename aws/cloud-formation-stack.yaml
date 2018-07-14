@@ -13,7 +13,7 @@ Parameters:
     Description: Gitlab OAuth token (see the doc for help https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
     Type: String
     NoEcho: true
-    AllowedPattern: '^[0-9a-f]{20}$'
+    AllowedPattern: '^[0-9a-zA-Z]{20}$'
     ConstraintDescription: Must be a 20 char Gitlab token
 
 Resources:
