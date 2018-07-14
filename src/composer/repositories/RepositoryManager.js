@@ -143,6 +143,24 @@ export default class RepositoryManager
     }
 
     /**
+     * Get the repository and initialize it if it is not the case.
+     *
+     * @param {String}   url    The repository url
+     * @param {Boolean} [force] Force the initialization
+     *
+     * @return {Promise<VcsRepository|null>}
+     */
+    async getAndInitRepository(url, force = false) {
+        let repo = await this.getRepository(url);
+
+        if (repo && await this.initRepository(repo, force)) {
+            return repo;
+        }
+
+        return null;
+    }
+
+    /**
      * Get all initialized vcs repositories.
      *
      * @param {Boolean} forceAll Check if all repositories must be returned

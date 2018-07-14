@@ -25,6 +25,7 @@ import AwsS3Storage from './storages/AwsS3Storage';
 import Cache from './caches/Cache';
 import LocalMessageQueue from './queues/LocalMessageQueue';
 import AwsSqsMessageQueue from './queues/AwsSqsMessageQueue';
+import RefreshPackagesReceiver from './receivers/RefreshPackagesReceiver';
 import {logErrors} from './middlewares/logs';
 import {convertJsonSyntaxError, convertRouteNotFound, convertURIError, showError} from './middlewares/errors';
 import {isProd} from './utils/server';
@@ -60,6 +61,8 @@ let configManager = new ConfigManager(db.getRepository(ConfigRepository));
 let repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository), queue);
 let packageManager = new PackageManager(repoManager, db.getRepository(PackageRepository));
 let cache = new Cache(storage);
+
+queue.subscribe(new RefreshPackagesReceiver(repoManager, queue));
 
 app.set('config-manager', configManager);
 app.set('repository-manager', repoManager);
