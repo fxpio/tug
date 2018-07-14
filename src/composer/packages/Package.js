@@ -66,7 +66,7 @@ export default class Package
      * @return {String}
      */
     getName() {
-        return this.getData()['name'];
+        return this.packageData['name'];
     }
 
     /**
@@ -75,7 +75,7 @@ export default class Package
      * @return {String}
      */
     getVersion() {
-        return this.getData()['version'];
+        return this.packageData['version'];
     }
 
     /**
@@ -84,7 +84,7 @@ export default class Package
      * @return {String}
      */
     getVersionNormalized() {
-        return this.getData()['versionNormalized'];
+        return this.packageData['versionNormalized'];
     }
 
     /**
@@ -93,7 +93,7 @@ export default class Package
      * @param {Object} composer The package composer
      */
     setComposer(composer) {
-        this.getData()['composer'] = composer;
+        this.packageData['composer'] = composer;
     }
 
     /**
@@ -102,6 +102,6 @@ export default class Package
      * @return {Object}
      */
     getComposer() {
-        return this.getData()['composer'];
+        return this.packageData['composer'];
     }
 }
