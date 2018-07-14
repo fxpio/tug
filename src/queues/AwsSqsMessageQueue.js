@@ -18,12 +18,14 @@ export default class AwsSqsMessageQueue extends MessageQueue
     /**
      * Constructor.
      *
-     * @param {String}  queueUrl The AWS queue url
-     * @param {AWS.SQS} [client] The AWS SQS client
+     * @param {String}  queueUrl    The AWS queue url
+     * @param {Number}  [batchSize] The batch size
+     * @param {AWS.SQS} [client]    The AWS SQS client
      */
-    constructor(queueUrl, client = null) {
+    constructor(queueUrl, batchSize = 10, client = null) {
         super();
         this.queueUrl = queueUrl;
+        this.batchSize = batchSize;
         this.client = client || new AWS.SQS({apiVersion: '2012-11-05'});
     }
 
@@ -50,7 +52,7 @@ export default class AwsSqsMessageQueue extends MessageQueue
         };
 
         for (let i = 0; i < messages.length; ++i) {
-            if (i < 10) {
+            if (i < this.batchSize) {
                 params.Entries.push({
                     Id: i,
                     DelaySeconds: delay,
