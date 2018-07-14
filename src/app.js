@@ -26,6 +26,7 @@ import Cache from './caches/Cache';
 import LocalMessageQueue from './queues/LocalMessageQueue';
 import AwsSqsMessageQueue from './queues/AwsSqsMessageQueue';
 import RefreshPackagesReceiver from './receivers/RefreshPackagesReceiver';
+import RefreshPackageReceiver from './receivers/RefreshPackageReceiver';
 import {logErrors} from './middlewares/logs';
 import {convertJsonSyntaxError, convertRouteNotFound, convertURIError, showError} from './middlewares/errors';
 import {isProd} from './utils/server';
@@ -63,6 +64,7 @@ let packageManager = new PackageManager(repoManager, db.getRepository(PackageRep
 let cache = new Cache(storage);
 
 queue.subscribe(new RefreshPackagesReceiver(repoManager, queue));
+queue.subscribe(new RefreshPackageReceiver(repoManager, packageManager, queue));
 
 app.set('config-manager', configManager);
 app.set('repository-manager', repoManager);

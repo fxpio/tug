@@ -94,4 +94,15 @@ export default class PackageManager
     async delete(pack) {
         await this.packageRepo.delete(pack.getId());
     }
+
+    /**
+     * Normalize the version.
+     *
+     * @param {String} version The version
+     *
+     * @return {String}
+     */
+    normalizeVersion(version) {
+        return this.versionParser.normalize(version, version);
+    }
 }
