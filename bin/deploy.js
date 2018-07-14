@@ -34,13 +34,7 @@ let createAction = function(action) {
         StackName: stackName,
         ChangeSetType: action.toUpperCase(),
         Capabilities: ['CAPABILITY_IAM'],
-        Parameters: [
-            {
-                ParameterKey: 'GithubToken',
-                ParameterValue: process.env.GITHUB_TOKEN ? process.env.GITHUB_TOKEN : null,
-                UsePreviousValue: null === process.env.GITHUB_TOKEN
-            }
-        ],
+        Parameters: [],
         TemplateBody: fs.readFileSync(DEPLOY_CLOUDFORMATION_PATH, 'utf8')
     };
 
