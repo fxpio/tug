@@ -35,10 +35,10 @@ export default class PackageManager
      * @param {String} packageName The package name
      * @param {String} version     The version
      *
-     * @return {Promise<Object|null>}
+     * @return {Promise<Package|null>}
      */
     async findPackage(packageName, version) {
-        let packageData = null;
+        let pack = null;
         let repo = await this.repoManager.findRepository(packageName);
 
         if (repo) {
@@ -50,12 +50,12 @@ export default class PackageManager
                 });
 
                 if (res) {
-                    packageData = res.package;
+                    pack = new Package(res);
                 }
             } catch (e) {}
         }
 
-        return packageData;
+        return pack;
     }
 
     /**
