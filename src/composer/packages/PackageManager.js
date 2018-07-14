@@ -9,7 +9,7 @@
 
 import RepositoryManager from '../repositories/RepositoryManager';
 import VersionParser from '../semver/VersionParser';
-import {retrieveAllVersions} from './utils';
+import {retrieveAllVersions} from '../../utils/package';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -69,7 +69,7 @@ export default class PackageManager
         let res = {};
         let repo = await this.repoManager.findRepository(packageName);
 
-        if (repo && (!hash || hash === (await repo.getData()).lastHash)) {
+        if (repo && (!hash || hash === repo.getLastHash())) {
             res = await retrieveAllVersions(packageName, this.packageRepo, {});
         }
 

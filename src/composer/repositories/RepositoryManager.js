@@ -10,9 +10,10 @@
 import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
 import ConfigManager from '../../configs/ConfigManager';
 import VcsRepository from './VcsRepository';
-import RepositoryNotSupportedError from './RepositoryNotSupportedError';
-import VcsDriverNotFoundError from './VcsDriverNotFoundError';
-import {retrieveAllRepositories} from "./utils";
+import RepositoryNotSupportedError from '../../errors/RepositoryNotSupportedError';
+import RepositoryNotFoundError from '../../errors/RepositoryNotFoundError';
+import VcsDriverNotFoundError from '../../errors/VcsDriverNotFoundError';
+import {retrieveAllRepositories} from '../../utils/repository';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -24,10 +25,12 @@ export default class RepositoryManager
      *
      * @param {ConfigManager}            configManager The config
      * @param {CodeRepositoryRepository} codeRepoRepo  The database repository of code repository
+     * @param {MessageQueue}             queue         The message queue
      */
-    constructor(configManager, codeRepoRepo) {
+    constructor(configManager, codeRepoRepo, queue) {
         this.configManager = configManager;
         this.codeRepoRepo = codeRepoRepo;
+        this.queue = queue;
         this.cacheRepositories = {};
         this.allRepoRetrieves = false;
     }
@@ -39,17 +42,21 @@ export default class RepositoryManager
      * @param {String|null} [type] The vcs type
      *
      * @return {VcsRepository}
+     *
+     * @throws RepositoryNotSupportedError When the repository is not supported
      */
     async register(url, type = null) {
         let repo = await this.createVcsRepository(url, type);
-        let data = await repo.getData();
+        let existingRepo = await this.getRepository(repo.getUrl());
 
-        if (!data) {
-            repo.createData();
+        if (!existingRepo) {
             await this.update(repo);
+            await this.queue.send({type: 'refresh-packages', repositoryUrl: repo.url});
+
+            return repo;
         }
 
-        return repo;
+        return existingRepo;
     }
 
     /**
@@ -58,17 +65,44 @@ export default class RepositoryManager
      * @param {String} url The repository url
      *
      * @return {String}
+     *
+     * @throws RepositoryNotSupportedError When the repository is not supported
      */
     async unregister(url) {
         let repo = await this.createVcsRepository(url);
-        let data = await repo.getData();
+        let existingRepo = await this.getRepository(repo.getUrl());
 
-        if (data) {
-            url = data.url;
-            await this.codeRepoRepo.delete(data.id);
+        if (existingRepo) {
+            url = existingRepo.getUrl();
+            await this.delete(existingRepo);
+            await this.queue.send({type: 'delete-packages', repositoryUrl: url});
         }
 
         return url;
+    }
+
+    /**
+     * Refresh the packages.
+     *
+     * @param {String}  url   The repository url
+     * @param {Boolean} force Check if existing packages must be overridden
+     *
+     * @return {Promise<VcsRepository>}
+     *
+     * @throws RepositoryNotSupportedError When the repository is not supported
+     * @throws RepositoryNotFoundError     When the repository is not found
+     */
+    async refreshPackages(url, force = true) {
+        let repo = await this.createVcsRepository(url);
+        let existingRepo = await this.getRepository(repo.getUrl());
+
+        if (!existingRepo) {
+            throw new RepositoryNotFoundError(`The repository with the url "${repo.getUrl()}" is not found`);
+        }
+
+        await this.queue.send({type: 'refresh-packages', repositoryUrl: existingRepo.getUrl(), force: force});
+
+        return existingRepo;
     }
 
     /**
@@ -86,10 +120,8 @@ export default class RepositoryManager
         let repoData = await this.codeRepoRepo.findOne({packageName: packageName});
 
         if (repoData) {
-            let config = await this.configManager.get();
-            let repoConfig = {url: repoData.url, type: repoData.type, data: repoData};
-            let repo = new VcsRepository(repoConfig, config, this.codeRepoRepo);
-            this.cacheRepositories[repoData.packageName] = repo;
+            let repo = new VcsRepository(repoData, await this.configManager.get());
+            this.cacheRepositories[repo.getPackageName()] = repo;
 
             return repo;
         }
@@ -98,21 +130,16 @@ export default class RepositoryManager
     }
 
     /**
-     * Update the data of repository.
+     * Get the repository.
      *
-     * @param {VcsRepository} repository The repository
+     * @param {String} url The repository url
      *
-     * @return {Promise<boolean>}
+     * @return {Promise<VcsRepository|null>}
      */
-    async update(repository) {
-        let data = await repository.getData();
+    async getRepository(url) {
+        let res = await this.codeRepoRepo.findOne({url: url});
 
-        if (data) {
-            await this.codeRepoRepo.put(data);
-            return true;
-        }
-
-        return false;
+        return res ? new VcsRepository(res, await this.configManager.get()) : null;
     }
 
     /**
@@ -134,16 +161,36 @@ export default class RepositoryManager
     }
 
     /**
-     * Create a vcs repository.
+     * Update the repository.
+     *
+     * @param {VcsRepository} repository The repository
+     */
+    async update(repository) {
+        await this.codeRepoRepo.put(repository.getData());
+    }
+
+    /**
+     * Delete the repository.
+     *
+     * @param {VcsRepository} repository The repository
+     */
+    async delete(repository) {
+        await this.codeRepoRepo.delete(repository.getId());
+    }
+
+    /**
+     * Create a vcs repository and validate the url and type.
      *
      * @param {String}      url    The repository url
      * @param {String|null} [type] The vcs type
      *
      * @return {Promise<VcsRepository>}
+     *
+     * @throws RepositoryNotSupportedError When the repository is not supported
      */
     async createVcsRepository(url, type = null) {
         let config = await this.configManager.get();
-        let repo = new VcsRepository({url: url, type: type}, config, this.codeRepoRepo);
+        let repo = new VcsRepository({url: url, type: type}, config);
 
         try {
             repo.getDriver();

@@ -9,8 +9,8 @@
 
 import AWS from 'aws-sdk';
 import Database from './Database';
-import {convertQueryCriteria} from './dynamodb/utils';
 import Results from './Results';
+import {convertQueryCriteria} from '../utils/dynamodb';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

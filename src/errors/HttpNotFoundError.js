@@ -7,19 +7,21 @@
  * file that was distributed with this source code.
  */
 
+import HttpError from './HttpError';
+
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class RepositoryNotSupportedError extends Error
+export default class HttpNotFoundError extends HttpError
 {
     /**
      * Constructor.
      *
-     * @param {String} message
+     * @param {String} [message]
      * @param {String} [fileName}
      * @param {Number} [lineNumber}
      */
-    constructor(message, fileName, lineNumber) {
-        super(message, fileName, lineNumber);
+    constructor(message = 'Not found', fileName, lineNumber) {
+        super(message, 404, fileName, lineNumber);
     }
 }

@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
-import Config from '../../configs/Config';
-import AttributeExists from '../../db/constraints/AttributeExists';
-import And from '../../db/constraints/And';
-import Not from '../../db/constraints/Not';
-import In from '../../db/constraints/In';
-import VcsRepository from './VcsRepository';
+import VcsRepository from '../composer/repositories/VcsRepository';
+import Config from '../configs/Config';
+import CodeRepositoryRepository from '../db/repositories/CodeRepositoryRepository';
+import AttributeExists from '../db/constraints/AttributeExists';
+import And from '../db/constraints/And';
+import Not from '../db/constraints/Not';
+import In from '../db/constraints/In';
 
 /**
  * Retrieves all repositories.
@@ -38,14 +38,13 @@ export async function retrieveAllRepositories(config, codeRepoRepo, repositories
     }
 
     if (!forceAll) {
-        criteria.lastHash = new AttributeExists()
+        criteria.lastHash = new AttributeExists();
     }
 
     let res = await codeRepoRepo.find(criteria, lastId);
 
     for (let repoData of res.results) {
-        let repoConfig = {url: repoData.url, type: repoData.type, data: repoData};
-        repositories[repoData.packageName] = new VcsRepository(repoConfig, config, codeRepoRepo);
+        repositories[repoData.packageName] = new VcsRepository(repoData, config);
     }
 
     if (res.lastId) {

@@ -10,7 +10,7 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class VcsDriverNotFoundError extends Error
+export default class FxpServerlessError extends Error
 {
     /**
      * Constructor.

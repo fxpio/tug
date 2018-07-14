@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import DatabaseError from '../errors/DatabaseError';
 import DatabaseRepository from './repositories/DatabaseRepository';
 import Results from './Results';
 
@@ -42,6 +43,9 @@ export default class Database
      * @param {Function|String} repository The repository name
      *
      * @return {DatabaseRepository|*}
+     *
+     * @throws DatabaseError When the repository attribute is not a string or a function
+     * @throws DatabaseError When the repository does not exist
      */
     getRepository(repository) {
         let name = null;
@@ -52,11 +56,11 @@ export default class Database
         } else if (repository.hasOwnProperty('getName')) {
             name = repository.getName();
         } else {
-            throw new Error(`The repository attribute must be a string or a function, given type "${type}"`);
+            throw new DatabaseError(`The repository attribute must be a string or a function, given type "${type}"`);
         }
 
         if (!this.repositories[name]) {
-            throw new Error(`The repository "${name}" does not exist`);
+            throw new DatabaseError(`The repository "${name}" does not exist`);
         }
 
         return this.repositories[name];
@@ -90,6 +94,8 @@ export default class Database
      * @param {Object} data The data
      *
      * @return {Promise<Object>}
+     *
+     * @throws Error When the data object has not the id property
      */
     async put(data) {
         Database.validateData(data);
@@ -135,10 +141,12 @@ export default class Database
      * Check if the data is valid.
      *
      * @param {*} data The data
+     *
+     * @throws DatabaseError When the data object has not the id property
      */
     static validateData(data) {
         if (typeof data !== 'object' || !data.id) {
-            throw new Error('The data must be an object with the required "id" property');
+            throw new DatabaseError('The data must be an object with the required "id" property');
         }
     }
 };

@@ -7,8 +7,17 @@
  * file that was distributed with this source code.
  */
 
-module.exports.asyncHandler = fn => (req, res, next, ...args) => {
-    return Promise
-        .resolve(fn(req, res, next, ...args))
-        .catch(next);
-};
+/**
+ * Handler to catch the errors for the async function.
+ *
+ * @param {Function} fn The function
+ *
+ * @return {Function}
+ */
+export function asyncHandler(fn) {
+    return function (req, res, next, ...args) {
+        return Promise
+            .resolve(fn(req, res, next, ...args))
+            .catch(next);
+    };
+}

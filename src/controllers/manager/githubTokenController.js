@@ -7,9 +7,11 @@
  * file that was distributed with this source code.
  */
 
+import Joi from 'joi';
 import ConfigManager from '../../configs/ConfigManager';
 import Config from '../../configs/Config';
 import {generateToken} from '../../utils/token';
+import {validateForm} from '../../utils/validation';
 
 /**
  * Create the github token.
@@ -19,6 +21,11 @@ import {generateToken} from '../../utils/token';
  * @param {Function}        next The next callback
  */
 export async function createGithubToken(req, res, next) {
+    validateForm(req, {
+        token: Joi.string().min(10),
+        host: Joi.string()
+    });
+
     /** @type ConfigManager configManager */
     let configManager = req.app.set('config-manager');
     let token = req.body.token ? req.body.token : generateToken(40);
@@ -45,6 +52,10 @@ export async function createGithubToken(req, res, next) {
  * @param {Function}        next The next callback
  */
 export async function deleteGithubToken(req, res, next) {
+    validateForm(req, {
+        host: Joi.string()
+    });
+
     /** @type ConfigManager configManager */
     let configManager = req.app.set('config-manager');
     let host = req.body.host ? req.body.host : 'github.com';

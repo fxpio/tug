@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-const AWS = require('aws-sdk');
-const DataStorage = require('./DataStorage');
+import AWS from 'aws-sdk';
+import DataStorage from './DataStorage';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-module.exports = class AwsS3Storage extends DataStorage
+export default class AwsS3Storage extends DataStorage
 {
     /**
      * Constructor.

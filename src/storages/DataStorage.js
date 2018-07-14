@@ -10,7 +10,7 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-module.exports = class DataStorage
+export default class DataStorage
 {
     /**
      * Check if the storage has the key.

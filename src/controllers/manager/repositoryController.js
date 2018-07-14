@@ -7,8 +7,9 @@
  * file that was distributed with this source code.
  */
 
+import Joi from 'joi';
 import RepositoryManager from '../../composer/repositories/RepositoryManager';
-import RepositoryNotSupportedError from '../../composer/repositories/RepositoryNotSupportedError'
+import {validateForm} from '../../utils/validation';
 
 /**
  * Enable the repository.
@@ -18,35 +19,21 @@ import RepositoryNotSupportedError from '../../composer/repositories/RepositoryN
  * @param {Function}        next The next callback
  */
 export async function enableRepository(req, res, next) {
+    validateForm(req, {
+        url: Joi.string().required(),
+    });
+
     /** @type {RepositoryManager} repoManager */
     let repoManager = req.app.set('repository-manager');
     let url = req.body.url;
     let type = req.body.type;
-    let err = validateRepository(url);
     /** @type VcsRepository repo */
-    let repo;
-
-    try {
-        repo = await repoManager.register(url, type);
-    } catch (e) {
-        if (e instanceof RepositoryNotSupportedError) {
-            err = e;
-        } else {
-            throw e;
-        }
-    }
-
-    if (err) {
-        res.status(400).json({
-            message: err.message
-        });
-        return;
-    }
+    let repo = await repoManager.register(url, type);
 
     res.json({
-        message: `The "${repo.getDriverType()}" repository with the URL "${repo.getUrl()}" were enabled successfully`,
+        message: `The "${repo.getType()}" repository with the URL "${repo.getUrl()}" were enabled successfully`,
         url: repo.getUrl(),
-        type: repo.getDriverType()
+        type: repo.getType()
     });
 }
 
@@ -58,27 +45,13 @@ export async function enableRepository(req, res, next) {
  * @param {Function}        next The next callback
  */
 export async function disableRepository(req, res, next) {
+    validateForm(req, {
+        url: Joi.string().required(),
+    });
+
     /** @type {RepositoryManager} repoManager */
     let repoManager = req.app.set('repository-manager');
-    let url = req.body.url;
-    let err = validateRepository(url);
-
-    try {
-        url = await repoManager.unregister(url);
-    } catch (e) {
-        if (e instanceof RepositoryNotSupportedError) {
-            err = e;
-        } else {
-            throw e;
-        }
-    }
-
-    if (err) {
-        res.status(400).json({
-            message: err.message
-        });
-        return;
-    }
+    let url = await repoManager.unregister(req.body.url);
 
     res.json({
         message: `The repository with the URL "${url}" were disabled successfully`,
@@ -87,18 +60,25 @@ export async function disableRepository(req, res, next) {
 }
 
 /**
- * Validate the repository URL.
+ * Refresh all packages of a repository.
  *
- * @param {string} url
- *
- * @return {Error|null}
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
  */
-function validateRepository(url) {
-    let err = null;
+export async function refreshPackages(req, res, next) {
+    validateForm(req, {
+        url: Joi.string().required(),
+        force: Joi.boolean()
+    });
 
-    if (!url) {
-        err = new Error('The "url" body attribute is required');
-    }
+    /** @type {RepositoryManager} repoManager */
+    let repoManager = req.app.set('repository-manager');
+    let force = req.body.force;
+    let url = (await repoManager.refreshPackages(req.body.url, true === force)).getUrl();
 
-    return err;
+    res.json({
+        message: `Refreshing of all packages has started for the repository "${url}"`,
+        url: url
+    });
 }
