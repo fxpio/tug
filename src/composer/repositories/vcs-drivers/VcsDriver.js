@@ -117,7 +117,7 @@ export default class VcsDriver
      *
      * @param {String} identifier Any identifier to a specific branch/tag/commit
      *
-     * @return {Promise<Object>} containing all infos from the composer.json file
+     * @return {Promise<Object|null>} containing all infos from the composer.json file
      */
     async getComposerInformation(identifier) {
         return {};
