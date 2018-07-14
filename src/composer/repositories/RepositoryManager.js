@@ -179,6 +179,32 @@ export default class RepositoryManager
     }
 
     /**
+     * Initialize the repository.
+     *
+     * @param {VcsRepository} repository The vcs repository
+     * @param {Boolean}       [force]    Force the initialization
+     *
+     * @return {Promise<boolean>}
+     */
+    async initRepository(repository, force = false) {
+        if (force || null === repository.getPackageName() || null === repository.getRootIdentifier()) {
+            let driver = repository.getDriver();
+            let rootIdentifier = await driver.getRootIdentifier();
+
+            if (await driver.hasComposerFile(rootIdentifier)) {
+                let composer = await driver.getComposerInformation(rootIdentifier);
+                repository.setPackageName(composer['name']);
+                repository.setRootIdentifier(rootIdentifier);
+                await this.update(repository);
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Create a vcs repository and validate the url and type.
      *
      * @param {String}      url    The repository url
