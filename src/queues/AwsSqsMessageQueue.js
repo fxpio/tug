@@ -30,9 +30,10 @@ export default class AwsSqsMessageQueue extends MessageQueue
     /**
      * @inheritDoc
      */
-    async send(message) {
+    async send(message, delay = 0) {
         let params = {
             QueueUrl: this.queueUrl,
+            DelaySeconds: delay,
             MessageBody: typeof message === 'object' ? JSON.stringify(message) : message
         };
         await this.client.sendMessage(params).promise();
@@ -41,7 +42,7 @@ export default class AwsSqsMessageQueue extends MessageQueue
     /**
      * @inheritDoc
      */
-    async sendBatch(messages) {
+    async sendBatch(messages, delay = 0) {
         let nextMessages = [];
         let params = {
             QueueUrl: this.queueUrl,
@@ -52,6 +53,7 @@ export default class AwsSqsMessageQueue extends MessageQueue
             if (i < 10) {
                 params.Entries.push({
                     Id: i,
+                    DelaySeconds: delay,
                     MessageBody: typeof message === 'object' ? JSON.stringify(message) : message
                 });
             } else {
@@ -62,7 +64,7 @@ export default class AwsSqsMessageQueue extends MessageQueue
         await this.client.sendMessageBatch(params).promise();
 
         if (nextMessages.length > 0) {
-            await this.sendBatch(nextMessages);
+            await this.sendBatch(nextMessages, delay);
         }
     }
 }
