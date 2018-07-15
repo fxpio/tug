@@ -73,4 +73,22 @@ export default class PackageBuilder
 
         return null;
     }
+
+    /**
+     * Builds the JSON stuff of the root packages.
+     *
+     * @return {Promise<String|null>}
+     */
+    async buildRootPackages() {
+        let repos = await this.repoManager.getRepositories();
+        let data = {packages: {}, includes: {}};
+
+        for (let key of Object.keys(repos)) {
+            let name = repos[key].getPackageName();
+            let hash = repos[key].getLastHash();
+            data.includes[`p/${name}$${hash}.json`] = {'sha1': hash};
+        }
+
+        return await this.cache.setRootPackages(JSON.stringify(data));
+    }
 }

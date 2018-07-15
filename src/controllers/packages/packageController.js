@@ -7,7 +7,6 @@
  * file that was distributed with this source code.
  */
 
-import RepositoryManager from '../../composer/repositories/RepositoryManager';
 import PackageManager from '../../composer/packages/PackageManager';
 import PackageBuilder from '../../composer/packages/PackageBuilder';
 import Cache from '../../caches/Cache';
@@ -23,20 +22,13 @@ import HttpNotFoundError from '../../errors/HttpNotFoundError';
 export async function showRootPackages(req, res, next) {
     /** @type Cache cache */
     let cache = req.app.set('cache');
-    /** @type RepositoryManager manager */
-    let manager = req.app.set('repository-manager');
-    let includes = {};
+    /** @type PackageBuilder builder */
+    let builder = req.app.set('package-builder');
 
     let content = await cache.getRootPackages();
 
     if (!content) {
-        let repos = await manager.getRepositories();
-        for (let key of Object.keys(repos)) {
-            let name = repos[key].getPackageName();
-            let hash = repos[key].getLastHash();
-            includes[`p/${name}$${hash}.json`] = {'sha1': hash};
-        }
-        content = JSON.stringify({packages: {}, includes: includes});
+        content = await builder.buildRootPackages();
     }
 
     res.set('Content-Type', 'application/json; charset=utf-8');
