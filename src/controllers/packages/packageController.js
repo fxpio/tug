@@ -58,7 +58,7 @@ export async function showPackageVersion(req, res, next) {
     let resPackage = await manager.findPackage(packageName, version);
 
     if (resPackage) {
-        res.json(resPackage);
+        res.json(resPackage.getComposer());
         return;
     }
 
