@@ -72,6 +72,31 @@ export default class PackageManager
 
         if (repo && (!hash || hash === repo.getLastHash())) {
             res = await retrieveAllVersions(packageName, this.packageRepo, {});
+            let packages = Object.values(res);
+            res = {};
+            packages.sort(function (a, b) {
+                if (a.getVersion() < b.getVersion()) {
+                    return -1;
+                } else if (a.getVersion() > b.getVersion()) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+            packages.sort(function (a, b) {
+                let aTime = (new Date(a.getComposer()['time'])).getTime();
+                let bTime = (new Date(b.getComposer()['time'])).getTime();
+                if (aTime < bTime) {
+                    return -1;
+                } else if (aTime > bTime) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+            for (let i = 0; i < packages.length; ++i) {
+                res[packages[i].getVersion()] = packages[i];
+            }
         }
 
         return res;
