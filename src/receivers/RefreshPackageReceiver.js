@@ -78,6 +78,10 @@ export default class RefreshPackageReceiver extends QueueReceiver
 
             let pack = new Package({composer: composer});
             await this.packageManager.update(pack);
+            await this.queue.send({
+                type: 'build-package-versions-cache',
+                packageName: pack.getName()
+            }, 1);
         }
     }
 }

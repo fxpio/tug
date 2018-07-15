@@ -34,6 +34,7 @@ import {isProd} from './utils/server';
 import packageRoutes from './routes/packageRoutes';
 import hookRoutes from './routes/hookRoutes';
 import managerRoutes from './routes/managerRoutes';
+import BuildPackageVersionsReceiver from "./receivers/BuildPackageVersionsReceiver";
 
 const app = express();
 let storage,
@@ -67,6 +68,7 @@ let packageBuilder = new PackageBuilder(repoManager, packageManager, cache);
 
 queue.subscribe(new RefreshPackagesReceiver(repoManager, queue));
 queue.subscribe(new RefreshPackageReceiver(repoManager, packageManager, queue));
+queue.subscribe(new BuildPackageVersionsReceiver(packageBuilder));
 
 app.set('config-manager', configManager);
 app.set('repository-manager', repoManager);
