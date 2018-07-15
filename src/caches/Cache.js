@@ -58,7 +58,7 @@ export default class Cache
      * Get the cached content of package versions.
      *
      * @param {String}      packageName The package name
-     * @param {String|null} hash        The hash
+     * @param {String|null} [hash]      The hash
      *
      * @return {Promise<String|null>}
      */
