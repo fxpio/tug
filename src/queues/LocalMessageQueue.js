@@ -18,7 +18,7 @@ export default class LocalMessageQueue extends MessageQueue
      * @inheritDoc
      */
     async send(message, delay = 0) {
-        await this.receive([message]);
+        await this.sendBatch([message]);
     }
 
     /**
@@ -29,6 +29,9 @@ export default class LocalMessageQueue extends MessageQueue
             return;
         }
 
-        await this.receive(messages);
+        let self = this;
+        setTimeout(async function () {
+            await self.receive(messages);
+        }, delay * 1000);
     }
 }
