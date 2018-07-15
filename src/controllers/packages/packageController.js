@@ -88,7 +88,6 @@ export async function showPackageVersions(req, res, next) {
             res.send(content);
             return;
         }
-
     }
 
     throw new HttpNotFoundError();
