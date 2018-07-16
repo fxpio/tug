@@ -166,13 +166,19 @@ export default class RepositoryManager
      * @return {Object<String, VcsRepository>}
      */
     async getRepositories(forceAll = false) {
-        if (!this.allRepoRetrieves) {
-            this.allRepoRetrieves = true;
+        let res = this.cacheRepositories;
+
+        if ((!this.allRepoRetrieves && forceAll) || !forceAll) {
             let config = await this.configManager.get();
-            this.cacheRepositories = retrieveAllRepositories(config, this.codeRepoRepo, this.cacheRepositories, forceAll);
+            res = await retrieveAllRepositories(config, this.codeRepoRepo, forceAll ? res : {}, forceAll);
+
+            if (forceAll) {
+                this.allRepoRetrieves = true;
+                this.cacheRepositories = res;
+            }
         }
 
-        return this.cacheRepositories;
+        return res;
     }
 
     /**
