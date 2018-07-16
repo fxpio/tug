@@ -26,7 +26,6 @@ export default class GitlabWebhookAuth extends AuthStrategy
             /** @type {ConfigManager} repo */
             let configManager = req.app.set('config-manager');
             let signature = req.headers['x-gitlab-token'],
-                payload = JSON.stringify(body),
                 config = await configManager.get(),
                 secret = config.get('gitlab-webhook[' + req.headers.host + ']') 
                     ? config.get('gitlab-webhook[' + req.headers.host + ']')

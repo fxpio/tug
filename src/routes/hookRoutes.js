@@ -13,7 +13,7 @@ import GitlabWebhookAuth from '../middlewares/auth/strategies/GitlabWebhookAuth'
 import QueueAuth from '../middlewares/auth/strategies/QueueAuth';
 import {asyncHandler} from '../utils/handler';
 import {githubHook} from '../controllers/hooks/githubController';
-import { gitlabbHook } from '../controllers/hooks/gitlabController';
+import { gitlabHook } from '../controllers/hooks/gitlabController';
 import {queueHook} from '../controllers/hooks/queueController';
 
 
@@ -26,7 +26,7 @@ import {queueHook} from '../controllers/hooks/queueController';
  */
 export default function(router) {
     router.post('/', asyncHandler(Authenticate.middleware(new GithubWebhookAuth(), true)), asyncHandler(githubHook));
-    router.post('/gitlab-hook', asyncHandler(Authenticate.middleware(new GitlabWebhookAuth(), true)), asyncHandler(gitlabbHook));
+    router.post('/gitlab-hook', asyncHandler(Authenticate.middleware(new GitlabWebhookAuth(), true)), asyncHandler(gitlabHook));
     router.get('/', asyncHandler(Authenticate.middleware(new QueueAuth(), true)), asyncHandler(queueHook));
 
     return router;
