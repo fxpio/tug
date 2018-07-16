@@ -147,10 +147,9 @@ export default class PackageManager
      * @throws RepositoryNotFoundError     When the repository is not found
      */
     async refreshPackages(url, force = true) {
-        url = await this.repoManager.validateUrl(url);
         let repo = await this.repoManager.getRepository(url, true);
 
-        await this.queue.send({type: 'refresh-packages', repositoryUrl: url, force: force});
+        await this.queue.send({type: 'refresh-packages', repositoryUrl: repo.getUrl(), force: force});
 
         return repo;
     }
@@ -168,7 +167,6 @@ export default class PackageManager
      * @throws RepositoryNotFoundError     When the repository is not found
      */
     async refreshPackage(url, version, force = true) {
-        url = await this.repoManager.validateUrl(url);
         let repo = await this.repoManager.getRepository(url, true);
         let identifier;
 

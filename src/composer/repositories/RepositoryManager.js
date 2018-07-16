@@ -117,6 +117,7 @@ export default class RepositoryManager
      * @throws RepositoryNotFoundError When the repository is not found and it is required
      */
     async getRepository(url, required = false) {
+        url = await this.validateUrl(url);
         let packageName = undefined !== this.cacheUrlPackages[url] ? this.cacheUrlPackages[url] : null;
         if (packageName && undefined !== this.cacheRepositories[packageName]) {
             return this.cacheRepositories[packageName];
