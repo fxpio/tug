@@ -12,7 +12,7 @@ import PackageManager from '../../composer/packages/PackageManager';
 import {validateForm} from '../../utils/validation';
 
 /**
- * Refresh all packages of a repository.
+ * Refresh all packages or a single package of a repository.
  *
  * @param {IncomingMessage} req  The request
  * @param {ServerResponse}  res  The response
