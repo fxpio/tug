@@ -30,7 +30,6 @@ program
     .option('--aws-region [name]', 'Your AWS Region (required if AWS Shared Config File is not found)', envs['AWS_REGION'])
     .option('--aws-s3-bucket-deploy [bucket]', 'Your AWS S3 bucket name where the code must be deployed', envs['AWS_S3_BUCKET_DEPLOY'])
     .option('--aws-stack-name [stack]', 'Your AWS Stack name', envs['AWS_STACK_NAME'])
-    .option('--gitlab-token [token]', 'Your Gitlab token', envs['GITLAB_TOKEN'])
     .option('-e, --only-empty', 'Display only questions of empty options', false)
     .option('-n, --no-interaction', 'Do not ask any interactive question', false)
     .parse(process.argv)
@@ -43,7 +42,6 @@ envs = utils.mergeVariables(envs, {
     AWS_REGION: program.awsRegion,
     AWS_S3_BUCKET_DEPLOY: program.awsS3BucketDeploy,
     AWS_STACK_NAME: program.awsStackName
-    GITLAB_TOKEN: program.gitlabToken
 });
 
 let finishAction = function(envs) {
@@ -173,18 +171,6 @@ if (program.interaction) {
             message : 'Enter your AWS Stack name:',
             when: function () {
                 return utils.showOnlyEmptyOption(program, envs, 'AWS_STACK_NAME');
-            },
-            validate: function (value) {
-                return utils.requiredOption(value);
-            }
-        },
-        {
-            type : 'input',
-            name : 'gitlabToken',
-            default: envs['GITLAB_TOKEN'],
-            message : 'Enter your Gitlab token:',
-            when: function () {
-                return utils.showOnlyEmptyOption(program, envs, 'GITLAB_TOKEN');
             },
             validate: function (value) {
                 return utils.requiredOption(value);

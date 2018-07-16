@@ -21,6 +21,9 @@ or `npm run bin/node bin/<command-name>`:
 - `show-github-oauth`: Show your Github Oauth token
 - `create-github-oauth`: Create your Github Oauth token
 - `delete-github-oauth`: Delete your Github Oauth token
+- `show-gitlab-oauth`: Show your Gitlab Oauth token
+- `create-gitlab-oauth`: Create your Gitlab Oauth token
+- `delete-gitlab-oauth`: Delete your Gitlab Oauth token
 - `show-github-token`: Show the token for the Github Webhooks
 - `create-github-token`: Create the token for the Github Webhooks
 - `delete-github-token`: Delete the token for the Github Webhooks

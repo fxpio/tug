@@ -47,6 +47,10 @@ export default class RemoteFilesystem
             params.headers['Content-Type'] = 'application/json';
             params.headers['Authorization'] = 'token ' + this.config.get('github-oauth[' + originalUrl + ']');
         }
+        if (this.config.get('gitlab-domains').includes(originalUrl)) {
+            params.headers['Content-Type'] = 'application/json';
+            params.headers['Authorization'] = 'token ' + this.config.get('gitlab-oauth[' + originalUrl + ']');
+        }
 
         options = merge(options, params);
 

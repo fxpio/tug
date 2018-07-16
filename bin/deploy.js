@@ -35,11 +35,6 @@ let createAction = function(action) {
         ChangeSetType: action.toUpperCase(),
         Capabilities: ['CAPABILITY_IAM'],
         Parameters: [],
-            },
-            {
-                ParameterKey: 'GitlabToken',
-                ParameterValue: process.env.GITLAB_TOKEN ? process.env.GITLAB_TOKEN : null,
-                UsePreviousValue: null === process.env.GITLAB_TOKEN
         TemplateBody: fs.readFileSync(DEPLOY_CLOUDFORMATION_PATH, 'utf8')
     };
 

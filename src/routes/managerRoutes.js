@@ -14,6 +14,7 @@ import {isProd} from '../utils/server';
 import {createApiKey, deleteApiKey} from '../controllers/manager/apiKeyController';
 import {createGithubOauth, deleteGithubOauth, showGithubOauth} from '../controllers/manager/githubOauthController';
 import {createGithubToken, deleteGithubToken, showGithubToken} from '../controllers/manager/githubTokenController';
+import {createGitlabOauth, deleteGitlabOauth, showGitlabOauth} from '../controllers/manager/gitlabOauthController';
 import {createGitlabToken, deleteGitlabToken, showGitlabToken} from '../controllers/manager/gitlabTokenController';
 import {disableRepository, enableRepository, refreshPackages} from '../controllers/manager/repositoryController';
 
@@ -41,6 +42,10 @@ export default function(router) {
     router.post('/gitlab-token', asyncHandler(createGitlabToken));
     router.get('/gitlab-token', asyncHandler(deleteGitlabToken));
     router.delete('/gitlab-token', asyncHandler(showGitlabToken));
+
+    router.post('/gitlab-oauth', asyncHandler(createGitlabOauth));
+    router.get('/gitlab-oauth', asyncHandler(showGitlabOauth));
+    router.delete('/gitlab-oauth', asyncHandler(deleteGitlabOauth));
 
     router.post('/repositories', asyncHandler(enableRepository));
     router.put('/repositories/refresh', asyncHandler(refreshPackages));
