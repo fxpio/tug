@@ -9,6 +9,8 @@
 
 import Config from '../../../configs/Config';
 import RemoteFilesystem from '../../utils/RemoteFilesystem';
+import TagNotFoundError from '../../../errors/TagNotFoundError';
+import BranchNotFoundError from '../../../errors/BranchNotFoundError';
 import {dateToRfc3339} from '../../../utils/date';
 
 /**
@@ -182,12 +184,44 @@ export default class VcsDriver
     }
 
     /**
+     * Get the identifier value of tag.
+     *
+     * @param {String} name The tag name
+     *
+     * @return {Promise<String>}
+     */
+    async getTag(name) {
+        let tags = await this.getTags();
+
+        if (undefined !== tags[name]) {
+            return tags[name];
+        }
+        throw new TagNotFoundError(name);
+    }
+
+    /**
      * Return list of branches in the repository.
      *
      * @return {Promise<Object>} Branch names as keys, identifiers as values
      */
     async getBranches() {
         return {};
+    }
+
+    /**
+     * Get the identifier value of branch.
+     *
+     * @param {String} name The branch name
+     *
+     * @return {Promise<String>}
+     */
+    async getBranch(name) {
+        let branches = await this.getBranches();
+
+        if (undefined !== branches[name]) {
+            return branches[name];
+        }
+        throw new BranchNotFoundError(name);
     }
 
     /**

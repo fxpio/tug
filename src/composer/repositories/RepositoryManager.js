@@ -106,6 +106,44 @@ export default class RepositoryManager
     }
 
     /**
+     * Refresh the package.
+     *
+     * @param {String}  url     The repository url
+     * @param {String}  version The version to refresh
+     * @param {Boolean} force   Check if existing packages must be overridden
+     *
+     * @return {Promise<VcsRepository>}
+     *
+     * @throws RepositoryNotSupportedError When the repository is not supported
+     * @throws RepositoryNotFoundError     When the repository is not found
+     */
+    async refreshPackage(url, version, force = true) {
+        let repo = await this.createVcsRepository(url);
+        let existingRepo = await this.getRepository(repo.getUrl());
+        let identifier;
+
+        if (!existingRepo) {
+            throw new RepositoryNotFoundError(`The repository with the url "${repo.getUrl()}" is not found`);
+        }
+
+        if (version.startsWith('dev-')) {
+            identifier = await existingRepo.getDriver().getBranch(version.substring(4));
+        } else {
+            identifier = await existingRepo.getDriver().getTag(version);
+        }
+
+        await this.queue.send({
+            type: 'refresh-package',
+            repositoryUrl: existingRepo.getUrl(),
+            identifier: identifier,
+            tag: version,
+            force: force
+        });
+
+        return existingRepo;
+    }
+
+    /**
      * Find a vcs repository for a package name.
      *
      * @param {String} packageName The package name
