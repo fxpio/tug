@@ -20,7 +20,7 @@ const validateResponse = require('./utils/endpoint').validateResponse;
 const createHeaders = require('./utils/endpoint').createHeaders;
 
 program
-    .description('Delete the token for Gitlab Oauth')
+    .description('Delete the Access Token for Gitlab')
     .option('-e, --endpoint [url]', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
     .option('-h, --host [host]', 'Your Gitlab Enterprise host, if empty the host "gitlab.com" is used')
     .parse(process.argv);
@@ -28,7 +28,7 @@ program
 utils.spawn('node bin/config -e')
     .then(() => getEndpoint(program))
     .then((endpoint) => {
-        return fetch(endpoint + '/manager/gitlab-oauth', {
+        return fetch(endpoint + '/manager/gitlab-access-token', {
             method: 'DELETE',
             body: JSON.stringify({
                 host: program.host

@@ -86,8 +86,6 @@ export default class VcsRepository
         }
 
         this.driver = new this.drivers[validType](this.repoData, this.config);
-        this.repoData['type'] = 'vcs-' + validType;
-        this.repoData['url'] = this.driver.getUrl();
 
         return this.driver;
     }

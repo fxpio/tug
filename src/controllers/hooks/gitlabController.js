@@ -27,9 +27,9 @@ export async function gitlabbHook(req, res, next) {
         message = 'Hello Gitlab!';
 
     if ('ping' === type) {
-        if (body.hook && 'Repository' === body.hook.type && body.repository && body.repository['clone_url']) {
+        if (body.event_name && 'push' === body.event_name && body.repository && body.repository['git_http_url']) {
             // enable the repository
-            let data = await repoManager.register(body.repository['clone_url'], 'vcs-gitlab');
+            let data = await repoManager.register(body.repository['git_http_url'], 'vcs-gitlab');
             // send refresh all packages in queue
             await queue.send({
                 type: 'refresh-packages',

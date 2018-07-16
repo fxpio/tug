@@ -10,17 +10,16 @@
 import Joi from 'joi';
 import ConfigManager from '../../configs/ConfigManager';
 import Config from '../../configs/Config';
-import {generateToken} from '../../utils/token';
 import {validateForm} from '../../utils/validation';
 
 /**
- * Create the gitlab oauth token.
+ * Create the gitlab access token.
  *
  * @param {IncomingMessage} req  The request
  * @param {ServerResponse}  res  The response
  * @param {Function}        next The next callback
  */
-export async function createGitlabOauth(req, res, next) {
+export async function persistGitlabAccessToken(req, res, next) {
     validateForm(req, {
         token: Joi.string().required(),
         host: Joi.string()
@@ -28,30 +27,30 @@ export async function createGitlabOauth(req, res, next) {
 
     /** @type ConfigManager configManager */
     let configManager = req.app.set('config-manager');
-    let token = req.body.token ? req.body.token : generateToken(40);
+    let token = req.body.token;
     let host = req.body.host ? req.body.host : 'gitlab.com';
     let data = {
         'gitlab-domains': [host],
-        'gitlab-oauth': {}
+        'gitlab-access-token': {}
     };
-    data['gitlab-oauth'][host] = token;
+    data['gitlab-access-token'][host] = token;
 
     await configManager.put(data);
 
     res.json({
-        message: `The Oauth token "${token}" to connect the server with your Gitlab account hosted on "${host}" was created successfully`,
+        message: `The Acccess token "${token}" to connect the server with your Gitlab account hosted on "${host}" was created successfully`,
         token: token
     });
 }
 
 /**
- * Delete the gitlab oauth token.
+ * Delete the gitlab access token.
  *
  * @param {IncomingMessage} req  The request
  * @param {ServerResponse}  res  The response
  * @param {Function}        next The next callback
  */
-export async function deleteGitlabOauth(req, res, next) {
+export async function deleteGitlabAccessToken(req, res, next) {
     validateForm(req, {
         host: Joi.string()
     });
@@ -61,27 +60,27 @@ export async function deleteGitlabOauth(req, res, next) {
     let host = req.body.host ? req.body.host : 'gitlab.com';
 
     let config = (await configManager.get()).all();
-    delete config['gitlab-oauth'][host];
+    delete config['gitlab-access-token'][host];
     await configManager.put(config);
 
     res.json({
-        message: `The Oauth token to connect the server with your Gitlab account hosted on "${host}" was deleted successfully`
+        message: `The Access token to connect the server with your Gitlab account hosted on "${host}" was deleted successfully`
     });
 }
 
 /**
- * Show the gitlab oauth token.
+ * Show the gitlab access token.
  *
  * @param {IncomingMessage} req  The request
  * @param {ServerResponse}  res  The response
  * @param {Function}        next The next callback
  */
-export async function showGitlabOauth(req, res, next) {
+export async function showGitlabAccessToken(req, res, next) {
     /** @type Config config */
     let config = await req.app.set('config-manager').get();
 
-    let tokens = config.get('gitlab-oauth');
-    let message = 'No tokens for Gitlab Oauth are saved';
+    let tokens = config.get('gitlab-access-token');
+    let message = 'No Access Tokens for Gitlab are saved';
 
     if (tokens && Object.keys(tokens).length > 0) {
         let tokenHosts = Object.keys(tokens);
@@ -90,7 +89,7 @@ export async function showGitlabOauth(req, res, next) {
             strTokens += tokens[tokenHosts[i]] + ' (' + tokenHosts[i] + '), ';
         }
 
-        message = `The Oauth tokens to connect the server with your Gitlab account are "${strTokens.replace(/, $/g, '')}"`;
+        message = `The Access Tokens to connect the server with your Gitlab account are "${strTokens.replace(/, $/g, '')}"`;
     }
 
     res.json({

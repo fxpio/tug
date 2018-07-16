@@ -8,8 +8,8 @@
  */
 
 import AuthStrategy from './AuthStrategy';
-import ConfigRepository from '../../../db/repositories/ConfigRepository';
 import {isGitlabEvent} from "../../../utils/apiGitlab";
+import ConfigManager from '../../../configs/ConfigManager';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -22,13 +22,15 @@ export default class GitlabWebhookAuth extends AuthStrategy
     async logIn(req) {
         let body = req.body;
 
-        if (isGitlabEvent(req) && body && body.hook && body.hook.config && req.headers['x-hub-signature']) {
-            /** @type {ConfigRepository} repo */
-            let repo = req.app.set('db').getRepository(ConfigRepository);
+        if (isGitlabEvent(req) && body && req.headers['x-gitlab-token']) {
+            /** @type {ConfigManager} repo */
+            let configManager = req.app.set('config-manager');
             let signature = req.headers['x-gitlab-token'],
                 payload = JSON.stringify(body),
-                config = await repo.get('gitlab-token'),
-                secret = config ? config.token : '';
+                config = await configManager.get(),
+                secret = config.get('gitlab-webhook[' + req.headers.host + ']') 
+                    ? config.get('gitlab-webhook[' + req.headers.host + ']')
+                    : '';
 
             if (signature === secret) {
                 return true;

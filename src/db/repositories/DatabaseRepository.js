@@ -8,6 +8,7 @@
  */
 
 import Results from '../Results';
+import Database from '../../db/Database';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

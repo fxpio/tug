@@ -20,14 +20,14 @@ const validateResponse = require('./utils/endpoint').validateResponse;
 const createHeaders = require('./utils/endpoint').createHeaders;
 
 program
-    .description('Show your token for Gitlab Oauth')
+    .description('Show your Access Token(s) for Gitlab')
     .option('-e, --endpoint [url]', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')
     .then(() => getEndpoint(program))
     .then((endpoint) => {
-        return fetch(endpoint + '/manager/gitlab-oauth', {
+        return fetch(endpoint + '/manager/gitlab-access-token', {
             method: 'GET',
             headers: createHeaders()
         })

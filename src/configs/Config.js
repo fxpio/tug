@@ -15,11 +15,11 @@ import merge from 'lodash.merge';
 export default class Config
 {
     static defaultConfig = {
-        'github-domains': ['github.com'],
+        'github-domains': [],
         'github-oauth': {},
         'github-webhook': {},
-        'gitlab-domains': ['gitlab.com'],
-        'gitlab-oauth': {},
+        'gitlab-domains': [],
+        'gitlab-access-token': {},
         'gitlab-webhook': {}
     };
 
