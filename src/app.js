@@ -28,13 +28,13 @@ import LocalMessageQueue from './queues/LocalMessageQueue';
 import AwsSqsMessageQueue from './queues/AwsSqsMessageQueue';
 import RefreshPackagesReceiver from './receivers/RefreshPackagesReceiver';
 import RefreshPackageReceiver from './receivers/RefreshPackageReceiver';
+import BuildPackageVersionsReceiver from './receivers/BuildPackageVersionsReceiver';
 import {logErrors} from './middlewares/logs';
 import {convertJsonSyntaxError, convertRouteNotFound, convertURIError, showError} from './middlewares/errors';
 import {isProd} from './utils/server';
 import packageRoutes from './routes/packageRoutes';
 import hookRoutes from './routes/hookRoutes';
 import managerRoutes from './routes/managerRoutes';
-import BuildPackageVersionsReceiver from "./receivers/BuildPackageVersionsReceiver";
 
 const app = express();
 let storage,
