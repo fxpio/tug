@@ -191,6 +191,7 @@ export default class VcsRepository
      */
     getRootIdentifier() {
         return this.repoData['rootIdentifier'] ? this.repoData['rootIdentifier'] : null;
+    }
 
     /**
      * Check if the repository has already been initialized.
