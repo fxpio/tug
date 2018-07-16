@@ -78,6 +78,27 @@ export default class DatabaseRepository
     }
 
     /**
+     * Delete the ids.
+     *
+     * @param {Array<String>} ids The ids
+     *
+     * @return {Promise<Array<String>>}
+     */
+    async deletes(ids) {
+        for (let i = 0; i < ids.length; ++i) {
+            ids[i] = this.getPrefixedId(ids[i]);
+        }
+
+        ids = await this.client.deletes(ids);
+
+        for (let i = 0; i < ids.length; ++i) {
+            ids[i] = this.cleanPrefix(ids[i]);
+        }
+
+        return ids;
+    }
+
+    /**
      * Find the records.
      *
      * @param {Object}      criteria The criteria

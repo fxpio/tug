@@ -89,6 +89,26 @@ export default class AwsDynamoDbDatabase extends Database
     /**
      * @inheritDoc
      */
+    async deletes(ids) {
+        let params = {RequestItems: {}};
+        params.RequestItems[this.tableName] = [];
+
+        for (let id of ids) {
+            params.RequestItems[this.tableName].push({
+                DeleteRequest: {
+                    Key: {'id': {'S': id}}
+                }
+            });
+        }
+
+        await this.client.batchWriteItem(params).promise();
+
+        return ids;
+    }
+
+    /**
+     * @inheritDoc
+     */
     async find(criteria, startId = null) {
         let params = Object.assign(convertQueryCriteria(criteria), {
             TableName: this.tableName,
