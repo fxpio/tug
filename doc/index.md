@@ -122,10 +122,7 @@ In each repository or in a organization, create the webhook with:
 - Payload URL: `https://<your-custom-domain-for-satis>`
 - Content type: `application/json`
 - Secret: `<your-created-token-for-github-webhooks-in-step-3>`
-- Which events would you like to trigger this webhook? `Let me select individual events.`:
-  - `Branch or tag creation`
-  - `Branch or tag deletion`
-  - `Pushes`
+- Which events would you like to trigger this webhook? `Just the push event.`
 
 
 ## 6) Create your first API key
