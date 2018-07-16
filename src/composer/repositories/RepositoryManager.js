@@ -32,6 +32,7 @@ export default class RepositoryManager
         this.codeRepoRepo = codeRepoRepo;
         this.queue = queue;
         this.cacheRepositories = {};
+        this.cacheUrlPackages = {};
         this.allRepoRetrieves = false;
     }
 
@@ -116,8 +117,19 @@ export default class RepositoryManager
      * @throws RepositoryNotFoundError When the repository is not found and it is required
      */
     async getRepository(url, required = false) {
+        let packageName = undefined !== this.cacheUrlPackages[url] ? this.cacheUrlPackages[url] : null;
+        if (packageName && undefined !== this.cacheRepositories[packageName]) {
+            return this.cacheRepositories[packageName];
+        }
+
         let res = await this.codeRepoRepo.findOne({url: url});
         let repo = res ? new VcsRepository(res, await this.configManager.get()) : null;
+        packageName = repo ? repo.getPackageName() : packageName;
+
+        if (repo && packageName) {
+            this.cacheUrlPackages[url] = packageName;
+            this.cacheRepositories[packageName] = repo;
+        }
 
         if (required && null === repo) {
             throw new RepositoryNotFoundError(`The repository with the url "${url}" is not found`);
