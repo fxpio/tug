@@ -52,7 +52,7 @@ export default class RepositoryManager
 
         if (!existingRepo) {
             await this.update(repo);
-            await this.queue.send({type: 'refresh-packages', repositoryUrl: repo.url});
+            await this.queue.send({type: 'refresh-packages', repositoryUrl: repo.getUrl()});
 
             return repo;
         }
@@ -263,6 +263,10 @@ export default class RepositoryManager
      * @throws RepositoryNotSupportedError When the repository is not supported
      */
     async validateUrl(url) {
-        return (await this.createVcsRepository(url)).getUrl();
+        if (url) {
+            url = (await this.createVcsRepository(url)).getUrl();
+        }
+
+        return url;
     }
 }
