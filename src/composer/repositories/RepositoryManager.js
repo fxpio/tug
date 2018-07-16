@@ -76,7 +76,10 @@ export default class RepositoryManager
         if (existingRepo) {
             url = existingRepo.getUrl();
             await this.delete(existingRepo);
-            await this.queue.send({type: 'delete-packages', repositoryUrl: url});
+
+            if (existingRepo.getPackageName()) {
+                await this.queue.send({type: 'delete-packages', packageName: existingRepo.getPackageName()});
+            }
         }
 
         return url;
