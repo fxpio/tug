@@ -14,7 +14,8 @@ import {isProd} from '../utils/server';
 import {createApiKey, deleteApiKey} from '../controllers/manager/apiKeyController';
 import {createGithubOauth, deleteGithubOauth, showGithubOauth} from '../controllers/manager/githubOauthController';
 import {createGithubToken, deleteGithubToken, showGithubToken} from '../controllers/manager/githubTokenController';
-import {disableRepository, enableRepository, refreshPackages} from '../controllers/manager/repositoryController';
+import {disableRepository, enableRepository} from '../controllers/manager/repositoryController';
+import {refreshPackages} from '../controllers/manager/packageController';
 
 /**
  * Generate the routes.
@@ -38,8 +39,9 @@ export default function(router) {
     router.delete('/github-token', asyncHandler(deleteGithubToken));
 
     router.post('/repositories', asyncHandler(enableRepository));
-    router.put('/repositories/refresh', asyncHandler(refreshPackages));
     router.delete('/repositories', asyncHandler(disableRepository));
+
+    router.put('/packages/refresh', asyncHandler(refreshPackages));
 
     return router;
 }

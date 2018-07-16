@@ -62,7 +62,7 @@ db.setRepository(PackageRepository);
 
 let configManager = new ConfigManager(db.getRepository(ConfigRepository));
 let repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository), queue);
-let packageManager = new PackageManager(repoManager, db.getRepository(PackageRepository));
+let packageManager = new PackageManager(repoManager, db.getRepository(PackageRepository), queue);
 let cache = new Cache(storage);
 let packageBuilder = new PackageBuilder(repoManager, packageManager, cache);
 

@@ -30,7 +30,7 @@ program
 utils.spawn('node bin/config -e')
     .then(() => getEndpoint(program))
     .then((endpoint) => {
-        return fetch(endpoint + '/manager/repositories/refresh', {
+        return fetch(endpoint + '/manager/packages/refresh', {
             method: 'PUT',
             body: JSON.stringify({
                 url: program.url,
