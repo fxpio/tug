@@ -186,4 +186,23 @@ export default class PackageManager
 
         return repo;
     }
+
+    /**
+     * Delete the packages.
+     *
+     * @param {String} url The repository url
+     *
+     * @return {Promise<VcsRepository>}
+     *
+     * @throws RepositoryNotFoundError When the repository is not found
+     */
+    async deletePackages(url) {
+        let repo = await this.repoManager.getRepository(url, true);
+
+        if (repo.isInitialized()) {
+            await this.queue.send({type: 'delete-packages', repositoryUrl: repo.getUrl()});
+        }
+
+        return repo;
+    }
 }
