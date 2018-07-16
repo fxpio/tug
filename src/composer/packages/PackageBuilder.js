@@ -42,33 +42,41 @@ export default class PackageBuilder
         let repo = await this.repoManager.findRepository(packageName);
         let res = await this.packageManager.findPackages(packageName);
 
-        if (repo && Object.keys(res).length > 0) {
-            let data = {packages: {}};
-            data.packages[packageName] = {};
-            for (let version of Object.keys(res)) {
-                let pack = res[version];
-                data.packages[packageName][pack.getVersion()] = pack.getComposer();
-            }
-            let content = JSON.stringify(data);
+        if (repo) {
+            if (Object.keys(res).length > 0) {
+                let data = {packages: {}};
+                data.packages[packageName] = {};
+                for (let version of Object.keys(res)) {
+                    let pack = res[version];
+                    data.packages[packageName][pack.getVersion()] = pack.getComposer();
+                }
+                let content = JSON.stringify(data);
 
-            if (hash) {
-                await this.cache.setPackageVersions(packageName, hash, content);
+                if (hash) {
+                    await this.cache.setPackageVersions(packageName, hash, content);
+                } else {
+                    hash = crypto.createHash('sha1');
+                    hash.update(content);
+                    hash = hash.digest('hex');
+
+                    await this.cache.setPackageVersions(packageName, hash, content);
+                    repo.setLastHash(hash);
+                    await this.repoManager.update(repo);
+                    await this.cache.cleanRootPackages();
+                }
+
+                return {
+                    name: packageName,
+                    hash: hash,
+                    content: content
+                };
             } else {
-                hash = crypto.createHash('sha1');
-                hash.update(content);
-                hash = hash.digest('hex');
-
-                await this.cache.setPackageVersions(packageName, hash, content);
-                repo.setLastHash(hash);
-                await this.repoManager.update(repo);
+                if (null === hash) {
+                    repo.setLastHash(null);
+                    await this.repoManager.update(repo);
+                }
                 await this.cache.cleanRootPackages();
             }
-
-            return {
-                name: packageName,
-                hash: hash,
-                content: content
-            };
         }
 
         return null;
