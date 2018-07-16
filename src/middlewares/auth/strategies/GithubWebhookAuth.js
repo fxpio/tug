@@ -9,8 +9,9 @@
 
 import crypto from 'crypto';
 import AuthStrategy from './AuthStrategy';
-import ConfigRepository from '../../../db/repositories/ConfigRepository';
+import ConfigManager from '../../../configs/ConfigManager';
 import {isGithubEvent} from '../../../utils/apiGithub';
+import {URL} from 'url';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -21,15 +22,18 @@ export default class GithubWebhookAuth extends AuthStrategy
      * @inheritDoc
      */
     async logIn(req) {
-        let body = req.body;
+        let body = req.body,
+            headers = req.headers;
 
-        if (isGithubEvent(req) && body && body.hook && body.hook.config && req.headers['x-hub-signature']) {
-            /** @type {ConfigRepository} repo */
-            let repo = req.app.set('db').getRepository(ConfigRepository);
-            let signature = req.headers['x-hub-signature'],
+        if (isGithubEvent(req) && body && body.hook && body.hook.config && headers['x-hub-signature']) {
+            /** @typedef ConfigManager config */
+            let config = await req.app.set('config-manager').get();
+            let host = (new URL(body.hook.url)).host;
+                host = host.endsWith('.github.com') ? 'github.com' : host;
+            let signature = headers['x-hub-signature'],
                 payload = JSON.stringify(body),
-                config = await repo.get('github-token'),
-                secret = config ? config.token : '',
+                tokens = config.get('github-webhook'),
+                secret = undefined !== tokens[host] ? tokens[host] : '',
                 computedSignature = `sha1=${crypto.createHmac("sha1", secret).update(payload).digest("hex")}`;
 
             if (crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(computedSignature))) {
