@@ -39,6 +39,7 @@ export default class PackageBuilder
      * @return {{name: String, hash: String, content: String}|null}
      */
     async buildVersions(packageName, hash = null) {
+        this.repoManager.clearCache();
         let repo = await this.repoManager.findRepository(packageName);
         let res = await this.packageManager.findPackages(packageName);
 

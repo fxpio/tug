@@ -37,6 +37,14 @@ export default class RepositoryManager
     }
 
     /**
+     * Clear the cache of manager.
+     */
+    clearCache() {
+        this.cacheRepositories = {};
+        this.cacheUrlPackages = {};
+    }
+
+    /**
      * Register the repository.
      *
      * @param {String}      url    The repository url
