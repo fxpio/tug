@@ -28,6 +28,7 @@ import LocalMessageQueue from './queues/LocalMessageQueue';
 import AwsSqsMessageQueue from './queues/AwsSqsMessageQueue';
 import RefreshPackagesReceiver from './receivers/RefreshPackagesReceiver';
 import RefreshPackageReceiver from './receivers/RefreshPackageReceiver';
+import DeletePackagesReceiver from './receivers/DeletePackagesReceiver';
 import BuildPackageVersionsReceiver from './receivers/BuildPackageVersionsReceiver';
 import {logErrors} from './middlewares/logs';
 import {convertJsonSyntaxError, convertRouteNotFound, convertURIError, showError} from './middlewares/errors';
@@ -68,6 +69,7 @@ let packageBuilder = new PackageBuilder(repoManager, packageManager, cache);
 
 queue.subscribe(new RefreshPackagesReceiver(repoManager, queue));
 queue.subscribe(new RefreshPackageReceiver(repoManager, packageManager, queue));
+queue.subscribe(new DeletePackagesReceiver(db.getRepository(PackageRepository), queue));
 queue.subscribe(new BuildPackageVersionsReceiver(packageBuilder));
 
 app.set('config-manager', configManager);
