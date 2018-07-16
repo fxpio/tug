@@ -20,25 +20,24 @@ import PackageRepository from './db/repositories/PackageRepository';
 import ConfigManager from './configs/ConfigManager';
 import RepositoryManager from './composer/repositories/RepositoryManager';
 import PackageManager from './composer/packages/PackageManager';
+import PackageBuilder from './composer/packages/PackageBuilder';
 import LocalStorage from './storages/LocalStorage';
 import AwsS3Storage from './storages/AwsS3Storage';
 import Cache from './caches/Cache';
 import LocalMessageQueue from './queues/LocalMessageQueue';
 import AwsSqsMessageQueue from './queues/AwsSqsMessageQueue';
+import RefreshPackagesReceiver from './receivers/RefreshPackagesReceiver';
+import RefreshPackageReceiver from './receivers/RefreshPackageReceiver';
 import {logErrors} from './middlewares/logs';
 import {convertJsonSyntaxError, convertRouteNotFound, convertURIError, showError} from './middlewares/errors';
 import {isProd} from './utils/server';
 import packageRoutes from './routes/packageRoutes';
 import hookRoutes from './routes/hookRoutes';
 import managerRoutes from './routes/managerRoutes';
+import BuildPackageVersionsReceiver from "./receivers/BuildPackageVersionsReceiver";
 
 const app = express();
-let db,
-    configManager,
-    repoManager,
-    packageManager,
-    storage,
-    cache,
+let storage,
     queue;
 
 app.use(cors());
@@ -55,20 +54,26 @@ if (isProd()) {
     queue = new LocalMessageQueue();
 }
 
-db = new AwsDynamoDbDatabase(process.env.AWS_DYNAMODB_TABLE, process.env.AWS_REGION, process.env.AWS_DYNAMODB_URL);
+let db = new AwsDynamoDbDatabase(process.env.AWS_DYNAMODB_TABLE, process.env.AWS_REGION, process.env.AWS_DYNAMODB_URL);
 db.setRepository(ConfigRepository);
 db.setRepository(ApiKeyRepository);
 db.setRepository(CodeRepositoryRepository);
 db.setRepository(PackageRepository);
 
-configManager = new ConfigManager(db.getRepository(ConfigRepository));
-repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository), queue);
-packageManager = new PackageManager(repoManager, db.getRepository(PackageRepository));
-cache = new Cache(storage);
+let configManager = new ConfigManager(db.getRepository(ConfigRepository));
+let repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository), queue);
+let packageManager = new PackageManager(repoManager, db.getRepository(PackageRepository));
+let cache = new Cache(storage);
+let packageBuilder = new PackageBuilder(repoManager, packageManager, cache);
+
+queue.subscribe(new RefreshPackagesReceiver(repoManager, queue));
+queue.subscribe(new RefreshPackageReceiver(repoManager, packageManager, queue));
+queue.subscribe(new BuildPackageVersionsReceiver(packageBuilder));
 
 app.set('config-manager', configManager);
 app.set('repository-manager', repoManager);
 app.set('package-manager', packageManager);
+app.set('package-builder', packageBuilder);
 app.set('db', db);
 app.set('storage', storage);
 app.set('cache', cache);

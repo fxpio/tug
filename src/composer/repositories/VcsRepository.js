@@ -145,7 +145,7 @@ export default class VcsRepository
      * @param {String} name The package name
      */
     setPackageName(name) {
-        this.repoData['packageName'] = hash;
+        this.repoData['packageName'] = name;
     }
 
     /**

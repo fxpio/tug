@@ -66,15 +66,17 @@ export default class MessageQueue
      * Send a message in the queue.
      *
      * @param {String|Object} message
+     * @param {Number}        delay
      */
-    async send(message) {
+    async send(message, delay = 0) {
     }
 
     /**
      * Send messages in the queue.
      *
      * @param {Array<String|Object>} messages
+     * @param {Number}               delay
      */
-    async sendBatch(messages) {
+    async sendBatch(messages, delay = 0) {
     }
 }

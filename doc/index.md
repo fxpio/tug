@@ -86,7 +86,22 @@ When the deployment process is complete, you can directly use the endpoint of
 a custom domain. In this case, see [this page](custom-domain-ssl.md).
 
 
-## 3) Create the token for Github Webhooks
+## 3) Create the oauth token for Github
+
+To connect the server with your Github account, you must configure the Github Aouth token. To create a oauth token,
+run the command:
+
+```
+$ node bin/create-github-oauth --token <your-github-personal-token>
+```
+
+> **Note:**
+>
+> The oauth token for Github is stored in the DynamoDB with the id `config:global` and the
+> `github-oauth."github.com"` attribute.
+
+
+## 4) Create the token for Github Webhooks
 
 To create a token to use in Github webhooks, run the command:
 
@@ -100,7 +115,7 @@ $ node bin/create-github-token
 > `github-webhook."github.com"` attribute.
 
 
-## 4) Configure the Github Webhook
+## 5) Configure the Github Webhook
 
 In each repository or in a organization, create the webhook with:
 
@@ -113,7 +128,7 @@ In each repository or in a organization, create the webhook with:
   - `Pushes`
 
 
-## 5) Create your first API key
+## 6) Create your first API key
 
 The API keys are to be used with Composer to allow the connection with your Satis Serverless.
 
@@ -128,7 +143,7 @@ $ node bin/create-api-key
 > The API keys are stored in the DynamoDB with the prefix `api-keys:`.
 
 
-## 6) Enjoy!
+## 7) Enjoy!
 
 Now that you have completed the basic installation and configuration of the Satis Serverless, you are ready to learn
 more about using this project.

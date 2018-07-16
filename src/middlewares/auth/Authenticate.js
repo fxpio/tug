@@ -13,14 +13,14 @@
 export default class Authenticate
 {
     /**
-     * Constructor.
+     * Create the express middleware.
      *
      * @param {AuthStrategy} strategy    The strategy
      * @param {Boolean}      [nextRoute] Define if the next route must be called or not
      *
      * @return {Function}
      */
-    constructor(strategy, nextRoute = false) {
+    static middleware(strategy, nextRoute = false) {
         return async function (req, res, next) {
             if (await strategy.logIn(req)) {
                 next();

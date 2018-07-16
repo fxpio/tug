@@ -18,6 +18,9 @@ or `npm run bin/node bin/<command-name>`:
 - `delete-stack`: Delete the AWS Cloud Formation stack
 - `create-api-key`: Create a API key
 - `delete-api-key`: Delete a API key
+- `show-github-oauth`: Show your Github Oauth token
+- `create-github-oauth`: Create your Github Oauth token
+- `delete-github-oauth`: Delete your Github Oauth token
 - `show-github-token`: Show the token for the Github Webhooks
 - `create-github-token`: Create the token for the Github Webhooks
 - `delete-github-token`: Delete the token for the Github Webhooks
