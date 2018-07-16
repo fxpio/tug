@@ -25,10 +25,10 @@ export default class GithubWebhookAuth extends AuthStrategy
         let body = req.body,
             headers = req.headers;
 
-        if (isGithubEvent(req) && body && body.hook && body.hook.config && headers['x-hub-signature']) {
+        if (isGithubEvent(req) && body && body.sender && body.sender['events_url'] && headers['x-hub-signature']) {
             /** @typedef ConfigManager config */
             let config = await req.app.set('config-manager').get();
-            let host = (new URL(body.hook.url)).host;
+            let host = (new URL(body.sender['events_url'])).host;
                 host = host.endsWith('.github.com') ? 'github.com' : host;
             let signature = headers['x-hub-signature'],
                 payload = JSON.stringify(body),
