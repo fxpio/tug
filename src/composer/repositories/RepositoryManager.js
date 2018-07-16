@@ -32,6 +32,7 @@ export default class RepositoryManager
         this.codeRepoRepo = codeRepoRepo;
         this.queue = queue;
         this.cacheRepositories = {};
+        this.cacheUrlPackages = {};
         this.allRepoRetrieves = false;
     }
 
@@ -82,30 +83,6 @@ export default class RepositoryManager
     }
 
     /**
-     * Refresh the packages.
-     *
-     * @param {String}  url   The repository url
-     * @param {Boolean} force Check if existing packages must be overridden
-     *
-     * @return {Promise<VcsRepository>}
-     *
-     * @throws RepositoryNotSupportedError When the repository is not supported
-     * @throws RepositoryNotFoundError     When the repository is not found
-     */
-    async refreshPackages(url, force = true) {
-        let repo = await this.createVcsRepository(url);
-        let existingRepo = await this.getRepository(repo.getUrl());
-
-        if (!existingRepo) {
-            throw new RepositoryNotFoundError(`The repository with the url "${repo.getUrl()}" is not found`);
-        }
-
-        await this.queue.send({type: 'refresh-packages', repositoryUrl: existingRepo.getUrl(), force: force});
-
-        return existingRepo;
-    }
-
-    /**
      * Find a vcs repository for a package name.
      *
      * @param {String} packageName The package name
@@ -132,14 +109,34 @@ export default class RepositoryManager
     /**
      * Get the repository.
      *
-     * @param {String} url The repository url
+     * @param {String}  url        The repository url
+     * @param {Boolean} [required] Check if the repository is required
      *
      * @return {Promise<VcsRepository|null>}
+     *
+     * @throws RepositoryNotFoundError When the repository is not found and it is required
      */
-    async getRepository(url) {
-        let res = await this.codeRepoRepo.findOne({url: url});
+    async getRepository(url, required = false) {
+        url = await this.validateUrl(url);
+        let packageName = undefined !== this.cacheUrlPackages[url] ? this.cacheUrlPackages[url] : null;
+        if (packageName && undefined !== this.cacheRepositories[packageName]) {
+            return this.cacheRepositories[packageName];
+        }
 
-        return res ? new VcsRepository(res, await this.configManager.get()) : null;
+        let res = await this.codeRepoRepo.findOne({url: url});
+        let repo = res ? new VcsRepository(res, await this.configManager.get()) : null;
+        packageName = repo ? repo.getPackageName() : packageName;
+
+        if (repo && packageName) {
+            this.cacheUrlPackages[url] = packageName;
+            this.cacheRepositories[packageName] = repo;
+        }
+
+        if (required && null === repo) {
+            throw new RepositoryNotFoundError(`The repository with the url "${url}" is not found`);
+        }
+
+        return repo;
     }
 
     /**
@@ -245,5 +242,18 @@ export default class RepositoryManager
         }
 
         return repo;
+    }
+
+    /**
+     * Validate and format the repository url.
+     *
+     * @param {String} url The repository url
+     *
+     * @return {Promise<String>}
+     *
+     * @throws RepositoryNotSupportedError When the repository is not supported
+     */
+    async validateUrl(url) {
+        return (await this.createVcsRepository(url)).getUrl();
     }
 }

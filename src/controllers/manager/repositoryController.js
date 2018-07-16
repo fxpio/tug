@@ -58,27 +58,3 @@ export async function disableRepository(req, res, next) {
         url: url
     });
 }
-
-/**
- * Refresh all packages of a repository.
- *
- * @param {IncomingMessage} req  The request
- * @param {ServerResponse}  res  The response
- * @param {Function}        next The next callback
- */
-export async function refreshPackages(req, res, next) {
-    validateForm(req, {
-        url: Joi.string().required(),
-        force: Joi.boolean()
-    });
-
-    /** @type {RepositoryManager} repoManager */
-    let repoManager = req.app.set('repository-manager');
-    let force = req.body.force;
-    let url = (await repoManager.refreshPackages(req.body.url, true === force)).getUrl();
-
-    res.json({
-        message: `Refreshing of all packages has started for the repository "${url}"`,
-        url: url
-    });
-}

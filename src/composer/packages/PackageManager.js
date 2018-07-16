@@ -9,8 +9,10 @@
 
 import RepositoryManager from '../repositories/RepositoryManager';
 import VersionParser from '../semver/VersionParser';
-import {retrieveAllVersions} from '../../utils/package';
+import RepositoryNotSupportedError from '../../errors/RepositoryNotSupportedError';
+import RepositoryNotFoundError from "../../errors/RepositoryNotFoundError";
 import Package from './Package';
+import {retrieveAllVersions} from '../../utils/package';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -22,10 +24,12 @@ export default class PackageManager
      *
      * @param {RepositoryManager} repoManager The composer repository manager
      * @param {PackageRepository} packageRepo The database repository of package
+     * @param {MessageQueue}      queue       The message queue
      */
-    constructor(repoManager, packageRepo) {
+    constructor(repoManager, packageRepo, queue) {
         this.repoManager = repoManager;
         this.packageRepo = packageRepo;
+        this.queue = queue;
         this.versionParser = new VersionParser();
     }
 
@@ -129,5 +133,96 @@ export default class PackageManager
      */
     normalizeVersion(version) {
         return this.versionParser.normalize(version, version);
+    }
+
+    /**
+     * Refresh the packages.
+     *
+     * @param {String}  url   The repository url
+     * @param {Boolean} force Check if existing packages must be overridden
+     *
+     * @return {Promise<VcsRepository>}
+     *
+     * @throws RepositoryNotSupportedError When the repository is not supported
+     * @throws RepositoryNotFoundError     When the repository is not found
+     */
+    async refreshPackages(url, force = true) {
+        let repo = await this.repoManager.getRepository(url, true);
+
+        await this.queue.send({type: 'refresh-packages', repositoryUrl: repo.getUrl(), force: force});
+
+        return repo;
+    }
+
+    /**
+     * Refresh the package.
+     *
+     * @param {String}  url     The repository url
+     * @param {String}  version The version to refresh
+     * @param {Boolean} force   Check if existing packages must be overridden
+     *
+     * @return {Promise<VcsRepository>}
+     *
+     * @throws RepositoryNotSupportedError When the repository is not supported
+     * @throws RepositoryNotFoundError     When the repository is not found
+     */
+    async refreshPackage(url, version, force = true) {
+        let repo = await this.repoManager.getRepository(url, true);
+        let identifier;
+
+        if (version.startsWith('dev-')) {
+            identifier = await repo.getDriver().getBranch(version.substring(4));
+        } else {
+            identifier = await repo.getDriver().getTag(version);
+        }
+
+        await this.queue.send({
+            type: 'refresh-package',
+            repositoryUrl: repo.getUrl(),
+            identifier: identifier,
+            tag: version,
+            force: force
+        });
+
+        return repo;
+    }
+
+    /**
+     * Delete the packages.
+     *
+     * @param {String} url The repository url
+     *
+     * @return {Promise<VcsRepository>}
+     *
+     * @throws RepositoryNotFoundError When the repository is not found
+     */
+    async deletePackages(url) {
+        let repo = await this.repoManager.getRepository(url, true);
+
+        if (repo.isInitialized()) {
+            await this.queue.send({type: 'delete-packages', repositoryUrl: repo.getUrl()});
+        }
+
+        return repo;
+    }
+
+    /**
+     * Delete the package.
+     *
+     * @param {String}  url     The repository url
+     * @param {String}  version The version to delete
+     *
+     * @return {Promise<VcsRepository>}
+     *
+     * @throws RepositoryNotFoundError When the repository is not found
+     */
+    async deletePackage(url, version) {
+        let repo = await this.repoManager.getRepository(url, true);
+
+        if (repo.isInitialized()) {
+            await this.queue.send({type: 'delete-package', repositoryUrl: repo.getUrl(), version: version});
+        }
+
+        return repo;
     }
 }

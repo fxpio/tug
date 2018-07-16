@@ -16,7 +16,8 @@ import {createGithubOauth, deleteGithubOauth, showGithubOauth} from '../controll
 import {createGithubToken, deleteGithubToken, showGithubToken} from '../controllers/manager/githubTokenController';
 import {persistGitlabAccessToken, deleteGitlabAccessToken, showGitlabAccessToken} from '../controllers/manager/gitlabAccessTokenController';
 import {createGitlabToken, deleteGitlabToken, showGitlabToken} from '../controllers/manager/gitlabTokenController';
-import {disableRepository, enableRepository, refreshPackages} from '../controllers/manager/repositoryController';
+import {disableRepository, enableRepository} from '../controllers/manager/repositoryController';
+import {deletePackages, refreshPackages} from '../controllers/manager/packageController';
 
 /**
  * Generate the routes.
@@ -48,8 +49,10 @@ export default function(router) {
     router.delete('/gitlab-access-token', asyncHandler(deleteGitlabAccessToken));
 
     router.post('/repositories', asyncHandler(enableRepository));
-    router.put('/repositories/refresh', asyncHandler(refreshPackages));
     router.delete('/repositories', asyncHandler(disableRepository));
+
+    router.put('/packages/refresh', asyncHandler(refreshPackages));
+    router.delete('/packages', asyncHandler(deletePackages));
 
     return router;
 }

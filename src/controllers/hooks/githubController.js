@@ -11,38 +11,43 @@ import RepositoryManager from '../../composer/repositories/RepositoryManager';
 import {getGithubEvent} from '../../utils/apiGithub';
 
 /**
- * Display the list of all packages in the "provider" format.
+ * Hook for Github Webhooks.
  *
  * @param {IncomingMessage} req  The request
  * @param {ServerResponse}  res  The response
  * @param {Function}        next The next callback
  */
 export async function githubHook(req, res, next) {
+    switch(getGithubEvent(req)) {
+        case 'ping':
+            await enableRepository(req, res);
+            break;
+        default:
+            next();
+            break;
+    }
+}
+
+/**
+ * Enable the repository.
+ *
+ * @param {IncomingMessage} req The request
+ * @param {ServerResponse}  res The response
+ *
+ * @return {Promise<void>}
+ */
+async function enableRepository(req, res) {
     /** @type {RepositoryManager} repoManager */
     let repoManager = req.app.set('repository-manager');
-    /** @type {MessageQueue} */
-    let queue = req.app.set('queue');
     let body = req.body,
-        type = getGithubEvent(req),
         message = 'Hello Github!';
 
-    if ('ping' === type) {
-        if (body.hook && 'Repository' === body.hook.type && body.repository && body.repository['clone_url']) {
-            // enable the repository
-            let data = await repoManager.register(body.repository['clone_url'], 'vcs-github');
-            // send refresh all packages in queue
-            await queue.send({
-                type: 'refresh-packages',
-                repository: data.id
-            });
-
-            message += ' The scan of the Composer packages has started';
-        }
-
-        res.json({
-            message: message
-        });
-    } else {
-        next();
+    if (body.hook && 'Repository' === body.hook.type && body.repository && body.repository['clone_url']) {
+        await repoManager.register(body.repository['clone_url'], 'vcs-github');
+        message += ' The scan of the Composer packages has started';
     }
+
+    res.json({
+        message: message
+    });
 }
