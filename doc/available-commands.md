@@ -26,6 +26,8 @@ or `npm run bin/node bin/<command-name>`:
 - `delete-github-token`: Delete the token for the Github Webhooks
 - `enable-repo`: Enable manually the Github repository
 - `disable-repo`: Disable manually the Github repository
+- `refresh-packages`: Refresh the package versions or a specific package version
+- `delete-packages`: Delete the package versions or a specific package version
 
 > **Note:**
 >
