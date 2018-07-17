@@ -79,7 +79,7 @@ async function pushAction(req, res) {
         let repo = await repoManager.getRepository(url);
 
         if (repo) {
-            if (body.ref.startWiths('refs/heads/')) {
+            if (body.ref.startsWith('refs/heads/')) {
                 version = 'dev-' + body.ref.substring(11);
 
                 if (body.created) {
@@ -89,7 +89,7 @@ async function pushAction(req, res) {
                 } else if (!body.created && !body.deleted && body['head_commit'] && body['commits'].length > 0) {
                     message += await refreshVersion(queue, repo, version, body['head_commit']['id'], true);
                 }
-            } else if (body.ref.startWiths('refs/tags/')) {
+            } else if (body.ref.startsWith('refs/tags/')) {
                 version = body.ref.substring(10);
 
                 if (body.created) {

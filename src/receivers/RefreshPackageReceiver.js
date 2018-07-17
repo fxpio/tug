@@ -47,7 +47,7 @@ export default class RefreshPackageReceiver extends QueueReceiver
         let repoUrl = message.repositoryUrl;
         let identifier = message.identifier;
         let version = message.version;
-        let isBranch = version.startWiths('dev-');
+        let isBranch = version.startsWith('dev-');
 
         let repo = await this.repoManager.getAndInitRepository(repoUrl, false);
         if (!repo || !repo.getPackageName()) {
