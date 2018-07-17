@@ -30,7 +30,7 @@ export default class GitlabWebhookAuth extends AuthStrategy
                 host = host.endsWith('.gitlab.com') ? 'gitlab.com' : host;
             let signature = headers['x-gitlab-token'],
                 tokens = config.get('gitlab-webhook'),
-                secret = undefined !== tokens[host] ? tokens[host] : '',
+                secret = undefined !== tokens[host] ? tokens[host] : '';
 
             if (signature === secret) {
                 return true;
