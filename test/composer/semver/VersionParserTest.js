@@ -9,7 +9,7 @@
 
 import test from 'ava';
 import VersionParser from '../../../src/composer/semver/VersionParser';
-import UnexpectedValueError from "../../../src/composer/semver/UnexpectedValueError";
+import UnexpectedValueError from '../../../src/errors/UnexpectedValueError';
 
 const successfulNormalizedVersions = {
     'none': ['1.0.0', '1.0.0.0'],
