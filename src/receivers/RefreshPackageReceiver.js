@@ -79,7 +79,7 @@ export default class RefreshPackageReceiver extends QueueReceiver
             composer['dist'] = driver.getDist(identifier);
 
             let pack = new Package({composer: composer});
-            this.logger.log('info', `[Refresh Package Receiver] Refreshing version "${pack.getVersion()}" of package "${pack.getName()}"`);
+            this.logger.log('info', `[Refresh Package Receiver] Refreshing package version "${pack.getVersion()}" for "${pack.getName()}"`);
             await this.packageManager.update(pack);
             await this.queue.send({
                 type: 'build-package-versions-cache',

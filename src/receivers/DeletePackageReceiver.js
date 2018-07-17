@@ -44,12 +44,14 @@ export default class DeletePackageReceiver extends QueueReceiver
         let pack = await this.packageManager.findPackage(message.packageName, message.version);
 
         if (pack) {
-            this.logger.log('info', `[Delete Package Receiver] Deleting of package version "${version}" has started for "${message.packageName}"`);
+            this.logger.log('info', `[Delete Package Receiver] Deleting package version "${version}" for "${message.packageName}"`);
             await this.packageManager.delete(pack);
             await this.queue.send({
                 type: 'build-package-versions-cache',
                 packageName: message.packageName
             }, 1);
+        } else {
+            this.logger.log('verbose', `[Delete Package Receiver] Package version "${version}" is not found for "${message.packageName}"`);
         }
     }
 }

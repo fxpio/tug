@@ -78,7 +78,7 @@ let packageManager = new PackageManager(repoManager, db.getRepository(PackageRep
 let cache = new Cache(storage);
 let packageBuilder = new PackageBuilder(repoManager, packageManager, cache);
 
-queue.subscribe(new RefreshPackagesReceiver(repoManager, queue));
+queue.subscribe(new RefreshPackagesReceiver(repoManager, queue, logger));
 queue.subscribe(new RefreshPackageReceiver(repoManager, packageManager, queue, logger));
 queue.subscribe(new DeletePackagesReceiver(db.getRepository(PackageRepository), queue, logger));
 queue.subscribe(new DeletePackageReceiver(packageManager, queue, logger));

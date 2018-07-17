@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import Logger from 'winston/lib/winston/logger';
 import MessageQueue from '../queues/MessageQueue';
 import QueueReceiver from '../queues/QueueReceiver';
 import RepositoryManager from '../composer/repositories/RepositoryManager';
@@ -21,11 +22,13 @@ export default class RefreshPackagesReceiver extends QueueReceiver
      *
      * @param {RepositoryManager} repoManager The repository manager
      * @param {MessageQueue}      queue       The message queue
+     * @param {Logger}            logger      The logger
      */
-    constructor(repoManager, queue) {
+    constructor(repoManager, queue, logger) {
         super();
         this.repoManager = repoManager;
         this.queue = queue;
+        this.logger = logger;
     }
 
     /**
@@ -42,6 +45,7 @@ export default class RefreshPackagesReceiver extends QueueReceiver
         let force = true === message.force;
         let repo = await this.repoManager.getAndInitRepository(message.repositoryUrl, force);
         if (!repo) {
+            this.logger.log('verbose', `[Refresh Packages Receiver] Repository is not found for "${message.repositoryUrl}"`);
             return;
         }
 

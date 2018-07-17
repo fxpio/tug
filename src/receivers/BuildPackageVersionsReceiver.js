@@ -39,9 +39,9 @@ export default class BuildPackageVersionsReceiver extends QueueReceiver
      * @inheritDoc
      */
     async execute(message) {
-        this.logger.log('info', `[Build Package Versions Receiver] Building all package versions has started for "${message.packageName}"`);
+        this.logger.log('info', `[Build Package Versions Receiver] Building all package versions for "${message.packageName}"`);
         await this.packageBuilder.buildVersions(message.packageName);
-        this.logger.log('info', `[Build Package Versions Receiver] Building root packages has started for "${message.packageName}"`);
+        this.logger.log('info', `[Build Package Versions Receiver] Building root packages for "${message.packageName}"`);
         await this.packageBuilder.buildRootPackages();
     }
 }

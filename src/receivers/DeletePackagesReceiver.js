@@ -43,20 +43,18 @@ export default class DeletePackagesReceiver extends QueueReceiver
     async execute(message) {
         let res = await this.packageRepo.find({name: message.packageName});
         let ids = [];
+        let versions = [];
 
         for (let item of res.results) {
             ids.push(item.id);
+            versions.push(item.version);
         }
 
-        if (!message.lastId) {
-            this.logger.log('info', `[Delete Packages Receiver] Deleting of all packages has started for "${message.packageName}"`);
-        }
-
+        this.logger.log('info', `[Delete Packages Receiver] Deleting package versions "${versions.join('", "')}" for "${message.packageName}"`);
         await this.packageRepo.deletes(ids);
 
         if (res.lastId) {
-            let newMessage = Object.assign({}, message, {lastId: res.lastId});
-            await this.queue.send(newMessage);
+            await this.queue.send(message);
         } else {
             await this.queue.send({
                 type: 'build-package-versions-cache',

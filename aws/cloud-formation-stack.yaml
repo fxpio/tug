@@ -11,7 +11,8 @@ Parameters:
       - error
       - warn
       - info
-    ConstraintDescription: Must be "error", "warn" or "info"
+      - verbose
+    ConstraintDescription: Must be "error", "warn", "info" or "verbose"
 
 Resources:
   Endpoint:
