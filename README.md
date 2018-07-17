@@ -33,6 +33,7 @@ update excessively long.
 - Automatically configuration of the AWS credentials if the [Shared Credentials File](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-shared.html)
   is present on your machine
 - Automatically configuration of the AWS regions if the Shared Config File is present on your machine
+- All management commands use the API Rest of the Server with the AWS IAM authentication
 - All commands to:
   - configure interactively the project
   - create or remove the S3 bucket to deploy the code
@@ -43,6 +44,8 @@ update excessively long.
   - generate or delete the token used by the Github Webhooks
   - generate or delete an API key
   - generate all package definitions for a specific repository
+  - refresh all packages or a specific package version
+  - delete all packages or a specific package version
   - serve the server in local for tests
 
 Documentation

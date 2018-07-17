@@ -1,32 +1,67 @@
 {
-  "zen": "Design for failure.",
-  "hook_id": 10101001,
-  "hook": {
-    "type": "Repository",
-    "id": 10101001,
-    "name": "web",
-    "active": true,
-    "events": [
-      "create",
-      "delete",
-      "push"
-    ],
-    "config": {
-      "content_type": "json",
-      "insecure_ssl": "0",
-      "secret": "********",
-      "url": "https://satis.fxp.io"
-    },
-    "updated_at": "2018-06-29T23:23:23Z",
-    "created_at": "2018-06-29T23:23:23Z",
-    "url": "https://api.github.com/repos/myorg/test-satis-package/hooks/10101001",
-    "test_url": "https://api.github.com/repos/myorg/test-satis-package/hooks/10101001/test",
-    "ping_url": "https://api.github.com/repos/myorg/test-satis-package/hooks/10101001/pings",
-    "last_response": {
-      "code": null,
-      "status": "unused",
-      "message": null
+  "ref": "refs/heads/master",
+  "before": "d28350d415272d438f8c0766056549c029f1ff43",
+  "after": "6e8dbba7189175316c8c6fb771a56a479bcb8cd2",
+  "created": false,
+  "deleted": false,
+  "forced": false,
+  "base_ref": null,
+  "compare": "https://github.com/myorg/test-satis-package/compare/d28350d41527...6e8dbba71891",
+  "commits": [
+    {
+      "id": "6e8dbba7189175316c8c6fb771a56a479bcb8cd2",
+      "tree_id": "dd1de3bb81087d26506520e98f4ea20dd758ff0a",
+      "distinct": true,
+      "message": "Add index file",
+      "timestamp": "2018-06-29T23:23:32+02:00",
+      "url": "https://github.com/myorg/test-satis-package/commit/6e8dbba7189175316c8c6fb771a56a479bcb8cd2",
+      "author": {
+        "name": "Full Name",
+        "email": "myusername@example.tld",
+        "username": "myusername"
+      },
+      "committer": {
+        "name": "Full Name",
+        "email": "myusername@example.tld",
+        "username": "myusername"
+      },
+      "added": [
+        "index.php"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+
+      ]
     }
+  ],
+  "head_commit": {
+    "id": "6e8dbba7189175316c8c6fb771a56a479bcb8cd2",
+    "tree_id": "dd1de3bb81087d26506520e98f4ea20dd758ff0a",
+    "distinct": true,
+    "message": "Add index file",
+    "timestamp": "2018-06-29T23:23:32+02:00",
+    "url": "https://github.com/myorg/test-satis-package/commit/6e8dbba7189175316c8c6fb771a56a479bcb8cd2",
+    "author": {
+      "name": "Full Name",
+      "email": "myusername@example.tld",
+      "username": "myusername"
+    },
+    "committer": {
+      "name": "Full Name",
+      "email": "myusername@example.tld",
+      "username": "myusername"
+    },
+    "added": [
+      "index.php"
+    ],
+    "removed": [
+
+    ],
+    "modified": [
+
+    ]
   },
   "repository": {
     "id": 123456789,
@@ -126,6 +161,24 @@
     "open_issues": 0,
     "watchers": 1,
     "default_branch": "master"
+  },
+  "pusher": {
+    "name": "myusername",
+    "email": "myusername@example.tld"
+  },
+  "organization": {
+    "login": "myorg",
+    "id": 1234567,
+    "node_id": "MDEwOlJlcG9zaXRvcnkxMTcxMjU4NjU=",
+    "url": "https://api.github.com/orgs/myorg",
+    "repos_url": "https://api.github.com/orgs/myorg/repos",
+    "events_url": "https://api.github.com/orgs/myorg/events",
+    "hooks_url": "https://api.github.com/orgs/myorg/hooks",
+    "issues_url": "https://api.github.com/orgs/myorg/issues",
+    "members_url": "https://api.github.com/orgs/myorg/members{/member}",
+    "public_members_url": "https://api.github.com/orgs/myorg/public_members{/member}",
+    "avatar_url": "https://avatars1.githubusercontent.com/u/1234567?v=4",
+    "description": ""
   },
   "sender": {
     "login": "myusername",
