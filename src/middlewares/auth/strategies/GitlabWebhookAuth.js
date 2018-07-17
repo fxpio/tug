@@ -10,6 +10,7 @@
 import AuthStrategy from './AuthStrategy';
 import {isGitlabEvent} from "../../../utils/apiGitlab";
 import ConfigManager from '../../../configs/ConfigManager';
+import {URL} from 'url';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -23,10 +24,10 @@ export default class GitlabWebhookAuth extends AuthStrategy
         let body = req.body,
             headers = req.headers;
 
-        if (isGitlabEvent(req) && headers['x-gitlab-token'] && body && body.repository && body.repository['url']) {
+        if (isGitlabEvent(req) && headers['x-gitlab-token'] && body && body.repository && body.repository['git_http_url']) {
             /** @typedef ConfigManager config */
             let config = await req.app.set('config-manager').get();
-            let host = (new URL(body.repository['url'])).host;
+            let host = (new URL(body.repository['git_http_url'])).host;
                 host = host.endsWith('.gitlab.com') ? 'gitlab.com' : host;
             let signature = headers['x-gitlab-token'],
                 tokens = config.get('gitlab-webhook'),
