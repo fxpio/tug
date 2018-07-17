@@ -180,7 +180,7 @@ export default class PackageManager
             type: 'refresh-package',
             repositoryUrl: repo.getUrl(),
             identifier: identifier,
-            tag: version,
+            version: version,
             force: force
         });
 
@@ -200,7 +200,7 @@ export default class PackageManager
         let repo = await this.repoManager.getRepository(url, true);
 
         if (repo.isInitialized()) {
-            await this.queue.send({type: 'delete-packages', repositoryUrl: repo.getUrl()});
+            await this.queue.send({type: 'delete-packages', packageName: repo.getPackageName()});
         }
 
         return repo;
@@ -220,7 +220,7 @@ export default class PackageManager
         let repo = await this.repoManager.getRepository(url, true);
 
         if (repo.isInitialized()) {
-            await this.queue.send({type: 'delete-package', repositoryUrl: repo.getUrl(), version: version});
+            await this.queue.send({type: 'delete-package', packageName: repo.getPackageName(), version: version});
         }
 
         return repo;

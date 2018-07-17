@@ -37,6 +37,14 @@ export default class RepositoryManager
     }
 
     /**
+     * Clear the cache of manager.
+     */
+    clearCache() {
+        this.cacheRepositories = {};
+        this.cacheUrlPackages = {};
+    }
+
+    /**
      * Register the repository.
      *
      * @param {String}      url    The repository url
@@ -76,7 +84,10 @@ export default class RepositoryManager
         if (existingRepo) {
             url = existingRepo.getUrl();
             await this.delete(existingRepo);
-            await this.queue.send({type: 'delete-packages', repositoryUrl: url});
+
+            if (existingRepo.getPackageName()) {
+                await this.queue.send({type: 'delete-packages', packageName: existingRepo.getPackageName()});
+            }
         }
 
         return url;
@@ -166,13 +177,19 @@ export default class RepositoryManager
      * @return {Object<String, VcsRepository>}
      */
     async getRepositories(forceAll = false) {
-        if (!this.allRepoRetrieves) {
-            this.allRepoRetrieves = true;
+        let res = this.cacheRepositories;
+
+        if ((!this.allRepoRetrieves && forceAll) || !forceAll) {
             let config = await this.configManager.get();
-            this.cacheRepositories = retrieveAllRepositories(config, this.codeRepoRepo, this.cacheRepositories, forceAll);
+            res = await retrieveAllRepositories(config, this.codeRepoRepo, forceAll ? res : {}, forceAll);
+
+            if (forceAll) {
+                this.allRepoRetrieves = true;
+                this.cacheRepositories = res;
+            }
         }
 
-        return this.cacheRepositories;
+        return res;
     }
 
     /**
@@ -254,6 +271,10 @@ export default class RepositoryManager
      * @throws RepositoryNotSupportedError When the repository is not supported
      */
     async validateUrl(url) {
-        return (await this.createVcsRepository(url)).getUrl();
+        if (url) {
+            url = (await this.createVcsRepository(url)).getUrl();
+        }
+
+        return url;
     }
 }

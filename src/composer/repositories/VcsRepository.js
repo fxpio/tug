@@ -143,7 +143,11 @@ export default class VcsRepository
      * @param {String} name The package name
      */
     setPackageName(name) {
-        this.repoData['packageName'] = name;
+        if (name) {
+            this.repoData['packageName'] = name;
+        } else {
+            delete this.repoData['packageName'];
+        }
     }
 
     /**
@@ -161,7 +165,11 @@ export default class VcsRepository
      * @param {String} hash The hash
      */
     setLastHash(hash) {
-        this.repoData['lastHash'] = hash;
+        if (hash) {
+            this.repoData['lastHash'] = hash;
+        } else {
+            delete this.repoData['lastHash'];
+        }
     }
 
     /**
@@ -179,7 +187,11 @@ export default class VcsRepository
      * @param {String} rootIdentifier The root identifier
      */
     setRootIdentifier(rootIdentifier) {
-        this.repoData['rootIdentifier'] = rootIdentifier;
+        if (rootIdentifier) {
+            this.repoData['rootIdentifier'] = rootIdentifier;
+        } else {
+            delete this.repoData['rootIdentifier'];
+        }
     }
 
     /**

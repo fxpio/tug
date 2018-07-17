@@ -115,6 +115,17 @@ export default class Database
     }
 
     /**
+     * Delete the ids.
+     *
+     * @param {Array<String>} ids The ids
+     *
+     * @return {Promise<Array<String>>}
+     */
+    async deletes(ids) {
+        return ids;
+    }
+
+    /**
      * Find the records.
      *
      * @param {Object}      criteria The criteria
