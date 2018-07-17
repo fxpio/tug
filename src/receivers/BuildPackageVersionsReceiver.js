@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import Logger from 'winston/lib/winston/logger';
+import Logger from '../loggers/Logger';
 import QueueReceiver from '../queues/QueueReceiver';
 import PackageBuilder from '../composer/packages/PackageBuilder';
 

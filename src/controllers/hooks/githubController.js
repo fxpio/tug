@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import Logger from 'winston/lib/winston/logger';
+import Logger from '../../loggers/Logger';
 import RepositoryManager from '../../composer/repositories/RepositoryManager';
 import VcsRepository from '../../composer/repositories/VcsRepository';
 import MessageQueue from '../../queues/MessageQueue';
