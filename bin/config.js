@@ -30,6 +30,7 @@ program
     .option('--aws-region [name]', 'Your AWS Region (required if AWS Shared Config File is not found)', envs['AWS_REGION'])
     .option('--aws-s3-bucket-deploy [bucket]', 'Your AWS S3 bucket name where the code must be deployed', envs['AWS_S3_BUCKET_DEPLOY'])
     .option('--aws-stack-name [stack]', 'Your AWS Stack name', envs['AWS_STACK_NAME'])
+    .option('--logger-level [level]', 'The level of logger (error, warn, info, verbose)', envs['LOGGER_LEVEL'])
     .option('-e, --only-empty', 'Display only questions of empty options', false)
     .option('-n, --no-interaction', 'Do not ask any interactive question', false)
     .parse(process.argv)
@@ -41,7 +42,8 @@ envs = utils.mergeVariables(envs, {
     AWS_SECRET_ACCESS_KEY: program.awsSecretAccessKey,
     AWS_REGION: program.awsRegion,
     AWS_S3_BUCKET_DEPLOY: program.awsS3BucketDeploy,
-    AWS_STACK_NAME: program.awsStackName
+    AWS_STACK_NAME: program.awsStackName,
+    LOGGER_LEVEL: program.loggerLevel
 });
 
 let finishAction = function(envs) {
@@ -175,6 +177,27 @@ if (program.interaction) {
             validate: function (value) {
                 return utils.requiredOption(value);
             }
+        },
+        {
+            type : 'input',
+            name : 'loggerLevel',
+            default: envs['LOGGER_LEVEL'],
+            message : 'Enter the logger level:',
+            when: function () {
+                return utils.showOnlyEmptyOption(program, envs, 'LOGGER_LEVEL');
+            },
+            validate: function (value) {
+                let res = utils.requiredOption(value);
+
+                if (true === res) {
+                    let acceptedValues = ['error', 'warn', 'info', 'verbose'];
+                    if (!acceptedValues.includes(value)) {
+                        res = 'Only this values are accepted: "' + acceptedValues.join('", "') + '"';
+                    }
+                }
+
+                return res;
+            }
         }
     ];
 
@@ -185,7 +208,8 @@ if (program.interaction) {
             AWS_SECRET_ACCESS_KEY: utils.cleanVariable(answers.awsSecretAccessKey),
             AWS_REGION: utils.cleanVariable(answers.awsRegion),
             AWS_S3_BUCKET_DEPLOY: utils.cleanVariable(answers.awsS3BucketDeploy),
-            AWS_STACK_NAME: utils.cleanVariable(answers.awsStackName)
+            AWS_STACK_NAME: utils.cleanVariable(answers.awsStackName),
+            LOGGER_LEVEL: utils.cleanVariable(answers.loggerLevel)
         });
 
         finishAction(envs);

@@ -34,7 +34,13 @@ let createAction = function(action) {
         StackName: stackName,
         ChangeSetType: action.toUpperCase(),
         Capabilities: ['CAPABILITY_IAM'],
-        Parameters: [],
+        Parameters: [
+            {
+                ParameterKey: 'LoggerLevel',
+                ParameterValue: process.env.LOGGER_LEVEL ? process.env.LOGGER_LEVEL : 'error',
+                UsePreviousValue: false
+            }
+        ],
         TemplateBody: fs.readFileSync(DEPLOY_CLOUDFORMATION_PATH, 'utf8')
     };
 

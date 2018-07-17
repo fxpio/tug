@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import Logger from 'winston/lib/winston/logger';
 import QueueReceiver from '../queues/QueueReceiver';
 import PackageManager from '../composer/packages/PackageManager';
 
@@ -20,11 +21,13 @@ export default class DeletePackageReceiver extends QueueReceiver
      *
      * @param {PackageManager} packageManager The package manager
      * @param {MessageQueue}   queue          The message queue
+     * @param {Logger}         logger         The logger
      */
-    constructor(packageManager, queue) {
+    constructor(packageManager, queue, logger) {
         super();
         this.packageManager = packageManager;
         this.queue = queue;
+        this.logger = logger;
     }
 
     /**
@@ -41,11 +44,14 @@ export default class DeletePackageReceiver extends QueueReceiver
         let pack = await this.packageManager.findPackage(message.packageName, message.version);
 
         if (pack) {
+            this.logger.log('info', `[Delete Package Receiver] Deleting package version "${version}" for "${message.packageName}"`);
             await this.packageManager.delete(pack);
             await this.queue.send({
                 type: 'build-package-versions-cache',
                 packageName: message.packageName
             }, 1);
+        } else {
+            this.logger.log('verbose', `[Delete Package Receiver] Package version "${version}" is not found for "${message.packageName}"`);
         }
     }
 }

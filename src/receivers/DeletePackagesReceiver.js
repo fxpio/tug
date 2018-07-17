@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import Logger from 'winston/lib/winston/logger';
 import QueueReceiver from '../queues/QueueReceiver';
 import PackageRepository from '../db/repositories/PackageRepository';
 
@@ -20,11 +21,13 @@ export default class DeletePackagesReceiver extends QueueReceiver
      *
      * @param {PackageRepository} packageRepo The database package repository
      * @param {MessageQueue}      queue       The message queue
+     * @param {Logger}            logger      The logger
      */
-    constructor(packageRepo, queue) {
+    constructor(packageRepo, queue, logger) {
         super();
         this.packageRepo = packageRepo;
         this.queue = queue;
+        this.logger = logger;
     }
 
     /**
@@ -40,11 +43,14 @@ export default class DeletePackagesReceiver extends QueueReceiver
     async execute(message) {
         let res = await this.packageRepo.find({name: message.packageName});
         let ids = [];
+        let versions = [];
 
         for (let item of res.results) {
             ids.push(item.id);
+            versions.push(item.version);
         }
 
+        this.logger.log('info', `[Delete Packages Receiver] Deleting package versions "${versions.join('", "')}" for "${message.packageName}"`);
         await this.packageRepo.deletes(ids);
 
         if (res.lastId) {

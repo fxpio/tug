@@ -29,6 +29,7 @@ export async function enableRepository(req, res, next) {
     let type = req.body.type;
     /** @type VcsRepository repo */
     let repo = await repoManager.register(url, type);
+    req.app.set('logger').log('info', `[API Rest] Registration of the repository "${url}"`);
 
     res.json({
         message: `The "${repo.getType()}" repository with the URL "${repo.getUrl()}" were enabled successfully`,
@@ -52,6 +53,7 @@ export async function disableRepository(req, res, next) {
     /** @type {RepositoryManager} repoManager */
     let repoManager = req.app.set('repository-manager');
     let url = await repoManager.unregister(req.body.url);
+    req.app.set('logger').log('info', `[API Rest] Unregistration of the repository "${url}"`);
 
     res.json({
         message: `The repository with the URL "${url}" were disabled successfully`,

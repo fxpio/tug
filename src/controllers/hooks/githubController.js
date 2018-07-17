@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import Logger from 'winston/lib/winston/logger';
 import RepositoryManager from '../../composer/repositories/RepositoryManager';
 import VcsRepository from '../../composer/repositories/VcsRepository';
 import MessageQueue from '../../queues/MessageQueue';
@@ -48,6 +49,7 @@ async function enableRepository(req, res) {
         message = 'Hello Github!';
 
     if (body.hook && 'Repository' === body.hook.type && body.repository && body.repository['clone_url']) {
+        log(req.app.set('logger'), `Registration of the repository "${body.repository['clone_url']}"`);
         await repoManager.register(body.repository['clone_url'], 'vcs-github');
         message += ' The scan of the Composer packages has started';
     }
@@ -70,6 +72,8 @@ async function pushAction(req, res) {
     let repoManager = req.app.set('repository-manager');
     /** @typedef {MessageQueue} queue */
     let queue = req.app.set('queue');
+    /** @typedef {Logger} logger */
+    let logger = req.app.set('logger');
     let body = req.body,
         message = 'Hello Github!',
         version;
@@ -79,23 +83,23 @@ async function pushAction(req, res) {
         let repo = await repoManager.getRepository(url);
 
         if (repo) {
-            if (body.ref.startWiths('refs/heads/')) {
+            if (body.ref.startsWith('refs/heads/')) {
                 version = 'dev-' + body.ref.substring(11);
 
                 if (body.created) {
-                    message += await refreshVersion(queue, repo, version, body['head_commit']['id']);
+                    message += await refreshVersion(queue, logger, repo, version, body['head_commit']['id']);
                 } else if (body.deleted) {
-                    message += await deleteVersion(queue, repo, version);
+                    message += await deleteVersion(queue, logger, repo, version);
                 } else if (!body.created && !body.deleted && body['head_commit'] && body['commits'].length > 0) {
-                    message += await refreshVersion(queue, repo, version, body['head_commit']['id'], true);
+                    message += await refreshVersion(queue, logger, repo, version, body['head_commit']['id'], true);
                 }
-            } else if (body.ref.startWiths('refs/tags/')) {
+            } else if (body.ref.startsWith('refs/tags/')) {
                 version = body.ref.substring(10);
 
                 if (body.created) {
-                    message += await refreshVersion(queue, repo, version, body['head_commit']['id']);
+                    message += await refreshVersion(queue, logger, repo, version, body['head_commit']['id']);
                 } else if (body.deleted) {
-                    message += await deleteVersion(queue, repo, version);
+                    message += await deleteVersion(queue, logger, repo, version);
                 }
             }
         }
@@ -110,6 +114,7 @@ async function pushAction(req, res) {
  * Refresh the version.
  *
  * @param {MessageQueue}  queue      The message queue
+ * @param {Logger}        logger     The logger
  * @param {VcsRepository} repo       The vcs repository
  * @param {String}        version    The version
  * @param {String}        identifier The identifier
@@ -117,7 +122,8 @@ async function pushAction(req, res) {
  *
  * @return {Promise<String>}
  */
-async function refreshVersion(queue, repo, version, identifier, force = false) {
+async function refreshVersion(queue, logger, repo, version, identifier, force = false) {
+    let mess = log(logger, `Refreshing of package version "${version}" has started for the repository "${repo.getUrl()}"`);
     await queue.send({
         type: 'refresh-package',
         repositoryUrl: repo.getUrl(),
@@ -126,28 +132,45 @@ async function refreshVersion(queue, repo, version, identifier, force = false) {
         force: force
     });
 
-    return ` Refreshing of package version "${version}" has started for the repository "${repo.getUrl()}"`;
+    return ` ${mess}`;
 }
 
 /**
  * Delete the version.
  *
  * @param {MessageQueue}  queue   The message queue
+ * @param {Logger}        logger  The logger
  * @param {VcsRepository} repo    The vcs repository
  * @param {String}        version The version
  *
  * @return {Promise<String>}
  */
-async function deleteVersion(queue, repo, version) {
+async function deleteVersion(queue, logger, repo, version) {
+    let mess = '';
     if (repo.isInitialized()) {
+        mess = log(logger, `Deleting of package version "${version}" has started for the repository "${repo.getUrl()}"`);
         await queue.send({
             type: 'delete-package',
             packageName: repo.getPackageName(),
             version: version
         });
-
-        return ` Deleting of package version "${version}" has started for the repository "${repo.getUrl()}"`;
+    } else {
+        mess = log(logger, `Deleting of package version "${version}" has skipped for the repository "${repo.getUrl()}" because the repository is not initialized`);
     }
 
-    return ` Deleting of package version "${version}" has skipped for the repository "${repo.getUrl()}" because the repository is not initialized`;
+    return ` ${mess}`;
+}
+
+/**
+ * Log the message info.
+ *
+ * @param {Logger} logger  The logger
+ * @param {String} message The message
+ *
+ * @return {String}
+ */
+function log(logger, message) {
+    logger.log('info', '[Github Webhook] ' + message);
+
+    return message;
 }

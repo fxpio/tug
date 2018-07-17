@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import Logger from 'winston/lib/winston/logger';
 import QueueReceiver from '../queues/QueueReceiver';
 import PackageBuilder from '../composer/packages/PackageBuilder';
 
@@ -19,10 +20,12 @@ export default class BuildPackageVersionsReceiver extends QueueReceiver
      * Constructor.
      *
      * @param {PackageBuilder} packageBuilder The package builder
+     * @param {Logger}         logger         The logger
      */
-    constructor(packageBuilder) {
+    constructor(packageBuilder, logger) {
         super();
         this.packageBuilder = packageBuilder;
+        this.logger = logger;
     }
 
     /**
@@ -36,7 +39,9 @@ export default class BuildPackageVersionsReceiver extends QueueReceiver
      * @inheritDoc
      */
     async execute(message) {
+        this.logger.log('info', `[Build Package Versions Receiver] Building all package versions for "${message.packageName}"`);
         await this.packageBuilder.buildVersions(message.packageName);
+        this.logger.log('info', `[Build Package Versions Receiver] Building root packages for "${message.packageName}"`);
         await this.packageBuilder.buildRootPackages();
     }
 }

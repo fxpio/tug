@@ -11,6 +11,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import compression from 'compression';
+import winston from 'winston';
 import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
 import AwsDynamoDbDatabase from './db/AwsDynamoDbDatabase';
 import ConfigRepository from './db/repositories/ConfigRepository';
@@ -31,12 +32,12 @@ import RefreshPackageReceiver from './receivers/RefreshPackageReceiver';
 import DeletePackagesReceiver from './receivers/DeletePackagesReceiver';
 import DeletePackageReceiver from './receivers/DeletePackageReceiver';
 import BuildPackageVersionsReceiver from './receivers/BuildPackageVersionsReceiver';
-import {logErrors} from './middlewares/logs';
-import {convertJsonSyntaxError, convertRouteNotFound, convertURIError, showError} from './middlewares/errors';
-import {isProd} from './utils/server';
 import packageRoutes from './routes/packageRoutes';
 import hookRoutes from './routes/hookRoutes';
 import managerRoutes from './routes/managerRoutes';
+import {logErrors} from './middlewares/logs';
+import {convertJsonSyntaxError, convertRouteNotFound, convertURIError, showError} from './middlewares/errors';
+import {isProd} from './utils/server';
 
 const app = express();
 let storage,
@@ -56,6 +57,15 @@ if (isProd()) {
     queue = new LocalMessageQueue();
 }
 
+let logger = winston.createLogger({
+    level: process.env.LOGGER_LEVEL,
+    format: winston.format.printf(info => {
+        return `${info.level}: ${info.message}` + (!isProd() && info instanceof Error ? `\nstacktrace: ${info.stack}` : '');
+    }),
+    transports: [
+        new winston.transports.Console()
+    ]
+});
 let db = new AwsDynamoDbDatabase(process.env.AWS_DYNAMODB_TABLE, process.env.AWS_REGION, process.env.AWS_DYNAMODB_URL);
 db.setRepository(ConfigRepository);
 db.setRepository(ApiKeyRepository);
@@ -68,12 +78,13 @@ let packageManager = new PackageManager(repoManager, db.getRepository(PackageRep
 let cache = new Cache(storage);
 let packageBuilder = new PackageBuilder(repoManager, packageManager, cache);
 
-queue.subscribe(new RefreshPackagesReceiver(repoManager, queue));
-queue.subscribe(new RefreshPackageReceiver(repoManager, packageManager, queue));
-queue.subscribe(new DeletePackagesReceiver(db.getRepository(PackageRepository), queue));
-queue.subscribe(new DeletePackageReceiver(packageManager, queue));
-queue.subscribe(new BuildPackageVersionsReceiver(packageBuilder));
+queue.subscribe(new RefreshPackagesReceiver(repoManager, queue, logger));
+queue.subscribe(new RefreshPackageReceiver(repoManager, packageManager, queue, logger));
+queue.subscribe(new DeletePackagesReceiver(db.getRepository(PackageRepository), queue, logger));
+queue.subscribe(new DeletePackageReceiver(packageManager, queue, logger));
+queue.subscribe(new BuildPackageVersionsReceiver(packageBuilder, logger));
 
+app.set('logger', logger);
 app.set('config-manager', configManager);
 app.set('repository-manager', repoManager);
 app.set('package-manager', packageManager);
