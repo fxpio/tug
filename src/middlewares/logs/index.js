@@ -19,7 +19,7 @@ import HttpError from '../../errors/HttpError';
  */
 export function logErrors(err, req, res, next) {
     if (!(err instanceof HttpError)) {
-        console.error('[CRITICAL]', err.stack);
+        req.app.set('logger').log('error', err);
     }
 
     next(err);

@@ -2,6 +2,17 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Serverless Composer repository for private PHP packages hosted on Github
 
+Parameters:
+  LoggerLevel:
+    Description: The level of logger
+    Type: String
+    Default: error
+    AllowedValues:
+      - error
+      - warn
+      - info
+    ConstraintDescription: Must be "error", "warn" or "info"
+
 Resources:
   Endpoint:
     Type: AWS::Serverless::Api
@@ -159,6 +170,8 @@ Resources:
             Ref: Storage
           AWS_SQS_QUEUE_URL:
             Ref: Queue
+          LOGGER_LEVEL:
+            Ref: LoggerLevel
       Events:
         ProxyApiRoot:
           Type: Api

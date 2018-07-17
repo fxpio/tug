@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import Logger from 'winston/lib/winston/logger';
 import MessageQueue from '../queues/MessageQueue';
 import QueueReceiver from '../queues/QueueReceiver';
 import RepositoryManager from '../composer/repositories/RepositoryManager';
@@ -24,12 +25,14 @@ export default class RefreshPackageReceiver extends QueueReceiver
      * @param {RepositoryManager} repoManager    The repository manager
      * @param {PackageManager}    packageManager The package manager
      * @param {MessageQueue}      queue          The message queue
+     * @param {Logger}            logger         The logger
      */
-    constructor(repoManager, packageManager, queue) {
+    constructor(repoManager, packageManager, queue, logger) {
         super();
         this.repoManager = repoManager;
         this.packageManager = packageManager;
         this.queue = queue;
+        this.logger = logger;
     }
 
     /**
@@ -61,7 +64,7 @@ export default class RefreshPackageReceiver extends QueueReceiver
             let composer = await driver.getComposerInformation(identifier);
 
             if (!composer) {
-                console.warn('[WARNING]', `Skipped ${isBranch ? 'branch' : 'tag'} (${version}) of "${repo.getPackageName()}", no composer file was found`);
+                this.logger.log('warn', `[Refresh Package Receiver] Skipped ${isBranch ? 'branch' : 'tag'} (${version}) of "${repo.getPackageName()}", no composer file was found`);
                 return;
             }
 
@@ -76,6 +79,7 @@ export default class RefreshPackageReceiver extends QueueReceiver
             composer['dist'] = driver.getDist(identifier);
 
             let pack = new Package({composer: composer});
+            this.logger.log('info', `[Refresh Package Receiver] Refreshing version "${pack.getVersion()}" of package "${pack.getName()}"`);
             await this.packageManager.update(pack);
             await this.queue.send({
                 type: 'build-package-versions-cache',
