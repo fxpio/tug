@@ -1,0 +1,203 @@
+{
+  "ref": "refs/heads/master",
+  "before": "d28350d415272d438f8c0766056549c029f1ff43",
+  "after": "6e8dbba7189175316c8c6fb771a56a479bcb8cd2",
+  "created": false,
+  "deleted": false,
+  "forced": false,
+  "base_ref": null,
+  "compare": "https://github.com/myorg/test-satis-package/compare/d28350d41527...6e8dbba71891",
+  "commits": [
+    {
+      "id": "6e8dbba7189175316c8c6fb771a56a479bcb8cd2",
+      "tree_id": "dd1de3bb81087d26506520e98f4ea20dd758ff0a",
+      "distinct": true,
+      "message": "Add index file",
+      "timestamp": "2018-06-29T23:23:32+02:00",
+      "url": "https://github.com/myorg/test-satis-package/commit/6e8dbba7189175316c8c6fb771a56a479bcb8cd2",
+      "author": {
+        "name": "Full Name",
+        "email": "myusername@example.tld",
+        "username": "myusername"
+      },
+      "committer": {
+        "name": "Full Name",
+        "email": "myusername@example.tld",
+        "username": "myusername"
+      },
+      "added": [
+        "index.php"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+
+      ]
+    }
+  ],
+  "head_commit": {
+    "id": "6e8dbba7189175316c8c6fb771a56a479bcb8cd2",
+    "tree_id": "dd1de3bb81087d26506520e98f4ea20dd758ff0a",
+    "distinct": true,
+    "message": "Add index file",
+    "timestamp": "2018-06-29T23:23:32+02:00",
+    "url": "https://github.com/myorg/test-satis-package/commit/6e8dbba7189175316c8c6fb771a56a479bcb8cd2",
+    "author": {
+      "name": "Full Name",
+      "email": "myusername@example.tld",
+      "username": "myusername"
+    },
+    "committer": {
+      "name": "Full Name",
+      "email": "myusername@example.tld",
+      "username": "myusername"
+    },
+    "added": [
+      "index.php"
+    ],
+    "removed": [
+
+    ],
+    "modified": [
+
+    ]
+  },
+  "repository": {
+    "id": 123456789,
+    "node_id": "MDEwOlJlcG9zaXRvcnkxMTcxMjU4NjU=",
+    "name": "test-satis-package",
+    "full_name": "myorg/test-satis-package",
+    "owner": {
+      "login": "myorg",
+      "id": 1234567,
+      "node_id": "MDEwOlJlcG9zaXRvcnkxMTcxMjU4NjU=",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1234567?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/myorg",
+      "html_url": "https://github.com/myorg",
+      "followers_url": "https://api.github.com/users/myorg/followers",
+      "following_url": "https://api.github.com/users/myorg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/myorg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/myorg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/myorg/subscriptions",
+      "organizations_url": "https://api.github.com/users/myorg/orgs",
+      "repos_url": "https://api.github.com/users/myorg/repos",
+      "events_url": "https://api.github.com/users/myorg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/myorg/received_events",
+      "type": "Organization",
+      "site_admin": false
+    },
+    "private": true,
+    "html_url": "https://github.com/myorg/test-satis-package",
+    "description": "Test Composer package for Satis Serverless",
+    "fork": false,
+    "url": "https://api.github.com/repos/myorg/test-satis-package",
+    "forks_url": "https://api.github.com/repos/myorg/test-satis-package/forks",
+    "keys_url": "https://api.github.com/repos/myorg/test-satis-package/keys{/key_id}",
+    "collaborators_url": "https://api.github.com/repos/myorg/test-satis-package/collaborators{/collaborator}",
+    "teams_url": "https://api.github.com/repos/myorg/test-satis-package/teams",
+    "hooks_url": "https://api.github.com/repos/myorg/test-satis-package/hooks",
+    "issue_events_url": "https://api.github.com/repos/myorg/test-satis-package/issues/events{/number}",
+    "events_url": "https://api.github.com/repos/myorg/test-satis-package/events",
+    "assignees_url": "https://api.github.com/repos/myorg/test-satis-package/assignees{/user}",
+    "branches_url": "https://api.github.com/repos/myorg/test-satis-package/branches{/branch}",
+    "tags_url": "https://api.github.com/repos/myorg/test-satis-package/tags",
+    "blobs_url": "https://api.github.com/repos/myorg/test-satis-package/git/blobs{/sha}",
+    "git_tags_url": "https://api.github.com/repos/myorg/test-satis-package/git/tags{/sha}",
+    "git_refs_url": "https://api.github.com/repos/myorg/test-satis-package/git/refs{/sha}",
+    "trees_url": "https://api.github.com/repos/myorg/test-satis-package/git/trees{/sha}",
+    "statuses_url": "https://api.github.com/repos/myorg/test-satis-package/statuses/{sha}",
+    "languages_url": "https://api.github.com/repos/myorg/test-satis-package/languages",
+    "stargazers_url": "https://api.github.com/repos/myorg/test-satis-package/stargazers",
+    "contributors_url": "https://api.github.com/repos/myorg/test-satis-package/contributors",
+    "subscribers_url": "https://api.github.com/repos/myorg/test-satis-package/subscribers",
+    "subscription_url": "https://api.github.com/repos/myorg/test-satis-package/subscription",
+    "commits_url": "https://api.github.com/repos/myorg/test-satis-package/commits{/sha}",
+    "git_commits_url": "https://api.github.com/repos/myorg/test-satis-package/git/commits{/sha}",
+    "comments_url": "https://api.github.com/repos/myorg/test-satis-package/comments{/number}",
+    "issue_comment_url": "https://api.github.com/repos/myorg/test-satis-package/issues/comments{/number}",
+    "contents_url": "https://api.github.com/repos/myorg/test-satis-package/contents/{+path}",
+    "compare_url": "https://api.github.com/repos/myorg/test-satis-package/compare/{base}...{head}",
+    "merges_url": "https://api.github.com/repos/myorg/test-satis-package/merges",
+    "archive_url": "https://api.github.com/repos/myorg/test-satis-package/{archive_format}{/ref}",
+    "downloads_url": "https://api.github.com/repos/myorg/test-satis-package/downloads",
+    "issues_url": "https://api.github.com/repos/myorg/test-satis-package/issues{/number}",
+    "pulls_url": "https://api.github.com/repos/myorg/test-satis-package/pulls{/number}",
+    "milestones_url": "https://api.github.com/repos/myorg/test-satis-package/milestones{/number}",
+    "notifications_url": "https://api.github.com/repos/myorg/test-satis-package/notifications{?since,all,participating}",
+    "labels_url": "https://api.github.com/repos/myorg/test-satis-package/labels{/name}",
+    "releases_url": "https://api.github.com/repos/myorg/test-satis-package/releases{/id}",
+    "deployments_url": "https://api.github.com/repos/myorg/test-satis-package/deployments",
+    "created_at": "2018-06-29T23:23:23Z",
+    "updated_at": "2018-06-29T23:23:23Z",
+    "pushed_at": "2018-06-29T23:23:23Z",
+    "git_url": "git://github.com/myorg/test-satis-package.git",
+    "ssh_url": "git@github.com:myorg/test-satis-package.git",
+    "clone_url": "https://github.com/myorg/test-satis-package.git",
+    "svn_url": "https://github.com/myorg/test-satis-package",
+    "homepage": null,
+    "size": 101,
+    "stargazers_count": 1,
+    "watchers_count": 1,
+    "language": "PHP",
+    "has_issues": true,
+    "has_projects": true,
+    "has_downloads": true,
+    "has_wiki": false,
+    "has_pages": false,
+    "forks_count": 0,
+    "mirror_url": null,
+    "archived": false,
+    "open_issues_count": 0,
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "spdx_id": null,
+      "url": null,
+      "node_id": "MDc6TGljZW5zZTA="
+    },
+    "forks": 0,
+    "open_issues": 0,
+    "watchers": 1,
+    "default_branch": "master"
+  },
+  "pusher": {
+    "name": "myusername",
+    "email": "myusername@example.tld"
+  },
+  "organization": {
+    "login": "myorg",
+    "id": 1234567,
+    "node_id": "MDEwOlJlcG9zaXRvcnkxMTcxMjU4NjU=",
+    "url": "https://api.github.com/orgs/myorg",
+    "repos_url": "https://api.github.com/orgs/myorg/repos",
+    "events_url": "https://api.github.com/orgs/myorg/events",
+    "hooks_url": "https://api.github.com/orgs/myorg/hooks",
+    "issues_url": "https://api.github.com/orgs/myorg/issues",
+    "members_url": "https://api.github.com/orgs/myorg/members{/member}",
+    "public_members_url": "https://api.github.com/orgs/myorg/public_members{/member}",
+    "avatar_url": "https://avatars1.githubusercontent.com/u/1234567?v=4",
+    "description": ""
+  },
+  "sender": {
+    "login": "myusername",
+    "id": 654321,
+    "node_id": "MDQ6VXNlcjU2NzM5Mw==",
+    "avatar_url": "https://avatars1.githubusercontent.com/u/654321?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/myusername",
+    "html_url": "https://github.com/myusername",
+    "followers_url": "https://api.github.com/users/myusername/followers",
+    "following_url": "https://api.github.com/users/myusername/following{/other_user}",
+    "gists_url": "https://api.github.com/users/myusername/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/myusername/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/myusername/subscriptions",
+    "organizations_url": "https://api.github.com/users/myusername/orgs",
+    "repos_url": "https://api.github.com/users/myusername/repos",
+    "events_url": "https://api.github.com/users/myusername/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/myusername/received_events",
+    "type": "User",
+    "site_admin": false
+  }
+}
