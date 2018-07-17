@@ -51,25 +51,33 @@ export default class RefreshPackagesReceiver extends QueueReceiver
         let newMessages = [];
 
         for (let name of Object.keys(branches)) {
-            newMessages.push({
-                type: 'refresh-package',
-                repositoryUrl: message.repositoryUrl,
-                identifier: branches[name],
-                branch: name,
-                force: force
-            });
+            newMessages.push(createMessage(message.repositoryUrl, branches[name], 'dev-' + name, force));
         }
 
         for (let name of Object.keys(tags)) {
-            newMessages.push({
-                type: 'refresh-package',
-                repositoryUrl: message.repositoryUrl,
-                identifier: tags[name],
-                tag: name,
-                force: force
-            });
+            newMessages.push(createMessage(message.repositoryUrl, tags[name], name, force));
         }
 
         await this.queue.sendBatch(newMessages);
     }
+}
+
+/**
+ * Create the refresh package message.
+ *
+ * @param {String}  repositoryUrl The repository url
+ * @param {String}  identifier    The identifier
+ * @param {String}  version       The version
+ * @param {Boolean} force         Check if existing packages must be overridden
+ *
+ * @return {{type: String, repositoryUrl: String, identifier: String, version: String, force: Boolean}}
+ */
+function createMessage(repositoryUrl, identifier, version, force) {
+    return {
+        type: 'refresh-package',
+        repositoryUrl: repositoryUrl,
+        identifier: identifier,
+        version: version,
+        force: force
+    };
 }

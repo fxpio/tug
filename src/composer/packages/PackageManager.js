@@ -180,7 +180,7 @@ export default class PackageManager
             type: 'refresh-package',
             repositoryUrl: repo.getUrl(),
             identifier: identifier,
-            tag: version,
+            version: version,
             force: force
         });
 

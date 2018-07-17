@@ -46,9 +46,8 @@ export default class RefreshPackageReceiver extends QueueReceiver
         let force = true === message.force;
         let repoUrl = message.repositoryUrl;
         let identifier = message.identifier;
-        let branch = message.branch ? 'dev-' + message.branch : null;
-        let tag = message.tag ? message.tag : null;
-        let version = branch ? branch : tag;
+        let version = message.version;
+        let isBranch = version.startWiths('dev-');
 
         let repo = await this.repoManager.getAndInitRepository(repoUrl, false);
         if (!repo || !repo.getPackageName()) {
@@ -62,7 +61,7 @@ export default class RefreshPackageReceiver extends QueueReceiver
             let composer = await driver.getComposerInformation(identifier);
 
             if (!composer) {
-                console.warn('[WARNING]', `Skipped ${branch ? 'branch' : 'tag'} (${version}) of "${repo.getPackageName()}", no composer file was found`);
+                console.warn('[WARNING]', `Skipped ${isBranch ? 'branch' : 'tag'} (${version}) of "${repo.getPackageName()}", no composer file was found`);
                 return;
             }
 
