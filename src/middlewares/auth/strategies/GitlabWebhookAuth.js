@@ -20,16 +20,17 @@ export default class GitlabWebhookAuth extends AuthStrategy
      * @inheritDoc
      */
     async logIn(req) {
-        let body = req.body;
+        let body = req.body,
+            headers = req.headers;
 
-        if (isGitlabEvent(req) && body && req.headers['x-gitlab-token']) {
-            /** @type {ConfigManager} repo */
-            let configManager = req.app.set('config-manager');
-            let signature = req.headers['x-gitlab-token'],
-                config = await configManager.get(),
-                secret = config.get('gitlab-webhook[' + req.headers.host + ']') 
-                    ? config.get('gitlab-webhook[' + req.headers.host + ']')
-                    : '';
+        if (isGitlabEvent(req) && headers['x-gitlab-token'] && body && body.repository && body.repository['url']) {
+            /** @typedef ConfigManager config */
+            let config = await req.app.set('config-manager').get();
+            let host = (new URL(body.repository['url'])).host;
+                host = host.endsWith('.gitlab.com') ? 'gitlab.com' : host;
+            let signature = headers['x-gitlab-token'],
+                tokens = config.get('gitlab-webhook'),
+                secret = undefined !== tokens[host] ? tokens[host] : '',
 
             if (signature === secret) {
                 return true;
