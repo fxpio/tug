@@ -44,7 +44,8 @@ export async function retrieveAllRepositories(config, codeRepoRepo, repositories
     let res = await codeRepoRepo.find(criteria, lastId);
 
     for (let repoData of res.results) {
-        repositories[repoData.packageName] = new VcsRepository(repoData, config);
+        let name = repoData.packageName ? repoData.packageName : repoData.id;
+        repositories[name] = new VcsRepository(repoData, config);
     }
 
     if (res.lastId) {
