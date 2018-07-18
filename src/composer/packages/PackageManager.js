@@ -136,6 +136,29 @@ export default class PackageManager
     }
 
     /**
+     * Refresh all packages.
+     *
+     * @param {Boolean} force Check if existing packages must be overridden
+     *
+     * @return {Promise<Object<String, VcsRepository>>}
+     *
+     * @throws RepositoryNotSupportedError When the repository is not supported
+     * @throws RepositoryNotFoundError     When the repository is not found
+     */
+    async refreshAllPackages(force = true) {
+        let repos = await this.repoManager.getRepositories(true);
+        let messages = [];
+
+        for (let name of Object.keys(repos)) {
+            messages.push({type: 'refresh-packages', repositoryUrl: repos[name].getUrl(), force: force});
+        }
+
+        await this.queue.sendBatch(messages);
+
+        return repos;
+    }
+
+    /**
      * Refresh the packages.
      *
      * @param {String}  url   The repository url

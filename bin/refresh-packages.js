@@ -22,7 +22,7 @@ const createHeaders = require('./utils/endpoint').createHeaders;
 program
     .description('Refresh the versions of package')
     .option('-e, --endpoint [url]', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
-    .option('-u, --url [url]', 'The repository URL')
+    .option('-u, --url [url]', 'The repository URL, or empty to refresh all repositories')
     .option('-n, --version [version]', 'The specific version, or empty to refresh all versions')
     .option('-f, --force', 'Check if the package must be actualized even if it exists')
     .parse(process.argv);

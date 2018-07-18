@@ -20,7 +20,7 @@ import {validateForm} from '../../utils/validation';
  */
 export async function refreshPackages(req, res, next) {
     validateForm(req, {
-        url: Joi.string().required(),
+        url: Joi.string(),
         version: Joi.string(),
         force: Joi.boolean()
     });
@@ -30,20 +30,24 @@ export async function refreshPackages(req, res, next) {
     let url = req.body.url;
     let version = req.body.version;
     let force = true === req.body.force;
-    let message;
+    let response = {};
 
-    if (version) {
-        url = (await packageManager.refreshPackage(url, version, force)).getUrl();
-        message = `Refreshing of package version "${version}" has started for the repository "${url}"`;
+    if (url) {
+        response.url = (await packageManager.refreshPackages(url, force)).getUrl();
+        response.message = `Refreshing all package versions has started for the repository "${url}"`;
+    } else if (url && version) {
+        response.url = (await packageManager.refreshPackage(url, version, force)).getUrl();
+        response.message = `Refreshing package version "${version}" has started for the repository "${url}"`;
     } else {
-        url = (await packageManager.refreshPackages(url, force)).getUrl();
-        message = `Refreshing of all packages has started for the repository "${url}"`;
+        let repos = await packageManager.refreshAllPackages(force);
+        response.message = `Refreshing all package versions has started for all repositories`;
+        response.urls = [];
+        for (let name of Object.keys(repos)) {
+            response.urls.push(repos[name].getUrl());
+        }
     }
 
-    res.json({
-        message: message,
-        url: url
-    });
+    res.json(response);
 }
 
 /**
