@@ -32,8 +32,14 @@ program
 let dynamodbPort = program.dynamodbPort || program.port + 1;
 
 process.env.SERVER_PORT = program.port;
-process.env.AWS_DYNAMODB_URL = 'http://localhost:' + dynamodbPort;
-process.env.AWS_DYNAMODB_TABLE = process.env.AWS_STACK_NAME + '-Database';
+
+if (undefined === process.env.AWS_DYNAMODB_URL) {
+    process.env.AWS_DYNAMODB_URL = 'http://localhost:' + dynamodbPort;
+}
+
+if (undefined === process.env.AWS_DYNAMODB_TABLE) {
+    process.env.AWS_DYNAMODB_TABLE = process.env.AWS_STACK_NAME + '-Database';
+}
 
 utils.spawn('node bin/config -e')
     .then(async () => {
