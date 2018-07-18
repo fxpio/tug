@@ -82,3 +82,35 @@ export async function deletePackages(req, res, next) {
         url: url
     });
 }
+
+/**
+ * Refresh only the cache for all packages or a single package of a repository.
+ *
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
+ */
+export async function refreshCachePackages(req, res, next) {
+    validateForm(req, {
+        url: Joi.string()
+    });
+
+    /** @type {PackageManager} repoManager */
+    let packageManager = req.app.set('package-manager');
+    let url = req.body.url;
+    let response = {};
+
+    if (url) {
+        response.name = (await packageManager.refreshCachePackages(url)).getPackageName();
+        response.message = `Refreshing cache of all package versions has started for the package "${response.name}"`;
+    } else {
+        let repos = await packageManager.refreshAllCachePackages();
+        response.message = `Refreshing cache of all package versions has started for all packages`;
+        response.names = [];
+        for (let name of Object.keys(repos)) {
+            response.names.push(repos[name].getPackageName());
+        }
+    }
+
+    res.json(response);
+}

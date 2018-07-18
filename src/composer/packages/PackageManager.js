@@ -248,4 +248,40 @@ export default class PackageManager
 
         return repo;
     }
+
+    /**
+     * Refresh all cache packages.
+     *
+     * @return {Promise<Object<String, VcsRepository>>}
+     */
+    async refreshAllCachePackages() {
+        let repos = await this.repoManager.getRepositories();
+        let messages = [];
+
+        for (let name of Object.keys(repos)) {
+            messages.push({type: 'build-package-versions-cache', packageName: repos[name].getPackageName()});
+        }
+
+        await this.queue.sendBatch(messages);
+
+        return repos;
+    }
+
+    /**
+     * Refresh the cache of packages.
+     *
+     * @param {String} url The repository url
+     *
+     * @return {Promise<VcsRepository>}
+     *
+     * @throws RepositoryNotSupportedError When the repository is not supported
+     * @throws RepositoryNotFoundError     When the repository is not found
+     */
+    async refreshCachePackages(url) {
+        let repo = await this.repoManager.getRepository(url, true);
+
+        await this.queue.send({type: 'build-package-versions-cache', packageName: repo.getPackageName()});
+
+        return repo;
+    }
 }
