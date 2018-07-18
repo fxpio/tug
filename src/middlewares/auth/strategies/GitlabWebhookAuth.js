@@ -9,7 +9,6 @@
 
 import AuthStrategy from './AuthStrategy';
 import {isGitlabEvent} from "../../../utils/apiGitlab";
-import ConfigManager from '../../../configs/ConfigManager';
 import {URL} from 'url';
 
 /**

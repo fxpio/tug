@@ -18,7 +18,7 @@ import {getGitlabEvent} from '../../utils/apiGitlab';
  * @param {Function}        next The next callback
  */
 export async function gitlabHook(req, res, next) {
-    switch(getGitlabEvent(req)) {
+    switch(getGitlabEvent(req).toLowerCase()) {
         case 'push hook':
         case 'tag push hook':
             await pushAction(req, res);
