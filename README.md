@@ -33,6 +33,7 @@ update excessively long.
 - Automatically configuration of the AWS credentials if the [Shared Credentials File](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-shared.html)
   is present on your machine
 - Automatically configuration of the AWS regions if the Shared Config File is present on your machine
+- Track the download count of each package version by Composer
 - All management commands use the API Rest of the Server with the AWS IAM authentication
 - All commands to:
   - configure interactively the project

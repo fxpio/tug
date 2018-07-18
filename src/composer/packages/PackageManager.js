@@ -284,4 +284,24 @@ export default class PackageManager
 
         return repo;
     }
+
+    /**
+     * Track the download of the package version.
+     *
+     * @param {String} packageName The package name
+     * @param {String} version     The version
+     *
+     * @return {Promise<void>}
+     */
+    async trackDownload(packageName, version) {
+        let repo = await this.repoManager.findRepository(packageName);
+        let pack = await this.findPackage(packageName, version);
+
+        if (repo && pack) {
+            repo.addDownloadCount();
+            pack.addDownloadCount();
+            await this.update(pack);
+            await this.repoManager.update(repo);
+        }
+    }
 }

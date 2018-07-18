@@ -90,7 +90,7 @@ export default class PackageBuilder
      */
     async buildRootPackages() {
         let repos = await this.repoManager.getRepositories();
-        let data = {packages: {}, includes: {}};
+        let data = {'notify-batch': '/downloads', packages: {}, includes: {}};
 
         for (let key of Object.keys(repos)) {
             let name = repos[key].getPackageName();
