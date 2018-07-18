@@ -21,7 +21,20 @@
     "delete-stack": "node bin/delete-stack",
     "setup": "yarn install && node bin/setup",
     "test": "ava --verbose",
-    "test:watch": "ava --watch"
+    "test:watch": "ava --watch",
+    "create-github-oauth": "node bin/create-github-oauth",
+    "show-github-oauth": "node bin/show-github-oauth",
+    "delete-github-oauth": "node bin/delete-github-oauth",
+    "create-github-token": "node bin/create-github-token",
+    "show-github-token": "node bin/show-github-token",
+    "delete-github-token": "node bin/delete-github-token",
+    "create-api-key": "node bin/create-api-key",
+    "delete-api-key": "node bin/delete-api-key",
+    "enable-repo": "node bin/enable-repo",
+    "disable-repo": "node bin/disable-repo",
+    "delete-packages": "node bin/delete-packages",
+    "refresh-packages": "node bin/refresh-packages",
+    "refresh-cache": "node bin/refresh-cache"
   },
   "ava": {
     "require": [
