@@ -59,7 +59,7 @@ export default class AwsSqsMessageQueue extends MessageQueue
             let message = messages[i];
             if (i < this.batchSize) {
                 params.Entries.push({
-                    Id: i,
+                    Id: 'message_' + i,
                     DelaySeconds: delay,
                     MessageBody: typeof message === 'object' ? JSON.stringify(message) : message
                 });

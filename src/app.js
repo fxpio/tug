@@ -11,8 +11,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import compression from 'compression';
-import winston from 'winston';
 import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
+import Logger from './loggers/Logger';
 import AwsDynamoDbDatabase from './db/AwsDynamoDbDatabase';
 import ConfigRepository from './db/repositories/ConfigRepository';
 import ApiKeyRepository from './db/repositories/ApiKeyRepository';
@@ -57,15 +57,7 @@ if (isProd()) {
     queue = new LocalMessageQueue();
 }
 
-let logger = winston.createLogger({
-    level: process.env.LOGGER_LEVEL,
-    format: winston.format.printf(info => {
-        return `${info.level}: ${info.message}` + (!isProd() && info instanceof Error ? `\nstacktrace: ${info.stack}` : '');
-    }),
-    transports: [
-        new winston.transports.Console()
-    ]
-});
+let logger = new Logger(process.env.LOGGER_LEVEL);
 let db = new AwsDynamoDbDatabase(process.env.AWS_DYNAMODB_TABLE, process.env.AWS_REGION, process.env.AWS_DYNAMODB_URL);
 db.setRepository(ConfigRepository);
 db.setRepository(ApiKeyRepository);

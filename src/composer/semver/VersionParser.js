@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import UnexpectedValueError from './UnexpectedValueError';
+import UnexpectedValueError from '../../errors/UnexpectedValueError';
 import {pregQuote} from '../../utils/regex';
 
 /**

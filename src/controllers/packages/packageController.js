@@ -92,3 +92,21 @@ export async function showPackageVersions(req, res, next) {
 
     throw new HttpNotFoundError();
 }
+
+/**
+ * Track the download of package version.
+ *
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
+ */
+export async function trackDownloadBatch(req, res, next) {
+    /** @type PackageManager */
+    let packageManager = req.app.set('package-manager');
+
+    for (let track of req.body.downloads) {
+        await packageManager.trackDownload(track.name, track.version);
+    }
+
+    res.status(204).send();
+}

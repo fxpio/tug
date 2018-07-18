@@ -204,6 +204,22 @@ export default class VcsRepository
     }
 
     /**
+     * Add the download count of all package versions.
+     */
+    addDownloadCount() {
+        this.repoData['downloadCount'] = this.getDownloadCount() + 1;
+    }
+
+    /**
+     * Get the download count of all package versions.
+     *
+     * @return {Number}
+     */
+    getDownloadCount() {
+        return this.repoData['downloadCount'] ? this.repoData['downloadCount'] : 0;
+    }
+
+    /**
      * Check if the repository has already been initialized.
      *
      * @return {Boolean}

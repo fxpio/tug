@@ -308,7 +308,7 @@ Resources:
             - dynamodb:PutItem
             - dynamodb:DeleteItem
             - dynamodb:GetItem
-            - dynamodb:Scan
+            - dynamodb:BatchWriteItem
             - dynamodb:Query
             Effect: Allow
             Resource:

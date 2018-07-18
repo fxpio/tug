@@ -136,6 +136,29 @@ export default class PackageManager
     }
 
     /**
+     * Refresh all packages.
+     *
+     * @param {Boolean} force Check if existing packages must be overridden
+     *
+     * @return {Promise<Object<String, VcsRepository>>}
+     *
+     * @throws RepositoryNotSupportedError When the repository is not supported
+     * @throws RepositoryNotFoundError     When the repository is not found
+     */
+    async refreshAllPackages(force = true) {
+        let repos = await this.repoManager.getRepositories(true);
+        let messages = [];
+
+        for (let name of Object.keys(repos)) {
+            messages.push({type: 'refresh-packages', repositoryUrl: repos[name].getUrl(), force: force});
+        }
+
+        await this.queue.sendBatch(messages);
+
+        return repos;
+    }
+
+    /**
      * Refresh the packages.
      *
      * @param {String}  url   The repository url
@@ -224,5 +247,61 @@ export default class PackageManager
         }
 
         return repo;
+    }
+
+    /**
+     * Refresh all cache packages.
+     *
+     * @return {Promise<Object<String, VcsRepository>>}
+     */
+    async refreshAllCachePackages() {
+        let repos = await this.repoManager.getRepositories();
+        let messages = [];
+
+        for (let name of Object.keys(repos)) {
+            messages.push({type: 'build-package-versions-cache', packageName: repos[name].getPackageName()});
+        }
+
+        await this.queue.sendBatch(messages);
+
+        return repos;
+    }
+
+    /**
+     * Refresh the cache of packages.
+     *
+     * @param {String} url The repository url
+     *
+     * @return {Promise<VcsRepository>}
+     *
+     * @throws RepositoryNotSupportedError When the repository is not supported
+     * @throws RepositoryNotFoundError     When the repository is not found
+     */
+    async refreshCachePackages(url) {
+        let repo = await this.repoManager.getRepository(url, true);
+
+        await this.queue.send({type: 'build-package-versions-cache', packageName: repo.getPackageName()});
+
+        return repo;
+    }
+
+    /**
+     * Track the download of the package version.
+     *
+     * @param {String} packageName The package name
+     * @param {String} version     The version
+     *
+     * @return {Promise<void>}
+     */
+    async trackDownload(packageName, version) {
+        let repo = await this.repoManager.findRepository(packageName);
+        let pack = await this.findPackage(packageName, version);
+
+        if (repo && pack) {
+            repo.addDownloadCount();
+            pack.addDownloadCount();
+            await this.update(pack);
+            await this.repoManager.update(repo);
+        }
     }
 }

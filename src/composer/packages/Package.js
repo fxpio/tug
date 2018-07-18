@@ -124,4 +124,20 @@ export default class Package
     getComposer() {
         return this.packageData['composer'];
     }
+
+    /**
+     * Add the download count of this package version.
+     */
+    addDownloadCount() {
+        this.packageData['downloadCount'] = this.getDownloadCount() + 1;
+    }
+
+    /**
+     * Get the download count of this package version.
+     *
+     * @return {Number}
+     */
+    getDownloadCount() {
+        return this.packageData['downloadCount'] ? this.packageData['downloadCount'] : 0;
+    }
 }

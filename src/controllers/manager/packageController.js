@@ -20,7 +20,7 @@ import {validateForm} from '../../utils/validation';
  */
 export async function refreshPackages(req, res, next) {
     validateForm(req, {
-        url: Joi.string().required(),
+        url: Joi.string(),
         version: Joi.string(),
         force: Joi.boolean()
     });
@@ -30,20 +30,24 @@ export async function refreshPackages(req, res, next) {
     let url = req.body.url;
     let version = req.body.version;
     let force = true === req.body.force;
-    let message;
+    let response = {};
 
-    if (version) {
-        url = (await packageManager.refreshPackage(url, version, force)).getUrl();
-        message = `Refreshing of package version "${version}" has started for the repository "${url}"`;
+    if (url) {
+        response.url = (await packageManager.refreshPackages(url, force)).getUrl();
+        response.message = `Refreshing all package versions has started for the repository "${url}"`;
+    } else if (url && version) {
+        response.url = (await packageManager.refreshPackage(url, version, force)).getUrl();
+        response.message = `Refreshing package version "${version}" has started for the repository "${url}"`;
     } else {
-        url = (await packageManager.refreshPackages(url, force)).getUrl();
-        message = `Refreshing of all packages has started for the repository "${url}"`;
+        let repos = await packageManager.refreshAllPackages(force);
+        response.message = `Refreshing all package versions has started for all repositories`;
+        response.urls = [];
+        for (let name of Object.keys(repos)) {
+            response.urls.push(repos[name].getUrl());
+        }
     }
 
-    res.json({
-        message: message,
-        url: url
-    });
+    res.json(response);
 }
 
 /**
@@ -77,4 +81,36 @@ export async function deletePackages(req, res, next) {
         message: message,
         url: url
     });
+}
+
+/**
+ * Refresh only the cache for all packages or a single package of a repository.
+ *
+ * @param {IncomingMessage} req  The request
+ * @param {ServerResponse}  res  The response
+ * @param {Function}        next The next callback
+ */
+export async function refreshCachePackages(req, res, next) {
+    validateForm(req, {
+        url: Joi.string()
+    });
+
+    /** @type {PackageManager} repoManager */
+    let packageManager = req.app.set('package-manager');
+    let url = req.body.url;
+    let response = {};
+
+    if (url) {
+        response.name = (await packageManager.refreshCachePackages(url)).getPackageName();
+        response.message = `Refreshing cache of all package versions has started for the package "${response.name}"`;
+    } else {
+        let repos = await packageManager.refreshAllCachePackages();
+        response.message = `Refreshing cache of all package versions has started for all packages`;
+        response.names = [];
+        for (let name of Object.keys(repos)) {
+            response.names.push(repos[name].getPackageName());
+        }
+    }
+
+    res.json(response);
 }

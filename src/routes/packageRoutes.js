@@ -10,7 +10,12 @@
 import Authenticate from '../middlewares/auth/Authenticate';
 import BasicTokenAuth from '../middlewares/auth/strategies/BasicTokenAuth';
 import {asyncHandler} from '../utils/handler';
-import {showPackageVersion, showPackageVersions, showRootPackages} from '../controllers/packages/packageController';
+import {
+    showPackageVersion,
+    showPackageVersions,
+    showRootPackages,
+    trackDownloadBatch
+} from '../controllers/packages/packageController';
 
 /**
  * Generate the routes.
@@ -23,6 +28,7 @@ export default function packageRoutes(router) {
     router.use(asyncHandler(Authenticate.middleware(new BasicTokenAuth())));
 
     router.get('/packages.json', asyncHandler(showRootPackages));
+    router.post('/downloads', asyncHandler(trackDownloadBatch));
     router.get('/p/:vendor/:package.json', asyncHandler(showPackageVersions));
     router.get('/p/:vendor/:package/:version.json', asyncHandler(showPackageVersion));
 
