@@ -22,18 +22,19 @@ All commands below are executable via:
 - `deploy`: Deploy the packaged project in AWS Cloud Formation
 - `package-deploy`: Package and deploy the project
 - `delete-stack`: Delete the AWS Cloud Formation stack
+- `create-github-oauth`: Create your Github Oauth token
+- `show-github-oauth`: Show your Github Oauth token
+- `delete-github-oauth`: Delete your Github Oauth token
+- `create-github-token`: Create the token for the Github Webhooks
+- `show-github-token`: Show the token for the Github Webhooks
+- `delete-github-token`: Delete the token for the Github Webhooks
 - `create-api-key`: Create a API key
 - `delete-api-key`: Delete a API key
-- `show-github-oauth`: Show your Github Oauth token
-- `create-github-oauth`: Create your Github Oauth token
-- `delete-github-oauth`: Delete your Github Oauth token
-- `show-github-token`: Show the token for the Github Webhooks
-- `create-github-token`: Create the token for the Github Webhooks
-- `delete-github-token`: Delete the token for the Github Webhooks
 - `enable-repo`: Enable manually the Github repository
 - `disable-repo`: Disable manually the Github repository
-- `refresh-packages`: Refresh the package versions or a specific package version
 - `delete-packages`: Delete the package versions or a specific package version
+- `refresh-packages`: Refresh the package versions or a specific package version
+- `refresh-cache`: Refresh only the cache of all package versions or a specific package version
 
 > **Note:**
 >
