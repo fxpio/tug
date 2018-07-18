@@ -1,8 +1,14 @@
 Available commands
 ==================
 
-All commands below are executable via `node bin/<command-name>`, `yarn run bin/node bin/<command-name>`
-or `npm run bin/node bin/<command-name>`:
+All commands below are executable via:
+- `bin/<command-name>`
+- `bin\<command-name>` or `"bin/<command-name>"` (Windows)
+- `node bin/<command-name>`
+- `yarn run bin/<command-name>`
+- `npm run bin/<command-name>`
+
+**Available commands:
 
 - `setup`: Install dependencies, configure the project, create the S3 bucket, package and deploy in
   AWS Cloud Formation, with API Gateway, Lambda and IAM

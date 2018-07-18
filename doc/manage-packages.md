@@ -12,7 +12,7 @@ When the repository is enabled, the server start to parse all Composer packages 
 If the Github Webhook is defined on the organization, you must enable the Github repository with the command:
 
  ```
- $ node bin/enable-repo -r <username-or-organization-name>/<repository-name>
+ $ bin/enable-repo -r <username-or-organization-name>/<repository-name>
  ```
 
 > **Note:**

@@ -92,7 +92,7 @@ To connect the server with your Github account, you must configure the Github Ao
 run the command:
 
 ```
-$ node bin/create-github-oauth --token <your-github-personal-token>
+$ bin/create-github-oauth --token <your-github-personal-token>
 ```
 
 > **Note:**
@@ -106,7 +106,7 @@ $ node bin/create-github-oauth --token <your-github-personal-token>
 To create a token to use in Github webhooks, run the command:
 
 ```
-$ node bin/create-github-token
+$ bin/create-github-token
 ```
 
 > **Note:**
@@ -132,7 +132,7 @@ The API keys are to be used with Composer to allow the connection with your Sati
 To create a new API key, run the command:
 
 ```
-$ node bin/create-api-key
+$ bin/create-api-key
 ```
 
 > **Note:**
