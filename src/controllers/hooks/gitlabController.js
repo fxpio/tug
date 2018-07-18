@@ -19,9 +19,6 @@ import {getGitlabEvent} from '../../utils/apiGitlab';
  */
 export async function gitlabHook(req, res, next) {
     switch(getGitlabEvent(req)) {
-        case 'ping':
-            await enableRepository(req, res);
-            break;
         case 'push hook':
         case 'tag push hook':
             await pushAction(req, res);
@@ -30,30 +27,6 @@ export async function gitlabHook(req, res, next) {
             next();
             break;
     }
-}
-
-/**
- * Enable the repository.
- *
- * @param {IncomingMessage} req The request
- * @param {ServerResponse}  res The response
- *
- * @return {Promise<void>}
- */
-async function enableRepository(req, res) {
-    /** @type {RepositoryManager} repoManager */
-    let repoManager = req.app.set('repository-manager');
-    let body = req.body,
-        message = 'Hello Gitlab!';
-
-    if (body.repository && body.repository['git_http_url']) {
-        await repoManager.register(body.repository['git_http_url'], 'vcs-gitlab');
-        message += ' The scan of the Composer packages has started';
-    }
-
-    res.json({
-        message: message
-    });
 }
 
 /**
@@ -78,7 +51,7 @@ async function pushAction(req, res) {
         let repo = await repoManager.getRepository(url);
 
         if (repo) {
-            if (body.ref.startWiths('refs/heads/')) {
+            if (body.ref.startsWith('refs/heads/')) {
                 version = 'dev-' + body.ref.substring(11);
 
                 if (body.created) {
@@ -88,7 +61,7 @@ async function pushAction(req, res) {
                 } else if (!body.created && !body.deleted && body['checkout_sha'] && body['commits'].length > 0) {
                     message += await refreshVersion(queue, repo, version, body['checkout_sha'], true);
                 }
-            } else if (body.ref.startWiths('refs/tags/')) {
+            } else if (body.ref.startsWith('refs/tags/')) {
                 version = body.ref.substring(10);
 
                 if (body.created) {
@@ -97,6 +70,10 @@ async function pushAction(req, res) {
                     message += await deleteVersion(queue, repo, version);
                 }
             }
+        } else if(body.repository && body.repository['git_http_url']) {
+
+            await repoManager.register(body.repository['git_http_url'], 'vcs-gitlab');
+            message += ' The scan of the Composer packages has started';
         }
     }
 
