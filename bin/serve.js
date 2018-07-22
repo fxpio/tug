@@ -80,6 +80,10 @@ utils.spawn('node bin/config -e')
                 try {
                     await db.describeTable({TableName: process.env.AWS_DYNAMODB_TABLE}).promise();
                 } catch (e) {
+                    if ('ResourceNotFoundException' !== e.code || 400 !== e.statusCode) {
+                        utils.displayError(e);
+                    }
+
                     console.info('Creation of the table in AWS DynamoDB...');
                     await db.createTable({
                         TableName: process.env.AWS_DYNAMODB_TABLE,
