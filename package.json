@@ -37,8 +37,12 @@
     "refresh-cache": "node bin/refresh-cache"
   },
   "ava": {
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
     "require": [
-      "@babel/register"
+      "ts-node/register"
     ]
   },
   "dependencies": {
@@ -53,10 +57,17 @@
     "node-fetch": "^2.1.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.52",
-    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.52",
-    "@babel/preset-env": "^7.0.0-beta.52",
-    "@babel/register": "^7.0.0-beta.52",
+    "@types/aws-serverless-express": "^3.0.1",
+    "@types/basic-auth": "^1.1.2",
+    "@types/chai": "^4.1.4",
+    "@types/compression": "^0.0.36",
+    "@types/cors": "^2.8.4",
+    "@types/dotenv": "^4.0.3",
+    "@types/fs-extra": "^5.0.4",
+    "@types/joi": "^13.4.0",
+    "@types/lodash.merge": "^4.6.3",
+    "@types/mocha": "^5.2.5",
+    "@types/node-fetch": "^2.1.1",
     "archiver": "^2.1.1",
     "async": "^2.6.1",
     "ava": "^1.0.0-beta.6",
@@ -69,6 +80,9 @@
     "inquirer": "^6.0.0",
     "nodemon": "^1.17.5",
     "nodemon-webpack-plugin": "^4.0.3",
+    "ts-loader": "^4.4.2",
+    "ts-node": "^7.0.0",
+    "typescript": "^2.9.2",
     "unzip": "^0.1.11",
     "webpack": "^4.12.2",
     "webpack-cli": "^3.0.8",

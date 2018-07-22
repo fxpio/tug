@@ -2,5 +2,6 @@
 deploy/
 dist/
 node_modules/
+dist-ts/
 var/
 yarn-error.log
