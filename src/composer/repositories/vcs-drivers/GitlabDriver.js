@@ -130,9 +130,9 @@ export default class GitlabDriver extends VcsDriver
         let url = `${this.getApiUrl()}/projects/${querystring.escape(`${this.owner}/${this.repository}`)}/archive`;
 
         return {
-            format: 'tar.gz',
+            type: 'tar.gz',
             url: url,
-            sha: identifier
+            reference: identifier
         };
     }
 
