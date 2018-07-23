@@ -37,11 +37,6 @@ module.exports = {
         }
     },
 
-    devServer: {
-        compress: true,
-        stats: 'errors-only'
-    },
-
     module: {
         rules: [
             { test: /\.tsx?$/, loader: 'ts-loader' },
