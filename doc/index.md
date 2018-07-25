@@ -24,7 +24,7 @@ This project requires:
 
 - an active account for [AWS](https://aws.amazon.com)
 - an active account for [Github](https://github.com)
-- the installation of the applications bellow on your local machine:
+- the installation of the applications bellow on your local machine (if you prefer to compile your own version):
   - [Nodejs](https://nodejs.org)
   - [NPM](https://www.npmjs.com) or [Yarn](https://yarnpkg.com) (to install dependencies)
   - [Java](https://www.java.com) (optional, to run database in local)
