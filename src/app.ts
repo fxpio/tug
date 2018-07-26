@@ -77,6 +77,7 @@ queue.subscribe(new DeletePackagesReceiver(db.getRepository(PackageRepository) a
 queue.subscribe(new DeletePackageReceiver(packageManager, queue, logger));
 queue.subscribe(new BuildPackageVersionsReceiver(packageBuilder, logger));
 
+app.disable('etag');
 app.set('logger', logger);
 app.set('config-manager', configManager);
 app.set('repository-manager', repoManager);
