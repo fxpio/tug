@@ -18,7 +18,10 @@ export default class Config
     public static defaultConfig: LooseObject = {
         'github-domains': ['github.com'],
         'github-oauth': {},
-        'github-webhook': {}
+        'github-webhook': {},
+        'ui': {
+            'locale': 'en'
+        }
     };
 
     private config: LooseObject;

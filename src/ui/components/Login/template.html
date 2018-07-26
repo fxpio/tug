@@ -1,0 +1,50 @@
+<!--
+This file is part of the Fxp Satis Serverless package.
+
+(c) François Pluchino <francois.pluchino@gmail.com>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+-->
+
+<v-layout align-center justify-center>
+    <v-flex>
+        <h1 class="text-xs-center pb-5 grey--text">{{ 'app.name'|translate }}</h1>
+        <v-card style="max-width: 350px; margin-left: auto; margin-right: auto;">
+            <v-card-text>
+                <h1 class="text-xs-center pb-2 accent--text">{{ 'security.login'|translate }}</h1>
+
+                <v-alert type="error" class="mt-3 mb-4" transition="scale-transition" :value="formAlert">
+                    {{formAlert}}
+                </v-alert>
+
+                <v-form ref="form" @submit="login()">
+                    <v-text-field
+                        :label="$i18n.translate('page.login.label.username')"
+                        v-model="username"
+                        data-vv-name="username"
+                        v-validate="'required'"
+                        :error-messages="errors.collect('username')"
+                        autofocus
+                        required>
+                    </v-text-field>
+
+                    <v-text-field
+                        :label="$i18n.translate('page.login.label.password')"
+                        v-model="password"
+                        data-vv-name="password"
+                        v-validate="'required'"
+                        :error-messages="errors.collect('password')"
+                        type="password"
+                        required>
+                    </v-text-field>
+
+                    <div>
+                        <v-btn color="accent" depressed block raised ripple @click="login()">{{ 'security.login'|translate }}</v-btn>
+                    </div>
+                </v-form>
+            </v-card-text>
+        </v-card>
+        <loading :value="$store.getters.isAuthenticationPending"></loading>
+    </v-flex>
+</v-layout>

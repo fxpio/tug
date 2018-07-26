@@ -29,7 +29,7 @@ program
     .parse(process.argv)
 ;
 
-let dynamodbPort = program.dynamodbPort || program.port + 1;
+let dynamodbPort = parseInt(program.dynamodbPort || program.port) + 1;
 let startLocalDynamoDb = false;
 
 process.env.SERVER_PORT = program.port;
@@ -124,7 +124,9 @@ utils.spawn('node bin/config -e')
                 }
             },
             // compile and start the express server
-            async.apply(utils.spawn, 'webpack --watch')
+            async.apply(utils.spawn, 'webpack --watch --config webpack.config.js'),
+            // compile and start the webpack dev server for UI
+            async.apply(utils.spawn, 'webpack-dev-server --config webpack.ui.config.js')
         ];
 
         if (!startLocalDynamoDb) {
