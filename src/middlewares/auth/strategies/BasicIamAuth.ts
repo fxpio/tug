@@ -81,7 +81,7 @@ export default class BasicIamAuth implements AuthStrategy
                 });
                 let res = await sts.getCallerIdentity({}).promise();
 
-                return res.Account === process.env.AWS_ACCOUNT_ID;
+                return res.Account === process.env.AWS_ACCOUNT_ID || !process.env.AWS_ACCOUNT_ID;
             } catch (e) {}
         }
 
