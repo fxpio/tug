@@ -25,7 +25,8 @@ VCS repositories makes every Composer update excessively long.
 
 - Deploy the service in minutes
 - Fully manage the remote service with command lines
-- All management commands use the API Rest of the Server with the AWS IAM authentication
+- All management commands use the API Rest of the Server
+- Authentication can be do with the AWS Security Token Service (session token) or the AWS IAM Credentials
 - Store the Composer package definitions, API keys and config in the DynamoDB
 - Put in cache the package versions and providers in S3
 - Create the Composer package definition when the branch or tag is created

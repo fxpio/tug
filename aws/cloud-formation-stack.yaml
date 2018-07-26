@@ -165,6 +165,8 @@ Resources:
         - Arn
       Environment:
         Variables:
+          AWS_ACCOUNT_ID:
+            Ref: AWS::AccountId
           AWS_DYNAMODB_TABLE:
             Ref: Database
           AWS_S3_BUCKET:
