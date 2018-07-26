@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import crypto from 'crypto';
 import Cache from '../../caches/Cache';
 import RepositoryManager from '../repositories/RepositoryManager';
 import PackageManager from './PackageManager';
 import {LooseObject} from '../../utils/LooseObject';
+import {createHash} from '../../utils/crypto';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -61,9 +61,7 @@ export default class PackageBuilder
                 if (hash) {
                     await this.cache.setPackageVersions(packageName, hash, content);
                 } else {
-                    let hashHash = crypto.createHash('sha1');
-                    hashHash.update(content);
-                    hash = hashHash.digest('hex');
+                    hash = createHash(content);
 
                     await this.cache.setPackageVersions(packageName, hash, content);
                     repo.setLastHash(hash);
