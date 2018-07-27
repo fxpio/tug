@@ -9,6 +9,9 @@
 
 import {I18nState} from './I18nState';
 
+/**
+ * @author François Pluchino <francois.pluchino@gmail.com>
+ */
 export interface RootState
 {
     i18n: I18nState;

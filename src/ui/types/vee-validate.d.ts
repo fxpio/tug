@@ -7,6 +7,9 @@
  * file that was distributed with this source code.
  */
 
+/**
+ * @author François Pluchino <francois.pluchino@gmail.com>
+ */
 declare module 'vee-validate/dist/locale/*'
 {
 }

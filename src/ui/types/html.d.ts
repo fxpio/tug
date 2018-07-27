@@ -7,6 +7,9 @@
  * file that was distributed with this source code.
  */
 
+/**
+ * @author François Pluchino <francois.pluchino@gmail.com>
+ */
 declare module '*.html'
 {
     import Vue, {ComponentOptions} from 'vue';
