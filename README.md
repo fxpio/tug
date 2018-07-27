@@ -33,7 +33,7 @@ VCS repositories makes every Composer update excessively long.
 - Remove the Composer package definition when the branch or tag is deleted
 - Refresh the commit SHA1 on each commit
 - Track the download count of each package version by Composer
-- available drivers:
+- Available drivers:
   - Github
 - Automatically configuration of the AWS credentials if the [Shared Credentials File](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-shared.html)
   is present on your machine
