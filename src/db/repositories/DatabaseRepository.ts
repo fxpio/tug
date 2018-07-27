@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import Results from '../Results';
-import Database from '../Database';
+import {Results} from '../Results';
+import {Database} from '../Database';
 import {LooseObject} from '../../utils/LooseObject';
 
 /**
@@ -122,5 +122,3 @@ export interface DatabaseRepositoryConstructor
      */
     getName(): string;
 }
-
-export default DatabaseRepository;

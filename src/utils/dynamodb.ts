@@ -8,8 +8,8 @@
  */
 
 import AWS from 'aws-sdk';
-import Constraint from '../db/constraints/Constraint';
-import Equal from '../db/constraints/Equal';
+import {Constraint} from '../db/constraints/Constraint';
+import {Equal} from '../db/constraints/Equal';
 import {LooseObject} from './LooseObject';
 
 /**

@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import AssetManager from '../../assets/AssetManager';
-import ConfigManager from '../../configs/ConfigManager';
+import {AssetManager} from '../../assets/AssetManager';
+import {ConfigManager} from '../../configs/ConfigManager';
 import {Request, Response} from 'express';
 
 /**

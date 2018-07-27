@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import Config from '../../../configs/Config';
-import RemoteFilesystem from '../../utils/RemoteFilesystem';
-import TagNotFoundError from '../../../errors/TagNotFoundError';
-import BranchNotFoundError from '../../../errors/BranchNotFoundError';
+import {Config} from '../../../configs/Config';
+import {RemoteFilesystem} from '../../utils/RemoteFilesystem';
+import {TagNotFoundError} from '../../../errors/TagNotFoundError';
+import {BranchNotFoundError} from '../../../errors/BranchNotFoundError';
 import {LooseObject} from '../../../utils/LooseObject';
 import {dateToRfc3339} from '../../../utils/date';
 
@@ -19,7 +19,7 @@ import {dateToRfc3339} from '../../../utils/date';
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class VcsDriver
+export class VcsDriver
 {
     protected readonly repoConfig: LooseObject;
     protected readonly config: Config;

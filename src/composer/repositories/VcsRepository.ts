@@ -7,18 +7,18 @@
  * file that was distributed with this source code.
  */
 
-import Config from '../../configs/Config';
-import VcsDriver from './vcs-drivers/VcsDriver';
-import GithubDriver from './vcs-drivers/GithubDriver';
-import RepositoryError from '../../errors/RepositoryError';
-import VcsDriverNotFoundError from '../../errors/VcsDriverNotFoundError';
+import {Config} from '../../configs/Config';
+import {VcsDriver} from './vcs-drivers/VcsDriver';
+import {GithubDriver} from './vcs-drivers/GithubDriver';
+import {RepositoryError} from '../../errors/RepositoryError';
+import {VcsDriverNotFoundError} from '../../errors/VcsDriverNotFoundError';
 import {URL} from 'url';
 import {LooseObject} from '../../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class VcsRepository
+export class VcsRepository
 {
     private readonly drivers: LooseObject;
     private readonly config: Config;

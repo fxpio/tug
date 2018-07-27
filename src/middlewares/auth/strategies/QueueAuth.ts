@@ -7,14 +7,14 @@
  * file that was distributed with this source code.
  */
 
-import AuthStrategy from './AuthStrategy';
+import {AuthStrategy} from './AuthStrategy';
 import {isSqsRequest} from '../../../utils/apiQueue';
 import {Request} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class QueueAuth implements AuthStrategy
+export class QueueAuth implements AuthStrategy
 {
     /**
      * @inheritDoc

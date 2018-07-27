@@ -7,14 +7,14 @@
  * file that was distributed with this source code.
  */
 
-import QueueReceiver from './QueueReceiver';
-import MessageQueue from './MessageQueue';
+import {QueueReceiver} from './QueueReceiver';
+import {MessageQueue} from './MessageQueue';
 import {LooseObject} from '../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class BaseMessageQueue implements MessageQueue
+export class BaseMessageQueue implements MessageQueue
 {
     private readonly receivers: Array<QueueReceiver>;
 

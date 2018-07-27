@@ -7,15 +7,15 @@
  * file that was distributed with this source code.
  */
 
-import Results from '../Results';
-import Database from '../Database';
-import DatabaseRepository from './DatabaseRepository';
+import {Results} from '../Results';
+import {Database} from '../Database';
+import {DatabaseRepository} from './DatabaseRepository';
 import {LooseObject} from '../../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class BaseDatabaseRepository implements DatabaseRepository
+export class BaseDatabaseRepository implements DatabaseRepository
 {
     private client: Database;
 
@@ -139,4 +139,4 @@ export default class BaseDatabaseRepository implements DatabaseRepository
 
         return data;
     }
-};
+}

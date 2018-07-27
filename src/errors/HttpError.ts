@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import FxpServerlessError from './FxpServerlessError';
+import {FxpServerlessError} from './FxpServerlessError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class HttpError extends FxpServerlessError
+export class HttpError extends FxpServerlessError
 {
     private readonly statusCode: number;
 

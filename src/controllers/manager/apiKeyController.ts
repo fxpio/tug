@@ -8,10 +8,10 @@
  */
 
 import Joi from 'joi';
-import ApiKeyRepository from '../../db/repositories/ApiKeyRepository';
+import {ApiKeyRepository} from '../../db/repositories/ApiKeyRepository';
 import {generateToken} from '../../utils/token';
 import {validateForm} from '../../utils/validation';
-import Database from '../../db/Database';
+import {Database} from '../../db/Database';
 import {Request, Response} from 'express';
 
 /**

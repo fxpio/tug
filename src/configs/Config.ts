@@ -13,7 +13,7 @@ import {LooseObject} from '../utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Config
+export class Config
 {
     public static defaultConfig: LooseObject = {
         'github-domains': ['github.com'],

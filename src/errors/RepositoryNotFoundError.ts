@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import HttpNotFoundError from './HttpNotFoundError';
+import {HttpNotFoundError} from './HttpNotFoundError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class RepositoryNotFoundError extends HttpNotFoundError
+export class RepositoryNotFoundError extends HttpNotFoundError
 {
 }

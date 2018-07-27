@@ -7,16 +7,16 @@
  * file that was distributed with this source code.
  */
 
-import Cache from '../../caches/Cache';
-import RepositoryManager from '../repositories/RepositoryManager';
-import PackageManager from './PackageManager';
+import {Cache} from '../../caches/Cache';
+import {RepositoryManager} from '../repositories/RepositoryManager';
+import {PackageManager} from './PackageManager';
 import {LooseObject} from '../../utils/LooseObject';
 import {createHash} from '../../utils/crypto';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class PackageBuilder
+export class PackageBuilder
 {
     private readonly repoManager: RepositoryManager;
     private readonly packageManager: PackageManager;

@@ -7,15 +7,15 @@
  * file that was distributed with this source code.
  */
 
-import Logger from '../loggers/Logger';
-import QueueReceiver from '../queues/QueueReceiver';
-import PackageBuilder from '../composer/packages/PackageBuilder';
+import {Logger} from '../loggers/Logger';
+import {QueueReceiver} from '../queues/QueueReceiver';
+import {PackageBuilder} from '../composer/packages/PackageBuilder';
 import {LooseObject} from '../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class BuildPackageVersionsReceiver implements QueueReceiver
+export class BuildPackageVersionsReceiver implements QueueReceiver
 {
     private readonly packageBuilder: PackageBuilder;
     private readonly logger: Logger;

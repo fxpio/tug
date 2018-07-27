@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import Constraint from './Constraint';
+import {Constraint} from './Constraint';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class NotEqual extends Constraint
+export class NotEqual extends Constraint
 {
     /**
      * Constructor.
@@ -22,4 +22,4 @@ export default class NotEqual extends Constraint
     constructor(value: any) {
         super('<>', value, true);
     }
-};
+}

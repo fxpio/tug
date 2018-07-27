@@ -9,15 +9,15 @@
 
 import merge from 'lodash.merge';
 import fetch from 'node-fetch';
-import Config from '../../configs/Config';
-import TransportError from '../../errors/TransportError';
+import {Config} from '../../configs/Config';
+import {TransportError} from '../../errors/TransportError';
 import {Response} from 'node-fetch';
 import {LooseObject} from '../../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class RemoteFilesystem
+export class RemoteFilesystem
 {
     private config: Config;
     private lastHeaders: Object;

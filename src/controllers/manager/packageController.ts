@@ -8,7 +8,7 @@
  */
 
 import Joi from 'joi';
-import PackageManager from '../../composer/packages/PackageManager';
+import {PackageManager} from '../../composer/packages/PackageManager';
 import {validateForm} from '../../utils/validation';
 import {Request, Response} from 'express';
 import {LooseObject} from '../../utils/LooseObject';

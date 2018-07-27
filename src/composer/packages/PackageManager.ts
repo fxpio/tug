@@ -7,21 +7,21 @@
  * file that was distributed with this source code.
  */
 
-import RepositoryManager from '../repositories/RepositoryManager';
-import VcsRepository from '../repositories/VcsRepository';
-import VersionParser from '../semver/VersionParser';
-import MessageQueue from '../../queues/MessageQueue';
-import PackageRepository from '../../db/repositories/PackageRepository';
-import RepositoryNotSupportedError from '../../errors/RepositoryNotSupportedError';
-import RepositoryNotFoundError from '../../errors/RepositoryNotFoundError';
-import Package from './Package';
+import {RepositoryManager} from '../repositories/RepositoryManager';
+import {VcsRepository} from '../repositories/VcsRepository';
+import {VersionParser} from '../semver/VersionParser';
+import {MessageQueue} from '../../queues/MessageQueue';
+import {PackageRepository} from '../../db/repositories/PackageRepository';
+import {RepositoryNotSupportedError} from '../../errors/RepositoryNotSupportedError';
+import {RepositoryNotFoundError} from '../../errors/RepositoryNotFoundError';
+import {Package} from './Package';
 import {retrieveAllVersions} from '../../utils/package';
 import {LooseObject} from '../../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class PackageManager
+export class PackageManager
 {
     private readonly repoManager: RepositoryManager;
     private readonly packageRepo: PackageRepository;

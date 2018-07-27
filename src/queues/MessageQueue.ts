@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import QueueReceiver from './QueueReceiver';
+import {QueueReceiver} from './QueueReceiver';
 import {LooseObject} from '../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default interface MessageQueue
+export interface MessageQueue
 {
     /**
      * Subscribe a receiver in queue.

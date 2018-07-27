@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import HttpNotFoundError from '../../errors/HttpNotFoundError';
-import HttpError from '../../errors/HttpError';
-import ValidationError from '../../errors/ValidationError';
-import HttpBadRequestError from '../../errors/HttpBadRequestError';
+import {HttpNotFoundError} from '../../errors/HttpNotFoundError';
+import {HttpError} from '../../errors/HttpError';
+import {ValidationError} from '../../errors/ValidationError';
+import {HttpBadRequestError} from '../../errors/HttpBadRequestError';
 import {Request, Response} from 'express';
 import {LooseObject} from '../../utils/LooseObject';
 import {isProd} from '../../utils/server';

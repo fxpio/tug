@@ -12,7 +12,7 @@ import {LooseObject} from '../utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default interface QueueReceiver
+export interface QueueReceiver
 {
     /**
      * Check if the receiver support the message.

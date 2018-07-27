@@ -9,14 +9,14 @@
 
 import AWS from 'aws-sdk';
 import auth from 'basic-auth';
-import AuthStrategy from './AuthStrategy';
+import {AuthStrategy} from './AuthStrategy';
 import {Request} from 'express';
 import {createHash} from '../../../utils/crypto';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class BasicIamAuth implements AuthStrategy
+export class BasicIamAuth implements AuthStrategy
 {
     private readonly debug: boolean;
 

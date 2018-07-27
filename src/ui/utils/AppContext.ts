@@ -10,7 +10,7 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default interface AppContext
+export interface AppContext
 {
     apiBaseUrl: string;
 }

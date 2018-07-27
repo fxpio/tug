@@ -8,7 +8,7 @@
  */
 
 import Joi from 'joi';
-import ValidationError from '../errors/ValidationError';
+import {ValidationError} from '../errors/ValidationError';
 import {Request} from 'express';
 import {LooseObject} from './LooseObject';
 

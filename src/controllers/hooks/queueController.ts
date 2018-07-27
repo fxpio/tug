@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import MessageQueue from '../../queues/MessageQueue';
+import {MessageQueue} from '../../queues/MessageQueue';
 import {Request, Response} from 'express';
 import {getSqsMessageBodies} from '../../utils/apiQueue';
 

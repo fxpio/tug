@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import Constraint from './Constraint';
+import {Constraint} from './Constraint';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class AttributeExists extends Constraint
+export class AttributeExists extends Constraint
 {
     /**
      * Constructor.
@@ -27,4 +27,4 @@ export default class AttributeExists extends Constraint
     public format(a: string, b: string): string {
         return 'attribute_exists(' + a + ')';
     }
-};
+}

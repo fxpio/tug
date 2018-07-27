@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import UnexpectedValueError from '../../errors/UnexpectedValueError';
+import {UnexpectedValueError} from '../../errors/UnexpectedValueError';
 import {pregQuote} from '../../utils/regex';
 
 /**
@@ -18,7 +18,7 @@ import {pregQuote} from '../../utils/regex';
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class VersionParser
+export class VersionParser
 {
     /**
      * Regex to match pre-release data (sort of).

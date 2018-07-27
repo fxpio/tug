@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import Constraint from './Constraint';
+import {Constraint} from './Constraint';
 import {generateToken} from '../../utils/token';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class In extends Constraint
+export class In extends Constraint
 {
     /**
      * Constructor.
@@ -40,4 +40,4 @@ export default class In extends Constraint
 
         return a + ' IN (' + (keys.length > 0 ? ':' : '') + keys.join(', :') + ')';
     }
-};
+}

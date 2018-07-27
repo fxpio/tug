@@ -7,16 +7,16 @@
  * file that was distributed with this source code.
  */
 
-import Logger from '../loggers/Logger';
-import QueueReceiver from '../queues/QueueReceiver';
-import PackageRepository from '../db/repositories/PackageRepository';
-import MessageQueue from '../queues/MessageQueue';
+import {Logger} from '../loggers/Logger';
+import {QueueReceiver} from '../queues/QueueReceiver';
+import {PackageRepository} from '../db/repositories/PackageRepository';
+import {MessageQueue} from '../queues/MessageQueue';
 import {LooseObject} from '../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class DeletePackagesReceiver implements QueueReceiver
+export class DeletePackagesReceiver implements QueueReceiver
 {
     private readonly packageRepo: PackageRepository;
     private readonly queue: MessageQueue;

@@ -18,7 +18,7 @@ import {redirectHome, showWebApp} from '../controllers/ui/uiController';
  *
  * @return {Router}
  */
-export default function(router: Router): Router {
+export function uiRoutes(router: Router): Router {
     router.get('/', asyncHandler(redirectHome));
     router.get('/admin', asyncHandler(redirectHome));
     router.get('/admin/*', asyncHandler(showWebApp));

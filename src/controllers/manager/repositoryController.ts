@@ -8,8 +8,8 @@
  */
 
 import Joi from 'joi';
-import RepositoryManager from '../../composer/repositories/RepositoryManager';
-import Logger from '../../loggers/Logger';
+import {RepositoryManager} from '../../composer/repositories/RepositoryManager';
+import {Logger} from '../../loggers/Logger';
 import {validateForm} from '../../utils/validation';
 import {Request, Response} from 'express';
 

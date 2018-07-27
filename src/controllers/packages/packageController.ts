@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import PackageManager from '../../composer/packages/PackageManager';
-import PackageBuilder from '../../composer/packages/PackageBuilder';
-import Cache from '../../caches/Cache';
-import HttpNotFoundError from '../../errors/HttpNotFoundError';
+import {PackageManager} from '../../composer/packages/PackageManager';
+import {PackageBuilder} from '../../composer/packages/PackageBuilder';
+import {Cache} from '../../caches/Cache';
+import {HttpNotFoundError} from '../../errors/HttpNotFoundError';
 import {Request, Response} from 'express';
 import {LooseObject} from '../../utils/LooseObject';
 

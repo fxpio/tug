@@ -7,15 +7,15 @@
  * file that was distributed with this source code.
  */
 
-import DatabaseError from '../errors/DatabaseError';
+import {DatabaseError} from '../errors/DatabaseError';
 import {DatabaseRepository, DatabaseRepositoryConstructor} from './repositories/DatabaseRepository';
-import Results from './Results';
+import {Results} from './Results';
 import {LooseObject} from '../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Database
+export class Database
 {
     private readonly repositories: LooseObject;
 
@@ -162,4 +162,4 @@ export default class Database
             throw new DatabaseError('The data must be an object with the required "id" property');
         }
     }
-};
+}

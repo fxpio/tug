@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import Authenticate from '../middlewares/auth/Authenticate';
-import BasicIamAuth from '../middlewares/auth/strategies/BasicIamAuth';
+import {Authenticate} from '../middlewares/auth/Authenticate';
+import {BasicIamAuth} from '../middlewares/auth/strategies/BasicIamAuth';
 import {Router} from 'express';
 import {asyncHandler} from '../utils/handler';
 import {isProd} from '../utils/server';
@@ -25,7 +25,7 @@ import {deletePackages, refreshCachePackages, refreshPackages} from '../controll
  *
  * @return {Router}
  */
-export default function(router: Router): Router {
+export function managerRoutes(router: Router): Router {
     router.use(asyncHandler(Authenticate.middleware(new BasicIamAuth(!isProd()))));
 
     router.post('/api-keys', asyncHandler(createApiKey));

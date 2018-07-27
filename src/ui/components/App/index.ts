@@ -18,7 +18,7 @@ import {TOGGLE_DRAWER} from '../../store';
  */
 @WithRender
 @Component
-export default class App extends Vue
+export class App extends Vue
 {
     public metaInfo(): MetaInfo {
         return {

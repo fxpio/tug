@@ -8,15 +8,15 @@
  */
 
 import auth from 'basic-auth';
-import AuthStrategy from './AuthStrategy';
-import ApiKeyRepository from '../../../db/repositories/ApiKeyRepository';
-import Database from '../../../db/Database';
+import {AuthStrategy} from './AuthStrategy';
+import {ApiKeyRepository} from '../../../db/repositories/ApiKeyRepository';
+import {Database} from '../../../db/Database';
 import {Request} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class BasicTokenAuth implements AuthStrategy
+export class BasicTokenAuth implements AuthStrategy
 {
     /**
      * @inheritDoc

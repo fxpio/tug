@@ -12,7 +12,7 @@ import {LooseObject} from '../utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Results
+export class Results
 {
     private readonly results: LooseObject[];
 

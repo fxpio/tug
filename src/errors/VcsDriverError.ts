@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import FxpServerlessError from './FxpServerlessError';
+import {FxpServerlessError} from './FxpServerlessError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class VcsDriverError extends FxpServerlessError
+export class VcsDriverError extends FxpServerlessError
 {
 }

@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import PackageError from '../../errors/PackageError';
+import {PackageError} from '../../errors/PackageError';
 import {LooseObject} from '../../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Package
+export class Package
 {
     private readonly packageData: LooseObject;
 

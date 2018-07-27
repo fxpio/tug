@@ -7,14 +7,14 @@
  * file that was distributed with this source code.
  */
 
-import LoggerError from '../errors/LoggerError';
+import {LoggerError} from '../errors/LoggerError';
 import {LooseObject} from '../utils/LooseObject';
 import {isProd} from '../utils/server';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Logger
+export class Logger
 {
     /**
      * @return {LooseObject}

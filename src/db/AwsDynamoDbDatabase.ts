@@ -8,15 +8,15 @@
  */
 
 import AWS from 'aws-sdk';
-import Database from './Database';
-import Results from './Results';
+import {Database} from './Database';
+import {Results} from './Results';
 import {LooseObject} from '../utils/LooseObject';
 import {convertQueryCriteria} from '../utils/dynamodb';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class AwsDynamoDbDatabase extends Database
+export class AwsDynamoDbDatabase extends Database
 {
     private readonly tableName: string;
 
@@ -194,4 +194,4 @@ export default class AwsDynamoDbDatabase extends Database
     public static unmarshall(data: any): LooseObject {
         return AWS.DynamoDB.Converter.unmarshall(data);
     }
-};
+}

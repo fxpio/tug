@@ -8,12 +8,12 @@
  */
 
 import {Request, Response} from 'express';
-import AuthStrategy from './strategies/AuthStrategy';
+import {AuthStrategy} from './strategies/AuthStrategy';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Authenticate
+export class Authenticate
 {
     /**
      * Create the express middleware.

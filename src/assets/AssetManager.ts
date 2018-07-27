@@ -13,7 +13,7 @@ import {LooseObject} from '../utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class AssetManager
+export class AssetManager
 {
     private readonly manifestFile: string;
     private readonly debug: boolean;

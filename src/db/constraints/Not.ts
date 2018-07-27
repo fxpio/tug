@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import Constraint from './Constraint';
+import {Constraint} from './Constraint';
 import {LooseObject} from '../../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Not extends Constraint
+export class Not extends Constraint
 {
     private readonly constraint: Constraint;
 
@@ -40,4 +40,4 @@ export default class Not extends Constraint
     public getCustomValues(): LooseObject {
         return this.constraint.getCustomValues();
     }
-};
+}

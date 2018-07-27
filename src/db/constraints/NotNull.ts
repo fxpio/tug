@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import NotEqual from './NotEqual';
+import {NotEqual} from './NotEqual';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class NotNull extends NotEqual
+export class NotNull extends NotEqual
 {
     /**
      * Constructor.
@@ -20,4 +20,4 @@ export default class NotNull extends NotEqual
     constructor() {
         super(null);
     }
-};
+}

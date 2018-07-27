@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import HttpBadRequestError from './HttpBadRequestError';
+import {HttpBadRequestError} from './HttpBadRequestError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class ValidationError extends HttpBadRequestError
+export class ValidationError extends HttpBadRequestError
 {
     private readonly errorFields: Object;
 

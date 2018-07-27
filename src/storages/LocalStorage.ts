@@ -8,12 +8,12 @@
  */
 
 import fs from 'fs-extra';
-import DataStorage from './DataStorage';
+import {DataStorage} from './DataStorage';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class LocalStorage implements DataStorage
+export class LocalStorage implements DataStorage
 {
     private readonly basePath: string;
 
@@ -65,4 +65,4 @@ export default class LocalStorage implements DataStorage
 
         return key;
     }
-};
+}

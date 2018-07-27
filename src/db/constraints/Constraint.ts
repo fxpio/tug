@@ -12,7 +12,7 @@ import {LooseObject} from '../../utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Constraint
+export class Constraint
 {
     protected readonly operator: string;
     protected readonly value: any;
@@ -72,4 +72,4 @@ export default class Constraint
     public format(a: string, b: string): string {
         return a + ' ' + this.operator + ' ' + b;
     }
-};
+}

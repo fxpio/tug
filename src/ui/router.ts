@@ -9,7 +9,7 @@
 
 import Vue from 'vue';
 import Router from 'vue-router';
-import Error404 from './components/Error404';
+import {Error404} from './components/Error404';
 import {Route} from 'vue-router/types/router';
 import {Validator} from 'vee-validate';
 import {Store} from 'vuex';

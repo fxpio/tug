@@ -10,7 +10,7 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class FxpServerlessError extends Error
+export class FxpServerlessError extends Error
 {
     private __proto__: Error;
 

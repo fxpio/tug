@@ -7,18 +7,18 @@
  * file that was distributed with this source code.
  */
 
-import Logger from '../loggers/Logger';
-import MessageQueue from '../queues/MessageQueue';
-import QueueReceiver from '../queues/QueueReceiver';
-import RepositoryManager from '../composer/repositories/RepositoryManager';
-import PackageManager from '../composer/packages/PackageManager';
-import Package from '../composer/packages/Package';
+import {Logger} from '../loggers/Logger';
+import {MessageQueue} from '../queues/MessageQueue';
+import {QueueReceiver} from '../queues/QueueReceiver';
+import {RepositoryManager} from '../composer/repositories/RepositoryManager';
+import {PackageManager} from '../composer/packages/PackageManager';
+import {Package} from '../composer/packages/Package';
 import {LooseObject} from '../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class RefreshPackageReceiver implements QueueReceiver
+export class RefreshPackageReceiver implements QueueReceiver
 {
     private readonly repoManager: RepositoryManager;
     private readonly packageManager: PackageManager;

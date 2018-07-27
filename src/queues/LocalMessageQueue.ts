@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import BaseMessageQueue from './BaseMessageQueue';
+import {BaseMessageQueue} from './BaseMessageQueue';
 import {LooseObject} from '../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class LocalMessageQueue extends BaseMessageQueue
+export class LocalMessageQueue extends BaseMessageQueue
 {
     /**
      * @inheritDoc

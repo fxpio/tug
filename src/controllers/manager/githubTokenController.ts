@@ -8,7 +8,7 @@
  */
 
 import Joi from 'joi';
-import ConfigManager from '../../configs/ConfigManager';
+import {ConfigManager} from '../../configs/ConfigManager';
 import {generateToken} from '../../utils/token';
 import {validateForm} from '../../utils/validation';
 import {Request, Response} from 'express';

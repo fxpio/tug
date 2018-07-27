@@ -8,8 +8,8 @@
  */
 
 import crypto from 'crypto';
-import AuthStrategy from './AuthStrategy';
-import ConfigManager from '../../../configs/ConfigManager';
+import {AuthStrategy} from './AuthStrategy';
+import {ConfigManager} from '../../../configs/ConfigManager';
 import {isGithubEvent} from '../../../utils/apiGithub';
 import {URL} from 'url';
 import {Request} from 'express';
@@ -17,7 +17,7 @@ import {Request} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class GithubWebhookAuth implements AuthStrategy
+export class GithubWebhookAuth implements AuthStrategy
 {
     /**
      * @inheritDoc

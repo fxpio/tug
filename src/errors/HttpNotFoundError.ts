@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import HttpError from './HttpError';
+import {HttpError} from './HttpError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class HttpNotFoundError extends HttpError
+export class HttpNotFoundError extends HttpError
 {
     /**
      * Constructor.

@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import Constraint from './Constraint';
+import {Constraint} from './Constraint';
 import {LooseObject} from '../../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class And extends Constraint
+export class And extends Constraint
 {
     private readonly constraints: Constraint[];
 
@@ -59,4 +59,4 @@ export default class And extends Constraint
 
         return values;
     }
-};
+}

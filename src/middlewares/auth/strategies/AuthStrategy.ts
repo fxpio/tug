@@ -12,7 +12,7 @@ import {Request} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default interface AuthStrategy
+export interface AuthStrategy
 {
     /**
      * Log in.

@@ -7,20 +7,20 @@
  * file that was distributed with this source code.
  */
 
-import CodeRepositoryRepository from '../../db/repositories/CodeRepositoryRepository';
-import ConfigManager from '../../configs/ConfigManager';
-import VcsRepository from './VcsRepository';
-import MessageQueue from '../../queues/MessageQueue';
-import RepositoryNotSupportedError from '../../errors/RepositoryNotSupportedError';
-import RepositoryNotFoundError from '../../errors/RepositoryNotFoundError';
-import VcsDriverNotFoundError from '../../errors/VcsDriverNotFoundError';
+import {CodeRepositoryRepository} from '../../db/repositories/CodeRepositoryRepository';
+import {ConfigManager} from '../../configs/ConfigManager';
+import {VcsRepository} from './VcsRepository';
+import {MessageQueue} from '../../queues/MessageQueue';
+import {RepositoryNotSupportedError} from '../../errors/RepositoryNotSupportedError';
+import {RepositoryNotFoundError} from '../../errors/RepositoryNotFoundError';
+import {VcsDriverNotFoundError} from '../../errors/VcsDriverNotFoundError';
 import {LooseObject} from '../../utils/LooseObject';
 import {retrieveAllRepositories} from '../../utils/repository';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class RepositoryManager
+export class RepositoryManager
 {
     private readonly configManager: ConfigManager;
     private readonly codeRepoRepo: CodeRepositoryRepository;

@@ -7,17 +7,17 @@
  * file that was distributed with this source code.
  */
 
-import Config from '../../../configs/Config';
-import VcsDriverError from '../../../errors/VcsDriverError';
-import RemoteFilesystem from '../../utils/RemoteFilesystem';
-import VcsDriver from './VcsDriver';
-import TransportError from '../../../errors/TransportError';
+import {Config} from '../../../configs/Config';
+import {VcsDriverError} from '../../../errors/VcsDriverError';
+import {RemoteFilesystem} from '../../utils/RemoteFilesystem';
+import {VcsDriver} from './VcsDriver';
+import {TransportError} from '../../../errors/TransportError';
 import {LooseObject} from '../../../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class GithubDriver extends VcsDriver
+export class GithubDriver extends VcsDriver
 {
     private readonly originUrl: string;
     private readonly infoCache: LooseObject;

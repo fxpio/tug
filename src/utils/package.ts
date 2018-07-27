@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import PackageRepository from '../db/repositories/PackageRepository';
-import Not from '../db/constraints/Not';
-import In from '../db/constraints/In';
-import Package from '../composer/packages/Package';
+import {PackageRepository} from '../db/repositories/PackageRepository';
+import {Not} from '../db/constraints/Not';
+import {In} from '../db/constraints/In';
+import {Package} from '../composer/packages/Package';
 import {LooseObject} from './LooseObject';
 
 /**

@@ -17,7 +17,7 @@ import {MetaInfo} from 'vue-meta';
  */
 @WithRender
 @Component
-export default class Error404 extends Vue
+export class Error404 extends Vue
 {
     public metaInfo(): MetaInfo {
         return {

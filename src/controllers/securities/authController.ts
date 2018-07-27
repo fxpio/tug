@@ -10,7 +10,7 @@
 import Joi from 'joi';
 import AWS from 'aws-sdk';
 import {Request, Response} from 'express';
-import ValidationError from '../../errors/ValidationError';
+import {ValidationError} from '../../errors/ValidationError';
 import {validateForm} from '../../utils/validation';
 import {isProd} from '../../utils/server';
 import {createHash} from '../../utils/crypto';

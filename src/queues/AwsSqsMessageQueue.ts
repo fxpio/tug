@@ -8,13 +8,13 @@
  */
 
 import AWS from 'aws-sdk';
-import BaseMessageQueue from './BaseMessageQueue';
+import {BaseMessageQueue} from './BaseMessageQueue';
 import {LooseObject} from '../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class AwsSqsMessageQueue extends BaseMessageQueue
+export class AwsSqsMessageQueue extends BaseMessageQueue
 {
     private readonly queueUrl: string;
     private readonly batchSize: number;
