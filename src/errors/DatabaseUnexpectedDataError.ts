@@ -7,23 +7,22 @@
  * file that was distributed with this source code.
  */
 
-import {FxpServerlessError} from './FxpServerlessError';
+import {DatabaseError} from './DatabaseError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class HttpError extends FxpServerlessError
+export class DatabaseUnexpectedDataError extends DatabaseError
 {
-    public readonly statusCode: number;
+    public readonly value: any;
 
     /**
      * Constructor.
      *
-     * @param {string} message    The error message
-     * @param {number} statusCode The http status code
+     * @param {string} value The value
      */
-    constructor(message: string, statusCode: number) {
-        super(message);
-        this.statusCode = statusCode;
+    constructor(value: any) {
+        super('The data must be an object with the required "id" property');
+        this.value = value;
     }
 }

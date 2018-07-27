@@ -12,18 +12,6 @@ import {FxpServerlessError} from './FxpServerlessError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class TransportError extends FxpServerlessError
+export class VersionParserError extends FxpServerlessError
 {
-    public readonly statusCode?: number;
-
-    /**
-     * Constructor.
-     *
-     * @param {string} message      The error message
-     * @param {number} [statusCode] The http status code
-     */
-    constructor(message: string, statusCode?: number) {
-        super(message);
-        this.statusCode = statusCode;
-    }
 }

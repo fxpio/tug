@@ -13,7 +13,7 @@ import {VcsRepository} from './VcsRepository';
 import {MessageQueue} from '../../queues/MessageQueue';
 import {RepositoryNotSupportedError} from '../../errors/RepositoryNotSupportedError';
 import {RepositoryNotFoundError} from '../../errors/RepositoryNotFoundError';
-import {VcsDriverNotFoundError} from '../../errors/VcsDriverNotFoundError';
+import {VcsRepositoryNotFoundError} from '../../errors/VcsRepositoryNotFoundError';
 import {LooseObject} from '../../utils/LooseObject';
 import {retrieveAllRepositories} from '../../utils/repository';
 
@@ -154,7 +154,7 @@ export class RepositoryManager
         }
 
         if (required && null === repo) {
-            throw new RepositoryNotFoundError(`The repository with the url "${url}" is not found`);
+            throw new RepositoryNotFoundError(url);
         }
 
         return repo;
@@ -267,8 +267,8 @@ export class RepositoryManager
         try {
             repo.getDriver();
         } catch (e) {
-            if (e instanceof VcsDriverNotFoundError) {
-                throw new RepositoryNotSupportedError(`The repository with the URL "${url}" is not supported`);
+            if (e instanceof VcsRepositoryNotFoundError) {
+                throw new RepositoryNotSupportedError(e.url);
             }
         }
 

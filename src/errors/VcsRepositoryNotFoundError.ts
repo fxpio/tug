@@ -7,23 +7,22 @@
  * file that was distributed with this source code.
  */
 
-import {FxpServerlessError} from './FxpServerlessError';
+import {VcsRepositoryError} from './VcsRepositoryError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class HttpError extends FxpServerlessError
+export class VcsRepositoryNotFoundError extends VcsRepositoryError
 {
-    public readonly statusCode: number;
+    public readonly url: string;
 
     /**
      * Constructor.
      *
-     * @param {string} message    The error message
-     * @param {number} statusCode The http status code
+     * @param {string} url The repository url
      */
-    constructor(message: string, statusCode: number) {
-        super(message);
-        this.statusCode = statusCode;
+    constructor(url: string) {
+        super(`No driver found to handle VCS repository ${url}`);
+        this.url = url;
     }
 }

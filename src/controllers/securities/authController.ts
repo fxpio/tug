@@ -10,7 +10,7 @@
 import Joi from 'joi';
 import AWS from 'aws-sdk';
 import {Request, Response} from 'express';
-import {ValidationError} from '../../errors/ValidationError';
+import {HttpUnauthorizedError} from '../../errors/HttpUnauthorizedError';
 import {validateForm} from '../../utils/validation';
 import {isProd} from '../../utils/server';
 import {createHash} from '../../utils/crypto';
@@ -50,5 +50,5 @@ export async function createToken(req: Request, res: Response, next: Function): 
         }
     } catch (e) {}
 
-    throw new ValidationError({}, 'Incorrect AWS Access Key ID or AWS Secret Access Key');
+    throw new HttpUnauthorizedError('Your credentials are invalid');
 }

@@ -8,7 +8,9 @@
  */
 
 import {Config} from '../../../configs/Config';
-import {VcsDriverError} from '../../../errors/VcsDriverError';
+import {VcsDriverContentNotFoundError} from '../../../errors/VcsDriverContentNotFoundError';
+import {VcsDriverInvalidJsonError} from '../../../errors/VcsDriverInvalidJsonError';
+import {VcsDriverInvalidUrlError} from '../../../errors/VcsDriverInvalidUrlError';
 import {RemoteFilesystem} from '../../utils/RemoteFilesystem';
 import {VcsDriver} from './VcsDriver';
 import {TransportError} from '../../../errors/TransportError';
@@ -44,7 +46,7 @@ export class GithubDriver extends VcsDriver
         let match:LooseObject|null = this.url.match(/^(?:(?:https?|git):\/\/([^\/]+)\/|git@([^:]+):)([^\/]+)\/(.+?)(?:\.git|\/)?$/);
 
         if (null === match) {
-            throw new VcsDriverError('The url is not a valid url for the Github vcs driver');
+            throw new VcsDriverInvalidUrlError('Github', this.url);
         }
 
         this.owner = match[3];
@@ -191,11 +193,11 @@ export class GithubDriver extends VcsDriver
             if (resource['content'] && 'base64' === resource['encoding']) {
                 content = Buffer.from(resource['content'], 'base64').toString();
             } else {
-                error = new VcsDriverError(`Could not retrieve "${file}" for "${identifier}"`);
+                error = new VcsDriverContentNotFoundError(file, identifier);
             }
         } catch (e) {
             if (e instanceof TransportError) {
-                if (404 !== e.getStatusCode()) {
+                if (404 !== e.statusCode) {
                     error = e;
                 }
             }
@@ -295,7 +297,7 @@ export class GithubDriver extends VcsDriver
         try {
             this.repoData = JSON.parse(contentData as string);
         } catch (e) {
-            throw new VcsDriverError(`"${repoDataUrl}" does not contain valid JSON` + "\n" + e.message);
+            throw new VcsDriverInvalidJsonError(repoDataUrl, e.message);
         }
 
         if (this.repoData) {

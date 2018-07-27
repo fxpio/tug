@@ -10,6 +10,7 @@
 import {LoggerError} from '../errors/LoggerError';
 import {LooseObject} from '../utils/LooseObject';
 import {isProd} from '../utils/server';
+import {LoggerInvalidLevelError} from '../errors/LoggerInvalidLevelError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -69,7 +70,7 @@ export class Logger
      */
     private static validateLevel(level: string): string {
         if (undefined === Logger.LEVELS[level]) {
-            throw new LoggerError(`The logger level "${level}" does not exists, use: "${Object.keys(Logger.LEVELS).join('", "')}"`);
+            throw new LoggerInvalidLevelError(level, Object.keys(Logger.LEVELS));
         }
 
         return level;

@@ -7,11 +7,19 @@
  * file that was distributed with this source code.
  */
 
-import {FxpServerlessError} from './FxpServerlessError';
+import {VcsDriverIdentifierNotFoundError} from './VcsDriverIdentifierNotFoundError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class UnexpectedValueError extends FxpServerlessError
+export class VcsDriverTagNotFoundError extends VcsDriverIdentifierNotFoundError
 {
+    /**
+     * Constructor.
+     *
+     * @param {string} tagName
+     */
+    constructor(tagName: string) {
+        super('Tag', tagName);
+    }
 }

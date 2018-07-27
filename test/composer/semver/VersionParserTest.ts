@@ -9,7 +9,7 @@
 
 import test from 'ava';
 import {VersionParser} from '../../../src/composer/semver/VersionParser';
-import {UnexpectedValueError} from '../../../src/errors/UnexpectedValueError';
+import {VersionParserInvalidVersionError} from '../../../src/errors/VersionParserInvalidVersionError';
 import {LooseObject} from '../../../src/utils/LooseObject';
 
 const successfulNormalizedVersions: LooseObject = {
@@ -88,7 +88,7 @@ for (let i = 0; i < failingNormalizedVersionsKeys.length; ++i) {
         const error = t.throws(() => {
             let parser = new VersionParser();
             parser.normalize(values[0]);
-        }, UnexpectedValueError);
+        }, VersionParserInvalidVersionError);
 
         t.true(error.message.startsWith('Invalid version string '));
     });

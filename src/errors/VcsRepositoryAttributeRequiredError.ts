@@ -7,23 +7,22 @@
  * file that was distributed with this source code.
  */
 
-import {FxpServerlessError} from './FxpServerlessError';
+import {VcsRepositoryError} from './VcsRepositoryError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class HttpError extends FxpServerlessError
+export class VcsRepositoryAttributeRequiredError extends VcsRepositoryError
 {
-    public readonly statusCode: number;
+    public readonly attribute: string;
 
     /**
      * Constructor.
      *
-     * @param {string} message    The error message
-     * @param {number} statusCode The http status code
+     * @param {string} attribute The attribute name
      */
-    constructor(message: string, statusCode: number) {
-        super(message);
-        this.statusCode = statusCode;
+    constructor(attribute: string) {
+        super(`The "${attribute}" attribute of vcs repository is required`);
+        this.attribute = attribute;
     }
 }

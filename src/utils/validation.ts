@@ -8,7 +8,7 @@
  */
 
 import Joi from 'joi';
-import {ValidationError} from '../errors/ValidationError';
+import {HttpValidationError} from '../errors/HttpValidationError';
 import {Request} from 'express';
 import {LooseObject} from './LooseObject';
 
@@ -18,7 +18,7 @@ import {LooseObject} from './LooseObject';
  * @param {Request}     req        The request
  * @param {LooseObject} schemaKeys The map of request body fields
  *
- * @throws ValidationError When the request form has errors
+ * @throws HttpValidationError When the request form has errors
  */
 export function validateForm(req: Request, schemaKeys: LooseObject): void {
     let schema = Joi.object().keys(schemaKeys);
@@ -32,6 +32,6 @@ export function validateForm(req: Request, schemaKeys: LooseObject): void {
             errorFields[error.path.join('.')] = error.message;
         }
 
-        throw new ValidationError(errorFields);
+        throw new HttpValidationError(errorFields);
     }
 }

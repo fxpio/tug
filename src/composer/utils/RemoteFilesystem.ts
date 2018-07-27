@@ -11,6 +11,7 @@ import merge from 'lodash.merge';
 import fetch, {Response} from 'node-fetch';
 import {Config} from '../../configs/Config';
 import {TransportError} from '../../errors/TransportError';
+import {TransportResourceNotFoundError} from '../../errors/TransportResourceNotFoundError';
 import {LooseObject} from '../../utils/LooseObject';
 
 /**
@@ -62,7 +63,7 @@ export class RemoteFilesystem
                     return await res.text();
                 }
 
-                throw new TransportError(`The "${fileUrl}" file could not be downloaded`, res.status);
+                throw new TransportResourceNotFoundError(fileUrl, res.status);
             })
             .catch((e: Error) => {
                 this.lastHeaders = {};

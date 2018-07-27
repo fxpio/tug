@@ -7,23 +7,19 @@
  * file that was distributed with this source code.
  */
 
-import {FxpServerlessError} from './FxpServerlessError';
+import {VcsDriverIdentifierNotFoundError} from './VcsDriverIdentifierNotFoundError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class HttpError extends FxpServerlessError
+export class VcsDriverBranchNotFoundError extends VcsDriverIdentifierNotFoundError
 {
-    public readonly statusCode: number;
-
     /**
      * Constructor.
      *
-     * @param {string} message    The error message
-     * @param {number} statusCode The http status code
+     * @param {string} branchName
      */
-    constructor(message: string, statusCode: number) {
-        super(message);
-        this.statusCode = statusCode;
+    constructor(branchName: string) {
+        super('Branch', branchName);
     }
 }

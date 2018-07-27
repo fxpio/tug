@@ -9,6 +9,7 @@
 
 import {Request, Response} from 'express';
 import {AuthStrategy} from './strategies/AuthStrategy';
+import {HttpUnauthorizedError} from '../../errors/HttpUnauthorizedError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -30,9 +31,7 @@ export class Authenticate
             } else if (nextRoute) {
                 next('route');
             } else {
-                res.status(401).json({
-                    message: 'Your credentials are invalid'
-                });
+                throw new HttpUnauthorizedError('Your credentials are invalid');
             }
         }
     }

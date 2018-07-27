@@ -7,8 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {UnexpectedValueError} from '../../errors/UnexpectedValueError';
-import {pregQuote} from '../../utils/regex';
+import {VersionParserInvalidVersionError} from '../../errors/VersionParserInvalidVersionError';
 
 /**
  * The Composer version parser for javascript.
@@ -43,7 +42,7 @@ export class VersionParser
      *
      * @return {string}
      *
-     * @throws UnexpectedValueError When the version is invalid
+     * @throws VersionParserInvalidVersionError When the version is invalid
      */
     public normalize(version: string, fullVersion = ''): string {
         version = version.trim();
@@ -118,14 +117,7 @@ export class VersionParser
             } catch (e) {}
         }
 
-        let extraMessage = '';
-        if (fullVersion.match(new RegExp(' +as +' + pregQuote(version) + '$'))) {
-            extraMessage = ' in "' + fullVersion + '", the alias must be an exact version';
-        } else if (fullVersion.match(new RegExp('^' + pregQuote(version) + ' +as +'))) {
-            extraMessage = ' in "' + fullVersion + '", the alias source must be an exact version, if it is a branch name you should prefix it with dev-';
-        }
-
-        throw new UnexpectedValueError('Invalid version string "' + version + '"' + extraMessage);
+        throw new VersionParserInvalidVersionError(version , fullVersion);
     }
 
     /**

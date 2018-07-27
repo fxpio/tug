@@ -7,11 +7,19 @@
  * file that was distributed with this source code.
  */
 
-import {HttpNotFoundError} from './HttpNotFoundError';
+import {HttpError} from './HttpError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class VcsDriverNotFoundError extends HttpNotFoundError
+export class HttpUnauthorizedError extends HttpError
 {
+    /**
+     * Constructor.
+     *
+     * @param {string} message
+     */
+    constructor(message: string) {
+        super(message, 401);
+    }
 }

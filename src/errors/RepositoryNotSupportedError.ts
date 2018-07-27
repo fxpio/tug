@@ -7,11 +7,22 @@
  * file that was distributed with this source code.
  */
 
-import {HttpBadRequestError} from './HttpBadRequestError';
+import {RepositoryError} from './RepositoryError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class RepositoryNotSupportedError extends HttpBadRequestError
+export class RepositoryNotSupportedError extends RepositoryError
 {
+    public readonly url: string;
+
+    /**
+     * Constructor.
+     *
+     * @param {string} url The repository url
+     */
+    constructor(url: string) {
+        super(`The repository with the URL "${url}" is not supported`);
+        this.url = url;
+    }
 }

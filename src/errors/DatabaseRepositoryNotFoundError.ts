@@ -7,19 +7,22 @@
  * file that was distributed with this source code.
  */
 
-import {HttpNotFoundError} from './HttpNotFoundError';
+import {DatabaseError} from './DatabaseError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class BranchNotFoundError extends HttpNotFoundError
+export class DatabaseRepositoryNotFoundError extends DatabaseError
 {
+    public readonly name: string;
+
     /**
      * Constructor.
      *
-     * @param {string} branchName
+     * @param {string} name The database repository name
      */
-    constructor(branchName: string) {
-        super(`Branch "${branchName}" is not found`);
+    constructor(name: string) {
+        super(`The database repository "${name}" does not exist`);
+        this.name = name;
     }
 }

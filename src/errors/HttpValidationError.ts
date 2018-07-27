@@ -12,27 +12,18 @@ import {HttpBadRequestError} from './HttpBadRequestError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class ValidationError extends HttpBadRequestError
+export class HttpValidationError extends HttpBadRequestError
 {
-    private readonly errorFields: Object;
+    public readonly fieldErrors: Object;
 
     /**
      * Constructor.
      *
-     * @param {Object} errorFields
+     * @param {Object} fieldErrors
      * @param {string} [message]
      */
-    constructor(errorFields: Object, message: string = 'Validation errors') {
+    constructor(fieldErrors: Object, message: string = 'Validation errors') {
         super(message);
-        this.errorFields = errorFields;
-    }
-
-    /**
-     * Get the error fields.
-     *
-     * @return {Object}
-     */
-    public getFieldErrors(): Object {
-        return this.errorFields;
+        this.fieldErrors = fieldErrors;
     }
 }

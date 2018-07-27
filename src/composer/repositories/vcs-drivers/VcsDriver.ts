@@ -9,8 +9,8 @@
 
 import {Config} from '../../../configs/Config';
 import {RemoteFilesystem} from '../../utils/RemoteFilesystem';
-import {TagNotFoundError} from '../../../errors/TagNotFoundError';
-import {BranchNotFoundError} from '../../../errors/BranchNotFoundError';
+import {VcsDriverTagNotFoundError} from '../../../errors/VcsDriverTagNotFoundError';
+import {VcsDriverBranchNotFoundError} from '../../../errors/VcsDriverBranchNotFoundError';
 import {LooseObject} from '../../../utils/LooseObject';
 import {dateToRfc3339} from '../../../utils/date';
 
@@ -203,7 +203,7 @@ export class VcsDriver
         if (undefined !== tags[name]) {
             return tags[name];
         }
-        throw new TagNotFoundError(name);
+        throw new VcsDriverTagNotFoundError(name);
     }
 
     /**
@@ -228,7 +228,7 @@ export class VcsDriver
         if (undefined !== branches[name]) {
             return branches[name];
         }
-        throw new BranchNotFoundError(name);
+        throw new VcsDriverBranchNotFoundError(name);
     }
 
     /**

@@ -11,6 +11,9 @@ import {DatabaseError} from '../errors/DatabaseError';
 import {DatabaseRepository, DatabaseRepositoryConstructor} from './repositories/DatabaseRepository';
 import {Results} from './Results';
 import {LooseObject} from '../utils/LooseObject';
+import {DatabaseInvalidAttributeError} from '../errors/DatabaseInvalidAttributeError';
+import {DatabaseRepositoryNotFoundError} from '../errors/DatabaseRepositoryNotFoundError';
+import {DatabaseUnexpectedDataError} from '../errors/DatabaseUnexpectedDataError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -58,11 +61,11 @@ export class Database
         } else if (repository.hasOwnProperty('getName')) {
             name = repository.getName();
         } else {
-            throw new DatabaseError(`The repository attribute must be a string or a function, given type "${typeof repository}"`);
+            throw new DatabaseInvalidAttributeError('repository', repository);
         }
 
         if (!this.repositories[name]) {
-            throw new DatabaseError(`The repository "${name}" does not exist`);
+            throw new DatabaseRepositoryNotFoundError(name);
         }
 
         return this.repositories[name];
@@ -159,7 +162,7 @@ export class Database
      */
     public static validateData(data: any): void {
         if (typeof data !== 'object' || !data.id) {
-            throw new DatabaseError('The data must be an object with the required "id" property');
+            throw new DatabaseUnexpectedDataError(data);
         }
     }
 }

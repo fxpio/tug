@@ -9,6 +9,7 @@
 
 import {PackageError} from '../../errors/PackageError';
 import {LooseObject} from '../../utils/LooseObject';
+import {PackageAttributeRequiredError} from '../../errors/PackageAttributeRequiredError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -28,7 +29,7 @@ export class Package
         this.packageData = packageData;
 
         if (!this.packageData['composer']) {
-            throw new PackageError('The "composer" attribute of package is required');
+            throw new PackageAttributeRequiredError('composer');
         }
 
         if (typeof this.packageData['composer'] === 'string') {
@@ -39,21 +40,21 @@ export class Package
             if (this.packageData['composer']['name']) {
                 this.packageData['name'] = this.packageData['composer']['name'];
             } else {
-                throw new PackageError('The "name" attribute of package is required');
+                throw new PackageAttributeRequiredError('name');
             }
         }
         if (!this.packageData['version']) {
             if (this.packageData['composer']['version']) {
                 this.packageData['version'] = this.packageData['composer']['version'];
             } else {
-                throw new PackageError('The "version" attribute of package is required');
+                throw new PackageAttributeRequiredError('version');
             }
         }
         if (!this.packageData['versionNormalized']) {
             if (this.packageData['composer']['version_normalized']) {
                 this.packageData['versionNormalized'] = this.packageData['composer']['version_normalized'];
             } else {
-                throw new PackageError('The "versionNormalized" attribute of package is required');
+                throw new PackageAttributeRequiredError('versionNormalized');
             }
         }
     }

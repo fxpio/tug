@@ -13,6 +13,7 @@ import {generateToken} from '../../utils/token';
 import {validateForm} from '../../utils/validation';
 import {Database} from '../../db/Database';
 import {Request, Response} from 'express';
+import {HttpValidationError} from '../../errors/HttpValidationError';
 
 /**
  * Create the api key.
@@ -57,10 +58,9 @@ export async function deleteApiKey(req: Request, res: Response, next: Function):
     let token = req.body.token;
 
     if (!token) {
-        res.status(400).json({
-            message: 'The "token" body attribute is required'
+        throw new HttpValidationError({
+            'token': 'This field is required'
         });
-        return;
     }
 
     await repo.delete(token);

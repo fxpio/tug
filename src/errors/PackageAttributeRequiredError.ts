@@ -7,19 +7,22 @@
  * file that was distributed with this source code.
  */
 
-import {HttpNotFoundError} from './HttpNotFoundError';
+import {PackageError} from './PackageError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class TagNotFoundError extends HttpNotFoundError
+export class PackageAttributeRequiredError extends PackageError
 {
+    public readonly attribute: string;
+
     /**
      * Constructor.
      *
-     * @param {string} tagName
+     * @param {string} attribute The attribute name
      */
-    constructor(tagName: string) {
-        super(`Tag "${tagName}" is not found`);
+    constructor(attribute: string) {
+        super(`The "${attribute}" attribute of package is required`);
+        this.attribute = attribute;
     }
 }

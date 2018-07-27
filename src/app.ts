@@ -39,7 +39,14 @@ import {securityRoutes} from './routes/securityRoutes';
 import {managerRoutes} from './routes/managerRoutes';
 import {uiRoutes} from './routes/uiRoutes';
 import {logErrors} from './middlewares/logs';
-import {convertJsonSyntaxError, convertRouteNotFound, convertURIError, showError} from './middlewares/errors';
+import {
+    convertJsonSyntaxError,
+    convertRepositoryError,
+    convertRouteNotFound,
+    convertURIError,
+    convertVcsDriverError,
+    showError
+} from './middlewares/errors';
 import {isProd} from './utils/server';
 
 const app = express();
@@ -99,6 +106,8 @@ app.use('/', uiRoutes(express.Router({})));
 app.use('/', packageRoutes(express.Router({})));
 app.use(convertURIError);
 app.use(convertJsonSyntaxError);
+app.use(convertVcsDriverError);
+app.use(convertRepositoryError);
 app.use(convertRouteNotFound);
 app.use(logErrors);
 app.use(showError);
