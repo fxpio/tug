@@ -8,8 +8,8 @@
  */
 
 import test from 'ava';
-import VersionParser from '../../../src/composer/semver/VersionParser';
-import UnexpectedValueError from '../../../src/errors/UnexpectedValueError';
+import {VersionParser} from '../../../src/composer/semver/VersionParser';
+import {UnexpectedValueError} from '../../../src/errors/UnexpectedValueError';
 import {LooseObject} from '../../../src/utils/LooseObject';
 
 const successfulNormalizedVersions: LooseObject = {

@@ -8,7 +8,7 @@
  */
 
 import test from 'ava';
-import AwsDynamoDbDatabase from '../../src/db/AwsDynamoDbDatabase';
+import {AwsDynamoDbDatabase} from '../../src/db/AwsDynamoDbDatabase';
 
 
 test('test database dynamodb marshall data', t => {
