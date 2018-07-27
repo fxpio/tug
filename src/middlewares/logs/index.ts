@@ -18,6 +18,8 @@ import {Logger} from '../../loggers/Logger';
  * @param {Request}  req  The request
  * @param {Response} res  The response
  * @param {Function} next The next callback
+ *
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function logErrors(err: Error, req: Request, res: Response, next: Function): void {
     if (!(err instanceof HttpError)) {

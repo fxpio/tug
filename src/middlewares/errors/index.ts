@@ -24,6 +24,8 @@ import {isProd} from '../../utils/server';
  *
  * @param {Request}  req The request
  * @param {Response} res The response
+ *
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function convertRouteNotFound(req: Request, res: Response): void {
     throw new HttpNotFoundError();
@@ -36,6 +38,8 @@ export function convertRouteNotFound(req: Request, res: Response): void {
  * @param {Request}  req  The request
  * @param {Response} res  The response
  * @param {Function} next The next callback
+ *
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function convertURIError(err: Error, req: Request, res: Response, next: Function): void {
     if (err instanceof URIError) {
@@ -51,6 +55,8 @@ export function convertURIError(err: Error, req: Request, res: Response, next: F
  * @param {Request}  req  The request
  * @param {Response} res  The response
  * @param {Function} next The next callback
+ *
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function convertJsonSyntaxError(err: Error, req: Request, res: Response, next: Function): void {
     if (err instanceof SyntaxError && (err as LooseObject).status === 400) {
@@ -66,6 +72,8 @@ export function convertJsonSyntaxError(err: Error, req: Request, res: Response, 
  * @param {Request}  req  The request
  * @param {Response} res  The response
  * @param {Function} next The next callback
+ *
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function convertVcsDriverError(err: Error, req: Request, res: Response, next: Function): void {
     if (err instanceof VcsDriverBranchNotFoundError) {
@@ -84,6 +92,8 @@ export function convertVcsDriverError(err: Error, req: Request, res: Response, n
  * @param {Request}  req  The request
  * @param {Response} res  The response
  * @param {Function} next The next callback
+ *
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function convertRepositoryError(err: Error, req: Request, res: Response, next: Function): void {
     if (err instanceof RepositoryNotFoundError) {
@@ -102,6 +112,8 @@ export function convertRepositoryError(err: Error, req: Request, res: Response, 
  * @param {Request}  req  The request
  * @param {Response} res  The response
  * @param {Function} next The next callback
+ *
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function showError(err: Error, req: Request, res: Response, next: Function): void {
     let data: LooseObject = {
