@@ -24,7 +24,7 @@ import translationFr from './translations/fr';
 import veeValidateFr from 'vee-validate/dist/locale/fr';
 import './components/Loading';
 import {apiAddAuthInterceptor, apiAddAuthRedirectInterceptor, apiAddLocaleInterceptor, createApiClient} from './api';
-import {routerAddLocaleGuard, createRouter, routerAddAuthGuard} from './router';
+import {createRouter, routerAddAuthGuard, routerAddLocaleGuard} from './router';
 import {createStore} from './store';
 
 /**

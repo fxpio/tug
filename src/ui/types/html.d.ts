@@ -10,8 +10,7 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-declare module '*.html'
-{
+declare module '*.html' {
     import Vue, {ComponentOptions} from 'vue';
 
     interface WithRender
