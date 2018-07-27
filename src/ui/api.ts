@@ -14,13 +14,15 @@ import {RootState} from './states/RootState';
 /**
  * Create the api client.
  *
+ * @param {string} baseUrl The base url
+ *
  * @return {Router}
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export function createApiClient(): AxiosInstance {
+export function createApiClient(baseUrl: string): AxiosInstance {
     return axios.create({
-        baseURL: `${window.location.protocol}//${window.location.host}`,
+        baseURL: baseUrl,
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'

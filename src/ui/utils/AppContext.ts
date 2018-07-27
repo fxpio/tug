@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import {createApp} from './app';
-
-const context = {
-    apiBaseUrl: `${window.location.protocol}//${window.location.host}`
-};
-
-createApp(context).$mount('#app');
+/**
+ * @author François Pluchino <francois.pluchino@gmail.com>
+ */
+export default interface AppContext
+{
+    apiBaseUrl: string;
+}
