@@ -11,7 +11,7 @@ file that was distributed with this source code.
     <v-slide-x-transition>
         <v-navigation-drawer v-model="drawer" fixed clipped app width="250" v-if="$store.getters.isAuthenticated">
             <v-list>
-                <v-list-tile>
+                <v-list-tile ripple active-class="grey lighten-3 accent--text" :to="{name: 'home', params: {locale: 'fr'}}">
                     <v-list-tile-action>
                         <v-icon color="accent">home</v-icon>
                     </v-list-tile-action>
@@ -23,7 +23,7 @@ file that was distributed with this source code.
 
             <v-list subheader>
                 <v-subheader>{{ 'menu.composer'|translate }}</v-subheader>
-                <v-list-tile>
+                <v-list-tile ripple active-class="grey lighten-3 accent--text">
                     <v-list-tile-action>
                         <v-icon color="accent">folder</v-icon>
                     </v-list-tile-action>
@@ -32,7 +32,7 @@ file that was distributed with this source code.
                     </v-list-tile-content>
                 </v-list-tile>
 
-                <v-list-tile>
+                <v-list-tile ripple active-class="grey lighten-3 accent--text">
                     <v-list-tile-action>
                         <v-icon color="accent">insert_drive_file</v-icon>
                     </v-list-tile-action>
@@ -44,7 +44,7 @@ file that was distributed with this source code.
 
             <v-list subheader>
                 <v-subheader>{{ 'menu.system'|translate }}</v-subheader>
-                <v-list-tile>
+                <v-list-tile ripple active-class="grey lighten-3 accent--text">
                     <v-list-tile-action>
                         <v-icon color="secondary">vpn_key</v-icon>
                     </v-list-tile-action>
@@ -53,7 +53,7 @@ file that was distributed with this source code.
                     </v-list-tile-content>
                 </v-list-tile>
 
-                <v-list-tile>
+                <v-list-tile ripple active-class="grey lighten-3 accent--text">
                     <v-list-tile-action>
                         <v-icon color="secondary">settings</v-icon>
                     </v-list-tile-action>
@@ -66,7 +66,7 @@ file that was distributed with this source code.
             <v-divider v-if="$store.getters.isAuthenticated"></v-divider>
 
             <v-list dense v-if="$store.getters.isAuthenticated">
-                <v-list-tile @click.stop="logout()" replace>
+                <v-list-tile ripple @click.stop="logout()">
                     <v-list-tile-action>
                         <v-icon>exit_to_app</v-icon>
                     </v-list-tile-action>
