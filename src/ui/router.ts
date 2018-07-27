@@ -72,6 +72,7 @@ export function routerAddLocaleGuard(router: Router, store: Store<RootState>): v
 
         Vue.i18n.set(locale);
         Validator.localize(locale);
+        router.app.$vuetify.lang.current = locale;
         next();
     });
 }
