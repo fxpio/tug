@@ -36,13 +36,13 @@ export async function refreshPackages(req: Request, res: Response, next: Functio
     let response: LooseObject = {};
 
     if (url) {
-        response.url = (await packageManager.refreshPackages(url, force)).getUrl();
+        response.url = (await packageManager.refreshPackages(url, force, res)).getUrl();
         response.message = `Refreshing all package versions has started for the repository "${url}"`;
     } else if (url && version) {
-        response.url = (await packageManager.refreshPackage(url, version, force)).getUrl();
+        response.url = (await packageManager.refreshPackage(url, version, force, res)).getUrl();
         response.message = `Refreshing package version "${version}" has started for the repository "${url}"`;
     } else {
-        let repos = await packageManager.refreshAllPackages(force);
+        let repos = await packageManager.refreshAllPackages(force, res);
         response.message = `Refreshing all package versions has started for all repositories`;
         response.urls = [];
         for (let name of Object.keys(repos)) {
@@ -74,10 +74,10 @@ export async function deletePackages(req: Request, res: Response, next: Function
     let message;
 
     if (version) {
-        url = (await packageManager.deletePackage(url, version)).getUrl();
+        url = (await packageManager.deletePackage(url, version, res)).getUrl();
         message = `Deleting of package version "${version}" has started for the repository "${url}"`;
     } else {
-        url = (await packageManager.deletePackages(url)).getUrl();
+        url = (await packageManager.deletePackages(url, res)).getUrl();
         message = `Deleting of all packages has started for the repository "${url}"`;
     }
 
@@ -106,10 +106,10 @@ export async function refreshCachePackages(req: Request, res: Response, next: Fu
     let response: LooseObject = {};
 
     if (url) {
-        response.name = (await packageManager.refreshCachePackages(url)).getPackageName();
+        response.name = (await packageManager.refreshCachePackages(url, res)).getPackageName();
         response.message = `Refreshing cache of all package versions has started for the package "${response.name}"`;
     } else {
-        let repos = await packageManager.refreshAllCachePackages();
+        let repos = await packageManager.refreshAllCachePackages(res);
         response.message = `Refreshing cache of all package versions has started for all packages`;
         response.names = [];
         for (let name of Object.keys(repos)) {

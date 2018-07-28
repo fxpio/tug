@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import {Response} from 'express';
 import {Logger} from '../loggers/Logger';
 import {QueueReceiver} from '../queues/QueueReceiver';
 import {PackageRepository} from '../db/repositories/PackageRepository';
@@ -45,12 +46,12 @@ export class DeletePackagesReceiver implements QueueReceiver
     /**
      * @inheritDoc
      */
-    public async execute(message: LooseObject): Promise<void> {
-        let res = await this.packageRepo.find({name: message.packageName});
+    public async execute(message: LooseObject, res?: Response): Promise<void> {
+        let result = await this.packageRepo.find({name: message.packageName});
         let ids = [];
         let versions = [];
 
-        for (let item of res.getRows()) {
+        for (let item of result.getRows()) {
             ids.push(item.id);
             versions.push(item.version);
         }
@@ -58,7 +59,7 @@ export class DeletePackagesReceiver implements QueueReceiver
         this.logger.log('info', `[Delete Packages Receiver] Deleting package versions "${versions.join('", "')}" for "${message.packageName}"`);
         await this.packageRepo.deletes(ids);
 
-        if (res.hasLastId()) {
+        if (result.hasLastId()) {
             await this.queue.send(message);
         } else {
             await this.queue.send({
@@ -71,6 +72,6 @@ export class DeletePackagesReceiver implements QueueReceiver
     /**
      * @inheritDoc
      */
-    public async finish(): Promise<void> {
+    public async finish(res?: Response): Promise<void> {
     }
 }

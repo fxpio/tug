@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import {Response} from 'express';
 import {LooseObject} from '../utils/LooseObject';
 
 /**
@@ -27,11 +28,14 @@ export interface QueueReceiver
      * Execute the receiver.
      *
      * @param {LooseObject} message The message comes from queue
+     * @param {Response}    [res]   The response
      */
-    execute(message: LooseObject): Promise<void>;
+    execute(message: LooseObject, res?: Response): Promise<void>;
 
     /**
      * Finish the execution of the receiver.
+     *
+     * @param {Response} [res] The response
      */
-    finish(): Promise<void>;
+    finish(res?: Response): Promise<void>;
 }

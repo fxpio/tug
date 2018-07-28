@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import {Response} from 'express';
 import {Logger} from '../loggers/Logger';
 import {MessageQueue} from '../queues/MessageQueue';
 import {QueueReceiver} from '../queues/QueueReceiver';
@@ -45,9 +46,9 @@ export class RefreshPackagesReceiver implements QueueReceiver
     /**
      * @inheritDoc
      */
-    public async execute(message: LooseObject): Promise<void> {
+    public async execute(message: LooseObject, res?: Response): Promise<void> {
         let force = true === message.force;
-        let repo = await this.repoManager.getAndInitRepository(message.repositoryUrl, force);
+        let repo = await this.repoManager.getAndInitRepository(message.repositoryUrl, force, res);
         if (!repo) {
             this.logger.log('verbose', `[Refresh Packages Receiver] Repository is not found for "${message.repositoryUrl}"`);
             return;
@@ -72,7 +73,7 @@ export class RefreshPackagesReceiver implements QueueReceiver
     /**
      * @inheritDoc
      */
-    public async finish(): Promise<void> {
+    public async finish(res?: Response): Promise<void> {
     }
 
     /**

@@ -52,7 +52,7 @@ async function enableRepository(req: Request, res: Response): Promise<void> {
 
     if (body.hook && 'Repository' === body.hook.type && body.repository && body.repository['clone_url']) {
         log(req.app.get('logger'), `Registration of the repository "${body.repository['clone_url']}"`);
-        await repoManager.register(body.repository['clone_url'], 'vcs-github');
+        await repoManager.register(body.repository['clone_url'], 'vcs-github', res);
         message += ' The scan of the Composer packages has started';
     }
 
@@ -79,7 +79,7 @@ async function pushAction(req: Request, res: Response): Promise<void> {
 
     if (body.repository && body.repository['git_url']) {
         let url = body.repository['git_url'];
-        let repo = await repoManager.getRepository(url);
+        let repo = await repoManager.getRepository(url, false, res);
 
         if (repo) {
             if (body.ref.startsWith('refs/heads/')) {

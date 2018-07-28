@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import {Response} from 'express';
 import {Logger} from '../loggers/Logger';
 import {QueueReceiver} from '../queues/QueueReceiver';
 import {PackageBuilder} from '../composer/packages/PackageBuilder';
@@ -41,16 +42,16 @@ export class BuildPackageVersionsReceiver implements QueueReceiver
     /**
      * @inheritDoc
      */
-    public async execute(message: LooseObject): Promise<void> {
+    public async execute(message: LooseObject, res?: Response): Promise<void> {
         this.logger.log('info', `[Build Package Versions Receiver] Building all package versions for "${message.packageName}"`);
-        await this.packageBuilder.buildVersions(message.packageName);
+        await this.packageBuilder.buildVersions(message.packageName, undefined, res);
         this.logger.log('info', `[Build Package Versions Receiver] Building root packages for "${message.packageName}"`);
-        await this.packageBuilder.buildRootPackages();
+        await this.packageBuilder.buildRootPackages(res);
     }
 
     /**
      * @inheritDoc
      */
-    public async finish(): Promise<void> {
+    public async finish(res?: Response): Promise<void> {
     }
 }

@@ -30,7 +30,7 @@ export async function enableRepository(req: Request, res: Response, next: Functi
     let repoManager = req.app.get('repository-manager') as RepositoryManager;
     let url = req.body.url;
     let type = req.body.type;
-    let repo = await repoManager.register(url, type);
+    let repo = await repoManager.register(url, type, res);
     (req.app.get('logger') as Logger).log('info', `[API Rest] Registration of the repository "${url}"`);
 
     res.json({
@@ -55,7 +55,7 @@ export async function disableRepository(req: Request, res: Response, next: Funct
     });
 
     let repoManager = req.app.get('repository-manager') as RepositoryManager;
-    let url = await repoManager.unregister(req.body.url);
+    let url = await repoManager.unregister(req.body.url, res);
     (req.app.get('logger') as Logger).log('info', `[API Rest] Unregistration of the repository "${url}"`);
 
     res.json({

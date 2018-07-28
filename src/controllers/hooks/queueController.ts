@@ -21,6 +21,6 @@ import {getSqsMessageBodies} from '../../utils/apiQueue';
  * @return {Promise<void>}
  */
 export async function queueHook(req: Request, res: Response, next: Function): Promise<void> {
-    await (req.app.get('queue') as MessageQueue).receive(getSqsMessageBodies(req));
+    await (req.app.get('queue') as MessageQueue).receive(getSqsMessageBodies(req), res);
     res.status(204).send();
 }

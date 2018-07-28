@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import {Response} from 'express';
 import {QueueReceiver} from './QueueReceiver';
 import {MessageQueue} from './MessageQueue';
 import {LooseObject} from '../utils/LooseObject';
@@ -35,7 +36,7 @@ export class BaseMessageQueue implements MessageQueue
     /**
      * @inheritDoc
      */
-    public async receive(messages: LooseObject[]): Promise<void> {
+    public async receive(messages: LooseObject[], res?: Response): Promise<void> {
         let ranReceivers:QueueReceiver[] = [];
 
         for (let i = 0; i < messages.length; ++i) {
@@ -44,7 +45,7 @@ export class BaseMessageQueue implements MessageQueue
                 let receiver = this.receivers[j];
 
                 if (receiver.supports(messages[i])) {
-                    await receiver.execute(messages[i]);
+                    await receiver.execute(messages[i], res);
 
                     if (!ranReceivers.includes(receiver)) {
                         ranReceivers.push(receiver);
@@ -57,7 +58,7 @@ export class BaseMessageQueue implements MessageQueue
             /** @type {QueueReceiver} */
             let receiver = ranReceivers[i];
 
-            await receiver.finish();
+            await receiver.finish(res);
         }
     }
 

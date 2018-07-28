@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import {Response} from 'express';
 import {Logger} from '../loggers/Logger';
 import {QueueReceiver} from '../queues/QueueReceiver';
 import {PackageManager} from '../composer/packages/PackageManager';
@@ -45,8 +46,8 @@ export class DeletePackageReceiver implements QueueReceiver
     /**
      * @inheritDoc
      */
-    public async execute(message: LooseObject): Promise<void> {
-        let pack = await this.packageManager.findPackage(message.packageName, message.version);
+    public async execute(message: LooseObject, res?: Response): Promise<void> {
+        let pack = await this.packageManager.findPackage(message.packageName, message.version, res);
 
         if (pack) {
             this.logger.log('info', `[Delete Package Receiver] Deleting package version "${message.version}" for "${message.packageName}"`);
@@ -63,6 +64,6 @@ export class DeletePackageReceiver implements QueueReceiver
     /**
      * @inheritDoc
      */
-    public async finish(): Promise<void> {
+    public async finish(res?: Response): Promise<void> {
     }
 }

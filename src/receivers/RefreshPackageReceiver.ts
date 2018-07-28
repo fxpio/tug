@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import {Response} from 'express';
 import {Logger} from '../loggers/Logger';
 import {MessageQueue} from '../queues/MessageQueue';
 import {QueueReceiver} from '../queues/QueueReceiver';
@@ -50,19 +51,19 @@ export class RefreshPackageReceiver implements QueueReceiver
     /**
      * @inheritDoc
      */
-    public async execute(message: LooseObject): Promise<void> {
+    public async execute(message: LooseObject, res?: Response): Promise<void> {
         let force = true === message.force;
         let repoUrl = message.repositoryUrl;
         let identifier = message.identifier;
         let version = message.version;
         let isBranch = version.startsWith('dev-');
 
-        let repo = await this.repoManager.getAndInitRepository(repoUrl, false);
+        let repo = await this.repoManager.getAndInitRepository(repoUrl, false, res);
         if (!repo || !repo.getPackageName()) {
             return;
         }
 
-        let existingComposer = await this.packageManager.findPackage(repo.getPackageName() as string, version);
+        let existingComposer = await this.packageManager.findPackage(repo.getPackageName() as string, version, res);
 
         if (force || !existingComposer) {
             let driver = repo.getDriver();
@@ -96,6 +97,6 @@ export class RefreshPackageReceiver implements QueueReceiver
     /**
      * @inheritDoc
      */
-    public async finish(): Promise<void> {
+    public async finish(res?: Response): Promise<void> {
     }
 }

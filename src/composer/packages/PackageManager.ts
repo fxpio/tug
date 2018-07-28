@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import {Response} from 'express';
 import {RepositoryManager} from '../repositories/RepositoryManager';
 import {VcsRepository} from '../repositories/VcsRepository';
 import {VersionParser} from '../semver/VersionParser';
@@ -45,14 +46,15 @@ export class PackageManager
     /**
      * Find a specific version of package.
      *
-     * @param {string} packageName The package name
-     * @param {string} version     The version
+     * @param {string}   packageName The package name
+     * @param {string}   version     The version
+     * @param {Response} [res]       The response
      *
      * @return {Promise<Package|null>}
      */
-    public async findPackage(packageName: string, version: string): Promise<Package|null> {
+    public async findPackage(packageName: string, version: string, res?: Response): Promise<Package|null> {
         let pack = null;
-        let repo = await this.repoManager.findRepository(packageName);
+        let repo = await this.repoManager.findRepository(packageName, res);
 
         if (repo) {
             try {
@@ -74,19 +76,20 @@ export class PackageManager
     /**
      * Find all versions of package.
      *
-     * @param {string} packageName The package name
-     * @param {string} hash        The hash
+     * @param {string}   packageName The package name
+     * @param {string}   hash        The hash
+     * @param {Response} [res]       The response
      *
      * @return {Promise<LooseObject<string, Package>>}
      */
-    public async findPackages(packageName: string, hash?: string): Promise<LooseObject> {
-        let res: LooseObject = {};
-        let repo = await this.repoManager.findRepository(packageName);
+    public async findPackages(packageName: string, hash?: string, res?: Response): Promise<LooseObject> {
+        let result: LooseObject = {};
+        let repo = await this.repoManager.findRepository(packageName, res);
 
         if (repo && (!hash || hash === repo.getLastHash())) {
-            res = await retrieveAllVersions(packageName, this.packageRepo, {});
-            let packages: Package[] = Object.values(res);
-            res = {};
+            result = await retrieveAllVersions(packageName, this.packageRepo, {});
+            let packages: Package[] = Object.values(result);
+            result = {};
             packages.sort(function (a: Package|any, b: Package|any) {
                 if (a.getVersion() < b.getVersion()) {
                     return -1;
@@ -108,11 +111,11 @@ export class PackageManager
                 }
             });
             for (let i = 0; i < packages.length; ++i) {
-                res[packages[i].getVersion()] = packages[i];
+                result[packages[i].getVersion()] = packages[i];
             }
         }
 
-        return res;
+        return result;
     }
 
     /**
@@ -151,15 +154,16 @@ export class PackageManager
     /**
      * Refresh all packages.
      *
-     * @param {boolean} force Check if existing packages must be overridden
+     * @param {boolean}  force Check if existing packages must be overridden
+     * @param {Response} [res] The response
      *
      * @return {Promise<LooseObject<string, VcsRepository>>}
      *
      * @throws RepositoryNotSupportedError When the repository is not supported
      * @throws RepositoryNotFoundError     When the repository is not found
      */
-    public async refreshAllPackages(force: boolean = true): Promise<LooseObject> {
-        let repos = await this.repoManager.getRepositories(true);
+    public async refreshAllPackages(force: boolean = true, res?: Response): Promise<LooseObject> {
+        let repos = await this.repoManager.getRepositories(true, res);
         let messages = [];
 
         for (let name of Object.keys(repos)) {
@@ -174,16 +178,17 @@ export class PackageManager
     /**
      * Refresh the packages.
      *
-     * @param {string}  url   The repository url
-     * @param {boolean} force Check if existing packages must be overridden
+     * @param {string}   url   The repository url
+     * @param {boolean}  force Check if existing packages must be overridden
+     * @param {Response} [res] The response
      *
      * @return {Promise<VcsRepository>}
      *
      * @throws RepositoryNotSupportedError When the repository is not supported
      * @throws RepositoryNotFoundError     When the repository is not found
      */
-    public async refreshPackages(url: string, force: boolean = true): Promise<VcsRepository> {
-        let repo = await this.repoManager.getRepository(url, true) as VcsRepository;
+    public async refreshPackages(url: string, force: boolean = true, res?: Response): Promise<VcsRepository> {
+        let repo = await this.repoManager.getRepository(url, true, res) as VcsRepository;
 
         await this.queue.send({type: 'refresh-packages', repositoryUrl: repo.getUrl(), force: force});
 
@@ -193,17 +198,18 @@ export class PackageManager
     /**
      * Refresh the package.
      *
-     * @param {string}  url     The repository url
-     * @param {string}  version The version to refresh
-     * @param {boolean} force   Check if existing packages must be overridden
+     * @param {string}   url     The repository url
+     * @param {string}   version The version to refresh
+     * @param {boolean}  force   Check if existing packages must be overridden
+     * @param {Response} [res]   The response
      *
      * @return {Promise<VcsRepository>}
      *
      * @throws RepositoryNotSupportedError When the repository is not supported
      * @throws RepositoryNotFoundError     When the repository is not found
      */
-    public async refreshPackage(url: string, version: string, force: boolean = true): Promise<VcsRepository> {
-        let repo = await this.repoManager.getRepository(url, true) as VcsRepository;
+    public async refreshPackage(url: string, version: string, force: boolean = true, res?: Response): Promise<VcsRepository> {
+        let repo = await this.repoManager.getRepository(url, true, res) as VcsRepository;
         let identifier;
 
         if (version.startsWith('dev-')) {
@@ -226,14 +232,15 @@ export class PackageManager
     /**
      * Delete the packages.
      *
-     * @param {string} url The repository url
+     * @param {string}   url   The repository url
+     * @param {Response} [res] The response
      *
      * @return {Promise<VcsRepository>}
      *
      * @throws RepositoryNotFoundError When the repository is not found
      */
-    public async deletePackages(url: string): Promise<VcsRepository> {
-        let repo = await this.repoManager.getRepository(url, true) as VcsRepository;
+    public async deletePackages(url: string, res?: Response): Promise<VcsRepository> {
+        let repo = await this.repoManager.getRepository(url, true, res) as VcsRepository;
 
         if (repo.isInitialized()) {
             await this.queue.send({type: 'delete-packages', packageName: repo.getPackageName()});
@@ -245,15 +252,16 @@ export class PackageManager
     /**
      * Delete the package.
      *
-     * @param {string} url     The repository url
-     * @param {string} version The version to delete
+     * @param {string}   url     The repository url
+     * @param {string}   version The version to delete
+     * @param {Response} [res]   The response
      *
      * @return {Promise<VcsRepository>}
      *
      * @throws RepositoryNotFoundError When the repository is not found
      */
-    public async deletePackage(url: string, version: string): Promise<VcsRepository> {
-        let repo = await this.repoManager.getRepository(url, true) as VcsRepository;
+    public async deletePackage(url: string, version: string, res?: Response): Promise<VcsRepository> {
+        let repo = await this.repoManager.getRepository(url, true, res) as VcsRepository;
 
         if (repo.isInitialized()) {
             await this.queue.send({type: 'delete-package', packageName: repo.getPackageName(), version: version});
@@ -265,10 +273,12 @@ export class PackageManager
     /**
      * Refresh all cache packages.
      *
+     * @param {Response} [res] The response
+     *
      * @return {Promise<Object<string, VcsRepository>>}
      */
-    public async refreshAllCachePackages(): Promise<LooseObject> {
-        let repos = await this.repoManager.getRepositories();
+    public async refreshAllCachePackages(res?: Response): Promise<LooseObject> {
+        let repos = await this.repoManager.getRepositories(false, res);
         let messages = [];
 
         for (let name of Object.keys(repos)) {
@@ -283,15 +293,16 @@ export class PackageManager
     /**
      * Refresh the cache of packages.
      *
-     * @param {string} url The repository url
+     * @param {string}   url   The repository url
+     * @param {Response} [res] The response
      *
      * @return {Promise<VcsRepository>}
      *
      * @throws RepositoryNotSupportedError When the repository is not supported
      * @throws RepositoryNotFoundError     When the repository is not found
      */
-    public async refreshCachePackages(url: string): Promise<VcsRepository> {
-        let repo = await this.repoManager.getRepository(url, true) as VcsRepository;
+    public async refreshCachePackages(url: string, res?: Response): Promise<VcsRepository> {
+        let repo = await this.repoManager.getRepository(url, true, res) as VcsRepository;
 
         await this.queue.send({type: 'build-package-versions-cache', packageName: repo.getPackageName()});
 
@@ -301,14 +312,15 @@ export class PackageManager
     /**
      * Track the download of the package version.
      *
-     * @param {string} packageName The package name
-     * @param {string} version     The version
+     * @param {string}   packageName The package name
+     * @param {string}   version     The version
+     * @param {Response} [res]       The response
      *
      * @return {Promise<void>}
      */
-    public async trackDownload(packageName: string, version: string): Promise<void> {
-        let repo = await this.repoManager.findRepository(packageName);
-        let pack = await this.findPackage(packageName, version);
+    public async trackDownload(packageName: string, version: string, res?: Response): Promise<void> {
+        let repo = await this.repoManager.findRepository(packageName, res);
+        let pack = await this.findPackage(packageName, version, res);
 
         if (repo && pack) {
             repo.addDownloadCount();
