@@ -47,7 +47,9 @@ import {
     convertVcsDriverError,
     showError
 } from './middlewares/errors';
+import {defineLocale} from './middlewares/translators';
 import {isProd} from './utils/server';
+import {PolyglotTranslator} from './translators/PolyglotTranslator';
 
 const app = express();
 let storage,
@@ -80,6 +82,7 @@ let packageManager = new PackageManager(repoManager, db.getRepository(PackageRep
 let cache = new Cache(storage);
 let packageBuilder = new PackageBuilder(repoManager, packageManager, cache);
 let assetManager = new AssetManager(isProd() ? './assets/manifest.json' : './dist/assets/manifest.json', !isProd());
+let translator = new PolyglotTranslator('en');
 
 queue.subscribe(new RefreshPackagesReceiver(repoManager, queue, logger));
 queue.subscribe(new RefreshPackageReceiver(repoManager, packageManager, queue, logger));
@@ -98,6 +101,8 @@ app.set('storage', storage);
 app.set('cache', cache);
 app.set('queue', queue);
 app.set('asset-manager', assetManager);
+app.set('translator', translator);
+app.use(defineLocale);
 app.use('/assets/', express.static(isProd() ? 'assets' : 'dist/assets'));
 app.use('/', hookRoutes(express.Router({})));
 app.use('/', securityRoutes(express.Router({})));

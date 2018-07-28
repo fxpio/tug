@@ -7,11 +7,12 @@
  * file that was distributed with this source code.
  */
 
+import {TranslatorTranslation} from './TranslatorTranslation';
+
 /**
- * Interface for the loose object.
- *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface LooseObject<T = any> {
-    [key: string]: T;
+export interface TranslatorTranslations
+{
+    [key: string]: TranslatorTranslation;
 }

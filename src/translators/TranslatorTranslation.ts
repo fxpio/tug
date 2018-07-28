@@ -8,10 +8,9 @@
  */
 
 /**
- * Interface for the loose object.
- *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface LooseObject<T = any> {
-    [key: string]: T;
+export interface TranslatorTranslation
+{
+    [key: string]: string;
 }

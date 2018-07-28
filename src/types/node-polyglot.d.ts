@@ -7,11 +7,20 @@
  * file that was distributed with this source code.
  */
 
+import 'node-polyglot';
+
 /**
- * Interface for the loose object.
- *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface LooseObject<T = any> {
-    [key: string]: T;
+declare module 'node-polyglot' {
+    interface PolyglotOptions
+    {
+        interpolation?: InterpolationOptions
+    }
+
+    interface InterpolationOptions
+    {
+        prefix: string;
+        suffix: string;
+    }
 }
