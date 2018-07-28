@@ -11,7 +11,7 @@ import Polyglot from 'node-polyglot';
 import {Request, Response} from 'express';
 import {Translator} from './Translator';
 import {TranslatorTranslations} from './TranslatorTranslations';
-import {TranslatorTranslation} from "./TranslatorTranslation";
+import {TranslatorTranslation} from './TranslatorTranslation';
 import {LooseObject} from '../utils/LooseObject';
 import {AcceptLanguageParser} from './AcceptLanguageParser';
 

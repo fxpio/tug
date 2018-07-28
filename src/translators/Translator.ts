@@ -8,7 +8,7 @@
  */
 
 import {Request, Response} from 'express';
-import {TranslatorTranslation} from "./TranslatorTranslation";
+import {TranslatorTranslation} from './TranslatorTranslation';
 import {LooseObject} from '../utils/LooseObject';
 
 /**

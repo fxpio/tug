@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import {LooseObject} from "../utils/LooseObject";
+import {LooseObject} from '../utils/LooseObject';
 import {AcceptLanguageItem} from './AcceptLanguageItem';
-import {string} from "joi";
+import {string} from 'joi';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
