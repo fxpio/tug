@@ -8,10 +8,9 @@
  */
 
 import {Authenticate} from '../middlewares/auth/Authenticate';
-import {BasicIamAuth} from '../middlewares/auth/strategies/BasicIamAuth';
+import {AuthStrategy} from '../middlewares/auth/strategies/AuthStrategy';
 import {Router} from 'express';
 import {asyncHandler} from '../utils/handler';
-import {isProd} from '../utils/server';
 import {createApiKey, deleteApiKey} from '../controllers/manager/apiKeyController';
 import {createGithubOauth, deleteGithubOauth, showGithubOauth} from '../controllers/manager/githubOauthController';
 import {createGithubToken, deleteGithubToken, showGithubToken} from '../controllers/manager/githubTokenController';
@@ -21,12 +20,13 @@ import {deletePackages, refreshCachePackages, refreshPackages} from '../controll
 /**
  * Generate the routes.
  *
- * @param {Router} router The router
+ * @param {Router}       router            The router
+ * @param {AuthStrategy} basicAuthStrategy The auth strategy
  *
  * @return {Router}
  */
-export function managerRoutes(router: Router): Router {
-    router.use(asyncHandler(Authenticate.middleware(new BasicIamAuth(!isProd()))));
+export function managerRoutes(router: Router, basicAuthStrategy: AuthStrategy): Router {
+    router.use(asyncHandler(Authenticate.middleware(basicAuthStrategy)));
 
     router.post('/api-keys', asyncHandler(createApiKey));
     router.delete('/api-keys', asyncHandler(deleteApiKey));

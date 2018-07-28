@@ -8,12 +8,10 @@
  */
 
 import Joi from 'joi';
-import AWS from 'aws-sdk';
 import {Request, Response} from 'express';
+import {AuthBuilder} from '../../middlewares/auth/builders/AuthBuilder';
 import {HttpUnauthorizedError} from '../../errors/HttpUnauthorizedError';
 import {validateForm} from '../../utils/validation';
-import {isProd} from '../../utils/server';
-import {createHash} from '../../utils/crypto';
 
 /**
  * Create the temporary token.
@@ -30,25 +28,13 @@ export async function createToken(req: Request, res: Response, next: Function): 
         password: Joi.string().required()
     });
 
-    if (!isProd()) {
-        res.json({
-            token: `${createHash(process.env.AWS_ACCESS_KEY_ID as string)}:${createHash(process.env.AWS_SECRET_ACCESS_KEY as string)}`
-        });
-        return;
+    let token = await (req.app.get('basic-auth-builder') as AuthBuilder).createToken(req);
+
+    if (false === token) {
+        throw new HttpUnauthorizedError();
     }
 
-    try {
-        let creds = req.body;
-        let sts = new AWS.STS({apiVersion: '2011-06-15', accessKeyId: creds.username, secretAccessKey: creds.password});
-        let result = await sts.getSessionToken().promise();
-        let rc = result.Credentials;
-        if (rc) {
-            res.json({
-                token: `${rc.AccessKeyId}:${rc.SecretAccessKey}:${rc.SessionToken}`
-            });
-            return;
-        }
-    } catch (e) {}
-
-    throw new HttpUnauthorizedError();
+    res.json({
+        token: token
+    });
 }

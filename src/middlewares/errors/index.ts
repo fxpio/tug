@@ -18,7 +18,6 @@ import {RepositoryNotSupportedError} from '../../errors/RepositoryNotSupportedEr
 import {HttpUnauthorizedError} from '../../errors/HttpUnauthorizedError';
 import {Request, Response} from 'express';
 import {LooseObject} from '../../utils/LooseObject';
-import {isProd} from '../../utils/server';
 import {Translator} from '../../translators/Translator';
 
 /**
@@ -29,7 +28,7 @@ import {Translator} from '../../translators/Translator';
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export function convertRouteNotFound(req: Request, res: Response): void {
+export function convertRouteNotFoundError(req: Request, res: Response): void {
     throw new HttpNotFoundError();
 }
 
@@ -146,7 +145,7 @@ export function showError(err: Error, req: Request, res: Response, next: Functio
         if (err instanceof HttpValidationError) {
             data.errors = err.fieldErrors;
         }
-    } else if (!isProd()) {
+    } else if (req.app.get('debug')) {
         data.error = err.message
     }
 

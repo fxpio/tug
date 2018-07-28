@@ -7,8 +7,17 @@
  * file that was distributed with this source code.
  */
 
+import express from 'express';
 import awsServerlessExpress from 'aws-serverless-express';
-import app from './app';
+import compression from 'compression';
+import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
+import {AwsS3Storage} from './storages/AwsS3Storage';
+import {AwsSqsMessageQueue} from './queues/AwsSqsMessageQueue';
+import {Logger} from './loggers/Logger';
+import {AwsDynamoDbDatabase} from './db/AwsDynamoDbDatabase';
+import {BasicIamAuth} from './middlewares/auth/strategies/BasicIamAuth';
+import {BasicIamAuthBuilder} from './middlewares/auth/builders/BasicIamAuthBuilder';
+import {createApp} from './app';
 
 // NOTE: If you get ERR_CONTENT_DECODING_FAILED in your browser, this is likely
 // due to a compressed response (e.g. gzip) which has not been handled correctly
@@ -44,6 +53,26 @@ const binaryMimeTypes = [
     'text/text',
     'text/xml'
 ];
+
+const app = express();
+const env = process.env;
+const debug = 'production' !== env.NODE_ENV;
+
+app.use(compression());
+app.use(awsServerlessExpressMiddleware.eventContext());
+
+createApp({
+    app: app,
+    database: new AwsDynamoDbDatabase(env.AWS_DYNAMODB_TABLE as string, env.AWS_REGION as string, env.AWS_DYNAMODB_URL),
+    storage: new AwsS3Storage(env.AWS_S3_BUCKET as string, env.AWS_REGION as string),
+    queue: new AwsSqsMessageQueue(env.AWS_SQS_QUEUE_URL as string),
+    logger: new Logger(env.LOGGER_LEVEL, debug),
+    basicAuthStrategy: new BasicIamAuth(env.AWS_ACCOUNT_ID),
+    basicAuthBuilder: new BasicIamAuthBuilder(),
+    assetManifestPath: './assets/manifest.json',
+    assetBaseUrl: 'assets',
+    debug: debug
+});
 
 const server = awsServerlessExpress.createServer(app, undefined, binaryMimeTypes);
 

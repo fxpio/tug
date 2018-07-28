@@ -9,7 +9,6 @@
 
 import {LoggerError} from '../errors/LoggerError';
 import {LooseObject} from '../utils/LooseObject';
-import {isProd} from '../utils/server';
 import {LoggerInvalidLevelError} from '../errors/LoggerInvalidLevelError';
 
 /**
@@ -30,16 +29,19 @@ export class Logger
     }
 
     private readonly level: string;
+    private readonly debug: boolean;
 
     /**
      * Constructor.
      *
-     * @param {string} level The level
+     * @param {string}  level The level
+     * @param {boolean} debug The debug mode
      *
      * @throws LoggerError When the level does not exist
      */
-    constructor(level: string = 'verbose') {
+    constructor(level: string = 'verbose', debug: boolean = false) {
         this.level = Logger.validateLevel(level);
+        this.debug = debug;
     }
 
     /**
@@ -55,7 +57,7 @@ export class Logger
 
         if (Logger.LEVELS[this.level] >= Logger.LEVELS[level]) {
             if (message instanceof Error) {
-                message = isProd() ? message.message : message.stack;
+                message = this.debug ? message.stack : message.message;
             }
             console.info(`[${level.toUpperCase()}] ${message}`);
         }

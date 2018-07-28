@@ -7,22 +7,22 @@
  * file that was distributed with this source code.
  */
 
-import {BasicIamAuth} from '../middlewares/auth/strategies/BasicIamAuth';
 import {Authenticate} from '../middlewares/auth/Authenticate';
+import {AuthStrategy} from '../middlewares/auth/strategies/AuthStrategy';
 import {Router} from 'express';
 import {asyncHandler} from '../utils/handler';
 import {createToken} from '../controllers/securities/authController';
-import {isProd} from '../utils/server';
 
 /**
  * Generate the routes.
  *
- * @param {Router} router The router
+ * @param {Router}       router            The router
+ * @param {AuthStrategy} basicAuthStrategy The auth strategy
  *
  * @return {Router}
  */
-export function securityRoutes(router: Router): Router {
-    router.put('/authorizations', asyncHandler(Authenticate.middleware(new BasicIamAuth(!isProd()))), asyncHandler(createToken));
+export function securityRoutes(router: Router, basicAuthStrategy: AuthStrategy): Router {
+    router.put('/authorizations', asyncHandler(Authenticate.middleware(basicAuthStrategy)), asyncHandler(createToken));
 
     return router;
 }

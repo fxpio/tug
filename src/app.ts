@@ -10,10 +10,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import compression from 'compression';
-import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
-import {Logger} from './loggers/Logger';
-import {AwsDynamoDbDatabase} from './db/AwsDynamoDbDatabase';
+import {AppOptions} from './AppOptions';
 import {ConfigRepository} from './db/repositories/ConfigRepository';
 import {ApiKeyRepository} from './db/repositories/ApiKeyRepository';
 import {CodeRepositoryRepository} from './db/repositories/CodeRepositoryRepository';
@@ -22,12 +19,9 @@ import {ConfigManager} from './configs/ConfigManager';
 import {RepositoryManager} from './composer/repositories/RepositoryManager';
 import {PackageManager} from './composer/packages/PackageManager';
 import {PackageBuilder} from './composer/packages/PackageBuilder';
-import {LocalStorage} from './storages/LocalStorage';
-import {AwsS3Storage} from './storages/AwsS3Storage';
 import {Cache} from './caches/Cache';
 import {AssetManager} from './assets/AssetManager';
-import {LocalMessageQueue} from './queues/LocalMessageQueue';
-import {AwsSqsMessageQueue} from './queues/AwsSqsMessageQueue';
+import {PolyglotTranslator} from './translators/PolyglotTranslator';
 import {RefreshPackagesReceiver} from './receivers/RefreshPackagesReceiver';
 import {RefreshPackageReceiver} from './receivers/RefreshPackageReceiver';
 import {DeletePackagesReceiver} from './receivers/DeletePackagesReceiver';
@@ -42,84 +36,99 @@ import {logErrors} from './middlewares/logs';
 import {
     convertJsonSyntaxError,
     convertRepositoryError,
-    convertRouteNotFound,
+    convertRouteNotFoundError,
     convertURIError,
     convertVcsDriverError,
     showError
 } from './middlewares/errors';
 import {defineLocale} from './middlewares/translators';
-import {isProd} from './utils/server';
-import {PolyglotTranslator} from './translators/PolyglotTranslator';
 import translationEn from './translations/en';
 import translationFr from './translations/fr';
 
-const app = express();
-let storage,
-    queue;
+/**
+ * Create the app server.
+ *
+ * @param {AppOptions} options The application options
+ *
+ * @return {express}
+ *
+ * @author François Pluchino <francois.pluchino@gmail.com>
+ */
+export function createApp(options: AppOptions): express.Express {
+    let app = options.app ? options.app : express(),
+        db = options.database,
+        storage = options.storage,
+        queue = options.queue,
+        logger = options.logger,
+        basicAuthStrategy = options.basicAuthStrategy,
+        basicAuthBuilder = options.basicAuthBuilder,
+        assetManifestPath = options.assetManifestPath,
+        assetBaseUrl = options.assetBaseUrl,
+        debug = options.debug;
 
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+    // add database repositories
+    db.setRepository(ConfigRepository);
+    db.setRepository(ApiKeyRepository);
+    db.setRepository(CodeRepositoryRepository);
+    db.setRepository(PackageRepository);
 
-if (isProd()) {
-    app.use(compression());
-    app.use(awsServerlessExpressMiddleware.eventContext());
-    storage = new AwsS3Storage(process.env.AWS_S3_BUCKET as string, process.env.AWS_REGION as string);
-    queue = new AwsSqsMessageQueue(process.env.AWS_SQS_QUEUE_URL as string);
-} else {
-    storage = new LocalStorage('./var/storage');
-    queue = new LocalMessageQueue();
+    let configManager = new ConfigManager(db.getRepository(ConfigRepository) as ConfigRepository),
+        repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository) as CodeRepositoryRepository, queue),
+        packageManager = new PackageManager(repoManager, db.getRepository(PackageRepository) as PackageRepository, queue),
+        cache = new Cache(storage),
+        packageBuilder = new PackageBuilder(repoManager, packageManager, cache),
+        assetManager = new AssetManager(assetManifestPath, debug),
+        translator = new PolyglotTranslator('en');
+
+    // add translations
+    translator.addTranslation('en', translationEn);
+    translator.addTranslation('fr', translationFr);
+
+    // add message queue receivers
+    queue.subscribe(new RefreshPackagesReceiver(repoManager, queue, logger));
+    queue.subscribe(new RefreshPackageReceiver(repoManager, packageManager, queue, logger));
+    queue.subscribe(new DeletePackagesReceiver(db.getRepository(PackageRepository) as PackageRepository, queue, logger));
+    queue.subscribe(new DeletePackageReceiver(packageManager, queue, logger));
+    queue.subscribe(new BuildPackageVersionsReceiver(packageBuilder, logger));
+
+    // define services
+    app.disable('etag');
+    app.set('debug', debug);
+    app.set('logger', logger);
+    app.set('basic-auth-builder', basicAuthBuilder);
+    app.set('config-manager', configManager);
+    app.set('repository-manager', repoManager);
+    app.set('package-manager', packageManager);
+    app.set('package-builder', packageBuilder);
+    app.set('db', db);
+    app.set('storage', storage);
+    app.set('cache', cache);
+    app.set('queue', queue);
+    app.set('asset-manager', assetManager);
+    app.set('translator', translator);
+
+    // enable middlewares
+    app.use(cors());
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(defineLocale);
+
+    // defines routes
+    app.use('/assets/', express.static(assetBaseUrl));
+    app.use('/', hookRoutes(express.Router({})));
+    app.use('/', securityRoutes(express.Router({}), basicAuthStrategy));
+    app.use('/manager/', managerRoutes(express.Router({}), basicAuthStrategy));
+    app.use('/', uiRoutes(express.Router({})));
+    app.use('/', packageRoutes(express.Router({})));
+
+    // enable error and logger middlewares in end
+    app.use(convertURIError);
+    app.use(convertJsonSyntaxError);
+    app.use(convertVcsDriverError);
+    app.use(convertRepositoryError);
+    app.use(convertRouteNotFoundError);
+    app.use(logErrors);
+    app.use(showError);
+
+    return app;
 }
-
-let logger = new Logger(process.env.LOGGER_LEVEL);
-let db = new AwsDynamoDbDatabase(process.env.AWS_DYNAMODB_TABLE as string, process.env.AWS_REGION as string, process.env.AWS_DYNAMODB_URL);
-db.setRepository(ConfigRepository);
-db.setRepository(ApiKeyRepository);
-db.setRepository(CodeRepositoryRepository);
-db.setRepository(PackageRepository);
-
-let configManager = new ConfigManager(db.getRepository(ConfigRepository) as ConfigRepository);
-let repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository) as CodeRepositoryRepository, queue);
-let packageManager = new PackageManager(repoManager, db.getRepository(PackageRepository) as PackageRepository, queue);
-let cache = new Cache(storage);
-let packageBuilder = new PackageBuilder(repoManager, packageManager, cache);
-let assetManager = new AssetManager(isProd() ? './assets/manifest.json' : './dist/assets/manifest.json', !isProd());
-let translator = new PolyglotTranslator('en');
-
-translator.addTranslation('en', translationEn);
-translator.addTranslation('fr', translationFr);
-
-queue.subscribe(new RefreshPackagesReceiver(repoManager, queue, logger));
-queue.subscribe(new RefreshPackageReceiver(repoManager, packageManager, queue, logger));
-queue.subscribe(new DeletePackagesReceiver(db.getRepository(PackageRepository) as PackageRepository, queue, logger));
-queue.subscribe(new DeletePackageReceiver(packageManager, queue, logger));
-queue.subscribe(new BuildPackageVersionsReceiver(packageBuilder, logger));
-
-app.disable('etag');
-app.set('logger', logger);
-app.set('config-manager', configManager);
-app.set('repository-manager', repoManager);
-app.set('package-manager', packageManager);
-app.set('package-builder', packageBuilder);
-app.set('db', db);
-app.set('storage', storage);
-app.set('cache', cache);
-app.set('queue', queue);
-app.set('asset-manager', assetManager);
-app.set('translator', translator);
-app.use(defineLocale);
-app.use('/assets/', express.static(isProd() ? 'assets' : 'dist/assets'));
-app.use('/', hookRoutes(express.Router({})));
-app.use('/', securityRoutes(express.Router({})));
-app.use('/manager/', managerRoutes(express.Router({})));
-app.use('/', uiRoutes(express.Router({})));
-app.use('/', packageRoutes(express.Router({})));
-app.use(convertURIError);
-app.use(convertJsonSyntaxError);
-app.use(convertVcsDriverError);
-app.use(convertRepositoryError);
-app.use(convertRouteNotFound);
-app.use(logErrors);
-app.use(showError);
-
-export default app;
