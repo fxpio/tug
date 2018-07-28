@@ -15,9 +15,11 @@ import {VcsDriverTagNotFoundError} from '../../errors/VcsDriverTagNotFoundError'
 import {VcsDriverBranchNotFoundError} from '../../errors/VcsDriverBranchNotFoundError';
 import {RepositoryNotFoundError} from '../../errors/RepositoryNotFoundError';
 import {RepositoryNotSupportedError} from '../../errors/RepositoryNotSupportedError';
+import {HttpUnauthorizedError} from '../../errors/HttpUnauthorizedError';
 import {Request, Response} from 'express';
 import {LooseObject} from '../../utils/LooseObject';
 import {isProd} from '../../utils/server';
+import {Translator} from '../../translators/Translator';
 
 /**
  * Display the http not found error.
@@ -60,7 +62,8 @@ export function convertURIError(err: Error, req: Request, res: Response, next: F
  */
 export function convertJsonSyntaxError(err: Error, req: Request, res: Response, next: Function): void {
     if (err instanceof SyntaxError && (err as LooseObject).status === 400) {
-        throw new HttpBadRequestError('The body of your request is not a valid JSON');
+        let translator = req.app.get('translator') as Translator;
+        throw new HttpBadRequestError(translator.trans(res, 'error.http.bad-request.invalid-json'));
     }
     next(err);
 }
@@ -76,10 +79,12 @@ export function convertJsonSyntaxError(err: Error, req: Request, res: Response, 
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function convertVcsDriverError(err: Error, req: Request, res: Response, next: Function): void {
+    let translator = req.app.get('translator') as Translator;
+
     if (err instanceof VcsDriverBranchNotFoundError) {
-        throw new HttpNotFoundError(`Branch "${err.name}" is not found`);
+        throw new HttpNotFoundError(translator.trans(res, 'error.http.not-found.repository-branch', {name: err.name}));
     } else if (err instanceof VcsDriverTagNotFoundError) {
-        throw new HttpNotFoundError(`Tag "${err.name}" is not found`);
+        throw new HttpNotFoundError(translator.trans(res, 'error.http.not-found.repository-tag', {name: err.name}));
     }
 
     next(err);
@@ -96,10 +101,12 @@ export function convertVcsDriverError(err: Error, req: Request, res: Response, n
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function convertRepositoryError(err: Error, req: Request, res: Response, next: Function): void {
+    let translator = req.app.get('translator') as Translator;
+
     if (err instanceof RepositoryNotFoundError) {
-        throw new HttpNotFoundError(`The repository with the url "${err.url}" is not found`);
+        throw new HttpNotFoundError(translator.trans(res, 'error.http.not-found.repository', {url: err.url}));
     } else if (err instanceof RepositoryNotSupportedError) {
-        throw new HttpBadRequestError(`The repository with the URL "${err.url}" is not supported`);
+        throw new HttpBadRequestError(translator.trans(res, 'error.http.not-supported.repository', {url: err.url}));
     }
 
     next(err);
@@ -116,14 +123,25 @@ export function convertRepositoryError(err: Error, req: Request, res: Response, 
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function showError(err: Error, req: Request, res: Response, next: Function): void {
+    let translator = req.app.get('translator') as Translator;
     let data: LooseObject = {
         code: 500,
-        message: 'Internal error'
+        message: translator.trans(res, 'error.http.internal-server')
     };
 
     if (err instanceof HttpError) {
         data.message = err.message;
         data.code = err.statusCode;
+
+        if (err instanceof HttpValidationError && err.message === 'Validation Errors') {
+            data.message = translator.trans(res, 'error.http.bad-request.validation');
+        } else if (err instanceof HttpUnauthorizedError && err.message === 'Your credentials are invalid') {
+            data.message = translator.trans(res, 'error.http.unauthorized.basic');
+        } else if (err instanceof HttpBadRequestError && err.message === 'Bad Request') {
+            data.message = translator.trans(res, 'error.http.bad-request');
+        } else if (err instanceof HttpNotFoundError && err.message === 'Not Found') {
+            data.message = translator.trans(res, 'error.http.not-found');
+        }
 
         if (err instanceof HttpValidationError) {
             data.errors = err.fieldErrors;

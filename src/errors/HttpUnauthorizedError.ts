@@ -19,7 +19,7 @@ export class HttpUnauthorizedError extends HttpError
      *
      * @param {string} message
      */
-    constructor(message: string) {
+    constructor(message: string = 'Your credentials are invalid') {
         super(message, 401);
     }
 }

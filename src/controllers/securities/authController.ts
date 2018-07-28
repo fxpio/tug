@@ -50,5 +50,5 @@ export async function createToken(req: Request, res: Response, next: Function): 
         }
     } catch (e) {}
 
-    throw new HttpUnauthorizedError('Your credentials are invalid');
+    throw new HttpUnauthorizedError();
 }

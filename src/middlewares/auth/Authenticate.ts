@@ -31,7 +31,7 @@ export class Authenticate
             } else if (nextRoute) {
                 next('route');
             } else {
-                throw new HttpUnauthorizedError('Your credentials are invalid');
+                throw new HttpUnauthorizedError();
             }
         }
     }

@@ -14,6 +14,7 @@ import {validateForm} from '../../utils/validation';
 import {Database} from '../../db/Database';
 import {Request, Response} from 'express';
 import {HttpValidationError} from '../../errors/HttpValidationError';
+import {Translator} from '../../translators/Translator';
 
 /**
  * Create the api key.
@@ -29,13 +30,14 @@ export async function createApiKey(req: Request, res: Response, next: Function):
         token: Joi.string().min(10)
     });
 
+    let translator = req.app.get('translator') as Translator;
     let repo = (req.app.get('db') as Database).getRepository(ApiKeyRepository);
     let token = req.body.token ? req.body.token : generateToken(40);
 
     await repo.put({id: token});
 
     res.json({
-        message: `The API key "${token}" was created successfully`,
+        message: translator.trans(res, 'manager.api-key.created', {token: token}),
         token: token
     });
 }
@@ -54,19 +56,20 @@ export async function deleteApiKey(req: Request, res: Response, next: Function):
         token: Joi.string().min(10)
     });
 
+    let translator = req.app.get('translator') as Translator;
     let repo = (req.app.get('db') as Database).getRepository(ApiKeyRepository);
     let token = req.body.token;
 
     if (!token) {
         throw new HttpValidationError({
-            'token': 'This field is required'
+            'token': translator.trans(res, 'validation.field.required')
         });
     }
 
     await repo.delete(token);
 
     res.json({
-        message: `The API key "${token}" was deleted successfully`,
+        message: translator.trans(res, 'manager.api-key.deleted', {token: token}),
         token: token
     });
 }

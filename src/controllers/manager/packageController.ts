@@ -12,6 +12,7 @@ import {PackageManager} from '../../composer/packages/PackageManager';
 import {validateForm} from '../../utils/validation';
 import {Request, Response} from 'express';
 import {LooseObject} from '../../utils/LooseObject';
+import {Translator} from '../../translators/Translator';
 
 /**
  * Refresh all packages or a single package of a repository.
@@ -29,6 +30,7 @@ export async function refreshPackages(req: Request, res: Response, next: Functio
         force: Joi.boolean()
     });
 
+    let translator = req.app.get('translator') as Translator;
     let packageManager: PackageManager = req.app.get('package-manager');
     let url = req.body.url;
     let version = req.body.version;
@@ -37,13 +39,13 @@ export async function refreshPackages(req: Request, res: Response, next: Functio
 
     if (url) {
         response.url = (await packageManager.refreshPackages(url, force, res)).getUrl();
-        response.message = `Refreshing all package versions has started for the repository "${url}"`;
+        response.message = translator.trans(res, 'manager.package.refresh.versions', {url: url});
     } else if (url && version) {
         response.url = (await packageManager.refreshPackage(url, version, force, res)).getUrl();
-        response.message = `Refreshing package version "${version}" has started for the repository "${url}"`;
+        response.message = translator.trans(res, 'manager.package.refresh.version', {url: url, version: version});
     } else {
         let repos = await packageManager.refreshAllPackages(force, res);
-        response.message = `Refreshing all package versions has started for all repositories`;
+        response.message = translator.trans(res, 'manager.package.refresh.versions.all-repositories');
         response.urls = [];
         for (let name of Object.keys(repos)) {
             response.urls.push(repos[name].getUrl());
@@ -68,6 +70,7 @@ export async function deletePackages(req: Request, res: Response, next: Function
         version: Joi.string()
     });
 
+    let translator = req.app.get('translator') as Translator;
     let packageManager: PackageManager = req.app.get('package-manager');
     let url = req.body.url;
     let version = req.body.version;
@@ -75,10 +78,10 @@ export async function deletePackages(req: Request, res: Response, next: Function
 
     if (version) {
         url = (await packageManager.deletePackage(url, version, res)).getUrl();
-        message = `Deleting of package version "${version}" has started for the repository "${url}"`;
+        message = translator.trans(res, 'manager.package.delete.version', {url: url, version: version});
     } else {
         url = (await packageManager.deletePackages(url, res)).getUrl();
-        message = `Deleting of all packages has started for the repository "${url}"`;
+        message = translator.trans(res, 'manager.package.delete.versions', {url: url});
     }
 
     res.json({
@@ -101,16 +104,17 @@ export async function refreshCachePackages(req: Request, res: Response, next: Fu
         url: Joi.string()
     });
 
+    let translator = req.app.get('translator') as Translator;
     let packageManager: PackageManager = req.app.get('package-manager');
     let url = req.body.url;
     let response: LooseObject = {};
 
     if (url) {
         response.name = (await packageManager.refreshCachePackages(url, res)).getPackageName();
-        response.message = `Refreshing cache of all package versions has started for the package "${response.name}"`;
+        response.message = translator.trans(res, 'manager.package.refresh.cache.version', {packageName: response.name});
     } else {
         let repos = await packageManager.refreshAllCachePackages(res);
-        response.message = `Refreshing cache of all package versions has started for all packages`;
+        response.message = translator.trans(res, 'manager.package.refresh.cache.versions');
         response.names = [];
         for (let name of Object.keys(repos)) {
             response.names.push(repos[name].getPackageName());

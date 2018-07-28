@@ -22,7 +22,7 @@ export class HttpValidationError extends HttpBadRequestError
      * @param {Object} fieldErrors
      * @param {string} [message]
      */
-    constructor(fieldErrors: Object, message: string = 'Validation errors') {
+    constructor(fieldErrors: Object, message: string = 'Validation Errors') {
         super(message);
         this.fieldErrors = fieldErrors;
     }

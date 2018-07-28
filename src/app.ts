@@ -50,6 +50,8 @@ import {
 import {defineLocale} from './middlewares/translators';
 import {isProd} from './utils/server';
 import {PolyglotTranslator} from './translators/PolyglotTranslator';
+import translationEn from './translations/en';
+import translationFr from './translations/fr';
 
 const app = express();
 let storage,
@@ -83,6 +85,9 @@ let cache = new Cache(storage);
 let packageBuilder = new PackageBuilder(repoManager, packageManager, cache);
 let assetManager = new AssetManager(isProd() ? './assets/manifest.json' : './dist/assets/manifest.json', !isProd());
 let translator = new PolyglotTranslator('en');
+
+translator.addTranslation('en', translationEn);
+translator.addTranslation('fr', translationFr);
 
 queue.subscribe(new RefreshPackagesReceiver(repoManager, queue, logger));
 queue.subscribe(new RefreshPackageReceiver(repoManager, packageManager, queue, logger));

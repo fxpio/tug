@@ -24,7 +24,7 @@ VCS repositories makes every Composer update excessively long.
 **Features include:**
 
 - Deploy the service in minutes
-- Fully manage the remote service with the Progress Web Application or the API Rest
+- Fully manage the remote service with the Progressive Web Application or the API Rest
 - All management commands use the API Rest of the Server
 - Authentication can be do with the AWS Security Token Service (session token) or the AWS IAM Credentials
 - Store the Composer package definitions, API keys and config in the DynamoDB
@@ -33,6 +33,7 @@ VCS repositories makes every Composer update excessively long.
 - Remove the Composer package definition when the branch or tag is deleted
 - Refresh the commit SHA1 on each commit
 - Track the download count of each package version by Composer
+- Server messages and the Progressive Web Application are localized in multiple languages
 - Available drivers:
   - Github
 - Automatically configuration of the AWS credentials if the [Shared Credentials File](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-shared.html)

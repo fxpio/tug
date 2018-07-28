@@ -19,7 +19,7 @@ export class HttpNotFoundError extends HttpError
      *
      * @param {string} [message]
      */
-    constructor(message: string = 'Not found') {
+    constructor(message: string = 'Not Found') {
         super(message, 404);
     }
 }

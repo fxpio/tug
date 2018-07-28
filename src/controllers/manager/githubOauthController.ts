@@ -13,6 +13,7 @@ import {generateToken} from '../../utils/token';
 import {validateForm} from '../../utils/validation';
 import {Request, Response} from 'express';
 import {LooseObject} from '../../utils/LooseObject';
+import {Translator} from '../../translators/Translator';
 
 /**
  * Create the github oauth token.
@@ -30,6 +31,7 @@ export async function createGithubOauth(req: Request, res: Response, next: Funct
     });
 
     let configManager: ConfigManager = req.app.get('config-manager');
+    let translator = req.app.get('translator') as Translator;
     let token = req.body.token ? req.body.token : generateToken(40);
     let host = req.body.host ? req.body.host : 'github.com';
     let data: LooseObject = {
@@ -41,7 +43,7 @@ export async function createGithubOauth(req: Request, res: Response, next: Funct
     await configManager.put(data);
 
     res.json({
-        message: `The Oauth token "${token}" to connect the server with your Github account hosted on "${host}" was created successfully`,
+        message: translator.trans(res, 'manager.config.github-oauth.created', {token: token, host: host}),
         token: token
     });
 }
@@ -61,6 +63,7 @@ export async function deleteGithubOauth(req: Request, res: Response, next: Funct
     });
 
     let configManager: ConfigManager = req.app.get('config-manager');
+    let translator = req.app.get('translator') as Translator;
     let host = req.body.host ? req.body.host : 'github.com';
 
     let config = (await configManager.get()).all();
@@ -68,7 +71,7 @@ export async function deleteGithubOauth(req: Request, res: Response, next: Funct
     await configManager.put(config);
 
     res.json({
-        message: `The Oauth token to connect the server with your Github account hosted on "${host}" was deleted successfully`
+        message: translator.trans(res, 'manager.config.github-oauth.deleted', {host: host}),
     });
 }
 
@@ -83,9 +86,9 @@ export async function deleteGithubOauth(req: Request, res: Response, next: Funct
  */
 export async function showGithubOauth(req: Request, res: Response, next: Function): Promise<void> {
     let config = await (req.app.get('config-manager') as ConfigManager).get();
-
+    let translator = req.app.get('translator') as Translator;
     let tokens = config.get('github-oauth');
-    let message = 'No tokens for Github Oauth are saved';
+    let message;
 
     if (tokens && Object.keys(tokens).length > 0) {
         let tokenHosts = Object.keys(tokens);
@@ -94,7 +97,9 @@ export async function showGithubOauth(req: Request, res: Response, next: Functio
             strTokens += tokens[tokenHosts[i]] + ' (' + tokenHosts[i] + '), ';
         }
 
-        message = `The Oauth tokens to connect the server with your Github account are "${strTokens.replace(/, $/g, '')}"`;
+        message = translator.trans(res, 'manager.config.github-oauth', {tokens: strTokens.replace(/, $/g, '')});
+    } else {
+        message = translator.trans(res, 'manager.config.github-oauth.empty');
     }
 
     res.json({
