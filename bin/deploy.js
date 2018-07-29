@@ -17,8 +17,8 @@ const program = require('commander');
 const AWS = require('aws-sdk');
 const utils = require('./utils/utils');
 
-const DEPLOY_PATH = './deploy';
-const DEPLOY_CLOUDFORMATION_PATH = DEPLOY_PATH + '/package-stack.yaml';
+const BUILD_PATH = './builds';
+const BUILD_CLOUDFORMATION_PATH = BUILD_PATH + '/package-stack.yaml';
 
 program
     .description('Deploy the packaged project in AWS Cloud Formation')
@@ -41,7 +41,7 @@ let createAction = function(action) {
                 UsePreviousValue: false
             }
         ],
-        TemplateBody: fs.readFileSync(DEPLOY_CLOUDFORMATION_PATH, 'utf8')
+        TemplateBody: fs.readFileSync(BUILD_CLOUDFORMATION_PATH, 'utf8')
     };
 
     cf.createChangeSet(params).promise()

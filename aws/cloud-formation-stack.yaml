@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Serverless Composer repository for private PHP packages hosted on Github
+Description: Serverless Composer repository for private PHP packages
 
 Parameters:
   LoggerLevel:
