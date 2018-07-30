@@ -21,6 +21,7 @@ const mode = prod ? 'production' : 'development';
 const isDevServer = process.argv[1].indexOf('webpack-dev-server') >= 0;
 const serverPort = parseInt(process.env.SERVER_PORT || 3000) + 2;
 const publicPath = 'assets/';
+const publicFullPath = isDevServer ? 'http://localhost:' + serverPort + '/' + publicPath : undefined;
 
 module.exports = {
     mode: mode,
@@ -51,7 +52,7 @@ module.exports = {
 
     plugins: [
         new CopyWebpackPlugin([
-            {   from: './src/ui/assets',
+            {   from: path.resolve(__dirname, 'src/ui/assets'),
                 to: 'images/[path][name].[hash:8].[ext]',
                 test: /.(webp|jpg|jpeg|png|gif|svg|ico)$/,
                 toType: 'template'
@@ -66,7 +67,7 @@ module.exports = {
         new ManifestPlugin({
             writeToFileEmit: true,
             basePath: publicPath,
-            publicPath: isDevServer ? 'http://localhost:' + serverPort + '/' + publicPath : undefined,
+            publicPath: publicFullPath,
             map: (file) => {
                 file.name = file.name.replace(/(\.[a-f0-9]{8})(\..*)$/, '$2');
 
@@ -88,8 +89,8 @@ module.exports = {
             { test: /\.js$/, exclude: /node_modules/, loader: 'ts-loader' },
             { test: /\.(sa|sc|c)ss$/, loaders: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'] },
             { test: /\.styl$/, loaders: [MiniCssExtractPlugin.loader, 'css-loader', 'stylus-loader'] },
-            { test: /\.(png|jpg|jpeg|gif|ico|svg|webp)$/, loader: 'file-loader', options: {name: 'images/[name].[hash:8].[ext]'}},
-            { test: /\.(woff|woff2|ttf|eot|otf)$/,loader: 'file-loader', options: {name: 'fonts/[name].[hash:8].[ext]'} },
+            { test: /\.(png|jpg|jpeg|gif|ico|svg|webp)$/, loader: 'file-loader', options: {name: 'images/[name].[hash:8].[ext]', publicPath: publicFullPath}},
+            { test: /\.(woff|woff2|ttf|eot|otf)$/,loader: 'file-loader', options: {name: 'fonts/[name].[hash:8].[ext]', publicPath: publicFullPath} },
             { test: /\.html$/, loader: 'vue-template-loader', options: {transformToRequire: {img: 'src'}} }
         ]
     },
