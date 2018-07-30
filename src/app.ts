@@ -72,9 +72,9 @@ export function createApp(options: AppOptions): express.Express {
     db.setRepository(CodeRepositoryRepository);
     db.setRepository(PackageRepository);
 
-    let configManager = new ConfigManager(db.getRepository(ConfigRepository) as ConfigRepository),
-        repoManager = new RepositoryManager(configManager, db.getRepository(CodeRepositoryRepository) as CodeRepositoryRepository, queue),
-        packageManager = new PackageManager(repoManager, db.getRepository(PackageRepository) as PackageRepository, queue),
+    let configManager = new ConfigManager(db.getRepository<ConfigRepository>(ConfigRepository)),
+        repoManager = new RepositoryManager(configManager, db.getRepository<CodeRepositoryRepository>(CodeRepositoryRepository), queue),
+        packageManager = new PackageManager(repoManager, db.getRepository<PackageRepository>(PackageRepository), queue),
         cache = new Cache(storage),
         packageBuilder = new PackageBuilder(repoManager, packageManager, cache),
         assetManager = new AssetManager(assetManifestPath, debug),
@@ -87,7 +87,7 @@ export function createApp(options: AppOptions): express.Express {
     // add message queue receivers
     queue.subscribe(new RefreshPackagesReceiver(repoManager, queue, logger));
     queue.subscribe(new RefreshPackageReceiver(repoManager, packageManager, queue, logger));
-    queue.subscribe(new DeletePackagesReceiver(db.getRepository(PackageRepository) as PackageRepository, queue, logger));
+    queue.subscribe(new DeletePackagesReceiver(db.getRepository<PackageRepository>(PackageRepository), queue, logger));
     queue.subscribe(new DeletePackageReceiver(packageManager, queue, logger));
     queue.subscribe(new BuildPackageVersionsReceiver(packageBuilder, logger));
 

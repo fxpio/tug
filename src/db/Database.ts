@@ -53,7 +53,7 @@ export class Database
      * @throws DatabaseError When the repository attribute is not a string or a function
      * @throws DatabaseError When the repository does not exist
      */
-    public getRepository(repository: DatabaseRepositoryConstructor|string): DatabaseRepository {
+    public getRepository<T extends DatabaseRepository>(repository: DatabaseRepositoryConstructor|string): T {
         let name = null;
 
         if (typeof repository === 'string') {
@@ -68,7 +68,7 @@ export class Database
             throw new DatabaseRepositoryNotFoundError(name);
         }
 
-        return this.repositories[name];
+        return this.repositories[name] as T;
     }
 
     /**
