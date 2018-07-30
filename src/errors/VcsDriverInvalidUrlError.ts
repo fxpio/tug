@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {VcsDriverError} from './VcsDriverError';
+import {VcsDriverError} from '@app/errors/VcsDriverError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

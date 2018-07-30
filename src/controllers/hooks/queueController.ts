@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import {MessageQueue} from '../../queues/MessageQueue';
+import {MessageQueue} from '@app/queues/MessageQueue';
 import {Request, Response} from 'express';
-import {getSqsMessageBodies} from '../../utils/apiQueue';
+import {getSqsMessageBodies} from '@app/utils/apiQueue';
 
 /**
  * Run the queue receivers when the message comes form the queue.

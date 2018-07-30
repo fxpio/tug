@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {LoggerError} from './LoggerError';
+import {LoggerError} from '@app/errors/LoggerError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

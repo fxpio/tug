@@ -8,13 +8,13 @@
  */
 
 import Joi from 'joi';
-import {ApiKeyRepository} from '../../db/repositories/ApiKeyRepository';
-import {generateToken} from '../../utils/token';
-import {validateForm} from '../../utils/validation';
-import {Database} from '../../db/Database';
+import {ApiKeyRepository} from '@app/db/repositories/ApiKeyRepository';
+import {generateToken} from '@app/utils/token';
+import {validateForm} from '@app/utils/validation';
+import {Database} from '@app/db/Database';
 import {Request, Response} from 'express';
-import {HttpValidationError} from '../../errors/HttpValidationError';
-import {Translator} from '../../translators/Translator';
+import {HttpValidationError} from '@app/errors/HttpValidationError';
+import {Translator} from '@app/translators/Translator';
 
 /**
  * Create the api key.

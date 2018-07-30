@@ -8,12 +8,12 @@
  */
 
 import Joi from 'joi';
-import {ConfigManager} from '../../configs/ConfigManager';
-import {generateToken} from '../../utils/token';
-import {validateForm} from '../../utils/validation';
+import {ConfigManager} from '@app/configs/ConfigManager';
+import {generateToken} from '@app/utils/token';
+import {validateForm} from '@app/utils/validation';
 import {Request, Response} from 'express';
-import {LooseObject} from '../../utils/LooseObject';
-import {Translator} from '../../translators/Translator';
+import {LooseObject} from '@app/utils/LooseObject';
+import {Translator} from '@app/translators/Translator';
 
 /**
  * Create the github oauth token.

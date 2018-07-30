@@ -9,11 +9,11 @@
 
 import Vue from 'vue';
 import Router from 'vue-router';
-import {Error404} from './components/Error404';
+import {Error404} from '@app/ui/components/Error404';
 import {Route} from 'vue-router/types/router';
 import {Validator} from 'vee-validate';
 import {Store} from 'vuex';
-import {RootState} from './states/RootState';
+import {RootState} from '@app/ui/states/RootState';
 
 Vue.use(Router);
 
@@ -33,16 +33,16 @@ export function createRouter(): Router {
                 redirect: 'home'
             },
             {   path: '/:locale',
-                component: () => import('./components/ChildRouteWrapper').then(({ ChildRouteWrapper }) => ChildRouteWrapper),
+                component: () => import('@app/ui/components/ChildRouteWrapper').then(({ ChildRouteWrapper }) => ChildRouteWrapper),
                 children: [
                     {   path: '',
                         name: 'home',
                         meta: {requiresAuth: true},
-                        component: () => import('./components/Home').then(({ Home }) => Home),
+                        component: () => import('@app/ui/components/Home').then(({ Home }) => Home),
                     },
                     {   path: 'login',
                         name: 'login',
-                        component: () => import('./components/Login').then(({ Login }) => Login)
+                        component: () => import('@app/ui/components/Login').then(({ Login }) => Login)
                     },
                     {   path: "*",
                         name: 'error404',

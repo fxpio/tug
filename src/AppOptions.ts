@@ -8,12 +8,12 @@
  */
 
 import express from 'express';
-import {MessageQueue} from './queues/MessageQueue';
-import {DataStorage} from './storages/DataStorage';
-import {Logger} from './loggers/Logger';
-import {Database} from './db/Database';
-import {AuthStrategy} from './middlewares/auth/strategies/AuthStrategy';
-import {AuthBuilder} from './middlewares/auth/builders/AuthBuilder';
+import {MessageQueue} from '@app/queues/MessageQueue';
+import {DataStorage} from '@app/storages/DataStorage';
+import {Logger} from '@app/loggers/Logger';
+import {Database} from '@app/db/Database';
+import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
+import {AuthBuilder} from '@app/middlewares/auth/builders/AuthBuilder';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

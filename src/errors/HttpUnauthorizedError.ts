@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {HttpError} from './HttpError';
+import {HttpError} from '@app/errors/HttpError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

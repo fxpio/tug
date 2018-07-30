@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {I18nState} from './I18nState';
+import {I18nState} from '@app/ui/states/I18nState';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import {LoggerError} from '../errors/LoggerError';
-import {LooseObject} from '../utils/LooseObject';
-import {LoggerInvalidLevelError} from '../errors/LoggerInvalidLevelError';
+import {LoggerError} from '@app/errors/LoggerError';
+import {LooseObject} from '@app/utils/LooseObject';
+import {LoggerInvalidLevelError} from '@app/errors/LoggerInvalidLevelError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

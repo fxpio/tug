@@ -8,15 +8,15 @@
  */
 
 import {Response} from 'express';
-import {CodeRepositoryRepository} from '../../db/repositories/CodeRepositoryRepository';
-import {ConfigManager} from '../../configs/ConfigManager';
-import {VcsRepository} from './VcsRepository';
-import {MessageQueue} from '../../queues/MessageQueue';
-import {RepositoryNotSupportedError} from '../../errors/RepositoryNotSupportedError';
-import {RepositoryNotFoundError} from '../../errors/RepositoryNotFoundError';
-import {VcsRepositoryNotFoundError} from '../../errors/VcsRepositoryNotFoundError';
-import {LooseObject} from '../../utils/LooseObject';
-import {retrieveAllRepositories} from '../../utils/repository';
+import {CodeRepositoryRepository} from '@app/db/repositories/CodeRepositoryRepository';
+import {ConfigManager} from '@app/configs/ConfigManager';
+import {VcsRepository} from '@app/composer/repositories/VcsRepository';
+import {MessageQueue} from '@app/queues/MessageQueue';
+import {RepositoryNotSupportedError} from '@app/errors/RepositoryNotSupportedError';
+import {RepositoryNotFoundError} from '@app/errors/RepositoryNotFoundError';
+import {VcsRepositoryNotFoundError} from '@app/errors/VcsRepositoryNotFoundError';
+import {LooseObject} from '@app/utils/LooseObject';
+import {retrieveAllRepositories} from '@app/utils/repository';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

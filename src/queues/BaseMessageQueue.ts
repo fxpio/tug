@@ -8,9 +8,9 @@
  */
 
 import {Response} from 'express';
-import {QueueReceiver} from './QueueReceiver';
-import {MessageQueue} from './MessageQueue';
-import {LooseObject} from '../utils/LooseObject';
+import {QueueReceiver} from '@app/queues/QueueReceiver';
+import {MessageQueue} from '@app/queues/MessageQueue';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

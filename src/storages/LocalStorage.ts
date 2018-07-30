@@ -8,7 +8,7 @@
  */
 
 import fs from 'fs-extra';
-import {DataStorage} from './DataStorage';
+import {DataStorage} from '@app/storages/DataStorage';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

@@ -8,8 +8,8 @@
  */
 
 import {Request, Response} from 'express';
-import {HttpError} from '../../errors/HttpError';
-import {Logger} from '../../loggers/Logger';
+import {HttpError} from '@app/errors/HttpError';
+import {Logger} from '@app/loggers/Logger';
 
 /**
  * Display the list of all packages in the "provider" format.

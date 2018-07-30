@@ -8,9 +8,9 @@
  */
 
 import auth from 'basic-auth';
-import {AuthStrategy} from './AuthStrategy';
+import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
 import {Request} from 'express';
-import {createHash} from '../../../utils/crypto';
+import {createHash} from '@app/utils/crypto';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

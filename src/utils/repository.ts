@@ -7,14 +7,14 @@
  * file that was distributed with this source code.
  */
 
-import {VcsRepository} from '../composer/repositories/VcsRepository';
-import {Config} from '../configs/Config';
-import {CodeRepositoryRepository} from '../db/repositories/CodeRepositoryRepository';
-import {AttributeExists} from '../db/constraints/AttributeExists';
-import {And} from '../db/constraints/And';
-import {Not} from '../db/constraints/Not';
-import {In} from '../db/constraints/In';
-import {LooseObject} from './LooseObject';
+import {VcsRepository} from '@app/composer/repositories/VcsRepository';
+import {Config} from '@app/configs/Config';
+import {CodeRepositoryRepository} from '@app/db/repositories/CodeRepositoryRepository';
+import {AttributeExists} from '@app/db/constraints/AttributeExists';
+import {And} from '@app/db/constraints/And';
+import {Not} from '@app/db/constraints/Not';
+import {In} from '@app/db/constraints/In';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * Retrieves all repositories.

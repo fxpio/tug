@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {createApp} from './app';
+import {createApp} from '@app/ui/app';
 
 const context = {
     apiBaseUrl: `${window.location.protocol}//${window.location.host}`

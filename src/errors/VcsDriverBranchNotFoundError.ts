@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {VcsDriverIdentifierNotFoundError} from './VcsDriverIdentifierNotFoundError';
+import {VcsDriverIdentifierNotFoundError} from '@app/errors/VcsDriverIdentifierNotFoundError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

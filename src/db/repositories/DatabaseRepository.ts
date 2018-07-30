@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import {Results} from '../Results';
-import {Database} from '../Database';
-import {LooseObject} from '../../utils/LooseObject';
+import {Results} from '@app/db/Results';
+import {Database} from '@app/db/Database';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

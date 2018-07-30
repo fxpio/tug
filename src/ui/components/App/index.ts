@@ -9,9 +9,8 @@
 
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import WithRender from './template.html';
+import WithRender from '@app/ui/components/App/template.html';
 import {MetaInfo} from 'vue-meta';
-import {TOGGLE_DRAWER} from '../../store';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -32,7 +31,7 @@ export class App extends Vue
     }
 
     public set drawer(value) {
-        this.$store.commit(TOGGLE_DRAWER, value as boolean);
+        this.$store.commit('TOGGLE_DRAWER', value as boolean);
     }
 
     /**

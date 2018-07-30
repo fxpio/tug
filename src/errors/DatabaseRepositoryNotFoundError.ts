@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {DatabaseError} from './DatabaseError';
+import {DatabaseError} from '@app/errors/DatabaseError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

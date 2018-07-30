@@ -8,8 +8,8 @@
  */
 
 import {Request, Response} from 'express';
-import {TranslatorTranslation} from './TranslatorTranslation';
-import {LooseObject} from '../utils/LooseObject';
+import {TranslatorTranslation} from '@app/translators/TranslatorTranslation';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

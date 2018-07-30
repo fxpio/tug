@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {LooseObject} from '../../utils/LooseObject';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

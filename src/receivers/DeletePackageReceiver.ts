@@ -8,11 +8,11 @@
  */
 
 import {Response} from 'express';
-import {Logger} from '../loggers/Logger';
-import {QueueReceiver} from '../queues/QueueReceiver';
-import {PackageManager} from '../composer/packages/PackageManager';
-import {MessageQueue} from '../queues/MessageQueue';
-import {LooseObject} from '../utils/LooseObject';
+import {Logger} from '@app/loggers/Logger';
+import {QueueReceiver} from '@app/queues/QueueReceiver';
+import {PackageManager} from '@app/composer/packages/PackageManager';
+import {MessageQueue} from '@app/queues/MessageQueue';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

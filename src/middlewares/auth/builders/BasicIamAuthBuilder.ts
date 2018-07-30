@@ -9,7 +9,7 @@
 
 import {Request} from 'express';
 import AWS from 'aws-sdk';
-import {AuthBuilder} from './AuthBuilder';
+import {AuthBuilder} from '@app/middlewares/auth/builders/AuthBuilder';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

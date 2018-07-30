@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {HttpBadRequestError} from './HttpBadRequestError';
+import {HttpBadRequestError} from '@app/errors/HttpBadRequestError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

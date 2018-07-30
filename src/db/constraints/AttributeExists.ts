@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {Constraint} from './Constraint';
+import {Constraint} from '@app/db/constraints/Constraint';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

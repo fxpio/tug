@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import {DatabaseError} from '../errors/DatabaseError';
-import {DatabaseRepository, DatabaseRepositoryConstructor} from './repositories/DatabaseRepository';
-import {Results} from './Results';
-import {LooseObject} from '../utils/LooseObject';
-import {DatabaseInvalidAttributeError} from '../errors/DatabaseInvalidAttributeError';
-import {DatabaseRepositoryNotFoundError} from '../errors/DatabaseRepositoryNotFoundError';
-import {DatabaseUnexpectedDataError} from '../errors/DatabaseUnexpectedDataError';
+import {DatabaseError} from '@app/errors/DatabaseError';
+import {DatabaseRepository, DatabaseRepositoryConstructor} from '@app/db/repositories/DatabaseRepository';
+import {Results} from '@app/db/Results';
+import {LooseObject} from '@app/utils/LooseObject';
+import {DatabaseInvalidAttributeError} from '@app/errors/DatabaseInvalidAttributeError';
+import {DatabaseRepositoryNotFoundError} from '@app/errors/DatabaseRepositoryNotFoundError';
+import {DatabaseUnexpectedDataError} from '@app/errors/DatabaseUnexpectedDataError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

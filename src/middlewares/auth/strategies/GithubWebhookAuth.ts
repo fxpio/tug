@@ -8,9 +8,9 @@
  */
 
 import crypto from 'crypto';
-import {AuthStrategy} from './AuthStrategy';
-import {ConfigManager} from '../../../configs/ConfigManager';
-import {isGithubEvent} from '../../../utils/apiGithub';
+import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
+import {ConfigManager} from '@app/configs/ConfigManager';
+import {isGithubEvent} from '@app/utils/apiGithub';
 import {URL} from 'url';
 import {Request} from 'express';
 

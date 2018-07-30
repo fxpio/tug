@@ -8,11 +8,11 @@
  */
 
 import {Response} from 'express';
-import {Cache} from '../../caches/Cache';
-import {RepositoryManager} from '../repositories/RepositoryManager';
-import {PackageManager} from './PackageManager';
-import {LooseObject} from '../../utils/LooseObject';
-import {createHash} from '../../utils/crypto';
+import {Cache} from '@app/caches/Cache';
+import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
+import {PackageManager} from '@app/composer/packages/PackageManager';
+import {LooseObject} from '@app/utils/LooseObject';
+import {createHash} from '@app/utils/crypto';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

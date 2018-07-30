@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {TransportError} from './TransportError';
+import {TransportError} from '@app/errors/TransportError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

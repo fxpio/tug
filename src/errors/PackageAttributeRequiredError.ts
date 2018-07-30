@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {PackageError} from './PackageError';
+import {PackageError} from '@app/errors/PackageError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

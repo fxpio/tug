@@ -9,9 +9,9 @@
 
 import Joi from 'joi';
 import {Request, Response} from 'express';
-import {AuthBuilder} from '../../middlewares/auth/builders/AuthBuilder';
-import {HttpUnauthorizedError} from '../../errors/HttpUnauthorizedError';
-import {validateForm} from '../../utils/validation';
+import {AuthBuilder} from '@app/middlewares/auth/builders/AuthBuilder';
+import {HttpUnauthorizedError} from '@app/errors/HttpUnauthorizedError';
+import {validateForm} from '@app/utils/validation';
 
 /**
  * Create the temporary token.

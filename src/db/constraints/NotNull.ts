@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {NotEqual} from './NotEqual';
+import {NotEqual} from '@app/db/constraints/NotEqual';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

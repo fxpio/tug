@@ -7,14 +7,14 @@
  * file that was distributed with this source code.
  */
 
-import {Config} from '../../../configs/Config';
-import {VcsDriverContentNotFoundError} from '../../../errors/VcsDriverContentNotFoundError';
-import {VcsDriverInvalidJsonError} from '../../../errors/VcsDriverInvalidJsonError';
-import {VcsDriverInvalidUrlError} from '../../../errors/VcsDriverInvalidUrlError';
-import {RemoteFilesystem} from '../../utils/RemoteFilesystem';
-import {VcsDriver} from './VcsDriver';
-import {TransportError} from '../../../errors/TransportError';
-import {LooseObject} from '../../../utils/LooseObject';
+import {Config} from '@app/configs/Config';
+import {VcsDriverContentNotFoundError} from '@app/errors/VcsDriverContentNotFoundError';
+import {VcsDriverInvalidJsonError} from '@app/errors/VcsDriverInvalidJsonError';
+import {VcsDriverInvalidUrlError} from '@app/errors/VcsDriverInvalidUrlError';
+import {RemoteFilesystem} from '@app/composer/utils/RemoteFilesystem';
+import {VcsDriver} from '@app/composer/repositories/vcs-drivers/VcsDriver';
+import {TransportError} from '@app/errors/TransportError';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

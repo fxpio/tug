@@ -9,7 +9,7 @@
 
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import WithRender from './template.html';
+import WithRender from '@app/ui/components/Error404/template.html';
 import {MetaInfo} from 'vue-meta';
 
 /**

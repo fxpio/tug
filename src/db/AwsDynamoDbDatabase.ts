@@ -8,10 +8,10 @@
  */
 
 import AWS from 'aws-sdk';
-import {Database} from './Database';
-import {Results} from './Results';
-import {LooseObject} from '../utils/LooseObject';
-import {convertQueryCriteria} from '../utils/dynamodb';
+import {Database} from '@app/db/Database';
+import {Results} from '@app/db/Results';
+import {LooseObject} from '@app/utils/LooseObject';
+import {convertQueryCriteria} from '@app/utils/dynamodb';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

@@ -8,9 +8,9 @@
  */
 
 import auth from 'basic-auth';
-import {AuthStrategy} from './AuthStrategy';
-import {ApiKeyRepository} from '../../../db/repositories/ApiKeyRepository';
-import {Database} from '../../../db/Database';
+import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
+import {ApiKeyRepository} from '@app/db/repositories/ApiKeyRepository';
+import {Database} from '@app/db/Database';
 import {Request} from 'express';
 
 /**

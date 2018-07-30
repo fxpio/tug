@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import {Constraint} from './Constraint';
-import {generateToken} from '../../utils/token';
+import {Constraint} from '@app/db/constraints/Constraint';
+import {generateToken} from '@app/utils/token';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

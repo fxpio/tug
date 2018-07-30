@@ -8,11 +8,11 @@
  */
 
 import Joi from 'joi';
-import {PackageManager} from '../../composer/packages/PackageManager';
-import {validateForm} from '../../utils/validation';
+import {PackageManager} from '@app/composer/packages/PackageManager';
+import {validateForm} from '@app/utils/validation';
 import {Request, Response} from 'express';
-import {LooseObject} from '../../utils/LooseObject';
-import {Translator} from '../../translators/Translator';
+import {LooseObject} from '@app/utils/LooseObject';
+import {Translator} from '@app/translators/Translator';
 
 /**
  * Refresh all packages or a single package of a repository.

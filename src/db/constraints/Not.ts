@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import {Constraint} from './Constraint';
-import {LooseObject} from '../../utils/LooseObject';
+import {Constraint} from '@app/db/constraints/Constraint';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

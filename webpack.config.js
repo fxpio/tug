@@ -33,6 +33,7 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js'],
         alias: {
+            '@app': path.resolve(__dirname, 'src'),
             'aws-serverless-express': path.resolve(__dirname, 'node_modules/aws-serverless-express/src')
         }
     },

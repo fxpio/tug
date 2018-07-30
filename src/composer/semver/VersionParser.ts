@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {VersionParserInvalidVersionError} from '../../errors/VersionParserInvalidVersionError';
+import {VersionParserInvalidVersionError} from '@app/errors/VersionParserInvalidVersionError';
 
 /**
  * The Composer version parser for javascript.

@@ -8,8 +8,8 @@
  */
 
 import AWS from 'aws-sdk';
-import {DataStorage} from './DataStorage';
-import {LooseObject} from '../utils/LooseObject';
+import {DataStorage} from '@app/storages/DataStorage';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

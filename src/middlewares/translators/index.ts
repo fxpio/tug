@@ -8,7 +8,7 @@
  */
 
 import {Request, Response} from 'express';
-import {Translator} from '../../translators/Translator';
+import {Translator} from '@app/translators/Translator';
 
 /**
  * Display the list of all packages in the "provider" format.

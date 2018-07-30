@@ -9,7 +9,7 @@
 
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios';
 import {Store} from 'vuex';
-import {RootState} from './states/RootState';
+import {RootState} from '@app/ui/states/RootState';
 
 /**
  * Create the api client.

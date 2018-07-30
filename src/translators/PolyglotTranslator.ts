@@ -9,11 +9,11 @@
 
 import Polyglot from 'node-polyglot';
 import {Request, Response} from 'express';
-import {Translator} from './Translator';
-import {TranslatorTranslations} from './TranslatorTranslations';
-import {TranslatorTranslation} from './TranslatorTranslation';
-import {LooseObject} from '../utils/LooseObject';
-import {AcceptLanguageParser} from './AcceptLanguageParser';
+import {Translator} from '@app/translators/Translator';
+import {TranslatorTranslations} from '@app/translators/TranslatorTranslations';
+import {TranslatorTranslation} from '@app/translators/TranslatorTranslation';
+import {LooseObject} from '@app/utils/LooseObject';
+import {AcceptLanguageParser} from '@app/translators/AcceptLanguageParser';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

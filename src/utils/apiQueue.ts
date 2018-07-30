@@ -8,7 +8,7 @@
  */
 
 import {Request} from 'express';
-import {LooseObject} from './LooseObject';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * Check if the request comes from SQS with API Gateway trigger.

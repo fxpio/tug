@@ -9,7 +9,7 @@
 
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import WithRender from './template.html';
+import WithRender from '@app/ui/components/ChildRouteWrapper/template.html';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

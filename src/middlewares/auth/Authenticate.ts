@@ -8,8 +8,8 @@
  */
 
 import {Request, Response} from 'express';
-import {AuthStrategy} from './strategies/AuthStrategy';
-import {HttpUnauthorizedError} from '../../errors/HttpUnauthorizedError';
+import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
+import {HttpUnauthorizedError} from '@app/errors/HttpUnauthorizedError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

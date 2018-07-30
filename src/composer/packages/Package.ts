@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import {PackageError} from '../../errors/PackageError';
-import {LooseObject} from '../../utils/LooseObject';
-import {PackageAttributeRequiredError} from '../../errors/PackageAttributeRequiredError';
+import {PackageError} from '@app/errors/PackageError';
+import {LooseObject} from '@app/utils/LooseObject';
+import {PackageAttributeRequiredError} from '@app/errors/PackageAttributeRequiredError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

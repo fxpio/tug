@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import {VersionParserError} from './VersionParserError';
-import {pregQuote} from '../utils/regex';
+import {VersionParserError} from '@app/errors/VersionParserError';
+import {pregQuote} from '@app/utils/regex';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

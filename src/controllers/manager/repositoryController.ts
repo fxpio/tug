@@ -8,11 +8,11 @@
  */
 
 import Joi from 'joi';
-import {RepositoryManager} from '../../composer/repositories/RepositoryManager';
-import {Logger} from '../../loggers/Logger';
-import {validateForm} from '../../utils/validation';
+import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
+import {Logger} from '@app/loggers/Logger';
+import {validateForm} from '@app/utils/validation';
 import {Request, Response} from 'express';
-import {Translator} from '../../translators/Translator';
+import {Translator} from '@app/translators/Translator';
 
 /**
  * Enable the repository.

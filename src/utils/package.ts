@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import {PackageRepository} from '../db/repositories/PackageRepository';
-import {Not} from '../db/constraints/Not';
-import {In} from '../db/constraints/In';
-import {Package} from '../composer/packages/Package';
-import {LooseObject} from './LooseObject';
+import {PackageRepository} from '@app/db/repositories/PackageRepository';
+import {Not} from '@app/db/constraints/Not';
+import {In} from '@app/db/constraints/In';
+import {Package} from '@app/composer/packages/Package';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * Retrieves all package versions.

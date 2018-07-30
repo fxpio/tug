@@ -8,9 +8,9 @@
  */
 
 import Joi from 'joi';
-import {HttpValidationError} from '../errors/HttpValidationError';
+import {HttpValidationError} from '@app/errors/HttpValidationError';
 import {Request} from 'express';
-import {LooseObject} from './LooseObject';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * Validate the form request.

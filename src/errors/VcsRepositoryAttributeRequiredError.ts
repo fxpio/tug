@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {VcsRepositoryError} from './VcsRepositoryError';
+import {VcsRepositoryError} from '@app/errors/VcsRepositoryError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

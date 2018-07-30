@@ -8,16 +8,16 @@
  */
 
 import {Response} from 'express';
-import {RepositoryManager} from '../repositories/RepositoryManager';
-import {VcsRepository} from '../repositories/VcsRepository';
-import {VersionParser} from '../semver/VersionParser';
-import {MessageQueue} from '../../queues/MessageQueue';
-import {PackageRepository} from '../../db/repositories/PackageRepository';
-import {RepositoryNotSupportedError} from '../../errors/RepositoryNotSupportedError';
-import {RepositoryNotFoundError} from '../../errors/RepositoryNotFoundError';
-import {Package} from './Package';
-import {retrieveAllVersions} from '../../utils/package';
-import {LooseObject} from '../../utils/LooseObject';
+import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
+import {VcsRepository} from '@app/composer/repositories/VcsRepository';
+import {VersionParser} from '@app/composer/semver/VersionParser';
+import {MessageQueue} from '@app/queues/MessageQueue';
+import {PackageRepository} from '@app/db/repositories/PackageRepository';
+import {RepositoryNotSupportedError} from '@app/errors/RepositoryNotSupportedError';
+import {RepositoryNotFoundError} from '@app/errors/RepositoryNotFoundError';
+import {Package} from '@app/composer/packages/Package';
+import {retrieveAllVersions} from '@app/utils/package';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

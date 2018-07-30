@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import {BaseMessageQueue} from './BaseMessageQueue';
-import {LooseObject} from '../utils/LooseObject';
+import {BaseMessageQueue} from '@app/queues/BaseMessageQueue';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import {AuthStrategy} from './AuthStrategy';
-import {isSqsRequest} from '../../../utils/apiQueue';
+import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
+import {isSqsRequest} from '@app/utils/apiQueue';
 import {Request} from 'express';
 
 /**

@@ -8,8 +8,8 @@
  */
 
 import {Request} from 'express';
-import {AuthBuilder} from './AuthBuilder';
-import {createHash} from '../../../utils/crypto';
+import {AuthBuilder} from '@app/middlewares/auth/builders/AuthBuilder';
+import {createHash} from '@app/utils/crypto';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

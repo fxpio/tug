@@ -9,7 +9,7 @@
 
 import Vue from 'vue';
 import Vuex, {Store} from 'vuex';
-import {RootState} from './states/RootState';
+import {RootState} from '@app/ui/states/RootState';
 import Router from 'vue-router';
 import {AxiosBasicCredentials, AxiosInstance} from 'axios';
 

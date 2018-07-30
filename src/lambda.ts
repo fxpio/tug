@@ -11,13 +11,13 @@ import express from 'express';
 import awsServerlessExpress from 'aws-serverless-express';
 import compression from 'compression';
 import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
-import {AwsS3Storage} from './storages/AwsS3Storage';
-import {AwsSqsMessageQueue} from './queues/AwsSqsMessageQueue';
-import {Logger} from './loggers/Logger';
-import {AwsDynamoDbDatabase} from './db/AwsDynamoDbDatabase';
-import {BasicIamAuth} from './middlewares/auth/strategies/BasicIamAuth';
-import {BasicIamAuthBuilder} from './middlewares/auth/builders/BasicIamAuthBuilder';
-import {createApp} from './app';
+import {AwsS3Storage} from '@app/storages/AwsS3Storage';
+import {AwsSqsMessageQueue} from '@app/queues/AwsSqsMessageQueue';
+import {Logger} from '@app/loggers/Logger';
+import {AwsDynamoDbDatabase} from '@app/db/AwsDynamoDbDatabase';
+import {BasicIamAuth} from '@app/middlewares/auth/strategies/BasicIamAuth';
+import {BasicIamAuthBuilder} from '@app/middlewares/auth/builders/BasicIamAuthBuilder';
+import {createApp} from '@app/app';
 
 // NOTE: If you get ERR_CONTENT_DECODING_FAILED in your browser, this is likely
 // due to a compressed response (e.g. gzip) which has not been handled correctly
@@ -69,7 +69,7 @@ createApp({
     logger: new Logger(env.LOGGER_LEVEL, debug),
     basicAuthStrategy: new BasicIamAuth(env.AWS_ACCOUNT_ID),
     basicAuthBuilder: new BasicIamAuthBuilder(),
-    assetManifestPath: './assets/manifest.json',
+    assetManifestPath: 'assets/manifest.json',
     assetBaseUrl: 'assets',
     debug: debug
 });

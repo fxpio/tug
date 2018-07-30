@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import {Logger} from '../../loggers/Logger';
-import {RepositoryManager} from '../../composer/repositories/RepositoryManager';
-import {VcsRepository} from '../../composer/repositories/VcsRepository';
-import {MessageQueue} from '../../queues/MessageQueue';
-import {getGithubEvent} from '../../utils/apiGithub';
+import {Logger} from '@app/loggers/Logger';
+import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
+import {VcsRepository} from '@app/composer/repositories/VcsRepository';
+import {MessageQueue} from '@app/queues/MessageQueue';
+import {getGithubEvent} from '@app/utils/apiGithub';
 import {Request, Response} from 'express';
 
 /**

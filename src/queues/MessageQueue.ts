@@ -8,8 +8,8 @@
  */
 
 import {Response} from 'express';
-import {QueueReceiver} from './QueueReceiver';
-import {LooseObject} from '../utils/LooseObject';
+import {QueueReceiver} from '@app/queues/QueueReceiver';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

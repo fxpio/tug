@@ -7,18 +7,18 @@
  * file that was distributed with this source code.
  */
 
-import {HttpNotFoundError} from '../../errors/HttpNotFoundError';
-import {HttpError} from '../../errors/HttpError';
-import {HttpValidationError} from '../../errors/HttpValidationError';
-import {HttpBadRequestError} from '../../errors/HttpBadRequestError';
-import {VcsDriverTagNotFoundError} from '../../errors/VcsDriverTagNotFoundError';
-import {VcsDriverBranchNotFoundError} from '../../errors/VcsDriverBranchNotFoundError';
-import {RepositoryNotFoundError} from '../../errors/RepositoryNotFoundError';
-import {RepositoryNotSupportedError} from '../../errors/RepositoryNotSupportedError';
-import {HttpUnauthorizedError} from '../../errors/HttpUnauthorizedError';
+import {HttpNotFoundError} from '@app/errors/HttpNotFoundError';
+import {HttpError} from '@app/errors/HttpError';
+import {HttpValidationError} from '@app/errors/HttpValidationError';
+import {HttpBadRequestError} from '@app/errors/HttpBadRequestError';
+import {VcsDriverTagNotFoundError} from '@app/errors/VcsDriverTagNotFoundError';
+import {VcsDriverBranchNotFoundError} from '@app/errors/VcsDriverBranchNotFoundError';
+import {RepositoryNotFoundError} from '@app/errors/RepositoryNotFoundError';
+import {RepositoryNotSupportedError} from '@app/errors/RepositoryNotSupportedError';
+import {HttpUnauthorizedError} from '@app/errors/HttpUnauthorizedError';
 import {Request, Response} from 'express';
-import {LooseObject} from '../../utils/LooseObject';
-import {Translator} from '../../translators/Translator';
+import {LooseObject} from '@app/utils/LooseObject';
+import {Translator} from '@app/translators/Translator';
 
 /**
  * Display the http not found error.

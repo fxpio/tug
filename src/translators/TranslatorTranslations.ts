@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {TranslatorTranslation} from './TranslatorTranslation';
+import {TranslatorTranslation} from '@app/translators/TranslatorTranslation';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
