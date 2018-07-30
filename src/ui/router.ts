@@ -38,11 +38,11 @@ export function createRouter(): Router {
                     {   path: '',
                         name: 'home',
                         meta: {requiresAuth: true},
-                        component: () => import('@app/ui/components/Home').then(({ Home }) => Home),
+                        component: () => import('@app/ui/pages/Home').then(({ Home }) => Home),
                     },
                     {   path: 'login',
                         name: 'login',
-                        component: () => import('@app/ui/components/Login').then(({ Login }) => Login)
+                        component: () => import('@app/ui/pages/Login').then(({ Login }) => Login)
                     },
                     {   path: "*",
                         name: 'error404',
