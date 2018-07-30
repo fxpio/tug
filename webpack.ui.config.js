@@ -80,6 +80,7 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.vue', '.json'],
         alias: {
             '@app': path.resolve(__dirname, 'src'),
+            '@assets': path.resolve(__dirname, 'src/ui/assets'),
             'vue$': 'vue/dist/vue.runtime.esm.js'
         }
     },

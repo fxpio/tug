@@ -34,6 +34,7 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js'],
         alias: {
             '@app': path.resolve(__dirname, 'src'),
+            '@assets': path.resolve(__dirname, 'src/ui/assets'),
             'aws-serverless-express': path.resolve(__dirname, 'node_modules/aws-serverless-express/src')
         }
     },
