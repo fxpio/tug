@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import AWS from 'aws-sdk';
 import {Database} from '@app/db/Database';
 import {Results} from '@app/db/Results';
-import {LooseObject} from '@app/utils/LooseObject';
 import {convertQueryCriteria} from '@app/utils/dynamodb';
+import {LooseObject} from '@app/utils/LooseObject';
+import AWS from 'aws-sdk';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

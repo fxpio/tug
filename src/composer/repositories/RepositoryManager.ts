@@ -7,16 +7,16 @@
  * file that was distributed with this source code.
  */
 
-import {Response} from 'express';
-import {CodeRepositoryRepository} from '@app/db/repositories/CodeRepositoryRepository';
-import {ConfigManager} from '@app/configs/ConfigManager';
 import {VcsRepository} from '@app/composer/repositories/VcsRepository';
-import {MessageQueue} from '@app/queues/MessageQueue';
-import {RepositoryNotSupportedError} from '@app/errors/RepositoryNotSupportedError';
+import {ConfigManager} from '@app/configs/ConfigManager';
+import {CodeRepositoryRepository} from '@app/db/repositories/CodeRepositoryRepository';
 import {RepositoryNotFoundError} from '@app/errors/RepositoryNotFoundError';
+import {RepositoryNotSupportedError} from '@app/errors/RepositoryNotSupportedError';
 import {VcsRepositoryNotFoundError} from '@app/errors/VcsRepositoryNotFoundError';
+import {MessageQueue} from '@app/queues/MessageQueue';
 import {LooseObject} from '@app/utils/LooseObject';
 import {retrieveAllRepositories} from '@app/utils/repository';
+import {Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

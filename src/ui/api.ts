@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
+import {RootState} from '@app/ui/states/RootState';
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios';
 import {Store} from 'vuex';
-import {RootState} from '@app/ui/states/RootState';
 
 /**
  * Create the api client.

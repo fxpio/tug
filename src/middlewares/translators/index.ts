@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import {Request, Response} from 'express';
 import {Translator} from '@app/translators/Translator';
+import {Request, Response} from 'express';
 
 /**
  * Display the list of all packages in the "provider" format.

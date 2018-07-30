@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import crypto from 'crypto';
-import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
 import {ConfigManager} from '@app/configs/ConfigManager';
+import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
 import {isGithubEvent} from '@app/utils/apiGithub';
-import {URL} from 'url';
+import crypto from 'crypto';
 import {Request} from 'express';
+import {URL} from 'url';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

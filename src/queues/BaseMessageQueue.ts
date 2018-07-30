@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import {Response} from 'express';
-import {QueueReceiver} from '@app/queues/QueueReceiver';
 import {MessageQueue} from '@app/queues/MessageQueue';
+import {QueueReceiver} from '@app/queues/QueueReceiver';
 import {LooseObject} from '@app/utils/LooseObject';
+import {Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

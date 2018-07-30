@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import fs from 'fs';
 import {LooseObject} from '@app/utils/LooseObject';
+import fs from 'fs';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

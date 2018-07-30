@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import Vue from 'vue';
-import Vuex, {Store} from 'vuex';
 import {RootState} from '@app/ui/states/RootState';
-import Router from 'vue-router';
 import {AxiosBasicCredentials, AxiosInstance} from 'axios';
+import Vue from 'vue';
+import Router from 'vue-router';
+import Vuex, {Store} from 'vuex';
 
 Vue.use(Vuex);
 

@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import {Request, Response} from 'express';
 import {TranslatorTranslation} from '@app/translators/TranslatorTranslation';
 import {LooseObject} from '@app/utils/LooseObject';
+import {Request, Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

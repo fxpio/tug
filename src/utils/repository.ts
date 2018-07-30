@@ -9,11 +9,11 @@
 
 import {VcsRepository} from '@app/composer/repositories/VcsRepository';
 import {Config} from '@app/configs/Config';
-import {CodeRepositoryRepository} from '@app/db/repositories/CodeRepositoryRepository';
-import {AttributeExists} from '@app/db/constraints/AttributeExists';
 import {And} from '@app/db/constraints/And';
-import {Not} from '@app/db/constraints/Not';
+import {AttributeExists} from '@app/db/constraints/AttributeExists';
 import {In} from '@app/db/constraints/In';
+import {Not} from '@app/db/constraints/Not';
+import {CodeRepositoryRepository} from '@app/db/repositories/CodeRepositoryRepository';
 import {LooseObject} from '@app/utils/LooseObject';
 
 /**

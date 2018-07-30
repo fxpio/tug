@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import Joi from 'joi';
 import {PackageManager} from '@app/composer/packages/PackageManager';
+import {Translator} from '@app/translators/Translator';
+import {LooseObject} from '@app/utils/LooseObject';
 import {validateForm} from '@app/utils/validation';
 import {Request, Response} from 'express';
-import {LooseObject} from '@app/utils/LooseObject';
-import {Translator} from '@app/translators/Translator';
+import Joi from 'joi';
 
 /**
  * Refresh all packages or a single package of a repository.

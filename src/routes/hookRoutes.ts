@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
+import {githubHook} from '@app/controllers/hooks/githubController';
+import {queueHook} from '@app/controllers/hooks/queueController';
 import {Authenticate} from '@app/middlewares/auth/Authenticate';
 import {GithubWebhookAuth} from '@app/middlewares/auth/strategies/GithubWebhookAuth';
 import {QueueAuth} from '@app/middlewares/auth/strategies/QueueAuth';
-import {Router} from 'express';
 import {asyncHandler} from '@app/utils/handler';
-import {githubHook} from '@app/controllers/hooks/githubController';
-import {queueHook} from '@app/controllers/hooks/queueController';
+import {Router} from 'express';
 
 /**
  * Generate the routes.

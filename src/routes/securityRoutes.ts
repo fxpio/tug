@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
+import {createToken} from '@app/controllers/securities/authController';
 import {Authenticate} from '@app/middlewares/auth/Authenticate';
 import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
-import {Router} from 'express';
 import {asyncHandler} from '@app/utils/handler';
-import {createToken} from '@app/controllers/securities/authController';
+import {Router} from 'express';
 
 /**
  * Generate the routes.

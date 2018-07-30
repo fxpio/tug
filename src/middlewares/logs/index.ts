@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import {Request, Response} from 'express';
 import {HttpError} from '@app/errors/HttpError';
 import {Logger} from '@app/loggers/Logger';
+import {Request, Response} from 'express';
 
 /**
  * Display the list of all packages in the "provider" format.

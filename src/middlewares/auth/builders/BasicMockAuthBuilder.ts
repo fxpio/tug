@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import {Request} from 'express';
 import {AuthBuilder} from '@app/middlewares/auth/builders/AuthBuilder';
 import {createHash} from '@app/utils/crypto';
+import {Request} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

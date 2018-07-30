@@ -7,14 +7,14 @@
  * file that was distributed with this source code.
  */
 
-import Joi from 'joi';
-import {ApiKeyRepository} from '@app/db/repositories/ApiKeyRepository';
-import {generateToken} from '@app/utils/token';
-import {validateForm} from '@app/utils/validation';
 import {Database} from '@app/db/Database';
-import {Request, Response} from 'express';
+import {ApiKeyRepository} from '@app/db/repositories/ApiKeyRepository';
 import {HttpValidationError} from '@app/errors/HttpValidationError';
 import {Translator} from '@app/translators/Translator';
+import {generateToken} from '@app/utils/token';
+import {validateForm} from '@app/utils/validation';
+import {Request, Response} from 'express';
+import Joi from 'joi';
 
 /**
  * Create the api key.

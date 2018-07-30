@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import {Response} from 'express';
+import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
 import {Logger} from '@app/loggers/Logger';
 import {MessageQueue} from '@app/queues/MessageQueue';
 import {QueueReceiver} from '@app/queues/QueueReceiver';
-import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
 import {LooseObject} from '@app/utils/LooseObject';
+import {Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

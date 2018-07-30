@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import auth from 'basic-auth';
 import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
-import {Request} from 'express';
 import {createHash} from '@app/utils/crypto';
+import auth from 'basic-auth';
+import {Request} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

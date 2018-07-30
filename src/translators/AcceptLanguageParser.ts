@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import {LooseObject} from '@app/utils/LooseObject';
 import {AcceptLanguageItem} from '@app/translators/AcceptLanguageItem';
+import {LooseObject} from '@app/utils/LooseObject';
 import {string} from 'joi';
 
 /**

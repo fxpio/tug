@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import {Response} from 'express';
 import {Cache} from '@app/caches/Cache';
-import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
 import {PackageManager} from '@app/composer/packages/PackageManager';
-import {LooseObject} from '@app/utils/LooseObject';
+import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
 import {createHash} from '@app/utils/crypto';
+import {LooseObject} from '@app/utils/LooseObject';
+import {Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

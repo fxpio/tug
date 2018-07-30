@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import merge from 'lodash.merge';
-import fetch, {Response} from 'node-fetch';
 import {Config} from '@app/configs/Config';
 import {TransportError} from '@app/errors/TransportError';
 import {TransportResourceNotFoundError} from '@app/errors/TransportResourceNotFoundError';
 import {LooseObject} from '@app/utils/LooseObject';
+import merge from 'lodash.merge';
+import fetch, {Response} from 'node-fetch';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

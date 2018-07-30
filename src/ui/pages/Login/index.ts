@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
 import WithRender from '@app/ui/pages/Login/template.html';
+import Vue from 'vue';
 import {MetaInfo} from 'vue-meta';
+import {Component} from 'vue-property-decorator';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

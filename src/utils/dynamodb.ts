@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import AWS from 'aws-sdk';
 import {Constraint} from '@app/db/constraints/Constraint';
 import {Equal} from '@app/db/constraints/Equal';
 import {LooseObject} from '@app/utils/LooseObject';
+import AWS from 'aws-sdk';
 
 /**
  * Convert the criteria into dynamo db parameters for query.

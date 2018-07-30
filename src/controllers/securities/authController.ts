@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import Joi from 'joi';
-import {Request, Response} from 'express';
-import {AuthBuilder} from '@app/middlewares/auth/builders/AuthBuilder';
 import {HttpUnauthorizedError} from '@app/errors/HttpUnauthorizedError';
+import {AuthBuilder} from '@app/middlewares/auth/builders/AuthBuilder';
 import {validateForm} from '@app/utils/validation';
+import {Request, Response} from 'express';
+import Joi from 'joi';
 
 /**
  * Create the temporary token.

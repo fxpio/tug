@@ -7,14 +7,14 @@
  * file that was distributed with this source code.
  */
 
-import dotenv from 'dotenv';
-import {LocalStorage} from '@app/storages/LocalStorage';
-import {LocalMessageQueue} from '@app/queues/LocalMessageQueue';
-import {Logger} from '@app/loggers/Logger';
-import {AwsDynamoDbDatabase} from '@app/db/AwsDynamoDbDatabase';
-import {BasicMockAuth} from '@app/middlewares/auth/strategies/BasicMockAuth';
-import {BasicMockAuthBuilder} from '@app/middlewares/auth/builders/BasicMockAuthBuilder';
 import {createApp} from '@app/app';
+import {AwsDynamoDbDatabase} from '@app/db/AwsDynamoDbDatabase';
+import {Logger} from '@app/loggers/Logger';
+import {BasicMockAuthBuilder} from '@app/middlewares/auth/builders/BasicMockAuthBuilder';
+import {BasicMockAuth} from '@app/middlewares/auth/strategies/BasicMockAuth';
+import {LocalMessageQueue} from '@app/queues/LocalMessageQueue';
+import {LocalStorage} from '@app/storages/LocalStorage';
+import dotenv from 'dotenv';
 
 dotenv.config();
 

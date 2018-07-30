@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import auth from 'basic-auth';
-import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
-import {ApiKeyRepository} from '@app/db/repositories/ApiKeyRepository';
 import {Database} from '@app/db/Database';
+import {ApiKeyRepository} from '@app/db/repositories/ApiKeyRepository';
+import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
+import auth from 'basic-auth';
 import {Request} from 'express';
 
 /**

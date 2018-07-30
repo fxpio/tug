@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import {Results} from '@app/db/Results';
 import {Database} from '@app/db/Database';
+import {Results} from '@app/db/Results';
 import {LooseObject} from '@app/utils/LooseObject';
 
 /**

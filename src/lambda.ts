@@ -7,17 +7,17 @@
  * file that was distributed with this source code.
  */
 
-import express from 'express';
-import awsServerlessExpress from 'aws-serverless-express';
-import compression from 'compression';
-import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
-import {AwsS3Storage} from '@app/storages/AwsS3Storage';
-import {AwsSqsMessageQueue} from '@app/queues/AwsSqsMessageQueue';
-import {Logger} from '@app/loggers/Logger';
-import {AwsDynamoDbDatabase} from '@app/db/AwsDynamoDbDatabase';
-import {BasicIamAuth} from '@app/middlewares/auth/strategies/BasicIamAuth';
-import {BasicIamAuthBuilder} from '@app/middlewares/auth/builders/BasicIamAuthBuilder';
 import {createApp} from '@app/app';
+import {AwsDynamoDbDatabase} from '@app/db/AwsDynamoDbDatabase';
+import {Logger} from '@app/loggers/Logger';
+import {BasicIamAuthBuilder} from '@app/middlewares/auth/builders/BasicIamAuthBuilder';
+import {BasicIamAuth} from '@app/middlewares/auth/strategies/BasicIamAuth';
+import {AwsSqsMessageQueue} from '@app/queues/AwsSqsMessageQueue';
+import {AwsS3Storage} from '@app/storages/AwsS3Storage';
+import awsServerlessExpress from 'aws-serverless-express';
+import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
+import compression from 'compression';
+import express from 'express';
 
 // NOTE: If you get ERR_CONTENT_DECODING_FAILED in your browser, this is likely
 // due to a compressed response (e.g. gzip) which has not been handled correctly

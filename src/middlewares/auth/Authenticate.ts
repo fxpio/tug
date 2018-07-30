@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import {Request, Response} from 'express';
-import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
 import {HttpUnauthorizedError} from '@app/errors/HttpUnauthorizedError';
+import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
+import {Request, Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

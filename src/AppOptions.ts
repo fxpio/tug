@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import express from 'express';
+import {Database} from '@app/db/Database';
+import {Logger} from '@app/loggers/Logger';
+import {AuthBuilder} from '@app/middlewares/auth/builders/AuthBuilder';
+import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
 import {MessageQueue} from '@app/queues/MessageQueue';
 import {DataStorage} from '@app/storages/DataStorage';
-import {Logger} from '@app/loggers/Logger';
-import {Database} from '@app/db/Database';
-import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
-import {AuthBuilder} from '@app/middlewares/auth/builders/AuthBuilder';
+import express from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

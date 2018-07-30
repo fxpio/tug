@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
+import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
 import AWS from 'aws-sdk';
 import auth from 'basic-auth';
 import {Request} from 'express';
-import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

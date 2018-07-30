@@ -7,17 +7,17 @@
  * file that was distributed with this source code.
  */
 
-import {Response} from 'express';
+import {Package} from '@app/composer/packages/Package';
 import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
 import {VcsRepository} from '@app/composer/repositories/VcsRepository';
 import {VersionParser} from '@app/composer/semver/VersionParser';
-import {MessageQueue} from '@app/queues/MessageQueue';
 import {PackageRepository} from '@app/db/repositories/PackageRepository';
-import {RepositoryNotSupportedError} from '@app/errors/RepositoryNotSupportedError';
 import {RepositoryNotFoundError} from '@app/errors/RepositoryNotFoundError';
-import {Package} from '@app/composer/packages/Package';
-import {retrieveAllVersions} from '@app/utils/package';
+import {RepositoryNotSupportedError} from '@app/errors/RepositoryNotSupportedError';
+import {MessageQueue} from '@app/queues/MessageQueue';
 import {LooseObject} from '@app/utils/LooseObject';
+import {retrieveAllVersions} from '@app/utils/package';
+import {Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

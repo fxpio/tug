@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import {Config} from '@app/configs/Config';
 import {RemoteFilesystem} from '@app/composer/utils/RemoteFilesystem';
-import {VcsDriverTagNotFoundError} from '@app/errors/VcsDriverTagNotFoundError';
+import {Config} from '@app/configs/Config';
 import {VcsDriverBranchNotFoundError} from '@app/errors/VcsDriverBranchNotFoundError';
-import {LooseObject} from '@app/utils/LooseObject';
+import {VcsDriverTagNotFoundError} from '@app/errors/VcsDriverTagNotFoundError';
 import {dateToRfc3339} from '@app/utils/date';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * A driver implementation for driver.

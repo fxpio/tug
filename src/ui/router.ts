@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
+import {Error404} from '@app/ui/components/Error404';
+import {RootState} from '@app/ui/states/RootState';
+import {Validator} from 'vee-validate';
 import Vue from 'vue';
 import Router from 'vue-router';
-import {Error404} from '@app/ui/components/Error404';
 import {Route} from 'vue-router/types/router';
-import {Validator} from 'vee-validate';
 import {Store} from 'vuex';
-import {RootState} from '@app/ui/states/RootState';
 
 Vue.use(Router);
 

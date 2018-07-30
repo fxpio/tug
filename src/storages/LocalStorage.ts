@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import fs from 'fs-extra';
 import {DataStorage} from '@app/storages/DataStorage';
+import fs from 'fs-extra';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

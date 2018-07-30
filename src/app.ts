@@ -7,32 +7,17 @@
  * file that was distributed with this source code.
  */
 
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
 import {AppOptions} from '@app/AppOptions';
-import {ConfigRepository} from '@app/db/repositories/ConfigRepository';
+import {AssetManager} from '@app/assets/AssetManager';
+import {Cache} from '@app/caches/Cache';
+import {PackageBuilder} from '@app/composer/packages/PackageBuilder';
+import {PackageManager} from '@app/composer/packages/PackageManager';
+import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
+import {ConfigManager} from '@app/configs/ConfigManager';
 import {ApiKeyRepository} from '@app/db/repositories/ApiKeyRepository';
 import {CodeRepositoryRepository} from '@app/db/repositories/CodeRepositoryRepository';
+import {ConfigRepository} from '@app/db/repositories/ConfigRepository';
 import {PackageRepository} from '@app/db/repositories/PackageRepository';
-import {ConfigManager} from '@app/configs/ConfigManager';
-import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
-import {PackageManager} from '@app/composer/packages/PackageManager';
-import {PackageBuilder} from '@app/composer/packages/PackageBuilder';
-import {Cache} from '@app/caches/Cache';
-import {AssetManager} from '@app/assets/AssetManager';
-import {PolyglotTranslator} from '@app/translators/PolyglotTranslator';
-import {RefreshPackagesReceiver} from '@app/receivers/RefreshPackagesReceiver';
-import {RefreshPackageReceiver} from '@app/receivers/RefreshPackageReceiver';
-import {DeletePackagesReceiver} from '@app/receivers/DeletePackagesReceiver';
-import {DeletePackageReceiver} from '@app/receivers/DeletePackageReceiver';
-import {BuildPackageVersionsReceiver} from '@app/receivers/BuildPackageVersionsReceiver';
-import {packageRoutes} from '@app/routes/packageRoutes';
-import {hookRoutes} from '@app/routes/hookRoutes';
-import {securityRoutes} from '@app/routes/securityRoutes';
-import {managerRoutes} from '@app/routes/managerRoutes';
-import {uiRoutes} from '@app/routes/uiRoutes';
-import {logErrors} from '@app/middlewares/logs';
 import {
     convertJsonSyntaxError,
     convertRepositoryError,
@@ -41,9 +26,24 @@ import {
     convertVcsDriverError,
     showError
 } from '@app/middlewares/errors';
+import {logErrors} from '@app/middlewares/logs';
 import {defineLocale} from '@app/middlewares/translators';
+import {BuildPackageVersionsReceiver} from '@app/receivers/BuildPackageVersionsReceiver';
+import {DeletePackageReceiver} from '@app/receivers/DeletePackageReceiver';
+import {DeletePackagesReceiver} from '@app/receivers/DeletePackagesReceiver';
+import {RefreshPackageReceiver} from '@app/receivers/RefreshPackageReceiver';
+import {RefreshPackagesReceiver} from '@app/receivers/RefreshPackagesReceiver';
+import {hookRoutes} from '@app/routes/hookRoutes';
+import {managerRoutes} from '@app/routes/managerRoutes';
+import {packageRoutes} from '@app/routes/packageRoutes';
+import {securityRoutes} from '@app/routes/securityRoutes';
+import {uiRoutes} from '@app/routes/uiRoutes';
 import translationEn from '@app/translations/en';
 import translationFr from '@app/translations/fr';
+import {PolyglotTranslator} from '@app/translators/PolyglotTranslator';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import express from 'express';
 
 /**
  * Create the app server.

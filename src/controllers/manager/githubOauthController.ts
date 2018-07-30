@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import Joi from 'joi';
 import {ConfigManager} from '@app/configs/ConfigManager';
+import {Translator} from '@app/translators/Translator';
+import {LooseObject} from '@app/utils/LooseObject';
 import {generateToken} from '@app/utils/token';
 import {validateForm} from '@app/utils/validation';
 import {Request, Response} from 'express';
-import {LooseObject} from '@app/utils/LooseObject';
-import {Translator} from '@app/translators/Translator';
+import Joi from 'joi';
 
 /**
  * Create the github oauth token.

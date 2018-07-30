@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import {ConfigRepository} from '@app/db/repositories/ConfigRepository';
 import {Config} from '@app/configs/Config';
+import {ConfigRepository} from '@app/db/repositories/ConfigRepository';
 import {LooseObject} from '@app/utils/LooseObject';
 
 /**

@@ -7,14 +7,14 @@
  * file that was distributed with this source code.
  */
 
-import {URL} from 'url';
-import {Config} from '@app/configs/Config';
-import {VcsDriver} from '@app/composer/repositories/vcs-drivers/VcsDriver';
 import {GithubDriver} from '@app/composer/repositories/vcs-drivers/GithubDriver';
+import {VcsDriver} from '@app/composer/repositories/vcs-drivers/VcsDriver';
+import {Config} from '@app/configs/Config';
 import {RepositoryError} from '@app/errors/RepositoryError';
 import {VcsRepositoryAttributeRequiredError} from '@app/errors/VcsRepositoryAttributeRequiredError';
 import {VcsRepositoryNotFoundError} from '@app/errors/VcsRepositoryNotFoundError';
 import {LooseObject} from '@app/utils/LooseObject';
+import {URL} from 'url';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

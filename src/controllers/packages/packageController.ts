@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import {PackageManager} from '@app/composer/packages/PackageManager';
-import {PackageBuilder} from '@app/composer/packages/PackageBuilder';
 import {Cache} from '@app/caches/Cache';
+import {PackageBuilder} from '@app/composer/packages/PackageBuilder';
+import {PackageManager} from '@app/composer/packages/PackageManager';
 import {HttpNotFoundError} from '@app/errors/HttpNotFoundError';
-import {Request, Response} from 'express';
 import {LooseObject} from '@app/utils/LooseObject';
+import {Request, Response} from 'express';
 
 /**
  * Display the root packages.

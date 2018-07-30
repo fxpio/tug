@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
+import WithRender from '@app/ui/components/Loading/template.html';
 import Vue from 'vue';
 import {Component, Prop} from 'vue-property-decorator';
-import WithRender from '@app/ui/components/Loading/template.html';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

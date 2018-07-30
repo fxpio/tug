@@ -8,8 +8,8 @@
  */
 
 import {MessageQueue} from '@app/queues/MessageQueue';
-import {Request, Response} from 'express';
 import {getSqsMessageBodies} from '@app/utils/apiQueue';
+import {Request, Response} from 'express';
 
 /**
  * Run the queue receivers when the message comes form the queue.

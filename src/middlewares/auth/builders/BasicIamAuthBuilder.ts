@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import {Request} from 'express';
-import AWS from 'aws-sdk';
 import {AuthBuilder} from '@app/middlewares/auth/builders/AuthBuilder';
+import AWS from 'aws-sdk';
+import {Request} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

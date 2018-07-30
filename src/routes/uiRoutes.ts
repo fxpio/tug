@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import {Router} from 'express';
-import {asyncHandler} from '@app/utils/handler';
 import {redirectHome, showWebApp} from '@app/controllers/ui/uiController';
+import {asyncHandler} from '@app/utils/handler';
+import {Router} from 'express';
 
 /**
  * Generate the routes.

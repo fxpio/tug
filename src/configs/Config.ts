@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import merge from 'lodash.merge';
 import {LooseObject} from '@app/utils/LooseObject';
+import merge from 'lodash.merge';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

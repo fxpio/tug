@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import Joi from 'joi';
 import {HttpValidationError} from '@app/errors/HttpValidationError';
-import {Request} from 'express';
 import {LooseObject} from '@app/utils/LooseObject';
+import {Request} from 'express';
+import Joi from 'joi';
 
 /**
  * Validate the form request.

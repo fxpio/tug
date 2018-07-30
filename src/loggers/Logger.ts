@@ -8,8 +8,8 @@
  */
 
 import {LoggerError} from '@app/errors/LoggerError';
-import {LooseObject} from '@app/utils/LooseObject';
 import {LoggerInvalidLevelError} from '@app/errors/LoggerInvalidLevelError';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

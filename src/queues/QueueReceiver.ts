@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import {Response} from 'express';
 import {LooseObject} from '@app/utils/LooseObject';
+import {Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

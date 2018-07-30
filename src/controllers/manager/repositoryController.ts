@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import Joi from 'joi';
 import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
 import {Logger} from '@app/loggers/Logger';
+import {Translator} from '@app/translators/Translator';
 import {validateForm} from '@app/utils/validation';
 import {Request, Response} from 'express';
-import {Translator} from '@app/translators/Translator';
+import Joi from 'joi';
 
 /**
  * Enable the repository.

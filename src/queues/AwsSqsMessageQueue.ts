@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import AWS from 'aws-sdk';
 import {BaseMessageQueue} from '@app/queues/BaseMessageQueue';
 import {LooseObject} from '@app/utils/LooseObject';
+import AWS from 'aws-sdk';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

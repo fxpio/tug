@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import Polyglot from 'node-polyglot';
-import {Request, Response} from 'express';
-import {Translator} from '@app/translators/Translator';
-import {TranslatorTranslations} from '@app/translators/TranslatorTranslations';
-import {TranslatorTranslation} from '@app/translators/TranslatorTranslation';
-import {LooseObject} from '@app/utils/LooseObject';
 import {AcceptLanguageParser} from '@app/translators/AcceptLanguageParser';
+import {Translator} from '@app/translators/Translator';
+import {TranslatorTranslation} from '@app/translators/TranslatorTranslation';
+import {TranslatorTranslations} from '@app/translators/TranslatorTranslations';
+import {LooseObject} from '@app/utils/LooseObject';
+import {Request, Response} from 'express';
+import Polyglot from 'node-polyglot';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

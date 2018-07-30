@@ -7,30 +7,30 @@
  * file that was distributed with this source code.
  */
 
-import '@app/ui/styles/app.styl';
-import 'material-design-icons-iconfont/dist/material-design-icons.css';
-import 'babel-polyfill';
-import '@app/ui/class-component-hooks';
-import {App} from '@app/ui/components/App';
-import Vue from 'vue';
-import Meta from 'vue-meta';
-import VeeValidate, {Validator} from 'vee-validate';
-import Vuetify from 'vuetify';
-import VueAxios from 'vue-axios';
-import VuexI18n from 'vuex-i18n';
-import {AppContext} from '@app/ui/utils/AppContext';
-import translationEn from '@app/ui/translations/en';
-import translationFr from '@app/ui/translations/fr';
-import veeValidateFr from 'vee-validate/dist/locale/fr';
-import '@app/ui/components/Loading';
 import {
     apiAddAuthInterceptor,
     apiAddAuthRedirectInterceptor,
     apiAddLocaleInterceptor,
     createApiClient
 } from '@app/ui/api';
+import '@app/ui/class-component-hooks';
+import {App} from '@app/ui/components/App';
+import '@app/ui/components/Loading';
 import {createRouter, routerAddAuthGuard, routerAddLocaleGuard} from '@app/ui/router';
 import {createStore} from '@app/ui/store';
+import '@app/ui/styles/app.styl';
+import translationEn from '@app/ui/translations/en';
+import translationFr from '@app/ui/translations/fr';
+import {AppContext} from '@app/ui/utils/AppContext';
+import 'babel-polyfill';
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import VeeValidate, {Validator} from 'vee-validate';
+import veeValidateFr from 'vee-validate/dist/locale/fr';
+import Vue from 'vue';
+import VueAxios from 'vue-axios';
+import Meta from 'vue-meta';
+import Vuetify from 'vuetify';
+import VuexI18n from 'vuex-i18n';
 
 /**
  *  Create the app.

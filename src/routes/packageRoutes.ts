@@ -7,16 +7,16 @@
  * file that was distributed with this source code.
  */
 
-import {Authenticate} from '@app/middlewares/auth/Authenticate';
-import {BasicTokenAuth} from '@app/middlewares/auth/strategies/BasicTokenAuth';
-import {Router} from 'express';
-import {asyncHandler} from '@app/utils/handler';
 import {
     showPackageVersion,
     showPackageVersions,
     showRootPackages,
     trackDownloadBatch
 } from '@app/controllers/packages/packageController';
+import {Authenticate} from '@app/middlewares/auth/Authenticate';
+import {BasicTokenAuth} from '@app/middlewares/auth/strategies/BasicTokenAuth';
+import {asyncHandler} from '@app/utils/handler';
+import {Router} from 'express';
 
 /**
  * Generate the routes.

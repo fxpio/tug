@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import {Logger} from '@app/loggers/Logger';
 import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
 import {VcsRepository} from '@app/composer/repositories/VcsRepository';
+import {Logger} from '@app/loggers/Logger';
 import {MessageQueue} from '@app/queues/MessageQueue';
 import {getGithubEvent} from '@app/utils/apiGithub';
 import {Request, Response} from 'express';

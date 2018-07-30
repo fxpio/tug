@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
+import {VcsDriver} from '@app/composer/repositories/vcs-drivers/VcsDriver';
+import {RemoteFilesystem} from '@app/composer/utils/RemoteFilesystem';
 import {Config} from '@app/configs/Config';
+import {TransportError} from '@app/errors/TransportError';
 import {VcsDriverContentNotFoundError} from '@app/errors/VcsDriverContentNotFoundError';
 import {VcsDriverInvalidJsonError} from '@app/errors/VcsDriverInvalidJsonError';
 import {VcsDriverInvalidUrlError} from '@app/errors/VcsDriverInvalidUrlError';
-import {RemoteFilesystem} from '@app/composer/utils/RemoteFilesystem';
-import {VcsDriver} from '@app/composer/repositories/vcs-drivers/VcsDriver';
-import {TransportError} from '@app/errors/TransportError';
 import {LooseObject} from '@app/utils/LooseObject';
 
 /**
