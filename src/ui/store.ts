@@ -7,8 +7,10 @@
  * file that was distributed with this source code.
  */
 
+import {Api} from '@app/ui/api/Api';
+import {AuthorizationRequest} from '@app/ui/api/models/requests/AuthorizationRequest';
+import {Authorization} from '@app/ui/api/services/Authorization';
 import {RootState} from '@app/ui/states/RootState';
-import {AxiosBasicCredentials, AxiosInstance} from 'axios';
 import Vue from 'vue';
 import Router from 'vue-router';
 import Vuex, {Store} from 'vuex';
@@ -24,14 +26,14 @@ export const TOGGLE_DRAWER = 'TOGGLE_DRAWER';
 /**
  * Create the router.
  *
- * @param {Router}        router
- * @param {AxiosInstance} api
+ * @param {Router} router
+ * @param {Api}    api
  *
  * @return {Store<RootState>}
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export function createStore(router: Router, api: AxiosInstance): Store<RootState> {
+export function createStore(router: Router, api: Api): Store<RootState> {
     return new Vuex.Store<RootState>({
         state: {
             isAuthenticated: !!localStorage.getItem('token'),
@@ -60,13 +62,13 @@ export function createStore(router: Router, api: AxiosInstance): Store<RootState
             }
         },
         actions: {
-            async login({ commit, state }, credentials: AxiosBasicCredentials) {
+            async login({ commit, state }, credentials: AuthorizationRequest) {
                 commit(LOGIN);
 
                 try {
                     let redirect = router.currentRoute.query.redirect;
-                    let res = await api.put('/authorizations', credentials, {auth: credentials});
-                    state.authToken = res.data.token;
+                    let res = await api.get<Authorization>(Authorization).get(credentials);
+                    state.authToken = res.token;
                     localStorage.setItem('token', state.authToken as string);
                     commit(LOGIN_SUCCESS);
 

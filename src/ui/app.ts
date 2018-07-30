@@ -7,12 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import {
-    apiAddAuthInterceptor,
-    apiAddAuthRedirectInterceptor,
-    apiAddLocaleInterceptor,
-    createApiClient
-} from '@app/ui/api';
+import {apiAddAuthInterceptor, apiAddAuthRedirectInterceptor, apiAddLocaleInterceptor, VueApi} from '@app/ui/api';
+import {Api} from '@app/ui/api/Api';
 import '@app/ui/class-component-hooks';
 import {App} from '@app/ui/components/App';
 import '@app/ui/components/Loading';
@@ -27,7 +23,6 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import VeeValidate, {Validator} from 'vee-validate';
 import veeValidateFr from 'vee-validate/dist/locale/fr';
 import Vue from 'vue';
-import VueAxios from 'vue-axios';
 import Meta from 'vue-meta';
 import Vuetify from 'vuetify';
 import VuexI18n from 'vuex-i18n';
@@ -41,7 +36,7 @@ import VuexI18n from 'vuex-i18n';
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function createApp(context: AppContext): Vue {
-    let apiClient = createApiClient(context.apiBaseUrl);
+    let apiClient = new Api(context.apiBaseUrl);
     let router = createRouter();
     let store = createStore(router, apiClient);
 
@@ -53,7 +48,7 @@ export function createApp(context: AppContext): Vue {
     Validator.localize('fr', veeValidateFr);
 
     Vue.use(Meta);
-    Vue.use(VueAxios, apiClient);
+    Vue.use(VueApi.plugin, apiClient);
     Vue.use(VeeValidate);
     Vue.use(VuexI18n.plugin, store, {
         onTranslationNotFound: function(locale: string, key: string): void {

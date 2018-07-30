@@ -62,7 +62,6 @@
     "node-polyglot": "^2.3.0",
     "vee-validate": "^2.1.0-beta.6",
     "vue": "^2.5.16",
-    "vue-axios": "^2.1.2",
     "vue-class-component": "^6.2.0",
     "vue-meta": "^1.5.2",
     "vue-property-decorator": "^7.0.0",

@@ -7,39 +7,38 @@
  * file that was distributed with this source code.
  */
 
+import {Api} from '@app/ui/api/Api';
 import {RootState} from '@app/ui/states/RootState';
-import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios';
+import {AxiosError, AxiosRequestConfig} from 'axios';
+import _Vue, {PluginObject} from 'vue';
 import {Store} from 'vuex';
 
 /**
- * Create the api client.
- *
- * @param {string} baseUrl The base url
- *
- * @return {Router}
+ * Api vue plugin.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export function createApiClient(baseUrl: string): AxiosInstance {
-    return axios.create({
-        baseURL: baseUrl,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    });
+export class VueApi
+{
+    public static get plugin(): PluginObject<Api> {
+        return {
+            install: (Vue: typeof _Vue, options?: Api): void => {
+                Vue.prototype.$api = options;
+            }
+        };
+    }
 }
 
 /**
  * Add the locale interceptor.
  *
- * @param {AxiosInstance}    apiClient
+ * @param {Api}              apiClient
  * @param {Store<RootState>} store
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export function apiAddLocaleInterceptor(apiClient: AxiosInstance, store: Store<RootState>): void {
-    apiClient.interceptors.request.use((config: AxiosRequestConfig): AxiosRequestConfig => {
+export function apiAddLocaleInterceptor(apiClient: Api, store: Store<RootState>): void {
+    apiClient.addRequestInterceptor((config: AxiosRequestConfig): AxiosRequestConfig => {
         config.headers['Accept-Language'] = store.state.i18n.locale;
 
         return config;
@@ -49,13 +48,13 @@ export function apiAddLocaleInterceptor(apiClient: AxiosInstance, store: Store<R
 /**
  * Add the auth interceptor.
  *
- * @param {AxiosInstance}    apiClient
+ * @param {Api}              apiClient
  * @param {Store<RootState>} store
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export function apiAddAuthInterceptor(apiClient: AxiosInstance, store: Store<RootState>): void {
-    apiClient.interceptors.request.use((config: AxiosRequestConfig): AxiosRequestConfig => {
+export function apiAddAuthInterceptor(apiClient: Api, store: Store<RootState>): void {
+    apiClient.addRequestInterceptor((config: AxiosRequestConfig): AxiosRequestConfig => {
         if (!config.auth && !config.headers['Authorization'] && store.state.authToken) {
             config.headers['Authorization'] = `token ${store.state.authToken}`;
         }
@@ -72,13 +71,13 @@ export function apiAddAuthInterceptor(apiClient: AxiosInstance, store: Store<Roo
 /**
  * Add the auth redirection interceptor.
  *
- * @param {AxiosInstance}    apiClient
+ * @param {Api}              apiClient
  * @param {Store<RootState>} store
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export function apiAddAuthRedirectInterceptor(apiClient: AxiosInstance, store: Store<RootState>): void {
-    apiClient.interceptors.response.use(undefined, async (error: AxiosError) => {
+export function apiAddAuthRedirectInterceptor(apiClient: Api, store: Store<RootState>): void {
+    apiClient.addResponseInterceptor(undefined, async (error: AxiosError) => {
         if (error.response && 401 === error.response.status && !error.config.auth) {
             await store.dispatch('logout');
             return;
