@@ -8,13 +8,19 @@
  */
 
 import {createApp} from '@app/app';
+import {AssetManager} from '@app/assets/AssetManager';
 import {AwsDynamoDbDatabase} from '@app/db/AwsDynamoDbDatabase';
 import {Logger} from '@app/loggers/Logger';
 import {BasicMockAuthBuilder} from '@app/middlewares/auth/builders/BasicMockAuthBuilder';
 import {BasicMockAuth} from '@app/middlewares/auth/strategies/BasicMockAuth';
 import {LocalMessageQueue} from '@app/queues/LocalMessageQueue';
 import {LocalStorage} from '@app/storages/LocalStorage';
+import {LooseObject} from '@app/utils/LooseObject';
 import dotenv from 'dotenv';
+import {Request, Response} from 'express';
+import fs from 'fs-extra';
+import http, {IncomingMessage} from 'http';
+import {URL} from 'url';
 
 dotenv.config();
 
@@ -28,9 +34,40 @@ const app = createApp({
     logger: new Logger(env.LOGGER_LEVEL, debug),
     basicAuthStrategy: new BasicMockAuth(env.AWS_ACCESS_KEY_ID as string, env.AWS_SECRET_ACCESS_KEY as string),
     basicAuthBuilder: new BasicMockAuthBuilder(env.AWS_ACCESS_KEY_ID as string, env.AWS_SECRET_ACCESS_KEY as string),
-    assetManifestPath: 'dist/assets/manifest.json',
-    assetBaseUrl: 'dist/assets',
-    debug: debug
+    debug: debug,
+    fallbackAssets: function(req: Request, res: Response, next: Function) {
+        let assetManager = req.app.get('asset-manager') as AssetManager;
+        let asset = (new URL(`${req.protocol}://${req.get('host')}${req.originalUrl}`)).pathname.replace(/^\//g, '');
+        let realAsset = assetManager.get(asset);
+
+        if (asset === realAsset) {
+            let baseUrl = req.app.get('asset-base-url');
+            if (undefined === baseUrl) {
+                baseUrl = '';
+                try {
+                    let config = fs.readJsonSync(__dirname + '/server-config.json') as LooseObject;
+                    baseUrl = config.assetBaseUrl ? config.assetBaseUrl : baseUrl;
+                    req.app.set('asset-base-url', baseUrl);
+                } catch (e) {}
+            }
+
+            realAsset = baseUrl + realAsset;
+        }
+
+        http.get(realAsset, function (assetRes: IncomingMessage) {
+            if (200 === assetRes.statusCode) {
+                for (let name of Object.keys(assetRes.headers)) {
+                    res.setHeader(name, assetRes.headers[name] as string);
+                }
+
+                res.status(assetRes.statusCode as number);
+                assetRes.pipe(res);
+                return;
+            }
+
+            next();
+        });
+    }
 });
 
 app.listen(port);

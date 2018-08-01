@@ -69,8 +69,6 @@ createApp({
     logger: new Logger(env.LOGGER_LEVEL, debug),
     basicAuthStrategy: new BasicIamAuth(env.AWS_ACCOUNT_ID),
     basicAuthBuilder: new BasicIamAuthBuilder(),
-    assetManifestPath: 'assets/manifest.json',
-    assetBaseUrl: 'assets',
     debug: debug
 });
 

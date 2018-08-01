@@ -44,6 +44,7 @@ import {PolyglotTranslator} from '@app/translators/PolyglotTranslator';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
+import path from 'path';
 
 /**
  * Create the app server.
@@ -62,8 +63,8 @@ export function createApp(options: AppOptions): express.Express {
         logger = options.logger,
         basicAuthStrategy = options.basicAuthStrategy,
         basicAuthBuilder = options.basicAuthBuilder,
-        assetManifestPath = options.assetManifestPath,
-        assetBaseUrl = options.assetBaseUrl,
+        fallbackAssets = options.fallbackAssets,
+        assetManifestPath = path.resolve(__dirname, 'admin/assets-manifest.json'),
         debug = options.debug;
 
     // add database repositories
@@ -114,11 +115,10 @@ export function createApp(options: AppOptions): express.Express {
     app.use(defineLocale);
 
     // defines routes
-    app.use('/assets/', express.static(assetBaseUrl));
     app.use('/', hookRoutes(express.Router({})));
     app.use('/', securityRoutes(express.Router({}), basicAuthStrategy));
     app.use('/manager/', managerRoutes(express.Router({}), basicAuthStrategy));
-    app.use('/', uiRoutes(express.Router({})));
+    app.use('/', uiRoutes(express.Router({}), fallbackAssets));
     app.use('/', packageRoutes(express.Router({})));
 
     // enable error and logger middlewares in end

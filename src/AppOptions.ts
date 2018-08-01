@@ -14,6 +14,7 @@ import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
 import {MessageQueue} from '@app/queues/MessageQueue';
 import {DataStorage} from '@app/storages/DataStorage';
 import express from 'express';
+import {RequestHandlerParams} from 'express-serve-static-core';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -25,9 +26,8 @@ export interface AppOptions
     storage: DataStorage;
     queue: MessageQueue;
     logger: Logger;
-    basicAuthStrategy: AuthStrategy,
-    basicAuthBuilder: AuthBuilder,
-    assetManifestPath: string,
-    assetBaseUrl: string,
+    basicAuthStrategy: AuthStrategy;
+    basicAuthBuilder: AuthBuilder;
     debug: boolean;
+    fallbackAssets?: RequestHandlerParams;
 }

@@ -22,6 +22,11 @@ module.exports = {
     stats: 'errors-only',
     devtool: prod ? false : 'eval-source-map',
 
+    node: {
+        __dirname: false,
+        __filename: false,
+    },
+
     externals: [
         'aws-sdk',
     ],

@@ -20,6 +20,7 @@ import translationFr from '@app/ui/translations/fr';
 import {AppContext} from '@app/ui/utils/AppContext';
 import 'babel-polyfill';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import {install as offlinePluginInstall} from 'offline-plugin/runtime';
 import VeeValidate, {Validator} from 'vee-validate';
 import veeValidateFr from 'vee-validate/dist/locale/fr';
 import Vue from 'vue';
@@ -40,6 +41,7 @@ export function createApp(context: AppContext): Vue {
     let router = createRouter();
     let store = createStore(router, apiClient);
 
+    offlinePluginInstall();
     routerAddLocaleGuard(router, store);
     routerAddAuthGuard(router, store);
     apiAddLocaleInterceptor(apiClient, store);
