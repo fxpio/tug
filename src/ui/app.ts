@@ -15,6 +15,7 @@ import '@app/ui/components/Loading';
 import {createRouter, routerAddAuthGuard, routerAddLocaleGuard} from '@app/ui/router';
 import {createStore} from '@app/ui/store';
 import '@app/ui/styles/app.styl';
+import {RootState} from '@app/ui/stores/RootState';
 import translationEn from '@app/ui/translations/en';
 import translationFr from '@app/ui/translations/fr';
 import {AppContext} from '@app/ui/utils/AppContext';
@@ -39,7 +40,7 @@ import VuexI18n from 'vuex-i18n';
 export function createApp(context: AppContext): Vue {
     let apiClient = new Api(context.apiBaseUrl);
     let router = createRouter();
-    let store = createStore(router, apiClient);
+    let store = createStore<RootState>(router, apiClient);
 
     offlinePluginInstall();
     routerAddLocaleGuard(router, store);

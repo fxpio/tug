@@ -27,17 +27,17 @@ export class App extends Vue
     }
 
     public get drawer(): boolean {
-        return this.$store.state.showDrawer;
+        return this.$store.state.drawer.show;
     }
 
     public set drawer(value) {
-        this.$store.commit('TOGGLE_DRAWER', value as boolean);
+        this.$store.commit('drawer/toggle', value as boolean);
     }
 
     /**
      * Logout.
      */
     public async logout(): Promise<void> {
-        await this.$store.dispatch('logout');
+        await this.$store.dispatch('auth/logout');
     }
 }

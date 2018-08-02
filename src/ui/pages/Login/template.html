@@ -45,6 +45,6 @@ file that was distributed with this source code.
                 </v-form>
             </v-card-text>
         </v-card>
-        <loading :value="$store.getters.isAuthenticationPending"></loading>
+        <loading :value="$store.getters['auth/isAuthenticationPending']"></loading>
     </v-flex>
 </v-layout>

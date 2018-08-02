@@ -7,16 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import {I18nState} from '@app/ui/states/I18nState';
+import {AuthModuleState} from '@app/ui/stores/auth/AuthModuleState';
+import {DrawerModuleState} from '@app/ui/stores/drawer/DrawerModuleState';
+import {I18nModuleState} from '@app/ui/stores/i18n/I18nModuleState';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface RootState
+export interface RootState extends I18nModuleState, AuthModuleState, DrawerModuleState
 {
-    i18n: I18nState;
-    isAuthenticated: boolean;
-    authenticationPending: boolean;
-    authToken: string|null;
-    showDrawer: boolean;
 }

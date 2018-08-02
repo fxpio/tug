@@ -8,7 +8,7 @@
  */
 
 import {Error404} from '@app/ui/components/Error404';
-import {RootState} from '@app/ui/states/RootState';
+import {RootState} from '@app/ui/stores/RootState';
 import {Validator} from 'vee-validate';
 import Vue from 'vue';
 import Router from 'vue-router';
@@ -90,7 +90,7 @@ export function routerAddAuthGuard(router: Router, store: Store<RootState>): voi
         let guard = undefined;
 
         if (to.matched.some(record => record.meta.requiresAuth)) {
-            if (!store.getters.isAuthenticated) {
+            if (!store.getters['auth/isAuthenticated']) {
                 guard = {
                     name: 'login',
                     params: {

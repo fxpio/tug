@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 <v-app>
     <v-slide-x-transition>
-        <v-navigation-drawer v-model="drawer" fixed clipped app width="250" v-if="$store.getters.isAuthenticated">
+        <v-navigation-drawer v-model="drawer" fixed clipped app width="250" v-if="$store.getters['auth/isAuthenticated']">
             <v-list>
                 <v-list-tile ripple active-class="grey lighten-3 accent--text" :to="{name: 'home', params: {locale: 'fr'}}">
                     <v-list-tile-action>
@@ -63,9 +63,9 @@ file that was distributed with this source code.
                 </v-list-tile>
             </v-list>
 
-            <v-divider v-if="$store.getters.isAuthenticated"></v-divider>
+            <v-divider v-if="$store.getters['auth/isAuthenticated']"></v-divider>
 
-            <v-list dense v-if="$store.getters.isAuthenticated">
+            <v-list dense v-if="$store.getters['auth/isAuthenticated']">
                 <v-list-tile ripple @click.stop="logout()">
                     <v-list-tile-action>
                         <v-icon>exit_to_app</v-icon>
@@ -80,7 +80,7 @@ file that was distributed with this source code.
     </v-slide-x-transition>
 
     <v-slide-y-transition>
-        <v-toolbar dark color="light-blue" fixed app clipped-left v-if="$store.getters.isAuthenticated">
+        <v-toolbar dark color="light-blue" fixed app clipped-left v-if="$store.getters['auth/isAuthenticated']">
             <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-title>{{ 'app.name'|translate }}</v-toolbar-title>
         </v-toolbar>

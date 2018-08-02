@@ -8,7 +8,7 @@
  */
 
 import {Api} from '@app/ui/api/Api';
-import {RootState} from '@app/ui/states/RootState';
+import {RootState} from '@app/ui/stores/RootState';
 import {AxiosError, AxiosRequestConfig} from 'axios';
 import _Vue, {PluginObject} from 'vue';
 import {Store} from 'vuex';
@@ -55,8 +55,8 @@ export function apiAddLocaleInterceptor(apiClient: Api, store: Store<RootState>)
  */
 export function apiAddAuthInterceptor(apiClient: Api, store: Store<RootState>): void {
     apiClient.addRequestInterceptor((config: AxiosRequestConfig): AxiosRequestConfig => {
-        if (!config.auth && !config.headers['Authorization'] && store.state.authToken) {
-            config.headers['Authorization'] = `token ${store.state.authToken}`;
+        if (!config.auth && !config.headers['Authorization'] && store.state.auth.token) {
+            config.headers['Authorization'] = `token ${store.state.auth.token}`;
         }
 
         if (config.auth && 0 === Object.keys(config.auth as object).length) {
@@ -79,7 +79,7 @@ export function apiAddAuthInterceptor(apiClient: Api, store: Store<RootState>): 
 export function apiAddAuthRedirectInterceptor(apiClient: Api, store: Store<RootState>): void {
     apiClient.addResponseInterceptor(undefined, async (error: AxiosError) => {
         if (error.response && 401 === error.response.status && !error.config.auth) {
-            await store.dispatch('logout');
+            await store.dispatch('auth/logout');
             return;
         }
 
