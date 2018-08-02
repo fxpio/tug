@@ -29,6 +29,20 @@ const basePath = 'admin';
 const assetPath = 'assets';
 const publicFullPath = isDevServer ? `http://localhost:${serverPort}/` : undefined;
 
+let prodPlugins = [];
+
+if (!isDevServer) {
+    prodPlugins = [
+        new OfflinePlugin({
+            responseStrategy: 'network-first',
+            appShell: `/${basePath}/shell.html`,
+            externals: [
+                `/${basePath}/shell.html`
+            ]
+        })
+    ];
+}
+
 module.exports = {
     mode: mode,
     stats: 'errors-only',
@@ -103,14 +117,8 @@ module.exports = {
                     destination: `${assetPath}/images`,
                 }
             ]
-        }),
-        new OfflinePlugin({
-            appShell: `/${basePath}/shell.html`,
-            externals: [
-                `/${basePath}/shell.html`
-            ]
         })
-    ],
+    ].concat(prodPlugins),
 
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.vue', '.json'],
