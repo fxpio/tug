@@ -59,6 +59,7 @@ module.exports = {
         },
         before: function() {
             if (publicFullPath) {
+                fs.ensureDirSync(distPath);
                 fs.writeJsonSync(path.resolve(distPath, 'server-config.json'), {assetBaseUrl: publicFullPath});
             }
         }

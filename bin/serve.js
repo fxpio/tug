@@ -22,6 +22,8 @@ const dynamodbLocalPath = './var/dynamodb';
 const dynamodbLocalBinPath = dynamodbLocalPath + '/DynamoDBLocal.jar';
 const dynamodbLocalZipPath = dynamodbLocalPath + '.zip';
 
+const CONTENT_PATH = './dist';
+
 program
     .description('Serve the Satis server in local')
     .option('-p, --port [port]', 'The port to run the local server', 3000)
@@ -67,6 +69,10 @@ utils.spawn('node bin/config -e')
             await fs.createReadStream(dynamodbLocalZipPath).pipe(unzip.Extract({path: dynamodbLocalPath}));
             await fs.unlink(dynamodbLocalZipPath);
         }
+    })
+    .then(async () => {
+        // clean the content path
+        await fs.remove(CONTENT_PATH);
     })
     .then(async () => {
         let tasks = [
