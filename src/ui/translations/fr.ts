@@ -23,6 +23,7 @@ export default {
     'menu.system': 'Système',
     'menu.api_keys': 'Clés API',
     'menu.parameters': 'Paramètres',
+    'error.network': 'Aucune connexion réseau détectée',
     'error.404_page_not_found': 'Oops ! Page non trouvée',
     'page.home.name': 'Accueil',
     'page.home.actions.add_repository': 'Ajouter un dépôt',

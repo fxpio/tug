@@ -8,6 +8,7 @@
  */
 
 import WithRender from '@app/ui/pages/Login/template.html';
+import {getRequestErrorMessage} from '@app/ui/utils/error';
 import Vue from 'vue';
 import {MetaInfo} from 'vue-meta';
 import {Component} from 'vue-property-decorator';
@@ -40,7 +41,7 @@ export class Login extends Vue
             username: this.username,
             password: this.password
         }).catch(e => {
-            this.formAlert = e.response.data.message || null;
+            this.formAlert = getRequestErrorMessage(e);
         });
     }
 }
