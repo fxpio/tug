@@ -104,8 +104,7 @@ export class AuthModule<R extends I18nModuleState> implements Module<AuthState, 
                 state.token = null;
                 localStorage.removeItem('auth:token');
                 commit('logout');
-                self.router.replace({name: 'login', params: {
-                    locale: rootState.i18n.locale},
+                self.router.replace({name: 'login', params: {locale: rootState.i18n.locale},
                     query: {redirect: self.router.currentRoute.fullPath}
                 });
             }
