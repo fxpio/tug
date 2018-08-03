@@ -70,7 +70,7 @@ You have the option to install the server in one click or download, compile and 
 This installation process is the easiest and fastest, just click on the "CloudFormation Launch Stack" button,
 and follow the wizard:
 
-[![Image of CloudFormation Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=FxpSatisServerless&templateURL=https://fxp-satis-serverless.s3.amazonaws.com/latest.template)
+[![Image of CloudFormation Launch Stack](images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=FxpSatisServerless&templateURL=https://fxp-satis-serverless.s3.amazonaws.com/latest.template)
 
 1. Then click Next where you can enter a stack name (FxpSatisServerless is a good default)
 2. Click Next
