@@ -12,7 +12,7 @@ import {Api} from '@app/ui/api/Api';
 import '@app/ui/class-component-hooks';
 import {App} from '@app/ui/components/App';
 import '@app/ui/components/Loading';
-import {createRouter, routerAddAuthGuard, routerAddLocaleGuard} from '@app/ui/router';
+import {createRouter, routerAddAuthGuard} from '@app/ui/router';
 import {createStore} from '@app/ui/store';
 import '@app/ui/styles/app.styl';
 import {RootState} from '@app/ui/stores/RootState';
@@ -25,9 +25,9 @@ import {install as offlinePluginInstall} from 'offline-plugin/runtime';
 import VeeValidate, {Validator} from 'vee-validate';
 import veeValidateFr from 'vee-validate/dist/locale/fr';
 import Vue from 'vue';
+import VueI18n from 'vue-i18n';
 import Meta from 'vue-meta';
 import Vuetify from 'vuetify';
-import VuexI18n from 'vuex-i18n';
 
 /**
  *  Create the app.
@@ -39,25 +39,11 @@ import VuexI18n from 'vuex-i18n';
  */
 export function createApp(context: AppContext): Vue {
     let apiClient = new Api(context.apiBaseUrl);
-    let router = createRouter();
-    let store = createStore<RootState>(router, apiClient);
 
-    offlinePluginInstall();
-    routerAddLocaleGuard(router, store);
-    routerAddAuthGuard(router, store);
-    apiAddLocaleInterceptor(apiClient, store);
-    apiAddAuthInterceptor(apiClient, store);
-    apiAddAuthRedirectInterceptor(apiClient, store);
-    Validator.localize('fr', veeValidateFr);
-
+    Vue.use(VueI18n);
     Vue.use(Meta);
     Vue.use(VueApi.plugin, apiClient);
     Vue.use(VeeValidate);
-    Vue.use(VuexI18n.plugin, store, {
-        onTranslationNotFound: function(locale: string, key: string): void {
-            console.warn(`vuex-i18n :: Key '${key}' not found for locale '${locale}'`);
-        }
-    });
     Vue.use(Vuetify, {
         theme: {
             primary: "#546E7A",
@@ -70,12 +56,29 @@ export function createApp(context: AppContext): Vue {
         }
     });
 
-    Vue.i18n.fallback('en');
-    Vue.i18n.set('en');
-    Vue.i18n.add('en', translationEn);
-    Vue.i18n.add('fr', translationFr);
+    let i18n = new VueI18n({
+        locale: 'en',
+        fallbackLocale: 'en',
+        missing: (locale, key) => {
+            console.warn(`I18n :: Key "${key}" is missing for locale "${locale}"`);
+        },
+        messages: {
+            en: translationEn,
+            fr: translationFr,
+        }
+    });
+    let router = createRouter();
+    let store = createStore<RootState>(router, i18n, apiClient);
+
+    offlinePluginInstall();
+    routerAddAuthGuard(router, store);
+    apiAddLocaleInterceptor(apiClient, store);
+    apiAddAuthInterceptor(apiClient, store);
+    apiAddAuthRedirectInterceptor(apiClient, store);
+    Validator.localize('fr', veeValidateFr);
 
     return new Vue({
+        i18n,
         router,
         store,
         render: h => h(App)

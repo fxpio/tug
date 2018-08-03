@@ -441,13 +441,6 @@
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
 
-"@types/vuex-i18n@^1.7.1":
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/@types/vuex-i18n/-/vuex-i18n-1.7.1.tgz#66a8e6720c292b48857aab71ee6b8ce6d8cc16b2"
-  dependencies:
-    vue ">=2.0.0"
-    vuex ">=2.0.0"
-
 "@vue/component-compiler-utils@^2.0.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@vue/component-compiler-utils/-/component-compiler-utils-2.1.0.tgz#8331eadc8acdbc35aace5a61d2153e6f6434bfe2"
@@ -7433,6 +7426,10 @@ vue-hot-reload-api@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.0.tgz#97976142405d13d8efae154749e88c4e358cf926"
 
+vue-i18n@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.0.0.tgz#ae0c6e05ec8e36151bcf5f47c7b538c8af6d0282"
+
 vue-meta@^1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/vue-meta/-/vue-meta-1.5.2.tgz#f5bdbce34ddd296788988dbd4eaf3873a54bc57b"
@@ -7472,7 +7469,7 @@ vue-template-loader@^1.0.0:
     source-map "^0.6.1"
     vue-hot-reload-api "^2.3.0"
 
-vue@>=2.0.0, vue@^2.5.16:
+vue@^2.5.16:
   version "2.5.16"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
 
@@ -7480,11 +7477,7 @@ vuetify@^1.1.7:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.1.8.tgz#3aef842ddc9b7ec348e7ce273a24f2f8ebb1cea9"
 
-vuex-i18n@^1.10.5:
-  version "1.10.5"
-  resolved "https://registry.yarnpkg.com/vuex-i18n/-/vuex-i18n-1.10.5.tgz#635ea2204e0aa3f8fd512f0fab7f6b994d3f666c"
-
-vuex@>=2.0.0, vuex@^3.0.1:
+vuex@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.0.1.tgz#e761352ebe0af537d4bb755a9b9dc4be3df7efd2"
 

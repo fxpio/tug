@@ -21,8 +21,7 @@ import {Request, Response} from 'express';
  * @return {Promise<void>}
  */
 export async function redirectHome(req: Request, res: Response, next: Function): Promise<void> {
-    let locale = (await (req.app.get('config-manager') as ConfigManager).get()).get('ui[locale]');
-    res.redirect('/admin/' + locale);
+    res.redirect('/admin');
 }
 
 /**

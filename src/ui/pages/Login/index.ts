@@ -22,7 +22,7 @@ export class Login extends Vue
 {
     public metaInfo(): MetaInfo {
         return {
-            title: Vue.i18n.translate('security.login', {})
+            title: this.$i18n.t('security.login') as string
         };
     }
 
@@ -41,7 +41,7 @@ export class Login extends Vue
             username: this.username,
             password: this.password
         }).catch(e => {
-            this.formAlert = getRequestErrorMessage(e);
+            this.formAlert = getRequestErrorMessage(this, e);
         });
     }
 }

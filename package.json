@@ -63,14 +63,14 @@
     "vee-validate": "^2.1.0-beta.6",
     "vue": "^2.5.16",
     "vue-class-component": "^6.2.0",
+    "vue-i18n": "^8.0.0",
     "vue-meta": "^1.5.2",
     "vue-property-decorator": "^7.0.0",
     "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.5.16",
     "vue-template-loader": "^1.0.0",
     "vuetify": "^1.1.7",
-    "vuex": "^3.0.1",
-    "vuex-i18n": "^1.10.5"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@types/aws-serverless-express": "^3.0.1",
@@ -85,7 +85,6 @@
     "@types/mocha": "^5.2.5",
     "@types/node-fetch": "^2.1.1",
     "@types/node-polyglot": "^0.4.31",
-    "@types/vuex-i18n": "^1.7.1",
     "archiver": "^2.1.1",
     "async": "^2.6.1",
     "ava": "^1.0.0-beta.6",

@@ -9,7 +9,6 @@
 
 import {Error404} from '@app/ui/components/Error404';
 import {RootState} from '@app/ui/stores/RootState';
-import {Validator} from 'vee-validate';
 import Vue from 'vue';
 import Router from 'vue-router';
 import {Route} from 'vue-router/types/router';
@@ -25,14 +24,11 @@ Vue.use(Router);
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function createRouter(): Router {
-    return  new Router({
+    return new Router({
         mode: 'history',
         base: '/admin/',
         routes: [
             {   path: '/',
-                redirect: 'home'
-            },
-            {   path: '/:locale',
                 component: () => import('@app/ui/components/ChildRouteWrapper').then(({ ChildRouteWrapper }) => ChildRouteWrapper),
                 children: [
                     {   path: '',
@@ -51,29 +47,6 @@ export function createRouter(): Router {
                 ]
             }
         ]
-    });
-}
-
-/**
- * Add the locale router guard.
- *
- * @param {VueRouter}        router
- * @param {Store<RootState>} store
- *
- * @author François Pluchino <francois.pluchino@gmail.com>
- */
-export function routerAddLocaleGuard(router: Router, store: Store<RootState>): void {
-    router.beforeEach((to: Route, from: Route, next: Function) => {
-        let locale = to.params.locale;
-
-        if (!locale) {
-            locale = store.state.i18n.fallback;
-        }
-
-        Vue.i18n.set(locale);
-        Validator.localize(locale);
-        router.app.$vuetify.lang.current = locale;
-        next();
     });
 }
 

@@ -13,13 +13,14 @@ import Vue from 'vue';
 /**
  *  Get the error message of the request.
  *
+ * @param {Vue}   vue The vue instance
  * @param {Error} err The request error
  *
  * @return {string|null}
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export function getRequestErrorMessage(err: Error): string|null {
+export function getRequestErrorMessage(vue: Vue, err: Error): string|null {
     let message:string|null = null;
 
     if ((<AxiosError>err).response && (<AxiosResponse>(<AxiosError>err).response).status) {
@@ -29,7 +30,7 @@ export function getRequestErrorMessage(err: Error): string|null {
             message = (<AxiosResponse>(<AxiosError>err).response).data.message;
         }
     } else {
-        message = Vue.i18n.translate('error.network', {}) as string;
+        message = vue.$i18n.t('error.network') as string;
     }
 
     return message;

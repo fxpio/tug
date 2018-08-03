@@ -12,7 +12,6 @@
  */
 export interface I18nState
 {
-    fallback: string;
     locale: string;
-    translations: object;
+    fallback: string;
 }

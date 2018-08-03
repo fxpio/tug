@@ -21,8 +21,8 @@ export class App extends Vue
 {
     public metaInfo(): MetaInfo {
         return {
-            title: Vue.i18n.translate('page.home.name', {}),
-            titleTemplate: '%s · ' + Vue.i18n.translate('app.name', {})
+            title: this.$i18n.t('page.home.name', {}) as string,
+            titleTemplate: '%s · ' + this.$i18n.t('app.name')
         };
     }
 

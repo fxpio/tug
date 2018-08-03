@@ -35,9 +35,9 @@ if (!isDevServer) {
     prodPlugins = [
         new OfflinePlugin({
             responseStrategy: 'network-first',
-            appShell: `/${basePath}/shell.html`,
+            appShell: `/${basePath}`,
             externals: [
-                `/${basePath}/shell.html`
+                `/${basePath}`
             ]
         })
     ];
@@ -108,7 +108,7 @@ module.exports = {
             name: 'Fxp Satis Serverless',
             short_name: 'Fxp Satis',
             description: 'Serverless Composer repository for private PHP packages',
-            start_url: '.',
+            start_url: `/${basePath}/`,
             filename: `${assetPath}/manifest.[hash:8].json`,
             background_color: '#fafafa',
             icons: [

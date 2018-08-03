@@ -31,10 +31,9 @@ export function uiRoutes(router: Router, fallbackAssets?: RequestHandlerParams):
     }
 
     router.get('/', asyncHandler(redirectHome));
-    router.get('/admin', asyncHandler(redirectHome));
+    router.get('/admin', asyncHandler(showWebApp));
     router.use('/admin/sw.js', express.static(path.resolve(basePath, 'sw.js'), {index: false, redirect: false}), fallbackAssets);
     router.use('/admin/assets', express.static(path.resolve(basePath, 'assets'), {index: false, redirect: false}), fallbackAssets);
-    router.get('/admin/shell.html', asyncHandler(showWebApp));
     router.get('/admin/*', asyncHandler(showWebApp));
 
     return router;

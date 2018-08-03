@@ -21,7 +21,7 @@ export class Error404 extends Vue
 {
     public metaInfo(): MetaInfo {
         return {
-            title: Vue.i18n.translate('error.404_page_not_found', {})
+            title: this.$i18n.t('error.404_page_not_found') as string
         };
     }
 }
