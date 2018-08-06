@@ -18,6 +18,7 @@ import '@app/ui/styles/app.styl';
 import {RootState} from '@app/ui/stores/RootState';
 import translationEn from '@app/ui/translations/en';
 import translationFr from '@app/ui/translations/fr';
+import vuetifyTranslationFr from '@app/ui/translations/vuetify/fr';
 import {AppContext} from '@app/ui/utils/AppContext';
 import 'babel-polyfill';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
@@ -53,6 +54,11 @@ export function createApp(context: AppContext): Vue {
             warning: "#F9A825",
             info: "#4FC3F7",
             success: "#4caf50"
+        },
+        lang: {
+            locales: {
+                fr: vuetifyTranslationFr
+            }
         }
     });
 
