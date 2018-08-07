@@ -54,32 +54,3 @@ export function convertQueryCriteria(criteria: LooseObject, indexName = 'model-i
         ExpressionAttributeValues: values
     };
 }
-
-/**
- * Convert the criteria into dynamo db parameters for scan.
- *
- * @param {LooseObject} criteria The criteria
- *
- * @return {Object}
- */
-export function convertScanCriteria(criteria: LooseObject): Object {
-    let exp = [],
-        keys: LooseObject = {},
-        values: LooseObject = {};
-
-    for (let key of Object.keys(criteria)) {
-        let constraint = criteria[key] instanceof Constraint ? criteria[key] : new Equal(criteria[key]);
-        exp.push(constraint.format('#' + key, ':' + key));
-        keys['#' + key] = key;
-
-        if (constraint.hasValue()) {
-            values[':' + key] = AWS.DynamoDB.Converter.marshall({val: constraint.getValue()}).val;
-        }
-    }
-
-    return {
-        FilterExpression: exp.length > 0 ? exp.join(' AND ') : undefined,
-        ExpressionAttributeNames: keys,
-        ExpressionAttributeValues: values
-    };
-}
