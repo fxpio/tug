@@ -12,19 +12,14 @@ import {Constraint} from '@app/db/constraints/Constraint';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class AttributeExists extends Constraint
+export class AttributeExists extends Constraint<undefined>
 {
     /**
      * Constructor.
+     *
+     * @param {string} key
      */
-    constructor() {
-        super('');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public format(a: string, b: string): string {
-        return 'attribute_exists(' + a + ')';
+    constructor(key: string) {
+        super('EXISTS', key, undefined);
     }
 }

@@ -31,15 +31,15 @@ import {LooseObject} from '@app/utils/LooseObject';
 export async function retrieveAllRepositories(config: Config, codeRepoRepo: CodeRepositoryRepository, repositories: LooseObject, forceAll: boolean = false, lastId?: string): Promise<LooseObject> {
     let packagesNames = Object.keys(repositories);
     let criteria: LooseObject = {
-        packageName: new AttributeExists()
+        packageName: new AttributeExists('packageName')
     };
 
     if (packagesNames.length > 0) {
-        criteria.packageName = new And([criteria.packageName, new Not(new In(packagesNames))]);
+        criteria.packageName = new And([criteria.packageName, new Not(new In('packageName', packagesNames))]);
     }
 
     if (!forceAll) {
-        criteria.lastHash = new AttributeExists();
+        criteria.lastHash = new AttributeExists('lastHash');
     }
 
     let res = await codeRepoRepo.find(criteria, lastId);

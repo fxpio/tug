@@ -28,7 +28,7 @@ export async function retrieveAllVersions(packageName: string, packageRepo: Pack
     let criteria: LooseObject = {name: packageName};
 
     if (versionNames.length > 0) {
-        criteria.version = new Not(new In(versionNames));
+        criteria.version = new Not(new In('version', versionNames));
     }
 
     let res = await packageRepo.find(criteria, lastId);

@@ -12,12 +12,14 @@ import {NotEqual} from '@app/db/constraints/NotEqual';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class NotNull extends NotEqual
+export class NotNull extends NotEqual<null>
 {
     /**
      * Constructor.
+     *
+     * @param {string} key The key
      */
-    constructor() {
-        super(null);
+    constructor(key: string) {
+        super(key, null);
     }
 }

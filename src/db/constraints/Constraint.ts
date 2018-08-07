@@ -12,26 +12,56 @@ import {LooseObject} from '@app/utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Constraint
+export class Constraint<V = any|undefined>
 {
     protected readonly operator: string;
-    protected readonly value: any;
+    protected readonly key: string;
+    protected value: V;
     protected readonly values: LooseObject;
-
-    protected useValue: boolean;
 
     /**
      * Constructor.
      *
      * @param {string}  operator   The operator
+     * @param {string}  key        The key
      * @param {any}     [value]    The value
-     * @param {boolean} [useValue] Check if the value is used by the constraint
      */
-    constructor(operator: string, value: any = null, useValue = false) {
+    constructor(operator: string, key: string, value: V) {
         this.operator = operator;
+        this.key = key;
         this.value = value;
-        this.useValue = useValue;
         this.values = {};
+
+        if (undefined !== value) {
+            this.values[key] = value;
+        }
+    }
+
+    /**
+     * Get the operator.
+     *
+     * @return {string}
+     */
+    public getOperator(): string {
+        return this.operator;
+    }
+
+    /**
+     * Get the key.
+     *
+     * @return {string}
+     */
+    public getKey(): string {
+        return this.key;
+    }
+
+    /**
+     * Set the value.
+     *
+     * @param {any} value
+     */
+    public setValue(value: V): void {
+        this.value = value;
     }
 
     /**
@@ -39,17 +69,8 @@ export class Constraint
      *
      * @return {any}
      */
-    public getValue(): any {
+    public getValue(): V {
         return this.value;
-    }
-
-    /**
-     * Check if the value is used by the constraint.
-     *
-     * @return {boolean}
-     */
-    public hasValue(): boolean {
-        return this.useValue;
     }
 
     /**
@@ -57,19 +78,7 @@ export class Constraint
      *
      * @return {LooseObject}
      */
-    public getCustomValues(): LooseObject {
+    public getValues(): LooseObject {
         return this.values;
-    }
-
-    /**
-     * Format the constraint.
-     *
-     * @param {string} a
-     * @param {string} b
-     *
-     * @return {string}
-     */
-    public format(a: string, b: string): string {
-        return a + ' ' + this.operator + ' ' + b;
     }
 }

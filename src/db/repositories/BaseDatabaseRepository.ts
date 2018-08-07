@@ -7,9 +7,12 @@
  * file that was distributed with this source code.
  */
 
+import {Constraint} from '@app/db/constraints/Constraint';
+import {Query} from '@app/db/constraints/Query';
 import {Database} from '@app/db/Database';
 import {DatabaseRepository} from '@app/db/repositories/DatabaseRepository';
 import {Results} from '@app/db/Results';
+import {criteriaToQuery} from '@app/utils/dynamodb';
 import {LooseObject} from '@app/utils/LooseObject';
 
 /**
@@ -88,7 +91,7 @@ export class BaseDatabaseRepository implements DatabaseRepository
     /**
      * @inheritDoc
      */
-    public async find(criteria: LooseObject, startId?: string): Promise<Results> {
+    public async find(criteria: Query|LooseObject, startId?: string): Promise<Results> {
         let res = await this.client.find(this.prepareCriteria(criteria), startId ? this.getPrefixedId(startId) : undefined);
 
         for (let item of res.getRows()) {
@@ -101,23 +104,52 @@ export class BaseDatabaseRepository implements DatabaseRepository
     /**
      * @inheritDoc
      */
-    public async findOne(criteria: LooseObject): Promise<LooseObject> {
+    public async findOne(criteria: Query|LooseObject): Promise<LooseObject> {
         return this.cleanPrefix(await this.client.findOne(this.prepareCriteria(criteria)));
     }
 
     /**
      * @inheritDoc
      */
-    public prepareCriteria(criteria: LooseObject): LooseObject {
-        if (criteria.id) {
-            criteria.id = this.getPrefixedId(criteria.id);
+    public prepareCriteria(criteria: Query|LooseObject): Query {
+        let query = criteriaToQuery(criteria);
+        query.setModel(this.prefix ? this.prefix : null);
+        query.setConstraint(this.prefixConstraint(query.getConstraint()));
+
+        return query;
+    }
+
+    /**
+     * Prefix the id of constraint.
+     *
+     * @param {Constraint} constraint
+     *
+     * @return {Constraint}
+     */
+    protected prefixConstraint(constraint: Constraint): Constraint {
+        let val = constraint.getValue();
+
+        if ('id' === constraint.getKey()) {
+            let values = constraint.getValues();
+
+            if (typeof val === 'string') {
+                constraint.setValue(this.getPrefixedId(val));
+            }
+
+            if (values['id'] && typeof values['id'] === 'string') {
+                values['id'] = this.getPrefixedId(values['id']);
+            }
+        } else if (val instanceof Constraint) {
+            this.prefixConstraint(val);
+        } else if (Array.isArray(val)) {
+            for (let i = 0; i < val.length; ++i) {
+                if (val[i] instanceof Constraint) {
+                    this.prefixConstraint(val[i]);
+                }
+            }
         }
 
-        if (this.prefix) {
-            criteria.model = this.prefix;
-        }
-
-        return criteria;
+        return constraint;
     }
 
     /**

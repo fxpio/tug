@@ -13,16 +13,18 @@ import {generateToken} from '@app/utils/token';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class In extends Constraint
+export class In<V> extends Constraint<V>
 {
     /**
      * Constructor.
      *
-     * @param {any} value The value
+     * @param {string} key   The key
+     * @param {any}    value The value
      */
-    constructor(value: any) {
-        super('', value);
+    constructor(key: string, value: V) {
+        super('', key, value);
 
+        delete this.values[key];
         let prefix = generateToken(4) + '_';
 
         if (Array.isArray(value)) {
@@ -30,14 +32,5 @@ export class In extends Constraint
                 this.values[prefix + i] = value[i];
             }
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public format(a: string, b: string): string {
-        let keys = Object.keys(this.getCustomValues());
-
-        return a + ' IN (' + (keys.length > 0 ? ':' : '') + keys.join(', :') + ')';
     }
 }

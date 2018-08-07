@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import {Query} from '@app/db/constraints/Query';
 import {DatabaseRepository, DatabaseRepositoryConstructor} from '@app/db/repositories/DatabaseRepository';
 import {Results} from '@app/db/Results';
 import {DatabaseError} from '@app/errors/DatabaseError';
@@ -133,23 +134,23 @@ export class Database
     /**
      * Find the records.
      *
-     * @param {LooseObject} criteria The criteria
-     * @param {string}      [startId]  The start id
+     * @param {Query|LooseObject} criteria The criteria or query
+     * @param {string}            [startId]  The start id
      *
      * @return {Promise<Results>}
      */
-    public async find(criteria: LooseObject, startId?: string): Promise<Results> {
+    public async find(criteria: Query|LooseObject, startId?: string): Promise<Results> {
         return new Results([], 0);
     }
 
     /**
      * Find one record.
      *
-     * @param {LooseObject} criteria The criteria
+     * @param {Query|LooseObject} criteria The criteria or query
      *
      * @return {Promise<LooseObject|null>}
      */
-    public async findOne(criteria: LooseObject): Promise<LooseObject|null> {
+    public async findOne(criteria: Query|LooseObject): Promise<LooseObject|null> {
         return null;
     }
 

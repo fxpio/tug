@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import {Query} from '@app/db/constraints/Query';
 import {Database} from '@app/db/Database';
 import {Results} from '@app/db/Results';
 import {LooseObject} from '@app/utils/LooseObject';
@@ -64,30 +65,30 @@ export interface DatabaseRepository
     /**
      * Find the records.
      *
-     * @param {LooseObject} criteria  The criteria
-     * @param {string}      [startId] The start id
+     * @param {Query|LooseObject} criteria  The criteria
+     * @param {string}            [startId] The start id
      *
      * @return {Promise<Results>}
      */
-    find(criteria: LooseObject, startId?: string): Promise<Results>;
+    find(criteria: Query|LooseObject, startId?: string): Promise<Results>;
 
     /**
      * Find one record.
      *
-     * @param {LooseObject} criteria The criteria
+     * @param {Query|LooseObject} criteria The criteria
      *
      * @return {Promise<LooseObject>}
      */
-    findOne(criteria: LooseObject): Promise<LooseObject>;
+    findOne(criteria: Query|LooseObject): Promise<LooseObject>;
 
     /**
      * Prepare the criteria.
      *
-     * @param {LooseObject} criteria The criteria
+     * @param {Query|LooseObject} criteria The criteria
      *
-     * @return {LooseObject}
+     * @return {Query}
      */
-    prepareCriteria(criteria: LooseObject): LooseObject;
+    prepareCriteria(criteria: Query|LooseObject): Query;
 
     /**
      * Get the prefix of id.

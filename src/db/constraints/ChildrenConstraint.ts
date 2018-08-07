@@ -13,22 +13,29 @@ import {LooseObject} from '@app/utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Not extends Constraint<Constraint>
+export class ChildrenConstraint extends Constraint<Constraint[]>
 {
     /**
      * Constructor.
      *
-     * @param {Constraint} constraint The constraint
+     * @param {string}       operator    The operator
+     * @param {Constraint[]} constraints The constraints
      */
-    constructor(constraint: Constraint) {
-        super('NOT', constraint.getKey(), constraint);
-        delete this.values[constraint.getKey()];
+    constructor(operator: string, constraints: Constraint[]) {
+        super(operator, '', constraints);
+        delete this.values[''];
     }
 
     /**
      * @inheritDoc
      */
     public getValues(): LooseObject {
-        return this.value.getValues();
+        let values = {};
+
+        for (let constraint of <Constraint[]> this.getValue()) {
+            values = Object.assign(values, constraint.getValues());
+        }
+
+        return values;
     }
 }
