@@ -38,4 +38,13 @@ export class ChildrenConstraint extends Constraint<Constraint[]>
 
         return values;
     }
+
+    /**
+     * Add constraint.
+     *
+     * @param {Constraint} constraint
+     */
+    public add(constraint: Constraint): void {
+        this.value.push(constraint);
+    }
 }

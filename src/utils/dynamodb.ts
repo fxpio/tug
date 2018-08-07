@@ -108,6 +108,13 @@ export function formatDynamodbConstraint(constraint: Constraint): string {
             }
             exp = parts.length > 1 ? '(' + parts.join(' AND ') + ')' : parts.length > 0 ? parts.join(' AND ') : '';
             break;
+        case 'OR':
+            let orParts: string[] = [];
+            for (let subConstraint of <Constraint[]> constraint.getValue()) {
+                orParts.push(formatDynamodbConstraint(subConstraint));
+            }
+            exp = orParts.length > 1 ? '(' + orParts.join(' OR ') + ')' : orParts.length > 0 ? orParts.join(' AND ') : '';
+            break;
         default:
             break;
     }
