@@ -8,7 +8,8 @@
  */
 
 import {ApiService} from '@app/ui/api/ApiService';
-import {AxiosInstance} from 'axios';
+import {Canceler} from '@app/ui/api/Canceler';
+import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -24,5 +25,33 @@ export class BaseService implements ApiService
      */
     constructor(axios: AxiosInstance) {
         this.axios = axios;
+    }
+
+    /**
+     * Build and run the request.
+     *
+     * @param {AxiosRequestConfig} config
+     * @param {Canceler}           [canceler]
+     *
+     * @return {Promise<T|null>}
+     */
+    protected async request<T>(config: AxiosRequestConfig, canceler?: Canceler): Promise<T|null> {
+        if (canceler) {
+            config.cancelToken = new axios.CancelToken(function executor(c) {
+                canceler.setExecutor(c);
+            });
+        }
+
+        try {
+            let res = await this.axios.request(config);
+
+            return res.data;
+        } catch (e) {
+            if (!axios.isCancel(e)) {
+                throw e;
+            }
+        }
+
+        return null;
     }
 }

@@ -86,7 +86,7 @@ export class AuthModule<R extends I18nModuleState> implements Module<AuthState, 
                 try {
                     let redirect = self.router.currentRoute.query.redirect;
                     let res = await self.api.get<Authorization>(Authorization).get(credentials);
-                    state.token = res.token;
+                    state.token = res ? res.token :  null;
                     localStorage.setItem('auth:token', state.token as string);
                     commit('loginSuccess');
 

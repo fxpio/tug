@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import {Canceler} from '@app/ui/api/Canceler';
 import {BaseService} from '@app/ui/api/BaseService';
 import {AuthorizationRequest} from '@app/ui/api/models/requests/AuthorizationRequest';
 import {AuthorizationResponse} from '@app/ui/api/models/responses/AuthorizationResponse';
@@ -20,13 +21,17 @@ export class Authorization extends BaseService
      * Get or create the authorization.
      *
      * @param {AuthorizationRequest} credentials
+     * @param {Canceler}             [canceler]
      *
-     * @return {Promise<AuthorizationResponse>}
+     * @return {Promise<AuthorizationResponse|null>}
      */
-    public async get(credentials: AuthorizationRequest): Promise<AuthorizationResponse> {
-        let res = await this.axios.put<AuthorizationResponse>('/authorizations', credentials, {auth: credentials});
-
-        return res.data;
+    public async get(credentials: AuthorizationRequest, canceler?: Canceler): Promise<AuthorizationResponse|null> {
+        return await this.request<AuthorizationResponse>({
+            method: 'PUT',
+            url: '/authorizations',
+            auth: credentials,
+            data: credentials
+        });
     }
 
     /**
