@@ -101,6 +101,9 @@ export function formatDynamodbConstraint(constraint: Constraint): string {
         case 'EXISTS':
             exp = `attribute_exists(#${constraint.getKey()})`;
             break;
+        case 'CONTAINS':
+            exp = `contains(#${constraint.getKey()}, :${constraint.getKey()})`;
+            break;
         case 'AND':
             let parts: string[] = [];
             for (let subConstraint of <Constraint[]> constraint.getValue()) {
