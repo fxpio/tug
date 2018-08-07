@@ -111,6 +111,19 @@ export class BaseDatabaseRepository implements DatabaseRepository
     /**
      * @inheritDoc
      */
+    public async search(criteria: Query|LooseObject, fields: string[], search?: string, startId?: string): Promise<Results> {
+        let res = await this.client.search(this.prepareCriteria(criteria), fields, search, startId ? this.getPrefixedId(startId) : undefined);
+
+        for (let item of res.getRows()) {
+            this.cleanPrefix(item);
+        }
+
+        return new Results(res.getRows(), res.getCount(), this.cleanPrefix(res.getLastId()));
+    }
+
+    /**
+     * @inheritDoc
+     */
     public prepareCriteria(criteria: Query|LooseObject): Query {
         let query = criteriaToQuery(criteria);
         query.setModel(this.prefix ? this.prefix : null);

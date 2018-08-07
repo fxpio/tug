@@ -82,6 +82,18 @@ export interface DatabaseRepository
     findOne(criteria: Query|LooseObject): Promise<LooseObject>;
 
     /**
+     * Search the records.
+     *
+     * @param {Query|LooseObject} criteria  The criteria or query
+     * @param {string[]}          fields    The fields
+     * @param {string}            [search]  The search value
+     * @param {string}            [startId] The start id
+     *
+     * @return {Promise<Results>}
+     */
+    search(criteria: Query|LooseObject, fields: string[], search?: string, startId?: string): Promise<Results>;
+
+    /**
      * Prepare the criteria.
      *
      * @param {Query|LooseObject} criteria The criteria

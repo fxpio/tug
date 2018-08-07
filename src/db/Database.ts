@@ -7,6 +7,9 @@
  * file that was distributed with this source code.
  */
 
+import {And} from '@app/db/constraints/And';
+import {Contains} from '@app/db/constraints/Contains';
+import {Or} from '@app/db/constraints/Or';
 import {Query} from '@app/db/constraints/Query';
 import {DatabaseRepository, DatabaseRepositoryConstructor} from '@app/db/repositories/DatabaseRepository';
 import {Results} from '@app/db/Results';
@@ -14,6 +17,7 @@ import {DatabaseError} from '@app/errors/DatabaseError';
 import {DatabaseInvalidAttributeError} from '@app/errors/DatabaseInvalidAttributeError';
 import {DatabaseRepositoryNotFoundError} from '@app/errors/DatabaseRepositoryNotFoundError';
 import {DatabaseUnexpectedDataError} from '@app/errors/DatabaseUnexpectedDataError';
+import {criteriaToQuery} from '@app/utils/dynamodb';
 import {LooseObject} from '@app/utils/LooseObject';
 
 /**
@@ -134,8 +138,8 @@ export class Database
     /**
      * Find the records.
      *
-     * @param {Query|LooseObject} criteria The criteria or query
-     * @param {string}            [startId]  The start id
+     * @param {Query|LooseObject} criteria  The criteria or query
+     * @param {string}            [startId] The start id
      *
      * @return {Promise<Results>}
      */
@@ -152,6 +156,35 @@ export class Database
      */
     public async findOne(criteria: Query|LooseObject): Promise<LooseObject|null> {
         return null;
+    }
+
+    /**
+     * Search the records.
+     *
+     * @param {Query|LooseObject} criteria  The criteria or query
+     * @param {string[]}          fields    The fields
+     * @param {string}            [search]  The search value
+     * @param {string}            [startId] The start id
+     *
+     * @return {Promise<Results>}
+     */
+    public async search(criteria: Query|LooseObject, fields: string[], search?: string, startId?: string): Promise<Results> {
+        let query = criteriaToQuery(criteria);
+
+        if (search) {
+            let or = new Or([]);
+            let prevConstraint = query.getConstraint();
+
+            for (let i = 0; i < fields.length; ++i) {
+                or.add(new Contains(fields[i], search));
+            }
+
+            let constraint = prevConstraint instanceof And ? <And> prevConstraint : new And([prevConstraint]);
+            constraint.add(or);
+            query.setConstraint(constraint);
+        }
+
+        return this.find(query, startId);
     }
 
     /**
