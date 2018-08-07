@@ -8,11 +8,28 @@
  */
 
 import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
+import {Database} from '@app/db/Database';
+import {CodeRepositoryRepository} from '@app/db/repositories/CodeRepositoryRepository';
 import {Logger} from '@app/loggers/Logger';
 import {Translator} from '@app/translators/Translator';
 import {validateForm} from '@app/utils/validation';
 import {Request, Response} from 'express';
 import Joi from 'joi';
+
+/**
+ * List the repositories.
+ *
+ * @param {Request}  req  The request
+ * @param {Response} res  The response
+ * @param {Function} next The next callback
+ *
+ * @return {Promise<void>}
+ */
+export async function listRepository(req: Request, res: Response, next: Function): Promise<void> {
+    let db = req.app.get('db') as Database;
+    let repo = db.getRepository<CodeRepositoryRepository>(CodeRepositoryRepository);
+    res.json(await repo.search({}, ['packageName', 'url'], req.query.s, req.query.lastId));
+}
 
 /**
  * Enable the repository.

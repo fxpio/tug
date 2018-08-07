@@ -42,6 +42,7 @@ VCS repositories makes every Composer update excessively long.
 - Automatically configuration of the AWS regions if the Shared Config File is present on your machine
 - All API Rest to:
   - configure the server
+  - list the repositories
   - enable or disable manually each repositories
   - generate or delete the token used by the Webhooks
   - generate or delete an API key

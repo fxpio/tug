@@ -11,7 +11,7 @@ import {createApiKey, deleteApiKey} from '@app/controllers/manager/apiKeyControl
 import {createGithubOauth, deleteGithubOauth, showGithubOauth} from '@app/controllers/manager/githubOauthController';
 import {createGithubToken, deleteGithubToken, showGithubToken} from '@app/controllers/manager/githubTokenController';
 import {deletePackages, refreshCachePackages, refreshPackages} from '@app/controllers/manager/packageController';
-import {disableRepository, enableRepository} from '@app/controllers/manager/repositoryController';
+import {disableRepository, enableRepository, listRepository} from '@app/controllers/manager/repositoryController';
 import {Authenticate} from '@app/middlewares/auth/Authenticate';
 import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
 import {asyncHandler} from '@app/utils/handler';
@@ -39,6 +39,7 @@ export function managerRoutes(router: Router, basicAuthStrategy: AuthStrategy): 
     router.get('/github-token', asyncHandler(showGithubToken));
     router.delete('/github-token', asyncHandler(deleteGithubToken));
 
+    router.get('/repositories', asyncHandler(listRepository));
     router.post('/repositories', asyncHandler(enableRepository));
     router.delete('/repositories', asyncHandler(disableRepository));
 
