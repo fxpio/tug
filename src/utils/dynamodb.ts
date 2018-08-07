@@ -11,6 +11,7 @@ import {Constraint} from '@app/db/constraints/Constraint';
 import {Equal} from '@app/db/constraints/Equal';
 import {LooseObject} from '@app/utils/LooseObject';
 import AWS from 'aws-sdk';
+import merge from 'lodash.merge';
 
 /**
  * Convert the criteria into dynamo db parameters for query.
@@ -21,6 +22,8 @@ import AWS from 'aws-sdk';
  * @return {Object}
  */
 export function convertQueryCriteria(criteria: LooseObject, indexName = 'model-index'): Object {
+    criteria = merge({}, criteria);
+
     let exp = [],
         model = criteria && criteria.model ? criteria.model : null,
         keys: LooseObject = {'#model': 'model'},
@@ -46,7 +49,7 @@ export function convertQueryCriteria(criteria: LooseObject, indexName = 'model-i
     return {
         IndexName: indexName,
         KeyConditionExpression: '#model = :model',
-        FilterExpression: exp.join(' AND '),
+        FilterExpression: exp.length > 0 ? exp.join(' AND ') : undefined,
         ExpressionAttributeNames: keys,
         ExpressionAttributeValues: values
     };
@@ -75,7 +78,7 @@ export function convertScanCriteria(criteria: LooseObject): Object {
     }
 
     return {
-        FilterExpression: exp.join(' AND '),
+        FilterExpression: exp.length > 0 ? exp.join(' AND ') : undefined,
         ExpressionAttributeNames: keys,
         ExpressionAttributeValues: values
     };

@@ -89,13 +89,13 @@ export class BaseDatabaseRepository implements DatabaseRepository
      * @inheritDoc
      */
     public async find(criteria: LooseObject, startId?: string): Promise<Results> {
-        let res = await this.client.find(this.prepareCriteria(criteria), startId);
+        let res = await this.client.find(this.prepareCriteria(criteria), startId ? this.getPrefixedId(startId) : undefined);
 
         for (let item of res.getRows()) {
             this.cleanPrefix(item);
         }
 
-        return res;
+        return new Results(res.getRows(), res.getCount(), this.cleanPrefix(res.getLastId()));
     }
 
     /**
@@ -133,6 +133,7 @@ export class BaseDatabaseRepository implements DatabaseRepository
     public cleanPrefix(data: any): any {
         if (this.prefix && null !== data && typeof data === 'object' && data.id && typeof data.id === 'string') {
             data.id = data.id.replace(new RegExp('^' + this.prefix + ':', 'g'), '');
+            delete data.model;
         } else if (typeof data === 'string') {
             data = data.replace(new RegExp('^' + this.prefix + ':', 'g'), '');
         }

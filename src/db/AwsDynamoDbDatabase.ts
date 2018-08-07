@@ -122,11 +122,16 @@ export class AwsDynamoDbDatabase extends Database
     async find(criteria: LooseObject, startId?: string): Promise<Results> {
         let params: any = Object.assign(convertQueryCriteria(criteria), {
             TableName: this.tableName,
-            ExclusiveStartKey: startId ? startId : null
+            ExclusiveStartKey: startId ? {model: {S: criteria.model}, id: {S: startId as string}} : null
         });
 
-        let res: LooseObject = await this.client.query(params).promise();
+        let res: LooseObject = {Count: 0, Items: []};
         let resValues = [];
+
+        try {
+            res = await this.client.query(params).promise();
+        } catch (e) {}
+
         for (let item of res.Items) {
             resValues.push(AwsDynamoDbDatabase.unmarshall(item));
         }
