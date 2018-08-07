@@ -106,7 +106,7 @@ export function formatDynamodbConstraint(constraint: Constraint): string {
             for (let subConstraint of <Constraint[]> constraint.getValue()) {
                 parts.push(formatDynamodbConstraint(subConstraint));
             }
-            exp = parts ? '(' + parts.join(' AND ') + ')' : '';
+            exp = parts.length > 0 ? '(' + parts.join(' AND ') + ')' : '';
             break;
         default:
             break;
