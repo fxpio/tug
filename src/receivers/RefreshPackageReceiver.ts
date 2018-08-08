@@ -12,19 +12,17 @@ import {PackageManager} from '@app/composer/packages/PackageManager';
 import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
 import {Logger} from '@app/loggers/Logger';
 import {MessageQueue} from '@app/queues/MessageQueue';
-import {QueueReceiver} from '@app/queues/QueueReceiver';
+import {BaseReceiver} from '@app/receivers/BaseReceiver';
 import {LooseObject} from '@app/utils/LooseObject';
 import {Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class RefreshPackageReceiver implements QueueReceiver
+export class RefreshPackageReceiver extends BaseReceiver
 {
     private readonly repoManager: RepositoryManager;
     private readonly packageManager: PackageManager;
-    private readonly queue: MessageQueue;
-    private readonly logger: Logger;
 
     /**
      * Constructor.
@@ -35,10 +33,9 @@ export class RefreshPackageReceiver implements QueueReceiver
      * @param {Logger}            logger         The logger
      */
     constructor(repoManager: RepositoryManager, packageManager: PackageManager, queue: MessageQueue, logger: Logger) {
+        super(queue, logger);
         this.repoManager = repoManager;
         this.packageManager = packageManager;
-        this.queue = queue;
-        this.logger = logger;
     }
 
     /**
@@ -51,7 +48,7 @@ export class RefreshPackageReceiver implements QueueReceiver
     /**
      * @inheritDoc
      */
-    public async execute(message: LooseObject, res?: Response): Promise<void> {
+    public async doExecute(message: LooseObject, res?: Response): Promise<void> {
         let force = true === message.force;
         let repoUrl = message.repositoryUrl;
         let identifier = message.identifier;
@@ -92,11 +89,5 @@ export class RefreshPackageReceiver implements QueueReceiver
                 packageName: pack.getName()
             }, 1);
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public async finish(res?: Response): Promise<void> {
     }
 }

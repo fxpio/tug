@@ -10,18 +10,16 @@
 import {PackageRepository} from '@app/db/repositories/PackageRepository';
 import {Logger} from '@app/loggers/Logger';
 import {MessageQueue} from '@app/queues/MessageQueue';
-import {QueueReceiver} from '@app/queues/QueueReceiver';
+import {BaseReceiver} from '@app/receivers/BaseReceiver';
 import {LooseObject} from '@app/utils/LooseObject';
 import {Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class DeletePackagesReceiver implements QueueReceiver
+export class DeletePackagesReceiver extends BaseReceiver
 {
     private readonly packageRepo: PackageRepository;
-    private readonly queue: MessageQueue;
-    private readonly logger: Logger;
 
     /**
      * Constructor.
@@ -31,9 +29,8 @@ export class DeletePackagesReceiver implements QueueReceiver
      * @param {Logger}            logger      The logger
      */
     constructor(packageRepo: PackageRepository, queue: MessageQueue, logger: Logger) {
+        super(queue, logger);
         this.packageRepo = packageRepo;
-        this.queue = queue;
-        this.logger = logger;
     }
 
     /**
@@ -46,7 +43,7 @@ export class DeletePackagesReceiver implements QueueReceiver
     /**
      * @inheritDoc
      */
-    public async execute(message: LooseObject, res?: Response): Promise<void> {
+    public async doExecute(message: LooseObject, res?: Response): Promise<void> {
         let result = await this.packageRepo.find({name: message.packageName});
         let ids = [];
         let versions = [];
@@ -67,11 +64,5 @@ export class DeletePackagesReceiver implements QueueReceiver
                 packageName: message.packageName
             }, 1);
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public async finish(res?: Response): Promise<void> {
     }
 }

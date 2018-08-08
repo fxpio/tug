@@ -90,7 +90,7 @@ export function createApp(options: AppOptions): express.Express {
     queue.subscribe(new RefreshPackageReceiver(repoManager, packageManager, queue, logger));
     queue.subscribe(new DeletePackagesReceiver(db.getRepository<PackageRepository>(PackageRepository), queue, logger));
     queue.subscribe(new DeletePackageReceiver(packageManager, queue, logger));
-    queue.subscribe(new BuildPackageVersionsReceiver(packageBuilder, logger));
+    queue.subscribe(new BuildPackageVersionsReceiver(packageBuilder, queue, logger));
 
     // define services
     app.disable('etag');
