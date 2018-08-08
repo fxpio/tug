@@ -1,0 +1,50 @@
+<!--
+This file is part of the Fxp Satis Serverless package.
+
+(c) François Pluchino <francois.pluchino@gmail.com>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+-->
+
+<v-layout justify-space-between row fill-height wrap>
+    <v-flex xs12>
+        <v-card>
+            <v-card-title>
+                <v-text-field
+                        v-model="search"
+                        append-icon="search"
+                        :label="$t('search')"
+                        single-line
+                        hide-details
+                ></v-text-field>
+                <v-spacer class="hidden-xs-only"></v-spacer>
+            </v-card-title>
+            <v-data-table
+                    :headers="headers"
+                    :items="items"
+                    :loading="loading"
+                    hide-actions
+                    item-key="id"
+                    class="elevation-1 d-block">
+                <template slot="items" slot-scope="props">
+                    <td>
+                        <span class="font-weight-bold">{{ props.item.packageName ? props.item.packageName : props.item.url }}</span>
+                        <br>
+                        <span class="font-italic">{{ props.item.type }}</span>
+                    </td>
+                    <td>
+                        <a :href="props.item.url" target="_blank">{{ $t('source') }}</a>
+                    </td>
+                </template>
+                <template slot="footer" v-if="lastId !== null">
+                    <td colspan="100%" class="pl-0 pr-0 text-xs-center">
+                        <v-btn color="accent" depressed ripple @click="fetchData()">
+                            {{ $t('pagination.load-more') }}
+                        </v-btn>
+                    </td>
+                </template>
+            </v-data-table>
+        </v-card>
+    </v-flex>
+</v-layout>

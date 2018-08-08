@@ -9,11 +9,13 @@
 
 import {ApiService, ApiServiceConstructor} from '@app/ui/api/ApiService';
 import {Authorization} from '@app/ui/api/services/Authorization';
+import {Repositories} from '@app/ui/api/services/Repositories';
 import {ApiServiceNotFoundError} from '@app/ui/errors/ApiServiceNotFoundError';
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 
 const SERVICES: ApiServiceConstructor[] = [
-    Authorization
+    Authorization,
+    Repositories
 ];
 
 /**

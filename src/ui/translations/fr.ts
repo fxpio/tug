@@ -16,6 +16,9 @@ export default {
     'app.description': 'Votre référentiel privé de paquets Composer pour vos paquets PHP privés',
     'security.login': 'Connexion',
     'security.logout': 'Déconnexion',
+    'search': 'Rechercher',
+    'source': 'Source',
+    'pagination.load-more': 'Charger plus',
     'menu.home': 'Accueil',
     'menu.composer': 'Composer',
     'menu.repositories': 'Dépôts',
@@ -29,4 +32,8 @@ export default {
     'page.home.actions.add_repository': 'Ajouter un dépôt',
     'page.login.label.username': 'AWS Access Key ID',
     'page.login.label.password': 'AWS Secret Access Key',
+    'page.repositories.title': 'Dépôts',
+    'page.repositories.package-name': 'Package',
+    'page.repositories.url': 'URL',
+    'page.repositories.type': 'Type',
 };

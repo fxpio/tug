@@ -40,6 +40,10 @@ export function createRouter(): Router {
                         name: 'login',
                         component: () => import('@app/ui/pages/Login').then(({ Login }) => Login)
                     },
+                    {   path: 'repositories',
+                        name: 'repositories',
+                        component: () => import('@app/ui/pages/Repositories').then(({ Repositories }) => Repositories)
+                    },
                     {   path: "*",
                         name: 'error404',
                         component: Error404

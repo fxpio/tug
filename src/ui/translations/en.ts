@@ -16,6 +16,9 @@ export default {
     'app.description': 'Your private repository of Composer packages for your private PHP packages',
     'security.login': 'Login',
     'security.logout': 'Logout',
+    'search': 'Search',
+    'source': 'Source',
+    'pagination.load-more': 'Load more',
     'menu.home': 'Home',
     'menu.composer': 'Composer',
     'menu.repositories': 'Repositories',
@@ -29,4 +32,8 @@ export default {
     'page.home.actions.add_repository': 'Add a repository',
     'page.login.label.username': 'AWS Access Key ID',
     'page.login.label.password': 'AWS Secret Access Key',
+    'page.repositories.title': 'Repositories',
+    'page.repositories.package-name': 'Package',
+    'page.repositories.url': 'URL',
+    'page.repositories.type': 'Type',
 };
