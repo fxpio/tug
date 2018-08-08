@@ -164,11 +164,13 @@ export class GithubDriver extends VcsDriver
 
             if (composer) {
                 // specials for github
-                if (composer['support'] && composer['support']['source']) {
+                if (!composer['support'] || !composer['support']['source']) {
+                    composer['support'] = composer['support'] ? composer['support'] : {};
                     composer['support']['source'] = `https://${this.originUrl}/${this.owner}/${this.repository}/tree/${identifier}`;
                 }
 
-                if (this.hasIssues && composer['support'] && composer['support']['issues']) {
+                if (this.hasIssues && (!composer['support'] || !composer['support']['issues'])) {
+                    composer['support'] = composer['support'] ? composer['support'] : {};
                     composer['support']['issues'] = `https://${this.originUrl}/${this.owner}/${this.repository}/issues`;
                 }
             }
