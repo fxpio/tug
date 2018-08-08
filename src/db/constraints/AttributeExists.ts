@@ -21,5 +21,6 @@ export class AttributeExists extends Constraint<undefined>
      */
     constructor(key: string) {
         super('EXISTS', key, undefined);
+        this.values[key] = undefined;
     }
 }

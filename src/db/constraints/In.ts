@@ -24,7 +24,7 @@ export class In<V> extends Constraint<V>
     constructor(key: string, value: V) {
         super('', key, value);
 
-        delete this.values[key];
+        this.values[key] = undefined;
         let prefix = generateToken(4) + '_';
 
         if (Array.isArray(value)) {
