@@ -17,6 +17,7 @@ export default {
     'error.http.bad-request': `Mauvaise Demande`,
     'error.http.bad-request.validation': `Erreurs de validation`,
     'error.http.bad-request.invalid-json': `Le corps de votre requête n'est pas un JSON valide`,
+    'error.http.too-many-requests': `Trop de demandes`,
     'error.http.not-found': `Ressource non trouvée`,
     'error.http.not-found.repository-branch': `La branche"{{name}}" est introuvable`,
     'error.http.not-found.repository-tag': `Le tag "{{name}}" est introuvable`,

@@ -20,6 +20,7 @@ import {ConfigRepository} from '@app/db/repositories/ConfigRepository';
 import {PackageRepository} from '@app/db/repositories/PackageRepository';
 import {
     convertJsonSyntaxError,
+    convertProvisionedThroughputExceededError,
     convertRepositoryError,
     convertRouteNotFoundError,
     convertURIError,
@@ -122,6 +123,7 @@ export function createApp(options: AppOptions): express.Express {
     app.use('/', packageRoutes(express.Router({})));
 
     // enable error and logger middlewares in end
+    app.use(convertProvisionedThroughputExceededError);
     app.use(convertURIError);
     app.use(convertJsonSyntaxError);
     app.use(convertVcsDriverError);

@@ -10,6 +10,7 @@
 import {HttpBadRequestError} from '@app/errors/HttpBadRequestError';
 import {HttpError} from '@app/errors/HttpError';
 import {HttpNotFoundError} from '@app/errors/HttpNotFoundError';
+import {HttpTooManyRequestsError} from '@app/errors/HttpTooManyRequestsError';
 import {HttpUnauthorizedError} from '@app/errors/HttpUnauthorizedError';
 import {HttpValidationError} from '@app/errors/HttpValidationError';
 import {RepositoryNotFoundError} from '@app/errors/RepositoryNotFoundError';
@@ -30,6 +31,23 @@ import {Request, Response} from 'express';
  */
 export function convertRouteNotFoundError(req: Request, res: Response): void {
     throw new HttpNotFoundError();
+}
+
+/**
+ * Display the http too many requests error.
+ *
+ * @param {Error}    err  The error
+ * @param {Request}  req  The request
+ * @param {Response} res  The response
+ * @param {Function} next The next callback
+ *
+ * @author François Pluchino <francois.pluchino@gmail.com>
+ */
+export function convertProvisionedThroughputExceededError(err: Error, req: Request, res: Response, next: Function): void {
+    if ('ProvisionedThroughputExceededException' === err.name) {
+        throw new HttpTooManyRequestsError();
+    }
+    next(err);
 }
 
 /**
@@ -140,6 +158,8 @@ export function showError(err: Error, req: Request, res: Response, next: Functio
             data.message = translator.trans(res, 'error.http.bad-request');
         } else if (err instanceof HttpNotFoundError && err.message === 'Not Found') {
             data.message = translator.trans(res, 'error.http.not-found');
+        } else if (err instanceof HttpTooManyRequestsError && err.message === 'Too Many Requests') {
+            data.message = translator.trans(res, 'error.http.too-many-requests');
         }
 
         if (err instanceof HttpValidationError) {

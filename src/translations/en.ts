@@ -17,6 +17,7 @@ export default {
     'error.http.bad-request': `Bad request`,
     'error.http.bad-request.validation': `Validation errors`,
     'error.http.bad-request.invalid-json': `The body of your request is not a valid JSON`,
+    'error.http.too-many-requests': `Too many requests`,
     'error.http.not-found': `Resource not found`,
     'error.http.not-found.repository-branch': `Branch "{{name}}" is not found`,
     'error.http.not-found.repository-tag': `Tag "{{name}}" is not found`,
