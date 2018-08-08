@@ -160,22 +160,7 @@ export class GithubDriver extends VcsDriver
      */
     public async getComposerInformation(identifier: string): Promise<LooseObject|null> {
         if (!this.infoCache[identifier]) {
-            let composer = await this.getBaseComposerInformation(identifier);
-
-            if (composer) {
-                // specials for github
-                if (!composer['support'] || !composer['support']['source']) {
-                    composer['support'] = composer['support'] ? composer['support'] : {};
-                    composer['support']['source'] = `https://${this.originUrl}/${this.owner}/${this.repository}/tree/${identifier}`;
-                }
-
-                if (this.hasIssues && (!composer['support'] || !composer['support']['issues'])) {
-                    composer['support'] = composer['support'] ? composer['support'] : {};
-                    composer['support']['issues'] = `https://${this.originUrl}/${this.owner}/${this.repository}/issues`;
-                }
-            }
-
-            this.infoCache[identifier] = composer;
+            this.infoCache[identifier] = await this.getBaseComposerInformation(identifier);
         }
 
         return this.infoCache[identifier];
