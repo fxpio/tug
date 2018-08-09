@@ -28,8 +28,8 @@ export class DrawerModule<R extends DrawerModuleState> implements Module<DrawerS
 
     public get mutations(): MutationTree<DrawerState> {
         return {
-            toggle(state: DrawerState, show: boolean): void {
-                state.show = show;
+            toggle(state: DrawerState, show?: boolean): void {
+                state.show = undefined === show ? !state.show : show;
                 localStorage.setItem('drawer:show', state.show ? 'true' : 'false');
             },
         };
