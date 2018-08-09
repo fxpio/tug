@@ -9,6 +9,7 @@
 
 import {ApiService} from '@app/ui/api/ApiService';
 import {Canceler} from '@app/ui/api/Canceler';
+import {ListResponse} from '@app/ui/api/models/responses/ListResponse';
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 
 /**
@@ -53,5 +54,23 @@ export class BaseService implements ApiService
         }
 
         return null;
+    }
+
+    /**
+     * Build and run the request.
+     *
+     * @param {AxiosRequestConfig} config
+     * @param {Canceler}           [canceler]
+     *
+     * @return {Promise<ListResponse<T>>}
+     */
+    protected async requestList<T>(config: AxiosRequestConfig, canceler?: Canceler): Promise<ListResponse<T>> {
+        if (!config.method) {
+            config.method = 'GET';
+        }
+
+        let res = await this.request<ListResponse<T>>(config, canceler);
+
+        return res ? res : {results: [], count: 0, lastId: null} as ListResponse<T>;
     }
 }

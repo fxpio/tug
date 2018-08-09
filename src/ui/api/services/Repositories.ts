@@ -24,10 +24,10 @@ export class Repositories extends BaseService
      * @param {ListOptions} [options]
      * @param {Canceler}    [canceler]
      *
-     * @return {Promise<ListResponse<CodeRepository>|null>}
+     * @return {Promise<ListResponse<CodeRepository>>}
      */
-    public async list(options?: ListOptions, canceler?: Canceler): Promise<ListResponse<CodeRepository>|null> {
-        return await this.request<ListResponse<CodeRepository>>({method: 'GET', url: '/manager/repositories', params: options || {}}, canceler);
+    public async list(options?: ListOptions, canceler?: Canceler): Promise<ListResponse<CodeRepository>> {
+        return this.requestList<CodeRepository>({url: '/manager/repositories', params: options || {}}, canceler);
     }
 
     /**
