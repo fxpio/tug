@@ -28,6 +28,9 @@ export function createRouter(): Router {
         base: '/admin/',
         routes: [
             {   path: '',
+                redirect: 'home'
+            },
+            {   path: '/home',
                 name: 'home',
                 meta: {requiresAuth: true},
                 components: {
