@@ -16,22 +16,18 @@ import Vue from 'vue';
  * @param {Vue}   vue The vue instance
  * @param {Error} err The request error
  *
- * @return {string|null}
+ * @return {string}
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export function getRequestErrorMessage(vue: Vue, err: Error): string|null {
-    let message:string|null = null;
-
+export function getRequestErrorMessage(vue: Vue, err: Error): string {
     if ((<AxiosError>err).response && (<AxiosResponse>(<AxiosError>err).response).status) {
         if ((<AxiosResponse>(<AxiosError>err).response)
                 && (<AxiosResponse>(<AxiosError>err).response).data
                 && (<AxiosResponse>(<AxiosError>err).response).data.message) {
-            message = (<AxiosResponse>(<AxiosError>err).response).data.message;
+            return (<AxiosResponse>(<AxiosError>err).response).data.message;
         }
-    } else {
-        message = vue.$i18n.t('error.network') as string;
     }
 
-    return message;
+    return vue.$i18n.t('error.network') as string;
 }
