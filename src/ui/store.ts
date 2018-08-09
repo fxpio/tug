@@ -12,6 +12,7 @@ import {AuthModule} from '@app/ui/stores/auth/AuthModule';
 import {DrawerModule} from '@app/ui/stores/drawer/DrawerModule';
 import {I18nModule} from '@app/ui/stores/i18n/I18nModule';
 import {RootState} from '@app/ui/stores/RootState';
+import {SnackbarModule} from '@app/ui/stores/snackbar/SnackbarModule';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import Router from 'vue-router';
@@ -36,7 +37,8 @@ export function createStore<R extends RootState>(router: Router, i18n: VueI18n, 
         modules: {
             i18n: new I18nModule<R>(router, i18n),
             auth: new AuthModule<R>(router, api),
-            drawer: new DrawerModule<R>()
+            drawer: new DrawerModule<R>(),
+            snackbar: new SnackbarModule<R>(),
         }
     });
 }

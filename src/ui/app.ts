@@ -12,6 +12,7 @@ import {Api} from '@app/ui/api/Api';
 import '@app/ui/class-component-hooks';
 import {App} from '@app/ui/components/App';
 import '@app/ui/components/Loading';
+import '@app/ui/components/Snackbar';
 import {createRouter, routerAddAuthGuard} from '@app/ui/router';
 import {createStore} from '@app/ui/store';
 import '@app/ui/styles/app.styl';

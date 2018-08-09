@@ -10,10 +10,11 @@
 import {AuthModuleState} from '@app/ui/stores/auth/AuthModuleState';
 import {DrawerModuleState} from '@app/ui/stores/drawer/DrawerModuleState';
 import {I18nModuleState} from '@app/ui/stores/i18n/I18nModuleState';
+import {SnackbarModuleState} from '@app/ui/stores/snackbar/SnackbarModuleState';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface RootState extends I18nModuleState, AuthModuleState, DrawerModuleState
+export interface RootState extends I18nModuleState, AuthModuleState, DrawerModuleState, SnackbarModuleState
 {
 }

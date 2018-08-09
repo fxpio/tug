@@ -16,6 +16,7 @@ export default {
     'app.description': 'Votre référentiel privé de paquets Composer pour vos paquets PHP privés',
     'security.login': 'Connexion',
     'security.logout': 'Déconnexion',
+    'close': 'Fermer',
     'search': 'Rechercher',
     'source': 'Source',
     'pagination.load-more': 'Charger plus',

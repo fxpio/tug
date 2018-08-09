@@ -16,6 +16,7 @@ export default {
     'app.description': 'Your private repository of Composer packages for your private PHP packages',
     'security.login': 'Login',
     'security.logout': 'Logout',
+    'close': 'Close',
     'search': 'Search',
     'source': 'Source',
     'pagination.load-more': 'Load more',
