@@ -7,7 +7,6 @@
  * file that was distributed with this source code.
  */
 
-import {Error404} from '@app/ui/components/Error404';
 import {RootState} from '@app/ui/stores/RootState';
 import Vue from 'vue';
 import Router from 'vue-router';
@@ -28,27 +27,32 @@ export function createRouter(): Router {
         mode: 'history',
         base: '/admin/',
         routes: [
-            {   path: '/',
-                component: () => import('@app/ui/components/ChildRouteWrapper').then(({ ChildRouteWrapper }) => ChildRouteWrapper),
-                children: [
-                    {   path: '',
-                        name: 'home',
-                        meta: {requiresAuth: true},
-                        component: () => import('@app/ui/pages/Home').then(({ Home }) => Home),
-                    },
-                    {   path: 'login',
-                        name: 'login',
-                        component: () => import('@app/ui/pages/Login').then(({ Login }) => Login)
-                    },
-                    {   path: 'repositories',
-                        name: 'repositories',
-                        component: () => import('@app/ui/pages/Repositories').then(({ Repositories }) => Repositories)
-                    },
-                    {   path: "*",
-                        name: 'error404',
-                        component: Error404
-                    }
-                ]
+            {   path: '',
+                name: 'home',
+                meta: {requiresAuth: true},
+                components: {
+                    default: () => import('@app/ui/pages/Home').then(({ Home }) => Home),
+                    toolbar: () => import('@app/ui/components/Toolbar').then(({ Toolbar }) => Toolbar),
+                }
+            },
+            {   path: '/login',
+                name: 'login',
+                component: () => import('@app/ui/pages/Login').then(({ Login }) => Login)
+            },
+            {   path: '/repositories',
+                name: 'repositories',
+                meta: {requiresAuth: true},
+                components: {
+                    default: () => import('@app/ui/pages/Repositories').then(({ Repositories }) => Repositories),
+                    toolbar: () => import('@app/ui/components/Toolbar').then(({ Toolbar }) => Toolbar),
+                },
+            },
+            {   path: "*",
+                name: 'error404',
+                components: {
+                    default: () => import('@app/ui/components/Error404').then(({ Error404 }) => Error404),
+                    toolbar: () => import('@app/ui/components/Toolbar').then(({ Toolbar }) => Toolbar),
+                }
             }
         ]
     });
