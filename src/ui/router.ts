@@ -47,7 +47,7 @@ export function createRouter(): Router {
                 meta: {requiresAuth: true},
                 components: {
                     default: () => import('@app/ui/pages/Repositories').then(({ Repositories }) => Repositories),
-                    toolbar: () => import('@app/ui/components/Toolbar').then(({ Toolbar }) => Toolbar),
+                    toolbar: () => import('@app/ui/pages/Repositories/ListToolbar').then(({ Toolbar }) => Toolbar),
                 },
             },
             {   path: "*",

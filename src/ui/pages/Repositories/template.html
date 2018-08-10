@@ -10,16 +10,6 @@ file that was distributed with this source code.
 <v-layout justify-space-between row fill-height wrap>
     <v-flex xs12>
         <v-card>
-            <v-card-title>
-                <v-text-field
-                        v-model="search"
-                        append-icon="search"
-                        :label="$t('search')"
-                        single-line
-                        hide-details
-                ></v-text-field>
-                <v-spacer class="hidden-xs-only"></v-spacer>
-            </v-card-title>
             <v-data-table
                     :headers="headers"
                     :items="items"

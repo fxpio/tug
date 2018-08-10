@@ -43,12 +43,21 @@ export class Repositories extends mixins(AjaxListContent)
             }
         ];
 
+        this.$eventBus.$on('repository-search-out', async (searchValue: string) => {
+            this.search = searchValue;
+        });
+
         await this.fetchData();
+    }
+
+    public destroyed() {
+        this.$eventBus.$off('repository-search-out');
     }
 
     @Watch('search')
     public async searchRequest(searchValue?: string): Promise<void> {
-        this.fetchData(searchValue);
+        this.$eventBus.$emit('repository-search-in', searchValue);
+        await this.fetchData(searchValue);
     }
 
     public async fetchDataRequest(searchValue?: string): Promise<ListResponse<CodeRepository>> {
