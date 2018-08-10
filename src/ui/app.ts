@@ -13,6 +13,7 @@ import '@app/ui/class-component-hooks';
 import {App} from '@app/ui/components/App';
 import '@app/ui/components/Loading';
 import '@app/ui/components/Snackbar';
+import {VueEventBus} from '@app/ui/event';
 import {createRouter, routerAddAuthGuard} from '@app/ui/router';
 import {createStore} from '@app/ui/store';
 import '@app/ui/styles/app.styl';
@@ -45,6 +46,7 @@ export function createApp(context: AppContext): Vue {
     Vue.use(VueI18n);
     Vue.use(Meta);
     Vue.use(VueApi.plugin, apiClient);
+    Vue.use(VueEventBus.plugin);
     Vue.use(VeeValidate);
     Vue.use(Vuetify, {
         theme: {
