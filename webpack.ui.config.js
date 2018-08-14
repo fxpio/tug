@@ -21,7 +21,7 @@ require('webpack');
 
 const prod = 'production' === process.env.NODE_ENV || argv._.includes('production') || argv.production;
 const mode = prod ? 'production' : 'development';
-const isDevServer = process.argv[1].indexOf('webpack-dev-server') >= 0;
+const isDevServer = process.argv[1] && process.argv[1].indexOf('webpack-dev-server') >= 0;
 const serverPort = parseInt(process.env.SERVER_PORT || 3000) + 2;
 const srcPath = path.resolve(__dirname, 'src');
 const distPath = path.resolve(__dirname, 'dist');
