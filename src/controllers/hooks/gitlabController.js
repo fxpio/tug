@@ -54,20 +54,22 @@ async function pushAction(req, res) {
             if (body.ref.startsWith('refs/heads/')) {
                 version = 'dev-' + body.ref.substring(11);
 
-                if (body.created) {
+                if (body.checkout_sha !== null) {
                     message += await refreshVersion(queue, repo, version, body['checkout_sha']);
-                } else if (body.deleted) {
+                } else if (body.checkout_sha === null) {
                     message += await deleteVersion(queue, repo, version);
-                } else if (!body.created && !body.deleted && body['checkout_sha'] && body['commits'].length > 0) {
-                    message += await refreshVersion(queue, repo, version, body['checkout_sha'], true);
+                } else {
+                    message += "Invalid event";
                 }
             } else if (body.ref.startsWith('refs/tags/')) {
                 version = body.ref.substring(10);
 
-                if (body.created) {
+                if (body.checkout_sha !== null) {
                     message += await refreshVersion(queue, repo, version, body['checkout_sha']);
-                } else if (body.deleted) {
+                } else if (body.checkout_sha === null) {
                     message += await deleteVersion(queue, repo, version);
+                } else {
+                    message += "Invalid event";
                 }
             }
         } else if(body.repository && body.repository['git_http_url']) {
