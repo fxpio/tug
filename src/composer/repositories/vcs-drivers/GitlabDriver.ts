@@ -144,12 +144,13 @@ export class GitlabDriver extends VcsDriver
      * @inheritDoc
      */
     public getDist(identifier: string): LooseObject {
-        let url = `${this.getApiUrl()}/projects/${querystring.escape(`${this.owner}/${this.repository}`)}/archive`;
+        let url = `${this.getApiUrl()}/projects/${querystring.escape(`${this.owner}/${this.repository}`)}/repository/archive.tar.gz?sha=${identifier}`;
 
         return {
-            type: 'tar.gz',
+            type: 'tar',
             url: url,
-            reference: identifier
+            reference: identifier,
+            shasum: ''
         };
     }
 
