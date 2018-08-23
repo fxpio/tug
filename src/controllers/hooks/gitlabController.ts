@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import RepositoryManager from '../../composer/repositories/RepositoryManager';
+import {RepositoryManager} from '../../composer/repositories/RepositoryManager';
 import {getGitlabEvent} from '../../utils/apiGitlab';
 import {Request, Response} from 'express';
-import VcsRepository from '../../composer/repositories/VcsRepository';
-import MessageQueue from '../../queues/MessageQueue';
-import Logger from '../../loggers/Logger';
+import {VcsRepository} from '../../composer/repositories/VcsRepository';
+import {MessageQueue} from '../../queues/MessageQueue';
+import {Logger} from '../../loggers/Logger';
 
 /**
  * Hook for Github Webhooks.

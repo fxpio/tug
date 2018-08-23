@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import ConfigManager from '../../configs/ConfigManager';
-import Config from '../../configs/Config';
+import {ConfigManager} from '../../configs/ConfigManager';
+import {Config} from '../../configs/Config';
 import {generateToken} from '../../utils/token';
 import {Request, Response} from 'express';
 import {LooseObject} from '../../utils/LooseObject';

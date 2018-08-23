@@ -21,7 +21,7 @@ export class Config
         'github-webhook': {},
         'gitlab-domains': [],
         'gitlab-access-token': {},
-        'gitlab-webhook': {}
+        'gitlab-webhook': {},
         'ui': {
             'locale': 'en'
         }

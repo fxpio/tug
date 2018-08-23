@@ -9,7 +9,7 @@
 
 import {githubHook} from '@app/controllers/hooks/githubController';
 import {queueHook} from '@app/controllers/hooks/queueController';
-import GitlabWebhookAuth from '../middlewares/auth/strategies/GitlabWebhookAuth';
+import {GitlabWebhookAuth} from '../middlewares/auth/strategies/GitlabWebhookAuth';
 import {Authenticate} from '@app/middlewares/auth/Authenticate';
 import {GithubWebhookAuth} from '@app/middlewares/auth/strategies/GithubWebhookAuth';
 import {QueueAuth} from '@app/middlewares/auth/strategies/QueueAuth';

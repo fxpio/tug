@@ -7,16 +7,16 @@
  * file that was distributed with this source code.
  */
 
-import AuthStrategy from './AuthStrategy';
+import {AuthStrategy} from './AuthStrategy';
 import {isGitlabEvent} from "../../../utils/apiGitlab";
 import {URL} from 'url';
 import {Request} from 'express';
-import Config from '../../../configs/Config';
+import {Config} from '../../../configs/Config';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class GitlabWebhookAuth implements AuthStrategy
+export class GitlabWebhookAuth implements AuthStrategy
 {
     /**
      * @inheritDoc

@@ -7,18 +7,18 @@
  * file that was distributed with this source code.
  */
 
-import Config from '../../../configs/Config';
-import VcsDriverError from '../../../errors/VcsDriverError';
-import RemoteFilesystem from '../../utils/RemoteFilesystem';
-import VcsDriver from './VcsDriver';
-import TransportError from "../../../errors/TransportError";
+import {Config} from '../../../configs/Config';
+import {VcsDriverError} from '../../../errors/VcsDriverError';
+import {RemoteFilesystem} from '../../utils/RemoteFilesystem';
+import {VcsDriver} from './VcsDriver';
+import {TransportError} from "../../../errors/TransportError";
 import querystring from 'querystring';
 import {LooseObject} from '../../../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class GitlabDriver extends VcsDriver
+export class GitlabDriver extends VcsDriver
 {
     private readonly originUrl: string;
     private readonly infoCache: LooseObject;
@@ -195,7 +195,7 @@ export default class GitlabDriver extends VcsDriver
             }
         } catch (e) {
             if (e instanceof TransportError) {
-                if (404 !== e.getStatusCode()) {
+                if (404 !== e.statusCode) {
                     error = e;
                 }
             }
