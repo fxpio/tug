@@ -7,14 +7,14 @@
  * file that was distributed with this source code.
  */
 
-import LoggerError from '../errors/LoggerError';
-import {LooseObject} from '../utils/LooseObject';
-import {isProd} from '../utils/server';
+import {LoggerError} from '@app/errors/LoggerError';
+import {LoggerInvalidLevelError} from '@app/errors/LoggerInvalidLevelError';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Logger
+export class Logger
 {
     /**
      * @return {LooseObject}
@@ -29,16 +29,19 @@ export default class Logger
     }
 
     private readonly level: string;
+    private readonly debug: boolean;
 
     /**
      * Constructor.
      *
-     * @param {string} level The level
+     * @param {string}  level The level
+     * @param {boolean} debug The debug mode
      *
      * @throws LoggerError When the level does not exist
      */
-    constructor(level: string = 'verbose') {
+    constructor(level: string = 'verbose', debug: boolean = false) {
         this.level = Logger.validateLevel(level);
+        this.debug = debug;
     }
 
     /**
@@ -54,7 +57,7 @@ export default class Logger
 
         if (Logger.LEVELS[this.level] >= Logger.LEVELS[level]) {
             if (message instanceof Error) {
-                message = isProd() ? message.message : message.stack;
+                message = this.debug ? message.stack : message.message;
             }
             console.info(`[${level.toUpperCase()}] ${message}`);
         }
@@ -69,7 +72,7 @@ export default class Logger
      */
     private static validateLevel(level: string): string {
         if (undefined === Logger.LEVELS[level]) {
-            throw new LoggerError(`The logger level "${level}" does not exists, use: "${Object.keys(Logger.LEVELS).join('", "')}"`);
+            throw new LoggerInvalidLevelError(level, Object.keys(Logger.LEVELS));
         }
 
         return level;

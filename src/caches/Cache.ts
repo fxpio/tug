@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import DataStorage from '../storages/DataStorage';
+import {DataStorage} from '@app/storages/DataStorage';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Cache
+export class Cache
 {
     private storage: DataStorage;
 

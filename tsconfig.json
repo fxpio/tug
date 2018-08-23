@@ -1,6 +1,10 @@
 {
     "include": ["./src/**/*"],
     "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@app/*": ["src/*"]
+        },
         "outDir": "./dist-ts/",
         "sourceMap": true,
         "strict": true,

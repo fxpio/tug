@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import HttpNotFoundError from './HttpNotFoundError';
+import Vue from 'vue';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class VcsDriverNotFoundError extends HttpNotFoundError
+export class EventBus extends Vue
 {
 }

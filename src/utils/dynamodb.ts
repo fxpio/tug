@@ -7,76 +7,120 @@
  * file that was distributed with this source code.
  */
 
+import {And} from '@app/db/constraints/And';
+import {Constraint} from '@app/db/constraints/Constraint';
+import {Equal} from '@app/db/constraints/Equal';
+import {Query} from '@app/db/constraints/Query';
+import {LooseObject} from '@app/utils/LooseObject';
 import AWS from 'aws-sdk';
-import Constraint from '../db/constraints/Constraint';
-import Equal from '../db/constraints/Equal';
-import {LooseObject} from './LooseObject';
+import merge from 'lodash.merge';
 
 /**
  * Convert the criteria into dynamo db parameters for query.
  *
- * @param {object} criteria  The criteria
+ * @param {Query}  query     The query
  * @param {string} indexName The model index name
  *
  * @return {Object}
  */
-export function convertQueryCriteria(criteria: LooseObject, indexName = 'model-index'): Object {
-    let exp = [],
-        model = criteria && criteria.model ? criteria.model : null,
+export function convertQueryCriteria(query: Query, indexName = 'model-index'): Object {
+    let exp: string|undefined,
+        model = query.getModel(),
         keys: LooseObject = {'#model': 'model'},
         values:LooseObject = {':model': {'S': model}};
 
-    delete criteria.model;
-
-    for (let key of Object.keys(criteria)) {
-        let constraint = criteria[key] instanceof Constraint ? criteria[key] : new Equal(criteria[key]);
-        exp.push(constraint.format('#' + key, ':' + key));
+    let qValues = query.getValues();
+    for (let key of Object.keys(qValues)) {
         keys['#' + key] = key;
-
-        if (constraint.hasValue()) {
-            values[':' + key] = AWS.DynamoDB.Converter.marshall({val: constraint.getValue()}).val;
-        }
-
-        let customValues = constraint.getCustomValues();
-        for (let key of Object.keys(customValues)){
-            values[':' + key] = AWS.DynamoDB.Converter.marshall({val: customValues[key]}).val;
-        }
+        values[':' + key] = AWS.DynamoDB.Converter.marshall({val: qValues[key]}).val;
     }
+
+    exp = formatDynamodbConstraint(query.getConstraint());
 
     return {
         IndexName: indexName,
         KeyConditionExpression: '#model = :model',
-        FilterExpression: exp.join(' AND '),
+        FilterExpression: exp ? exp : undefined,
         ExpressionAttributeNames: keys,
         ExpressionAttributeValues: values
     };
 }
 
 /**
- * Convert the criteria into dynamo db parameters for scan.
+ * Concert the criteria into Query.
  *
- * @param {LooseObject} criteria The criteria
+ * @param {Query|LooseObject} criteria
  *
- * @return {Object}
+ * @return {Query}
  */
-export function convertScanCriteria(criteria: LooseObject): Object {
-    let exp = [],
-        keys: LooseObject = {},
-        values: LooseObject = {};
-
-    for (let key of Object.keys(criteria)) {
-        let constraint = criteria[key] instanceof Constraint ? criteria[key] : new Equal(criteria[key]);
-        exp.push(constraint.format('#' + key, ':' + key));
-        keys['#' + key] = key;
-
-        if (constraint.hasValue()) {
-            values[':' + key] = AWS.DynamoDB.Converter.marshall({val: constraint.getValue()}).val;
-        }
+export function criteriaToQuery(criteria: Query|LooseObject): Query {
+    if (criteria instanceof Query) {
+        return criteria;
     }
 
-    return {
-        FilterExpression: exp.join(' AND '),
-        ExpressionAttributeNames: keys,
-        ExpressionAttributeValues: values
-    };
+    criteria = merge({}, criteria);
+
+    let model = criteria.model;
+    let constraints: Constraint[] = [];
+
+    delete criteria.model;
+
+    for (let key of Object.keys(criteria)) {
+        let constraint = criteria[key] instanceof Constraint ? criteria[key] : new Equal(key, criteria[key]);
+        constraints.push(constraint);
+    }
+
+    return new Query(new And(constraints), model ? model : undefined);
+}
+
+/**
+ * Format the constraint for dynamodb.
+ *
+ * @param {Constraint} constraint
+ *
+ * @return {string}
+ */
+export function formatDynamodbConstraint(constraint: Constraint): string {
+    let exp = '';
+
+    switch (constraint.getOperator()) {
+        case '=':
+            exp = `#${constraint.getKey()} = :${constraint.getKey()}`;
+            break;
+        case '!=':
+            exp = `#${constraint.getKey()} <> :${constraint.getKey()}`;
+            break;
+        case 'NOT':
+            exp = `NOT(${formatDynamodbConstraint(constraint.getValue())})`;
+            break;
+        case 'IN':
+            let keys = Object.keys(constraint.getValues());
+
+            exp = constraint.getKey() + ' IN (' + (keys.length > 0 ? ':' : '') + keys.join(', :') + ')';
+            break;
+        case 'EXISTS':
+            exp = `attribute_exists(#${constraint.getKey()})`;
+            break;
+        case 'CONTAINS':
+            exp = `contains(#${constraint.getKey()}, :${constraint.getKey()})`;
+            break;
+        case 'AND':
+            let parts: string[] = [];
+            for (let subConstraint of <Constraint[]> constraint.getValue()) {
+                parts.push(formatDynamodbConstraint(subConstraint));
+            }
+            exp = parts.length > 1 ? '(' + parts.join(' AND ') + ')' : parts.length > 0 ? parts.join(' AND ') : '';
+            break;
+        case 'OR':
+            let orParts: string[] = [];
+            for (let subConstraint of <Constraint[]> constraint.getValue()) {
+                orParts.push(formatDynamodbConstraint(subConstraint));
+            }
+            exp = orParts.length > 1 ? '(' + orParts.join(' OR ') + ')' : orParts.length > 0 ? orParts.join(' AND ') : '';
+            break;
+        default:
+            break;
+    }
+
+    return exp;
 }

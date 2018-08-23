@@ -7,17 +7,17 @@
  * file that was distributed with this source code.
  */
 
+import {Config} from '@app/configs/Config';
+import {TransportError} from '@app/errors/TransportError';
+import {TransportResourceNotFoundError} from '@app/errors/TransportResourceNotFoundError';
+import {LooseObject} from '@app/utils/LooseObject';
 import merge from 'lodash.merge';
-import fetch from 'node-fetch';
-import Config from '../../configs/Config';
-import TransportError from '../../errors/TransportError';
-import {Response} from 'node-fetch';
-import {LooseObject} from '../../utils/LooseObject';
+import fetch, {Response} from 'node-fetch';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class RemoteFilesystem
+export class RemoteFilesystem
 {
     private config: Config;
     private lastHeaders: Object;
@@ -67,7 +67,7 @@ export default class RemoteFilesystem
                     return await res.text();
                 }
 
-                throw new TransportError(`The "${fileUrl}" file could not be downloaded`, res.status);
+                throw new TransportResourceNotFoundError(fileUrl, res.status);
             })
             .catch((e: Error) => {
                 this.lastHeaders = {};

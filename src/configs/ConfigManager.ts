@@ -7,14 +7,14 @@
  * file that was distributed with this source code.
  */
 
-import ConfigRepository from '../db/repositories/ConfigRepository';
-import Config from './Config';
-import {LooseObject} from '../utils/LooseObject';
+import {Config} from '@app/configs/Config';
+import {ConfigRepository} from '@app/db/repositories/ConfigRepository';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class ConfigManager
+export class ConfigManager
 {
     private readonly configRepo: ConfigRepository;
 

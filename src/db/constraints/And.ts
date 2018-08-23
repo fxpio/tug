@@ -7,56 +7,20 @@
  * file that was distributed with this source code.
  */
 
-import Constraint from './Constraint';
-import {LooseObject} from '../../utils/LooseObject';
+import {ChildrenConstraint} from '@app/db/constraints/ChildrenConstraint';
+import {Constraint} from '@app/db/constraints/Constraint';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class And extends Constraint
+export class And extends ChildrenConstraint
 {
-    private readonly constraints: Constraint[];
-
     /**
      * Constructor.
      *
      * @param {Constraint[]} constraints The constraints
      */
     constructor(constraints: Constraint[]) {
-        super('');
-        this.constraints = constraints;
-
-        for (let constraint of this.constraints) {
-            if (constraint.hasValue()) {
-                this.useValue = true;
-                break;
-            }
-        }
+        super('AND', constraints);
     }
-
-    /**
-     * @inheritDoc
-     */
-    public format(a: string, b: string): string {
-        let parts = [];
-
-        for (let constraint of this.constraints) {
-            parts.push(constraint.format(a, b));
-        }
-
-        return parts ? parts.join(' AND ') : '';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public getCustomValues(): LooseObject {
-        let values = {};
-
-        for (let constraint of this.constraints) {
-            values = Object.assign(values, constraint.getCustomValues());
-        }
-
-        return values;
-    }
-};
+}

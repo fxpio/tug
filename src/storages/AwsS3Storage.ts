@@ -7,14 +7,14 @@
  * file that was distributed with this source code.
  */
 
+import {DataStorage} from '@app/storages/DataStorage';
+import {LooseObject} from '@app/utils/LooseObject';
 import AWS from 'aws-sdk';
-import DataStorage from './DataStorage';
-import {LooseObject} from '../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class AwsS3Storage implements DataStorage
+export class AwsS3Storage implements DataStorage
 {
     private readonly client: AWS.S3;
 
@@ -96,4 +96,4 @@ export default class AwsS3Storage implements DataStorage
 
         return key;
     }
-};
+}

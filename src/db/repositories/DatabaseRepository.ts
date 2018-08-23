@@ -7,9 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import Results from '../Results';
-import Database from '../Database';
-import {LooseObject} from '../../utils/LooseObject';
+import {Query} from '@app/db/constraints/Query';
+import {Database} from '@app/db/Database';
+import {Results} from '@app/db/Results';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -64,30 +65,42 @@ export interface DatabaseRepository
     /**
      * Find the records.
      *
-     * @param {LooseObject} criteria  The criteria
-     * @param {string}      [startId] The start id
+     * @param {Query|LooseObject} criteria  The criteria
+     * @param {string}            [startId] The start id
      *
      * @return {Promise<Results>}
      */
-    find(criteria: LooseObject, startId?: string): Promise<Results>;
+    find(criteria: Query|LooseObject, startId?: string): Promise<Results>;
 
     /**
      * Find one record.
      *
-     * @param {LooseObject} criteria The criteria
+     * @param {Query|LooseObject} criteria The criteria
      *
      * @return {Promise<LooseObject>}
      */
-    findOne(criteria: LooseObject): Promise<LooseObject>;
+    findOne(criteria: Query|LooseObject): Promise<LooseObject>;
+
+    /**
+     * Search the records.
+     *
+     * @param {Query|LooseObject} criteria  The criteria or query
+     * @param {string[]}          fields    The fields
+     * @param {string}            [search]  The search value
+     * @param {string}            [startId] The start id
+     *
+     * @return {Promise<Results>}
+     */
+    search(criteria: Query|LooseObject, fields: string[], search?: string, startId?: string): Promise<Results>;
 
     /**
      * Prepare the criteria.
      *
-     * @param {LooseObject} criteria The criteria
+     * @param {Query|LooseObject} criteria The criteria
      *
-     * @return {LooseObject}
+     * @return {Query}
      */
-    prepareCriteria(criteria: LooseObject): LooseObject;
+    prepareCriteria(criteria: Query|LooseObject): Query;
 
     /**
      * Get the prefix of id.
@@ -122,5 +135,3 @@ export interface DatabaseRepositoryConstructor
      */
     getName(): string;
 }
-
-export default DatabaseRepository;

@@ -8,7 +8,7 @@
  */
 
 import test from 'ava';
-import Config from '../../src/configs/Config';
+import {Config} from '../../src/configs/Config';
 
 
 test('test config to get default values', t => {

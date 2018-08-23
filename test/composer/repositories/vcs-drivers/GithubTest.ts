@@ -8,8 +8,8 @@
  */
 
 import test from 'ava';
-import Config from '../../../../src/configs/Config';
-import GithubDriver from '../../../../src/composer/repositories/vcs-drivers/GithubDriver';
+import {Config} from '../../../../src/configs/Config';
+import {GithubDriver} from '../../../../src/composer/repositories/vcs-drivers/GithubDriver';
 import {LooseObject} from '../../../../src/utils/LooseObject';
 
 const supports: LooseObject = {

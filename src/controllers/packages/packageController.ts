@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import PackageManager from '../../composer/packages/PackageManager';
-import PackageBuilder from '../../composer/packages/PackageBuilder';
-import Cache from '../../caches/Cache';
-import HttpNotFoundError from '../../errors/HttpNotFoundError';
+import {Cache} from '@app/caches/Cache';
+import {PackageBuilder} from '@app/composer/packages/PackageBuilder';
+import {PackageManager} from '@app/composer/packages/PackageManager';
+import {HttpNotFoundError} from '@app/errors/HttpNotFoundError';
+import {LooseObject} from '@app/utils/LooseObject';
 import {Request, Response} from 'express';
-import {LooseObject} from '../../utils/LooseObject';
 
 /**
  * Display the root packages.
@@ -30,7 +30,7 @@ export async function showRootPackages(req: Request, res: Response, next: Functi
     let content = await cache.getRootPackages();
 
     if (!content) {
-        content = await builder.buildRootPackages();
+        content = await builder.buildRootPackages(res);
     }
 
     res.set('Content-Type', 'application/json; charset=utf-8');
@@ -50,7 +50,7 @@ export async function showPackageVersion(req: Request, res: Response, next: Func
     let manager: PackageManager = req.app.get('package-manager');
     let packageName = req.params.vendor + '/' +req.params.package;
     let version = req.params.version;
-    let resPackage = await manager.findPackage(packageName, version);
+    let resPackage = await manager.findPackage(packageName, version, res);
 
     if (resPackage) {
         res.json(resPackage.getComposer());
@@ -82,8 +82,8 @@ export async function showPackageVersions(req: Request, res: Response, next: Fun
 
         let content = await cache.getPackageVersions(packageName, hash);
         if (!content) {
-            let res:LooseObject = builder.buildVersions(packageName, hash);
-            content = res ? res.content : null;
+            let result:LooseObject|null = await builder.buildVersions(packageName, hash, res);
+            content = result ? result.content : null;
         }
 
         if (content) {
@@ -109,7 +109,7 @@ export async function trackDownloadBatch(req: Request, res: Response, next: Func
     let packageManager: PackageManager = req.app.get('package-manager');
 
     for (let track of req.body.downloads) {
-        await packageManager.trackDownload(track.name, track.version);
+        await packageManager.trackDownload(track.name, track.version, res);
     }
 
     res.status(204).send();

@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
+import {LooseObject} from '@app/utils/LooseObject';
 import {Request} from 'express';
-import {LooseObject} from './LooseObject';
 
 /**
  * Check if the request comes from SQS with API Gateway trigger.

@@ -22,6 +22,8 @@ const dynamodbLocalPath = './var/dynamodb';
 const dynamodbLocalBinPath = dynamodbLocalPath + '/DynamoDBLocal.jar';
 const dynamodbLocalZipPath = dynamodbLocalPath + '.zip';
 
+const CONTENT_PATH = './dist';
+
 program
     .description('Serve the Satis server in local')
     .option('-p, --port [port]', 'The port to run the local server', 3000)
@@ -29,7 +31,8 @@ program
     .parse(process.argv)
 ;
 
-let dynamodbPort = program.dynamodbPort || program.port + 1;
+let dynamodbPort = parseInt(program.dynamodbPort || program.port) + 1;
+let startLocalDynamoDb = false;
 
 process.env.SERVER_PORT = program.port;
 
@@ -41,16 +44,22 @@ if (undefined === process.env.AWS_DYNAMODB_TABLE) {
     process.env.AWS_DYNAMODB_TABLE = process.env.AWS_STACK_NAME + '-Database';
 }
 
+if (process.env.AWS_DYNAMODB_URL.startsWith('http://localhost:')) {
+    startLocalDynamoDb = true;
+}
+
 utils.spawn('node bin/config -e')
     .then(async () => {
         try {
-            await utils.spawn('java -version', {}, true, false);
+            if (startLocalDynamoDb) {
+                await utils.spawn('java -version', {}, true, false);
+            }
         } catch (e) {
             throw new Error('Java runtime must be installed to run the AWS DynamoDB local server');
         }
     })
     .then(async () => {
-        if (!fs.existsSync(dynamodbLocalBinPath)) {
+        if (startLocalDynamoDb && !fs.existsSync(dynamodbLocalBinPath)) {
             if (!fs.existsSync(dynamodbLocalZipPath)) {
                 console.info('Downloading the local AWS DynamoDB server...');
                 await utils.downloadFile(dynamodbUrl, dynamodbLocalZipPath);
@@ -62,7 +71,11 @@ utils.spawn('node bin/config -e')
         }
     })
     .then(async () => {
-        async.parallel([
+        // clean the content path
+        await fs.remove(CONTENT_PATH);
+    })
+    .then(async () => {
+        let tasks = [
             // start the DynamoDB local server
             async function () {
                 await utils.spawn('java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -port ' + dynamodbPort, {}, true, true, {
@@ -74,7 +87,7 @@ utils.spawn('node bin/config -e')
                 let db = new AWS.DynamoDB({
                     apiVersion: '2012-08-10',
                     region: process.env.AWS_REGION,
-                    endpoint: process.env.AWS_DYNAMODB_URL
+                    endpoint: process.env.AWS_DYNAMODB_URL ? process.env.AWS_DYNAMODB_URL : undefined
                 });
 
                 try {
@@ -117,11 +130,19 @@ utils.spawn('node bin/config -e')
                 }
             },
             // compile and start the express server
-            async.apply(utils.spawn, 'webpack --watch')
-        ], function (err) {
+            async.apply(utils.spawn, 'webpack --watch --config webpack.config.js'),
+            // compile and start the webpack dev server for UI
+            async.apply(utils.spawn, 'webpack-dev-server --config webpack.ui.config.js')
+        ];
+
+        if (!startLocalDynamoDb) {
+            tasks.shift();
+        }
+
+        async.parallel(tasks, function (err) {
             if (err) {
                 utils.displayError(err);
             }
-        })
+        });
     })
     .catch(utils.displayError);

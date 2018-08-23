@@ -7,37 +7,28 @@
  * file that was distributed with this source code.
  */
 
-import Constraint from './Constraint';
-import {LooseObject} from '../../utils/LooseObject';
+import {Constraint} from '@app/db/constraints/Constraint';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Not extends Constraint
+export class Not extends Constraint<Constraint>
 {
-    private readonly constraint: Constraint;
-
     /**
      * Constructor.
      *
      * @param {Constraint} constraint The constraint
      */
     constructor(constraint: Constraint) {
-        super('');
-        this.constraint = constraint;
+        super('NOT', constraint.getKey(), constraint);
+        delete this.values[constraint.getKey()];
     }
 
     /**
      * @inheritDoc
      */
-    public format(a: string, b: string): string {
-        return 'NOT(' + this.constraint.format(a, b) + ')';
+    public getValues(): LooseObject {
+        return this.value.getValues();
     }
-
-    /**
-     * @inheritDoc
-     */
-    public getCustomValues(): LooseObject {
-        return this.constraint.getCustomValues();
-    }
-};
+}

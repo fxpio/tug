@@ -12,6 +12,6 @@
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface LooseObject {
-    [key: string]: any;
+export interface LooseObject<T = any> {
+    [key: string]: T;
 }

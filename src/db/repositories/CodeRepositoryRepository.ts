@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import Database from '../Database';
-import BaseDatabaseRepository from './BaseDatabaseRepository';
+import {Database} from '@app/db/Database';
+import {BaseDatabaseRepository} from '@app/db/repositories/BaseDatabaseRepository';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class CodeRepositoryRepository extends BaseDatabaseRepository
+export class CodeRepositoryRepository extends BaseDatabaseRepository
 {
     /**
      * Constructor.
@@ -30,4 +30,4 @@ export default class CodeRepositoryRepository extends BaseDatabaseRepository
     public static getName(): string {
         return 'CodeRepository';
     }
-};
+}

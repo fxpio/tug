@@ -7,11 +7,22 @@
  * file that was distributed with this source code.
  */
 
-import HttpNotFoundError from './HttpNotFoundError';
+import {RepositoryError} from '@app/errors/RepositoryError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class RepositoryNotFoundError extends HttpNotFoundError
+export class RepositoryNotFoundError extends RepositoryError
 {
+    public readonly url: string;
+
+    /**
+     * Constructor.
+     *
+     * @param {string} url The repository url
+     */
+    constructor(url: string) {
+        super(`The repository with the url "${url}" is not found`);
+        this.url = url;
+    }
 }

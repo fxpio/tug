@@ -7,28 +7,28 @@
  * file that was distributed with this source code.
  */
 
-import Authenticate from '../middlewares/auth/Authenticate';
-import BasicIamAuth from '../middlewares/auth/strategies/BasicIamAuth';
+import {createApiKey, deleteApiKey} from '@app/controllers/manager/apiKeyController';
+import {createGithubOauth, deleteGithubOauth, showGithubOauth} from '@app/controllers/manager/githubOauthController';
+import {createGithubToken, deleteGithubToken, showGithubToken} from '@app/controllers/manager/githubTokenController';
+import {deletePackages, refreshCachePackages, refreshPackages} from '@app/controllers/manager/packageController';
+import {disableRepository, enableRepository, listRepository} from '@app/controllers/manager/repositoryController';
+import {Authenticate} from '@app/middlewares/auth/Authenticate';
+import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
+import {asyncHandler} from '@app/utils/handler';
 import {Router} from 'express';
-import {asyncHandler} from '../utils/handler';
-import {isProd} from '../utils/server';
-import {createApiKey, deleteApiKey} from '../controllers/manager/apiKeyController';
-import {createGithubOauth, deleteGithubOauth, showGithubOauth} from '../controllers/manager/githubOauthController';
-import {createGithubToken, deleteGithubToken, showGithubToken} from '../controllers/manager/githubTokenController';
 import {persistGitlabAccessToken, deleteGitlabAccessToken, showGitlabAccessToken} from '../controllers/manager/gitlabAccessTokenController';
 import {createGitlabToken, deleteGitlabToken, showGitlabToken} from '../controllers/manager/gitlabTokenController';
-import {disableRepository, enableRepository} from '../controllers/manager/repositoryController';
-import {deletePackages, refreshCachePackages, refreshPackages} from '../controllers/manager/packageController';
 
 /**
  * Generate the routes.
  *
- * @param {Router} router The router
+ * @param {Router}       router            The router
+ * @param {AuthStrategy} basicAuthStrategy The auth strategy
  *
  * @return {Router}
  */
-export default function(router: Router): Router {
-    router.use(asyncHandler(Authenticate.middleware(new BasicIamAuth(!isProd()))));
+export function managerRoutes(router: Router, basicAuthStrategy: AuthStrategy): Router {
+    router.use(asyncHandler(Authenticate.middleware(basicAuthStrategy)));
 
     router.post('/api-keys', asyncHandler(createApiKey));
     router.delete('/api-keys', asyncHandler(deleteApiKey));
@@ -49,6 +49,7 @@ export default function(router: Router): Router {
     router.get('/gitlab-access-token', asyncHandler(showGitlabAccessToken));
     router.delete('/gitlab-access-token', asyncHandler(deleteGitlabAccessToken));
 
+    router.get('/repositories', asyncHandler(listRepository));
     router.post('/repositories', asyncHandler(enableRepository));
     router.delete('/repositories', asyncHandler(disableRepository));
 

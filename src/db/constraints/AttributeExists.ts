@@ -7,24 +7,20 @@
  * file that was distributed with this source code.
  */
 
-import Constraint from './Constraint';
+import {Constraint} from '@app/db/constraints/Constraint';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class AttributeExists extends Constraint
+export class AttributeExists extends Constraint<undefined>
 {
     /**
      * Constructor.
+     *
+     * @param {string} key
      */
-    constructor() {
-        super('');
+    constructor(key: string) {
+        super('EXISTS', key, undefined);
+        this.values[key] = undefined;
     }
-
-    /**
-     * @inheritDoc
-     */
-    public format(a: string, b: string): string {
-        return 'attribute_exists(' + a + ')';
-    }
-};
+}

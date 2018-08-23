@@ -7,13 +7,14 @@
  * file that was distributed with this source code.
  */
 
-import QueueReceiver from './QueueReceiver';
-import {LooseObject} from '../utils/LooseObject';
+import {QueueReceiver} from '@app/queues/QueueReceiver';
+import {LooseObject} from '@app/utils/LooseObject';
+import {Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default interface MessageQueue
+export interface MessageQueue
 {
     /**
      * Subscribe a receiver in queue.
@@ -26,8 +27,9 @@ export default interface MessageQueue
      * Receive the messages.
      *
      * @param {LooseObject[]} messages The messages comes from queue
+     * @param {Response}      [res]    The response
      */
-    receive(messages: LooseObject[]): Promise<void>;
+    receive(messages: LooseObject[], res?: Response): Promise<void>;
 
     /**
      * Send a message in the queue.

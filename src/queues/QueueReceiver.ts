@@ -7,12 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import {LooseObject} from '../utils/LooseObject';
+import {LooseObject} from '@app/utils/LooseObject';
+import {Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default interface QueueReceiver
+export interface QueueReceiver
 {
     /**
      * Check if the receiver support the message.
@@ -27,11 +28,14 @@ export default interface QueueReceiver
      * Execute the receiver.
      *
      * @param {LooseObject} message The message comes from queue
+     * @param {Response}    [res]   The response
      */
-    execute(message: LooseObject): Promise<void>;
+    execute(message: LooseObject, res?: Response): Promise<void>;
 
     /**
      * Finish the execution of the receiver.
+     *
+     * @param {Response} [res] The response
      */
-    finish(): Promise<void>;
+    finish(res?: Response): Promise<void>;
 }

@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import FxpServerlessError from './FxpServerlessError';
+import {FxpServerlessError} from '@app/errors/FxpServerlessError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class PackageError extends FxpServerlessError
+export class PackageError extends FxpServerlessError
 {
 }

@@ -7,15 +7,23 @@
  * file that was distributed with this source code.
  */
 
-import DatabaseError from '../errors/DatabaseError';
-import {DatabaseRepository, DatabaseRepositoryConstructor} from './repositories/DatabaseRepository';
-import Results from './Results';
-import {LooseObject} from '../utils/LooseObject';
+import {And} from '@app/db/constraints/And';
+import {Contains} from '@app/db/constraints/Contains';
+import {Or} from '@app/db/constraints/Or';
+import {Query} from '@app/db/constraints/Query';
+import {DatabaseRepository, DatabaseRepositoryConstructor} from '@app/db/repositories/DatabaseRepository';
+import {Results} from '@app/db/Results';
+import {DatabaseError} from '@app/errors/DatabaseError';
+import {DatabaseInvalidAttributeError} from '@app/errors/DatabaseInvalidAttributeError';
+import {DatabaseRepositoryNotFoundError} from '@app/errors/DatabaseRepositoryNotFoundError';
+import {DatabaseUnexpectedDataError} from '@app/errors/DatabaseUnexpectedDataError';
+import {criteriaToQuery} from '@app/utils/dynamodb';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Database
+export class Database
 {
     private readonly repositories: LooseObject;
 
@@ -50,7 +58,7 @@ export default class Database
      * @throws DatabaseError When the repository attribute is not a string or a function
      * @throws DatabaseError When the repository does not exist
      */
-    public getRepository(repository: DatabaseRepositoryConstructor|string): DatabaseRepository {
+    public getRepository<T extends DatabaseRepository>(repository: DatabaseRepositoryConstructor|string): T {
         let name = null;
 
         if (typeof repository === 'string') {
@@ -58,14 +66,14 @@ export default class Database
         } else if (repository.hasOwnProperty('getName')) {
             name = repository.getName();
         } else {
-            throw new DatabaseError(`The repository attribute must be a string or a function, given type "${typeof repository}"`);
+            throw new DatabaseInvalidAttributeError('repository', repository);
         }
 
         if (!this.repositories[name]) {
-            throw new DatabaseError(`The repository "${name}" does not exist`);
+            throw new DatabaseRepositoryNotFoundError(name);
         }
 
-        return this.repositories[name];
+        return this.repositories[name] as T;
     }
 
     /**
@@ -130,24 +138,53 @@ export default class Database
     /**
      * Find the records.
      *
-     * @param {LooseObject} criteria The criteria
-     * @param {string}      [startId]  The start id
+     * @param {Query|LooseObject} criteria  The criteria or query
+     * @param {string}            [startId] The start id
      *
      * @return {Promise<Results>}
      */
-    public async find(criteria: LooseObject, startId?: string): Promise<Results> {
+    public async find(criteria: Query|LooseObject, startId?: string): Promise<Results> {
         return new Results([], 0);
     }
 
     /**
      * Find one record.
      *
-     * @param {LooseObject} criteria The criteria
+     * @param {Query|LooseObject} criteria The criteria or query
      *
      * @return {Promise<LooseObject|null>}
      */
-    public async findOne(criteria: LooseObject): Promise<LooseObject|null> {
+    public async findOne(criteria: Query|LooseObject): Promise<LooseObject|null> {
         return null;
+    }
+
+    /**
+     * Search the records.
+     *
+     * @param {Query|LooseObject} criteria  The criteria or query
+     * @param {string[]}          fields    The fields
+     * @param {string}            [search]  The search value
+     * @param {string}            [startId] The start id
+     *
+     * @return {Promise<Results>}
+     */
+    public async search(criteria: Query|LooseObject, fields: string[], search?: string, startId?: string): Promise<Results> {
+        let query = criteriaToQuery(criteria);
+
+        if (search) {
+            let or = new Or([]);
+            let prevConstraint = query.getConstraint();
+
+            for (let i = 0; i < fields.length; ++i) {
+                or.add(new Contains(fields[i], search));
+            }
+
+            let constraint = prevConstraint instanceof And ? <And> prevConstraint : new And([prevConstraint]);
+            constraint.add(or);
+            query.setConstraint(constraint);
+        }
+
+        return this.find(query, startId);
     }
 
     /**
@@ -159,7 +196,7 @@ export default class Database
      */
     public static validateData(data: any): void {
         if (typeof data !== 'object' || !data.id) {
-            throw new DatabaseError('The data must be an object with the required "id" property');
+            throw new DatabaseUnexpectedDataError(data);
         }
     }
-};
+}

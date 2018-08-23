@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import PackageRepository from '../db/repositories/PackageRepository';
-import Not from '../db/constraints/Not';
-import In from '../db/constraints/In';
-import Package from '../composer/packages/Package';
-import {LooseObject} from './LooseObject';
+import {Package} from '@app/composer/packages/Package';
+import {In} from '@app/db/constraints/In';
+import {Not} from '@app/db/constraints/Not';
+import {PackageRepository} from '@app/db/repositories/PackageRepository';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * Retrieves all package versions.
@@ -28,7 +28,7 @@ export async function retrieveAllVersions(packageName: string, packageRepo: Pack
     let criteria: LooseObject = {name: packageName};
 
     if (versionNames.length > 0) {
-        criteria.version = new Not(new In(versionNames));
+        criteria.version = new Not(new In('version', versionNames));
     }
 
     let res = await packageRepo.find(criteria, lastId);

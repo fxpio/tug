@@ -7,15 +7,18 @@
  * file that was distributed with this source code.
  */
 
-import Results from '../Results';
-import Database from '../Database';
-import DatabaseRepository from './DatabaseRepository';
-import {LooseObject} from '../../utils/LooseObject';
+import {Constraint} from '@app/db/constraints/Constraint';
+import {Query} from '@app/db/constraints/Query';
+import {Database} from '@app/db/Database';
+import {DatabaseRepository} from '@app/db/repositories/DatabaseRepository';
+import {Results} from '@app/db/Results';
+import {criteriaToQuery} from '@app/utils/dynamodb';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class BaseDatabaseRepository implements DatabaseRepository
+export class BaseDatabaseRepository implements DatabaseRepository
 {
     private client: Database;
 
@@ -88,36 +91,78 @@ export default class BaseDatabaseRepository implements DatabaseRepository
     /**
      * @inheritDoc
      */
-    public async find(criteria: LooseObject, startId?: string): Promise<Results> {
-        let res = await this.client.find(this.prepareCriteria(criteria), startId);
+    public async find(criteria: Query|LooseObject, startId?: string): Promise<Results> {
+        let res = await this.client.find(this.prepareCriteria(criteria), startId ? this.getPrefixedId(startId) : undefined);
 
         for (let item of res.getRows()) {
             this.cleanPrefix(item);
         }
 
-        return res;
+        return new Results(res.getRows(), res.getCount(), this.cleanPrefix(res.getLastId()));
     }
 
     /**
      * @inheritDoc
      */
-    public async findOne(criteria: LooseObject): Promise<LooseObject> {
+    public async findOne(criteria: Query|LooseObject): Promise<LooseObject> {
         return this.cleanPrefix(await this.client.findOne(this.prepareCriteria(criteria)));
     }
 
     /**
      * @inheritDoc
      */
-    public prepareCriteria(criteria: LooseObject): LooseObject {
-        if (criteria.id) {
-            criteria.id = this.getPrefixedId(criteria.id);
+    public async search(criteria: Query|LooseObject, fields: string[], search?: string, startId?: string): Promise<Results> {
+        let res = await this.client.search(this.prepareCriteria(criteria), fields, search, startId ? this.getPrefixedId(startId) : undefined);
+
+        for (let item of res.getRows()) {
+            this.cleanPrefix(item);
         }
 
-        if (this.prefix) {
-            criteria.model = this.prefix;
+        return new Results(res.getRows(), res.getCount(), this.cleanPrefix(res.getLastId()));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public prepareCriteria(criteria: Query|LooseObject): Query {
+        let query = criteriaToQuery(criteria);
+        query.setModel(this.prefix ? this.prefix : null);
+        query.setConstraint(this.prefixConstraint(query.getConstraint()));
+
+        return query;
+    }
+
+    /**
+     * Prefix the id of constraint.
+     *
+     * @param {Constraint} constraint
+     *
+     * @return {Constraint}
+     */
+    protected prefixConstraint(constraint: Constraint): Constraint {
+        let val = constraint.getValue();
+
+        if ('id' === constraint.getKey()) {
+            let values = constraint.getValues();
+
+            if (typeof val === 'string') {
+                constraint.setValue(this.getPrefixedId(val));
+            }
+
+            if (values['id'] && typeof values['id'] === 'string') {
+                values['id'] = this.getPrefixedId(values['id']);
+            }
+        } else if (val instanceof Constraint) {
+            this.prefixConstraint(val);
+        } else if (Array.isArray(val)) {
+            for (let i = 0; i < val.length; ++i) {
+                if (val[i] instanceof Constraint) {
+                    this.prefixConstraint(val[i]);
+                }
+            }
         }
 
-        return criteria;
+        return constraint;
     }
 
     /**
@@ -133,10 +178,11 @@ export default class BaseDatabaseRepository implements DatabaseRepository
     public cleanPrefix(data: any): any {
         if (this.prefix && null !== data && typeof data === 'object' && data.id && typeof data.id === 'string') {
             data.id = data.id.replace(new RegExp('^' + this.prefix + ':', 'g'), '');
+            delete data.model;
         } else if (typeof data === 'string') {
             data = data.replace(new RegExp('^' + this.prefix + ':', 'g'), '');
         }
 
         return data;
     }
-};
+}

@@ -7,17 +7,17 @@
  * file that was distributed with this source code.
  */
 
+import {ConfigManager} from '@app/configs/ConfigManager';
+import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
+import {isGithubEvent} from '@app/utils/apiGithub';
 import crypto from 'crypto';
-import AuthStrategy from './AuthStrategy';
-import ConfigManager from '../../../configs/ConfigManager';
-import {isGithubEvent} from '../../../utils/apiGithub';
-import {URL} from 'url';
 import {Request} from 'express';
+import {URL} from 'url';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class GithubWebhookAuth implements AuthStrategy
+export class GithubWebhookAuth implements AuthStrategy
 {
     /**
      * @inheritDoc

@@ -7,23 +7,22 @@
  * file that was distributed with this source code.
  */
 
-import Logger from '../loggers/Logger';
-import MessageQueue from '../queues/MessageQueue';
-import QueueReceiver from '../queues/QueueReceiver';
-import RepositoryManager from '../composer/repositories/RepositoryManager';
-import PackageManager from '../composer/packages/PackageManager';
-import Package from '../composer/packages/Package';
-import {LooseObject} from '../utils/LooseObject';
+import {Package} from '@app/composer/packages/Package';
+import {PackageManager} from '@app/composer/packages/PackageManager';
+import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
+import {Logger} from '@app/loggers/Logger';
+import {MessageQueue} from '@app/queues/MessageQueue';
+import {BaseReceiver} from '@app/receivers/BaseReceiver';
+import {LooseObject} from '@app/utils/LooseObject';
+import {Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class RefreshPackageReceiver implements QueueReceiver
+export class RefreshPackageReceiver extends BaseReceiver
 {
     private readonly repoManager: RepositoryManager;
     private readonly packageManager: PackageManager;
-    private readonly queue: MessageQueue;
-    private readonly logger: Logger;
 
     /**
      * Constructor.
@@ -34,10 +33,9 @@ export default class RefreshPackageReceiver implements QueueReceiver
      * @param {Logger}            logger         The logger
      */
     constructor(repoManager: RepositoryManager, packageManager: PackageManager, queue: MessageQueue, logger: Logger) {
+        super(queue, logger);
         this.repoManager = repoManager;
         this.packageManager = packageManager;
-        this.queue = queue;
-        this.logger = logger;
     }
 
     /**
@@ -50,19 +48,19 @@ export default class RefreshPackageReceiver implements QueueReceiver
     /**
      * @inheritDoc
      */
-    public async execute(message: LooseObject): Promise<void> {
+    public async doExecute(message: LooseObject, res?: Response): Promise<void> {
         let force = true === message.force;
         let repoUrl = message.repositoryUrl;
         let identifier = message.identifier;
         let version = message.version;
         let isBranch = version.startsWith('dev-');
 
-        let repo = await this.repoManager.getAndInitRepository(repoUrl, false);
+        let repo = await this.repoManager.getAndInitRepository(repoUrl, false, res);
         if (!repo || !repo.getPackageName()) {
             return;
         }
 
-        let existingComposer = await this.packageManager.findPackage(repo.getPackageName() as string, version);
+        let existingComposer = await this.packageManager.findPackage(repo.getPackageName() as string, version, res);
 
         if (force || !existingComposer) {
             let driver = repo.getDriver();
@@ -91,11 +89,5 @@ export default class RefreshPackageReceiver implements QueueReceiver
                 packageName: pack.getName()
             }, 1);
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public async finish(): Promise<void> {
     }
 }

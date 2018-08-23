@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
+import {LooseObject} from '@app/utils/LooseObject';
 import merge from 'lodash.merge';
-import {LooseObject} from '../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Config
+export class Config
 {
     public static defaultConfig: LooseObject = {
         'github-domains': [],
@@ -22,6 +22,9 @@ export default class Config
         'gitlab-domains': [],
         'gitlab-access-token': {},
         'gitlab-webhook': {}
+        'ui': {
+            'locale': 'en'
+        }
     };
 
     private config: LooseObject;

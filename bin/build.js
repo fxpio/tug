@@ -25,7 +25,7 @@ program
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')
-    .then(() => {
+    .then(async () => {
         if (!program.force && fse.existsSync(CONTENT_PATH)) {
             console.info('Project is already built. Use the "--force" option to rebuild the project');
             return true;
@@ -36,7 +36,10 @@ utils.spawn('node bin/config -e')
         // clean dist directory
         fse.removeSync(CONTENT_PATH);
 
-        return utils.spawn('webpack' + (program.dev ? '' : ' --production'));
+        await utils.spawn('webpack --config webpack.config.js' + (program.dev ? '' : ' --production'));
+        await utils.spawn('webpack --config webpack.ui.config.js' + (program.dev ? '' : ' --production'));
+
+        return false;
     })
     .then((skip) => {
         if (true !== skip) {

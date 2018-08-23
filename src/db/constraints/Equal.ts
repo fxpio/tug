@@ -7,19 +7,20 @@
  * file that was distributed with this source code.
  */
 
-import Constraint from './Constraint';
+import {Constraint} from '@app/db/constraints/Constraint';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Equal extends Constraint
+export class Equal<V> extends Constraint<V>
 {
     /**
      * Constructor.
      *
-     * @param {any} value The value
+     * @param {string} key   The key
+     * @param {any}    value The value
      */
-    constructor(value: any) {
-        super('=', value, true);
+    constructor(key: string, value: any) {
+        super('=', key, value);
     }
-};
+}

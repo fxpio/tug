@@ -7,19 +7,19 @@
  * file that was distributed with this source code.
  */
 
-import HttpError from './HttpError';
+import {HttpError} from '@app/errors/HttpError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class HttpNotFoundError extends HttpError
+export class HttpNotFoundError extends HttpError
 {
     /**
      * Constructor.
      *
      * @param {string} [message]
      */
-    constructor(message: string = 'Not found') {
+    constructor(message: string = 'Not Found') {
         super(message, 404);
     }
 }

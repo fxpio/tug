@@ -7,32 +7,23 @@
  * file that was distributed with this source code.
  */
 
-import FxpServerlessError from './FxpServerlessError';
+import {FxpServerlessError} from '@app/errors/FxpServerlessError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class TransportError extends FxpServerlessError
+export class TransportError extends FxpServerlessError
 {
-    private readonly statusCode?: number;
+    public readonly statusCode?: number;
 
     /**
      * Constructor.
      *
-     * @param {string} message
-     * @param {number} statusCode
+     * @param {string} message      The error message
+     * @param {number} [statusCode] The http status code
      */
     constructor(message: string, statusCode?: number) {
         super(message);
         this.statusCode = statusCode;
-    }
-
-    /**
-     * Get the http status code.
-     *
-     * @return {number|undefined}
-     */
-    public getStatusCode(): number|undefined {
-        return this.statusCode;
     }
 }

@@ -7,20 +7,19 @@
  * file that was distributed with this source code.
  */
 
-import Logger from '../loggers/Logger';
-import MessageQueue from '../queues/MessageQueue';
-import QueueReceiver from '../queues/QueueReceiver';
-import RepositoryManager from '../composer/repositories/RepositoryManager';
-import {LooseObject} from '../utils/LooseObject';
+import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
+import {Logger} from '@app/loggers/Logger';
+import {MessageQueue} from '@app/queues/MessageQueue';
+import {BaseReceiver} from '@app/receivers/BaseReceiver';
+import {LooseObject} from '@app/utils/LooseObject';
+import {Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class RefreshPackagesReceiver implements QueueReceiver
+export class RefreshPackagesReceiver extends BaseReceiver
 {
     private readonly repoManager: RepositoryManager;
-    private readonly queue: MessageQueue;
-    private readonly logger: Logger;
 
     /**
      * Constructor.
@@ -30,9 +29,8 @@ export default class RefreshPackagesReceiver implements QueueReceiver
      * @param {Logger}            logger      The logger
      */
     constructor(repoManager: RepositoryManager, queue: MessageQueue, logger: Logger) {
+        super(queue, logger);
         this.repoManager = repoManager;
-        this.queue = queue;
-        this.logger = logger;
     }
 
     /**
@@ -45,9 +43,9 @@ export default class RefreshPackagesReceiver implements QueueReceiver
     /**
      * @inheritDoc
      */
-    public async execute(message: LooseObject): Promise<void> {
+    public async doExecute(message: LooseObject, res?: Response): Promise<void> {
         let force = true === message.force;
-        let repo = await this.repoManager.getAndInitRepository(message.repositoryUrl, force);
+        let repo = await this.repoManager.getAndInitRepository(message.repositoryUrl, force, res);
         if (!repo) {
             this.logger.log('verbose', `[Refresh Packages Receiver] Repository is not found for "${message.repositoryUrl}"`);
             return;
@@ -67,12 +65,6 @@ export default class RefreshPackagesReceiver implements QueueReceiver
         }
 
         await this.queue.sendBatch(newMessages);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public async finish(): Promise<void> {
     }
 
     /**

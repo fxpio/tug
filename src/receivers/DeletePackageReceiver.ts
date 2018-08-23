@@ -7,20 +7,19 @@
  * file that was distributed with this source code.
  */
 
-import Logger from '../loggers/Logger';
-import QueueReceiver from '../queues/QueueReceiver';
-import PackageManager from '../composer/packages/PackageManager';
-import MessageQueue from '../queues/MessageQueue';
-import {LooseObject} from '../utils/LooseObject';
+import {PackageManager} from '@app/composer/packages/PackageManager';
+import {Logger} from '@app/loggers/Logger';
+import {MessageQueue} from '@app/queues/MessageQueue';
+import {BaseReceiver} from '@app/receivers/BaseReceiver';
+import {LooseObject} from '@app/utils/LooseObject';
+import {Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class DeletePackageReceiver implements QueueReceiver
+export class DeletePackageReceiver extends BaseReceiver
 {
     private packageManager: PackageManager;
-    private queue: MessageQueue;
-    private logger: Logger;
 
     /**
      * Constructor.
@@ -30,9 +29,8 @@ export default class DeletePackageReceiver implements QueueReceiver
      * @param {Logger}         logger         The logger
      */
     constructor(packageManager: PackageManager, queue: MessageQueue, logger: Logger) {
+        super(queue, logger);
         this.packageManager = packageManager;
-        this.queue = queue;
-        this.logger = logger;
     }
 
     /**
@@ -45,8 +43,8 @@ export default class DeletePackageReceiver implements QueueReceiver
     /**
      * @inheritDoc
      */
-    public async execute(message: LooseObject): Promise<void> {
-        let pack = await this.packageManager.findPackage(message.packageName, message.version);
+    public async doExecute(message: LooseObject, res?: Response): Promise<void> {
+        let pack = await this.packageManager.findPackage(message.packageName, message.version, res);
 
         if (pack) {
             this.logger.log('info', `[Delete Package Receiver] Deleting package version "${message.version}" for "${message.packageName}"`);
@@ -58,11 +56,5 @@ export default class DeletePackageReceiver implements QueueReceiver
         } else {
             this.logger.log('verbose', `[Delete Package Receiver] Package version "${message.version}" is not found for "${message.packageName}"`);
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public async finish(): Promise<void> {
     }
 }

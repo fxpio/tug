@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Serverless Composer repository for private PHP packages hosted on Github
+Description: Serverless Composer repository for private PHP packages
 Parameters:
   LoggerLevel:
     Description: The level of logger
@@ -164,6 +164,8 @@ Resources:
         - Arn
       Environment:
         Variables:
+          AWS_ACCOUNT_ID:
+            Ref: AWS::AccountId
           AWS_DYNAMODB_TABLE:
             Ref: Database
           AWS_S3_BUCKET:

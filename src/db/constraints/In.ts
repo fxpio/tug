@@ -7,22 +7,24 @@
  * file that was distributed with this source code.
  */
 
-import Constraint from './Constraint';
-import {generateToken} from '../../utils/token';
+import {Constraint} from '@app/db/constraints/Constraint';
+import {generateToken} from '@app/utils/token';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class In extends Constraint
+export class In<V> extends Constraint<V>
 {
     /**
      * Constructor.
      *
-     * @param {any} value The value
+     * @param {string} key   The key
+     * @param {any}    value The value
      */
-    constructor(value: any) {
-        super('', value);
+    constructor(key: string, value: V) {
+        super('', key, value);
 
+        this.values[key] = undefined;
         let prefix = generateToken(4) + '_';
 
         if (Array.isArray(value)) {
@@ -31,13 +33,4 @@ export default class In extends Constraint
             }
         }
     }
-
-    /**
-     * @inheritDoc
-     */
-    public format(a: string, b: string): string {
-        let keys = Object.keys(this.getCustomValues());
-
-        return a + ' IN (' + (keys.length > 0 ? ':' : '') + keys.join(', :') + ')';
-    }
-};
+}

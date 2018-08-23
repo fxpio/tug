@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
+import {DataStorage} from '@app/storages/DataStorage';
 import fs from 'fs-extra';
-import DataStorage from './DataStorage';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class LocalStorage implements DataStorage
+export class LocalStorage implements DataStorage
 {
     private readonly basePath: string;
 
@@ -65,4 +65,4 @@ export default class LocalStorage implements DataStorage
 
         return key;
     }
-};
+}

@@ -7,17 +7,19 @@
  * file that was distributed with this source code.
  */
 
-import Config from '../../../configs/Config';
-import VcsDriverError from '../../../errors/VcsDriverError';
-import RemoteFilesystem from '../../utils/RemoteFilesystem';
-import VcsDriver from './VcsDriver';
-import TransportError from '../../../errors/TransportError';
-import {LooseObject} from '../../../utils/LooseObject';
+import {VcsDriver} from '@app/composer/repositories/vcs-drivers/VcsDriver';
+import {RemoteFilesystem} from '@app/composer/utils/RemoteFilesystem';
+import {Config} from '@app/configs/Config';
+import {TransportError} from '@app/errors/TransportError';
+import {VcsDriverContentNotFoundError} from '@app/errors/VcsDriverContentNotFoundError';
+import {VcsDriverInvalidJsonError} from '@app/errors/VcsDriverInvalidJsonError';
+import {VcsDriverInvalidUrlError} from '@app/errors/VcsDriverInvalidUrlError';
+import {LooseObject} from '@app/utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class GithubDriver extends VcsDriver
+export class GithubDriver extends VcsDriver
 {
     private readonly originUrl: string;
     private readonly infoCache: LooseObject;
@@ -44,7 +46,7 @@ export default class GithubDriver extends VcsDriver
         let match:LooseObject|null = this.url.match(/^(?:(?:https?|git):\/\/([^\/]+)\/|git@([^:]+):)([^\/]+)\/(.+?)(?:\.git|\/)?$/);
 
         if (null === match) {
-            throw new VcsDriverError('The url is not a valid url for the Github vcs driver');
+            throw new VcsDriverInvalidUrlError('Github', this.url);
         }
 
         this.owner = match[3];
@@ -158,20 +160,7 @@ export default class GithubDriver extends VcsDriver
      */
     public async getComposerInformation(identifier: string): Promise<LooseObject|null> {
         if (!this.infoCache[identifier]) {
-            let composer = await this.getBaseComposerInformation(identifier);
-
-            if (composer) {
-                // specials for github
-                if (composer['support'] && composer['support']['source']) {
-                    composer['support']['source'] = `https://${this.originUrl}/${this.owner}/${this.repository}/tree/${identifier}`;
-                }
-
-                if (this.hasIssues && composer['support'] && composer['support']['issues']) {
-                    composer['support']['issues'] = `https://${this.originUrl}/${this.owner}/${this.repository}/issues`;
-                }
-            }
-
-            this.infoCache[identifier] = composer;
+            this.infoCache[identifier] = await this.getBaseComposerInformation(identifier);
         }
 
         return this.infoCache[identifier];
@@ -191,11 +180,11 @@ export default class GithubDriver extends VcsDriver
             if (resource['content'] && 'base64' === resource['encoding']) {
                 content = Buffer.from(resource['content'], 'base64').toString();
             } else {
-                error = new VcsDriverError(`Could not retrieve "${file}" for "${identifier}"`);
+                error = new VcsDriverContentNotFoundError(file, identifier);
             }
         } catch (e) {
             if (e instanceof TransportError) {
-                if (404 !== e.getStatusCode()) {
+                if (404 !== e.statusCode) {
                     error = e;
                 }
             }
@@ -295,7 +284,7 @@ export default class GithubDriver extends VcsDriver
         try {
             this.repoData = JSON.parse(contentData as string);
         } catch (e) {
-            throw new VcsDriverError(`"${repoDataUrl}" does not contain valid JSON` + "\n" + e.message);
+            throw new VcsDriverInvalidJsonError(repoDataUrl, e.message);
         }
 
         if (this.repoData) {

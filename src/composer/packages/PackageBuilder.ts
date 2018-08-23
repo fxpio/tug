@@ -7,16 +7,17 @@
  * file that was distributed with this source code.
  */
 
-import crypto from 'crypto';
-import Cache from '../../caches/Cache';
-import RepositoryManager from '../repositories/RepositoryManager';
-import PackageManager from './PackageManager';
-import {LooseObject} from '../../utils/LooseObject';
+import {Cache} from '@app/caches/Cache';
+import {PackageManager} from '@app/composer/packages/PackageManager';
+import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
+import {createHash} from '@app/utils/crypto';
+import {LooseObject} from '@app/utils/LooseObject';
+import {Response} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class PackageBuilder
+export class PackageBuilder
 {
     private readonly repoManager: RepositoryManager;
     private readonly packageManager: PackageManager;
@@ -38,22 +39,23 @@ export default class PackageBuilder
     /**
      * Builds the JSON stuff of the repository.
      *
-     * @param {string} packageName The package name
-     * @param {string} [hash]      The hash of package versions
+     * @param {string}   packageName The package name
+     * @param {string}   [hash]      The hash of package versions
+     * @param {Response} [res]       The response
      *
      * @return {{name: string, hash: string, content: string}|null}
      */
-    public async buildVersions(packageName: string, hash?: string): Promise<LooseObject|null> {
-        this.repoManager.clearCache();
-        let repo = await this.repoManager.findRepository(packageName);
-        let res = await this.packageManager.findPackages(packageName);
+    public async buildVersions(packageName: string, hash?: string, res?: Response): Promise<LooseObject|null> {
+        RepositoryManager.clearCache(res);
+        let repo = await this.repoManager.findRepository(packageName, res);
+        let result = await this.packageManager.findPackages(packageName, undefined, res);
 
         if (repo) {
-            if (Object.keys(res).length > 0) {
+            if (Object.keys(result).length > 0) {
                 let data: LooseObject = {packages: {}};
                 data.packages[packageName] = {};
-                for (let version of Object.keys(res)) {
-                    let pack = res[version];
+                for (let version of Object.keys(result)) {
+                    let pack = result[version];
                     data.packages[packageName][pack.getVersion()] = pack.getComposer();
                 }
                 let content = JSON.stringify(data);
@@ -61,9 +63,7 @@ export default class PackageBuilder
                 if (hash) {
                     await this.cache.setPackageVersions(packageName, hash, content);
                 } else {
-                    let hashHash = crypto.createHash('sha1');
-                    hashHash.update(content);
-                    hash = hashHash.digest('hex');
+                    hash = createHash(content);
 
                     await this.cache.setPackageVersions(packageName, hash, content);
                     repo.setLastHash(hash);
@@ -91,10 +91,12 @@ export default class PackageBuilder
     /**
      * Builds the JSON stuff of the root packages.
      *
+     * @param {Response} [res] The response
+     *
      * @return {Promise<string>}
      */
-    public async buildRootPackages(): Promise<string> {
-        let repos = await this.repoManager.getRepositories();
+    public async buildRootPackages(res?: Response): Promise<string> {
+        let repos = await this.repoManager.getRepositories(false, res);
         let data: LooseObject = {'notify-batch': '/downloads', packages: {}, includes: {}};
 
         for (let key of Object.keys(repos)) {

@@ -7,19 +7,22 @@
  * file that was distributed with this source code.
  */
 
-import HttpNotFoundError from './HttpNotFoundError';
+import {DatabaseError} from '@app/errors/DatabaseError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class TagNotFoundError extends HttpNotFoundError
+export class DatabaseUnexpectedDataError extends DatabaseError
 {
+    public readonly value: any;
+
     /**
      * Constructor.
      *
-     * @param {string} tagName
+     * @param {string} value The value
      */
-    constructor(tagName: string) {
-        super(`Tag "${tagName}" is not found`);
+    constructor(value: any) {
+        super('The data must be an object with the required "id" property');
+        this.value = value;
     }
 }

@@ -7,11 +7,19 @@
  * file that was distributed with this source code.
  */
 
-import FxpServerlessError from './FxpServerlessError';
+import {Request} from 'express';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class UnexpectedValueError extends FxpServerlessError
+export interface AuthBuilder
 {
+    /**
+     * Create token for auth.
+     *
+     * @param {Request} req The request
+     *
+     * @return {string|false}
+     */
+    createToken(req: Request): Promise<string|false>;
 }

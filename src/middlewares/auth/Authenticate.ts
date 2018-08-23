@@ -7,13 +7,14 @@
  * file that was distributed with this source code.
  */
 
+import {HttpUnauthorizedError} from '@app/errors/HttpUnauthorizedError';
+import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
 import {Request, Response} from 'express';
-import AuthStrategy from './strategies/AuthStrategy';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Authenticate
+export class Authenticate
 {
     /**
      * Create the express middleware.
@@ -30,9 +31,7 @@ export default class Authenticate
             } else if (nextRoute) {
                 next('route');
             } else {
-                res.status(401).json({
-                    message: 'Your credentials are invalid'
-                });
+                throw new HttpUnauthorizedError();
             }
         }
     }

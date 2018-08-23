@@ -7,19 +7,20 @@
  * file that was distributed with this source code.
  */
 
-import Config from '../../configs/Config';
-import VcsDriver from './vcs-drivers/VcsDriver';
-import GithubDriver from './vcs-drivers/GithubDriver';
+import {GithubDriver} from '@app/composer/repositories/vcs-drivers/GithubDriver';
+import {VcsDriver} from '@app/composer/repositories/vcs-drivers/VcsDriver';
+import {Config} from '@app/configs/Config';
 import GitlabDriver from './vcs-drivers/GitlabDriver';
-import RepositoryError from '../../errors/RepositoryError';
-import VcsDriverNotFoundError from '../../errors/VcsDriverNotFoundError';
+import {RepositoryError} from '@app/errors/RepositoryError';
+import {VcsRepositoryAttributeRequiredError} from '@app/errors/VcsRepositoryAttributeRequiredError';
+import {VcsRepositoryNotFoundError} from '@app/errors/VcsRepositoryNotFoundError';
+import {LooseObject} from '@app/utils/LooseObject';
 import {URL} from 'url';
-import {LooseObject} from '../../utils/LooseObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class VcsRepository
+export class VcsRepository
 {
     private readonly drivers: LooseObject;
     private readonly config: Config;
@@ -47,7 +48,7 @@ export default class VcsRepository
         this.driver = null;
 
         if (!this.repoData['url']) {
-            throw new RepositoryError('The "url" attribute of vcs repository is required');
+            throw new VcsRepositoryAttributeRequiredError('url');
         }
     }
 
@@ -56,7 +57,7 @@ export default class VcsRepository
      *
      * @return {VcsDriver}
      *
-     * @throws VcsDriverNotFoundError When the vcs driver is not found
+     * @throws VcsRepositoryNotFoundError When the vcs driver is not found
      */
     public getDriver(): VcsDriver {
         if (this.driver) {
@@ -89,7 +90,7 @@ export default class VcsRepository
         }
 
         if (!validType || !this.drivers[validType].supports(this.config, url)) {
-            throw new VcsDriverNotFoundError('No driver found to handle VCS repository ' + url);
+            throw new VcsRepositoryNotFoundError(url);
         }
 
         this.driver = new this.drivers[validType](this.repoData, this.config) as VcsDriver;

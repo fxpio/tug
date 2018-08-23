@@ -7,11 +7,29 @@
  * file that was distributed with this source code.
  */
 
-import Joi from 'joi';
-import RepositoryManager from '../../composer/repositories/RepositoryManager';
-import Logger from '../../loggers/Logger';
-import {validateForm} from '../../utils/validation';
+import {RepositoryManager} from '@app/composer/repositories/RepositoryManager';
+import {Database} from '@app/db/Database';
+import {CodeRepositoryRepository} from '@app/db/repositories/CodeRepositoryRepository';
+import {Logger} from '@app/loggers/Logger';
+import {Translator} from '@app/translators/Translator';
+import {validateForm} from '@app/utils/validation';
 import {Request, Response} from 'express';
+import Joi from 'joi';
+
+/**
+ * List the repositories.
+ *
+ * @param {Request}  req  The request
+ * @param {Response} res  The response
+ * @param {Function} next The next callback
+ *
+ * @return {Promise<void>}
+ */
+export async function listRepository(req: Request, res: Response, next: Function): Promise<void> {
+    let db = req.app.get('db') as Database;
+    let repo = db.getRepository<CodeRepositoryRepository>(CodeRepositoryRepository);
+    res.json(await repo.search({}, ['packageName', 'url'], req.query.search, req.query.lastId));
+}
 
 /**
  * Enable the repository.
@@ -28,13 +46,14 @@ export async function enableRepository(req: Request, res: Response, next: Functi
     });
 
     let repoManager = req.app.get('repository-manager') as RepositoryManager;
+    let translator = req.app.get('translator') as Translator;
     let url = req.body.url;
     let type = req.body.type;
-    let repo = await repoManager.register(url, type);
+    let repo = await repoManager.register(url, type, res);
     (req.app.get('logger') as Logger).log('info', `[API Rest] Registration of the repository "${url}"`);
 
     res.json({
-        message: `The "${repo.getType()}" repository with the URL "${repo.getUrl()}" were enabled successfully`,
+        message: translator.trans(res, 'manager.repository.created', {type: repo.getType(), url: repo.getUrl()}),
         url: repo.getUrl(),
         type: repo.getType()
     });
@@ -55,11 +74,12 @@ export async function disableRepository(req: Request, res: Response, next: Funct
     });
 
     let repoManager = req.app.get('repository-manager') as RepositoryManager;
-    let url = await repoManager.unregister(req.body.url);
+    let translator = req.app.get('translator') as Translator;
+    let url = await repoManager.unregister(req.body.url, res);
     (req.app.get('logger') as Logger).log('info', `[API Rest] Unregistration of the repository "${url}"`);
 
     res.json({
-        message: `The repository with the URL "${url}" were disabled successfully`,
+        message: translator.trans(res, 'manager.repository.deleted', {url: url}),
         url: url
     });
 }

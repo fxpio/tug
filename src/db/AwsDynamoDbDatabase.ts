@@ -7,16 +7,17 @@
  * file that was distributed with this source code.
  */
 
+import {Query} from '@app/db/constraints/Query';
+import {Database} from '@app/db/Database';
+import {Results} from '@app/db/Results';
+import {convertQueryCriteria, criteriaToQuery} from '@app/utils/dynamodb';
+import {LooseObject} from '@app/utils/LooseObject';
 import AWS from 'aws-sdk';
-import Database from './Database';
-import Results from './Results';
-import {LooseObject} from '../utils/LooseObject';
-import {convertQueryCriteria} from '../utils/dynamodb';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class AwsDynamoDbDatabase extends Database
+export class AwsDynamoDbDatabase extends Database
 {
     private readonly tableName: string;
 
@@ -46,14 +47,14 @@ export default class AwsDynamoDbDatabase extends Database
     /**
      * @inheritDoc
      */
-    async has(id: string): Promise<boolean> {
+    public async has(id: string): Promise<boolean> {
         return null !== this.get(id);
     }
 
     /**
      * @inheritDoc
      */
-    async get(id: string): Promise<LooseObject|null> {
+    public async get(id: string): Promise<LooseObject|null> {
         let params: any = {
             TableName: this.tableName,
             Key: {
@@ -70,7 +71,7 @@ export default class AwsDynamoDbDatabase extends Database
     /**
      * @inheritDoc
      */
-    async put(data: LooseObject): Promise<LooseObject> {
+    public async put(data: LooseObject): Promise<LooseObject> {
         Database.validateData(data);
         let params = {
             TableName: this.tableName,
@@ -84,7 +85,7 @@ export default class AwsDynamoDbDatabase extends Database
     /**
      * @inheritDoc
      */
-    async delete(id: string): Promise<string> {
+    public async delete(id: string): Promise<string> {
         let params = {
             TableName: this.tableName,
             Key: {'id': {'S': id}}
@@ -97,7 +98,7 @@ export default class AwsDynamoDbDatabase extends Database
     /**
      * @inheritDoc
      */
-    async deletes(ids: string[]): Promise<string[]> {
+    public async deletes(ids: string[]): Promise<string[]> {
         if (ids.length > 0) {
             let params: any = {RequestItems: {}};
             params.RequestItems[this.tableName] = [];
@@ -119,14 +120,20 @@ export default class AwsDynamoDbDatabase extends Database
     /**
      * @inheritDoc
      */
-    async find(criteria: LooseObject, startId?: string): Promise<Results> {
-        let params: any = Object.assign(convertQueryCriteria(criteria), {
+    public async find(criteria: Query|LooseObject, startId?: string): Promise<Results> {
+        let query = criteriaToQuery(criteria);
+        let params: any = Object.assign(convertQueryCriteria(query), {
             TableName: this.tableName,
-            ExclusiveStartKey: startId ? startId : null
+            ExclusiveStartKey: startId ? {model: {S: query.getModel()}, id: {S: startId as string}} : null
         });
 
-        let res: LooseObject = await this.client.query(params).promise();
+        let res: LooseObject = {Count: 0, Items: []};
         let resValues = [];
+
+        try {
+            res = await this.client.query(params).promise();
+        } catch (e) {}
+
         for (let item of res.Items) {
             resValues.push(AwsDynamoDbDatabase.unmarshall(item));
         }
@@ -137,8 +144,8 @@ export default class AwsDynamoDbDatabase extends Database
     /**
      * @inheritDoc
      */
-    async findOne(criteria: LooseObject): Promise<LooseObject|null> {
-        let params = Object.assign(convertQueryCriteria(criteria), {
+    public async findOne(criteria: Query|LooseObject): Promise<LooseObject|null> {
+        let params = Object.assign(convertQueryCriteria(criteriaToQuery(criteria)), {
             TableName: this.tableName
         });
 
@@ -194,4 +201,4 @@ export default class AwsDynamoDbDatabase extends Database
     public static unmarshall(data: any): LooseObject {
         return AWS.DynamoDB.Converter.unmarshall(data);
     }
-};
+}

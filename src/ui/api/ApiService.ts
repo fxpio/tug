@@ -7,19 +7,26 @@
  * file that was distributed with this source code.
  */
 
-import HttpNotFoundError from './HttpNotFoundError';
+import {AxiosInstance} from 'axios';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class BranchNotFoundError extends HttpNotFoundError
+export interface ApiService
 {
+}
+
+/**
+ * Interface of database repository constructor.
+ */
+export interface ApiServiceConstructor
+{
+    new (client: AxiosInstance): ApiService;
+
     /**
-     * Constructor.
+     * Get the name of api service.
      *
-     * @param {string} branchName
+     * @return {string}
      */
-    constructor(branchName: string) {
-        super(`Branch "${branchName}" is not found`);
-    }
+    getName(): string;
 }

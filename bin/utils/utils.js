@@ -20,7 +20,7 @@ module.exports.removeDir = function(path) {
             let curPath = path + '/' + file;
 
             if (fs.lstatSync(curPath).isDirectory()) {
-                deleteFolderRecursive(curPath);
+                module.exports.removeDir(curPath);
             } else {
                 fs.unlinkSync(curPath);
             }

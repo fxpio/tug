@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import MessageQueue from '../../queues/MessageQueue';
+import {MessageQueue} from '@app/queues/MessageQueue';
+import {getSqsMessageBodies} from '@app/utils/apiQueue';
 import {Request, Response} from 'express';
-import {getSqsMessageBodies} from '../../utils/apiQueue';
 
 /**
  * Run the queue receivers when the message comes form the queue.
@@ -21,6 +21,6 @@ import {getSqsMessageBodies} from '../../utils/apiQueue';
  * @return {Promise<void>}
  */
 export async function queueHook(req: Request, res: Response, next: Function): Promise<void> {
-    await (req.app.get('queue') as MessageQueue).receive(getSqsMessageBodies(req));
+    await (req.app.get('queue') as MessageQueue).receive(getSqsMessageBodies(req), res);
     res.status(204).send();
 }

@@ -22,6 +22,11 @@ module.exports = {
     stats: 'errors-only',
     devtool: prod ? false : 'eval-source-map',
 
+    node: {
+        __dirname: false,
+        __filename: false,
+    },
+
     externals: [
         'aws-sdk',
     ],
@@ -33,13 +38,10 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js'],
         alias: {
+            '@app': path.resolve(__dirname, 'src'),
+            '@assets': path.resolve(__dirname, 'src/ui/assets'),
             'aws-serverless-express': path.resolve(__dirname, 'node_modules/aws-serverless-express/src')
         }
-    },
-
-    devServer: {
-        compress: true,
-        stats: 'errors-only'
     },
 
     module: {

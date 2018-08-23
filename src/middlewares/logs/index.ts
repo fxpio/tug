@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
+import {HttpError} from '@app/errors/HttpError';
+import {Logger} from '@app/loggers/Logger';
 import {Request, Response} from 'express';
-import HttpError from '../../errors/HttpError';
-import Logger from '../../loggers/Logger';
 
 /**
  * Display the list of all packages in the "provider" format.
@@ -18,6 +18,8 @@ import Logger from '../../loggers/Logger';
  * @param {Request}  req  The request
  * @param {Response} res  The response
  * @param {Function} next The next callback
+ *
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function logErrors(err: Error, req: Request, res: Response, next: Function): void {
     if (!(err instanceof HttpError)) {

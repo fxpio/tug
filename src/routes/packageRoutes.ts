@@ -7,16 +7,16 @@
  * file that was distributed with this source code.
  */
 
-import Authenticate from '../middlewares/auth/Authenticate';
-import BasicTokenAuth from '../middlewares/auth/strategies/BasicTokenAuth';
-import {Router} from 'express';
-import {asyncHandler} from '../utils/handler';
 import {
     showPackageVersion,
     showPackageVersions,
     showRootPackages,
     trackDownloadBatch
-} from '../controllers/packages/packageController';
+} from '@app/controllers/packages/packageController';
+import {Authenticate} from '@app/middlewares/auth/Authenticate';
+import {BasicTokenAuth} from '@app/middlewares/auth/strategies/BasicTokenAuth';
+import {asyncHandler} from '@app/utils/handler';
+import {Router} from 'express';
 
 /**
  * Generate the routes.
@@ -25,7 +25,7 @@ import {
  *
  * @return {Router}
  */
-export default function packageRoutes(router: Router): Router {
+export function packageRoutes(router: Router): Router {
     router.use(asyncHandler(Authenticate.middleware(new BasicTokenAuth())));
 
     router.get('/packages.json', asyncHandler(showRootPackages));

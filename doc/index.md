@@ -24,25 +24,16 @@ This project requires:
 
 - an active account for [AWS](https://aws.amazon.com)
 - an active account for [Github](https://github.com)
-- the installation of the applications bellow on your local machine:
+
+If you want to compile and deploy your own version, you must have in addition:
+
+- the installation of the applications bellow on your local machine (if you prefer to compile your own version):
   - [Nodejs](https://nodejs.org)
   - [NPM](https://www.npmjs.com) or [Yarn](https://yarnpkg.com) (to install dependencies)
   - [Java](https://www.java.com) (optional, to run database in local)
   - [Git](https://git-scm.com) (optional)
 
 ### Services credentials
-
-**Github credentials:**
-
-Generate a [personal access token](https://github.com/settings/tokens) with the required scopes:
-
-- `repo`, included:
-  - `repo:status`
-  - `repo_deployment`
-  - `public_repo`
-  - `repo:invite`
-
-Keep the token for the step 2.
 
 **AWS credentials:**
 
@@ -57,7 +48,44 @@ Keep the credentials for the step 2.
 > retrieve by the `config` command.
 
 
-## 1) Clone the repository
+**Github credentials:**
+
+Generate a [personal access token](https://github.com/settings/tokens) with the required scopes:
+
+- `repo`, included:
+  - `repo:status`
+  - `repo_deployment`
+  - `public_repo`
+  - `repo:invite`
+
+Keep the token for the step 2.
+
+
+## 1) Installation
+
+You have the option to install the server in one click or download, compile and deploy your own version of the server:
+
+### 1.a. Installation with the AWS CloudFormation Launch Stack
+
+This installation process is the easiest and fastest, just click on the "CloudFormation Launch Stack" button,
+and follow the wizard:
+
+[![Image of CloudFormation Launch Stack](images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=FxpSatisServerless&templateURL=https://fxp-satis-serverless.s3.amazonaws.com/latest.template)
+
+1. Then click Next where you can enter a stack name (FxpSatisServerless is a good default)
+2. Click Next
+3. Click Next again on the Options step (leaving the default options selected), to get to the final Review step
+4. a. In the Capabilities section of the Review step: check the acknowledgment checkboxes and click
+4. b. In the Transformations section of the Review step: click on the button "Create a change set"
+
+> ** Note:**
+>
+> You can change the AWS region on the first page of wizard, by default,
+> it is the region `eu-west-1` that is selected.
+
+### 1.b. Installation from your local machine
+
+#### 1.b.1. Clone the repository
 
 ```
 $ git clone git@github.com:fxpio/fxp-satis-serverless.git
@@ -66,7 +94,7 @@ $ git clone git@github.com:fxpio/fxp-satis-serverless.git
 Or download the [archive](https://github.com/fxpio/fxp-satis-serverless/archive/master.zip) if you haven't Git.
 
 
-## 2) Setup the project
+#### 1.b.2. Setup the project
 
 This command install dependencies, configure the project, create the S3 bucket, package and deploy in
 AWS Cloud Formation, with API Gateway, Lambda, SQS and IAM.
@@ -86,7 +114,9 @@ When the deployment process is complete, you can directly use the endpoint of
 a custom domain. In this case, see [this page](custom-domain-ssl.md).
 
 
-## 3) Create the oauth token for Github
+## 2) Configure the server
+
+### 2.1. Create the oauth token for Github
 
 To connect the server with your Github account, you must configure the Github Aouth token. To create a oauth token,
 run the command:
@@ -101,7 +131,7 @@ $ bin/create-github-oauth --token <your-github-personal-token>
 > `github-oauth."github.com"` attribute.
 
 
-## 4) Create the token for Github Webhooks
+### 2.2. Create the token for Github Webhooks
 
 To create a token to use in Github webhooks, run the command:
 
@@ -115,17 +145,17 @@ $ bin/create-github-token
 > `github-webhook."github.com"` attribute.
 
 
-## 5) Configure the Github Webhook
+### 2.3. Configure the Github Webhook
 
 In each repository or in a organization, create the webhook with:
 
 - Payload URL: `https://<your-custom-domain-for-satis>`
 - Content type: `application/json`
-- Secret: `<your-created-token-for-github-webhooks-in-step-3>`
+- Secret: `<your-created-token-for-github-webhooks-in-step-2.2>`
 - Which events would you like to trigger this webhook? `Just the push event.`
 
 
-## 6) Create your first API key
+### 2.4. Create your first API key
 
 The API keys are to be used with Composer to allow the connection with your Satis Serverless.
 
@@ -140,7 +170,7 @@ $ bin/create-api-key
 > The API keys are stored in the DynamoDB with the prefix `api-keys:`.
 
 
-## 7) Enjoy!
+## 3) Enjoy!
 
 Now that you have completed the basic installation and configuration of the Satis Serverless, you are ready to learn
 more about using this project.
@@ -151,4 +181,5 @@ The following documents are available:
 - [Using Satis Serverless in your project](include-in-project.md)
 - [Manage the packages](manage-packages.md)
 - [Alternative installations](alternate-installations.md)
+- [Update the CloudFormation Stack](update-cloud-formation-stack.md)
 - [Available commands](available-commands.md)
