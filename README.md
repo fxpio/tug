@@ -80,7 +80,7 @@ All the installation instructions are located in [documentation](doc/index.md).
 License
 -------
 
-This project is under the proprietary license. See the complete license in the bundle:
+This project is under the MIT license. See the complete license in the bundle:
 
 [LICENSE](LICENSE)
 
