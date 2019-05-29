@@ -82,7 +82,7 @@ export class PackageManager
      *
      * @return {Promise<LooseObject<string, Package>>}
      */
-    public async findPackages(packageName: string, hash?: string, res?: Response): Promise<LooseObject> {
+    public async findPackages(packageName: string, hash?: string, res?: Response): Promise<LooseObject<Package>> {
         let result: LooseObject = {};
         let repo = await this.repoManager.findRepository(packageName, res);
 

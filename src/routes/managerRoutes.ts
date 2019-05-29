@@ -10,7 +10,12 @@
 import {createApiKey, deleteApiKey} from '@app/controllers/manager/apiKeyController';
 import {createGithubOauth, deleteGithubOauth, showGithubOauth} from '@app/controllers/manager/githubOauthController';
 import {createGithubToken, deleteGithubToken, showGithubToken} from '@app/controllers/manager/githubTokenController';
-import {deletePackages, refreshCachePackages, refreshPackages} from '@app/controllers/manager/packageController';
+import {
+    deletePackages,
+    listPackages,
+    refreshCachePackages,
+    refreshPackages
+} from '@app/controllers/manager/packageController';
 import {disableRepository, enableRepository, listRepository} from '@app/controllers/manager/repositoryController';
 import {Authenticate} from '@app/middlewares/auth/Authenticate';
 import {AuthStrategy} from '@app/middlewares/auth/strategies/AuthStrategy';
@@ -46,6 +51,8 @@ export function managerRoutes(router: Router, basicAuthStrategy: AuthStrategy): 
     router.put('/packages/refresh', asyncHandler(refreshPackages));
     router.put('/packages/refresh-all', asyncHandler(refreshCachePackages));
     router.delete('/packages', asyncHandler(deletePackages));
+
+    router.get('/packages/:vendor/:package/versions', asyncHandler(listPackages));
 
     return router;
 }

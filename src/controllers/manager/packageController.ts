@@ -8,11 +8,41 @@
  */
 
 import {PackageManager} from '@app/composer/packages/PackageManager';
+import {HttpNotFoundError} from '@app/errors/HttpNotFoundError';
 import {Translator} from '@app/translators/Translator';
 import {LooseObject} from '@app/utils/LooseObject';
 import {validateForm} from '@app/utils/validation';
 import {Request, Response} from 'express';
 import Joi from 'joi';
+
+/**
+ * List all package versions of a repository.
+ *
+ * @param {Request}  req  The request
+ * @param {Response} res  The response
+ * @param {Function} next The next callback
+ *
+ * @return {Promise<void>}
+ */
+export async function listPackages(req: Request, res: Response, next: Function): Promise<void> {
+    let manager: PackageManager = req.app.get('package-manager');
+    let packageName = req.params.vendor + '/' + req.params.package;
+    let result = await manager.findPackages(packageName);
+    let versions: LooseObject = {};
+
+    if (0 === Object.keys(result).length) {
+        throw new HttpNotFoundError();
+    }
+
+    for (let i of Object.keys(result)) {
+        let pack = result[i];
+        versions[pack.getVersion()] = pack.getComposer();
+    }
+
+    res.set('Content-Type', 'application/json; charset=utf-8');
+    res.send(versions);
+    return;
+}
 
 /**
  * Refresh all packages or a single package of a repository.
