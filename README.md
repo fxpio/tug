@@ -46,7 +46,9 @@ VCS repositories makes every Composer update excessively long.
   - enable or disable manually each repositories
   - generate or delete the token used by the Webhooks
   - generate or delete an API key
+  - list the package versions
   - generate all package definitions for a specific repository
+  - show the details of each package version
   - refresh all packages or a specific package version
   - delete all packages or a specific package version
   - clean and rebuild the cache
