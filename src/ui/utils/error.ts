@@ -29,5 +29,5 @@ export function getRequestErrorMessage(vue: Vue, err: Error): string {
         }
     }
 
-    return vue.$i18n.t('error.network') as string;
+    return vue.$i18n ? vue.$i18n.t('error.network') as string : 'Error network';
 }
