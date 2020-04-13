@@ -34,6 +34,7 @@ program
     .option('-p, --force-package', 'Force to rebuild the package only', false)
     .option('-b, --bucket <bucket>', 'Bucket name')
     .option('-t, --tag <tag>', 'Version tag name of package')
+    .option('-r, --replace', 'Upload and replace the latest CloudFormation template even if there is no tag', false)
     .parse(process.argv);
 
 utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
@@ -69,7 +70,7 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
             fileStream.on('error', utils.displayError);
 
             let params = {
-                ACL: program.tag ? 'public-read' : undefined,
+                ACL: program.tag || program.replace ? 'public-read' : undefined,
                 Bucket: program.bucket ? program.bucket : process.env.AWS_S3_BUCKET_DEPLOY,
                 Key: utils.fixWinSlash(filePath).replace(/\/$/g, ''),
                 Body: fileStream
@@ -81,30 +82,32 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
         .then((key) => {
             s3Keys['S3_LAMBDA_CODE_BUCKET'] = program.bucket ? program.bucket : process.env.AWS_S3_BUCKET_DEPLOY;
             s3Keys['S3_LAMBDA_CODE_VERSION'] = key.replace(BUILD_PATH.replace(/^.|\/|\/$/g, '') + '/', '').replace('.zip', '');
+
+            return key;
         })
 
         // Cloud Formation stack
-        .then(async () => {
+        .then(async (key) => {
             let data = fs.readFileSync(AWS_CLOUDFORMATION_PATH, 'utf8');
             data = utils.replaceVariables(data, s3Keys);
 
             fs.writeFileSync(BUILD_CLOUDFORMATION_PATH, data);
 
-            if (program.tag) {
+            if (program.tag || program.replace) {
                 let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env.AWS_REGION});
                 let fileStream = fs.createReadStream(BUILD_CLOUDFORMATION_PATH);
                 fileStream.on('error', utils.displayError);
 
                 let params = {
-                    ACL: program.tag ? 'public-read' : undefined,
+                    ACL: program.tag || program.replace ? 'public-read' : undefined,
                     Bucket: program.bucket ? program.bucket : process.env.AWS_S3_BUCKET_DEPLOY,
-                    Key: `${program.tag}.template`,
+                    Key: `latest.template`,
                     Body: fileStream
                 };
                 await s3.upload(params).promise();
             }
 
-            console.info('Project is packaged successfully');
+            console.info('Project is packaged successfully: ' + key);
         })
 
         // Errors
