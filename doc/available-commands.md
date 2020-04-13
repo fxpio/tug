@@ -22,9 +22,9 @@ All commands below are executable via:
 - `deploy`: Deploy the packaged project in AWS Cloud Formation
 - `package-deploy`: Package and deploy the project
 - `delete-stack`: Delete the AWS Cloud Formation stack
-- `create-github-oauth`: Create your Github Oauth token
-- `show-github-oauth`: Show your Github Oauth token
-- `delete-github-oauth`: Delete your Github Oauth token
+- `create-github-oauth`: Create your Github oAuth token
+- `show-github-oauth`: Show your Github oAuth token
+- `delete-github-oauth`: Delete your Github oAuth token
 - `create-github-token`: Create the token for the Github Webhooks
 - `show-github-token`: Show the token for the Github Webhooks
 - `delete-github-token`: Delete the token for the Github Webhooks

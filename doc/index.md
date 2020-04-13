@@ -116,9 +116,9 @@ a custom domain. In this case, see [this page](custom-domain-ssl.md).
 
 ## 2) Configure the server
 
-### 2.1. Create the oauth token for Github
+### 2.1. Create the oAuth token for Github
 
-To connect the server with your Github account, you must configure the Github Aouth token. To create a oauth token,
+To connect the server with your Github account, you must configure the Github oAuth token. To create a oAuth token,
 run the command:
 
 ```
@@ -127,7 +127,7 @@ $ bin/create-github-oauth --token <your-github-personal-token>
 
 > **Note:**
 >
-> The oauth token for Github is stored in the DynamoDB with the id `config:global` and the
+> The oAuth token for Github is stored in the DynamoDB with the id `config:global` and the
 > `github-oauth."github.com"` attribute.
 
 
