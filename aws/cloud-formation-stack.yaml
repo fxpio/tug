@@ -14,6 +14,11 @@ Parameters:
       - verbose
     ConstraintDescription: Must be "error", "warn", "info" or "verbose"
 
+  SatisServerlessVersion:
+    Description: The version defined by the tag name in the Releases page (https://github.com/fxpio/satis-serverless/releases)
+    Type: String
+    Default: {S3_LAMBDA_CODE_VERSION}
+
 Resources:
   Endpoint:
     Type: AWS::Serverless::Api
@@ -156,7 +161,14 @@ Resources:
       Description: Logic of Satis Serverless
       Runtime: nodejs12.x
       Handler: server.handler
-      CodeUri: {S3_LAMBDA_CODE_URI}
+      CodeUri:
+        Bucket: {S3_LAMBDA_CODE_BUCKET}
+        Key:
+          Fn::Join:
+          - ''
+          - - 'builds/'
+            - Ref: SatisServerlessVersion
+            - '.zip'
       Timeout: 30
       MemorySize: 1024
       Role:

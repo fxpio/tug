@@ -79,7 +79,8 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
             return params.Key;
         })
         .then((key) => {
-            s3Keys['S3_LAMBDA_CODE_URI'] = 's3://' + (program.bucket ? program.bucket : process.env.AWS_S3_BUCKET_DEPLOY) + '/' + key;
+            s3Keys['S3_LAMBDA_CODE_BUCKET'] = program.bucket ? program.bucket : process.env.AWS_S3_BUCKET_DEPLOY;
+            s3Keys['S3_LAMBDA_CODE_VERSION'] = key.replace(BUILD_PATH.replace(/^.|\/|\/$/g, '') + '/', '').replace('.zip', '');
         })
 
         // Cloud Formation stack
