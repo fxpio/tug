@@ -2,7 +2,7 @@ Fxp Satis Serverless
 ====================
 
 [![Image of CloudFormation Launch Stack](doc/images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=FxpSatisServerless&templateURL=https://fxp-satis-serverless.s3.amazonaws.com/latest.template)
-[![Build Status](https://travis-ci.org/fxpio/fxp-satis-serverless.svg?branch=master)](https://travis-ci.org/fxpio/fxp-satis-serverless)
+[![Build Status](https://travis-ci.org/fxpio/satis-serverless.svg?branch=master)](https://travis-ci.org/fxpio/satis-serverless)
 
 The Fxp Satis Serverless is a Composer repository for private PHP packages installable with
 [Composer](http://getcomposer.org). Unlike the static package generator [Satis](https://github.com/composer/satis),
