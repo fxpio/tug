@@ -154,7 +154,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: Logic of Satis Serverless
-      Runtime: nodejs8.10
+      Runtime: nodejs12.x
       Handler: server.handler
       CodeUri: {S3_LAMBDA_CODE_URI}
       Timeout: 30
