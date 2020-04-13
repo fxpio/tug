@@ -15,7 +15,7 @@ const fs = require('fs-extra');
 
 program
     .description('Encode the AWS API Gateway headers for queue')
-    .option('-e, --event [file]', 'The filename of the sqs header event', './test/fixtures/sqs-header-event.json')
+    .option('-e, --event <file>', 'The filename of the sqs header event', './test/fixtures/sqs-header-event.json')
     .parse(process.argv)
 ;
 

@@ -21,9 +21,9 @@ const createHeaders = require('./utils/endpoint').createHeaders;
 
 program
     .description('Delete the versions of package')
-    .option('-e, --endpoint [url]', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
-    .option('-u, --url [url]', 'The repository URL')
-    .option('-n, --version [version]', 'The specific version, or empty to delete all versions')
+    .option('-e, --endpoint <url>', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
+    .option('-u, --url <url>', 'The repository URL')
+    .option('-n, --version <version>', 'The specific version, or empty to delete all versions')
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')

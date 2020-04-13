@@ -21,8 +21,8 @@ const createHeaders = require('./utils/endpoint').createHeaders;
 
 program
     .description('Refresh the cache of packages')
-    .option('-e, --endpoint [url]', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
-    .option('-u, --url [url]', 'The repository URL, or empty to refresh all repositories')
+    .option('-e, --endpoint <url>', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
+    .option('-u, --url <url>', 'The repository URL, or empty to refresh all repositories')
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')

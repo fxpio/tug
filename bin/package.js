@@ -32,8 +32,8 @@ program
     .description('Package the built project in S3 for AWS Cloud Formation (build the project before)')
     .option('-f, --force', 'Force to rebuild the project', false)
     .option('-p, --force-package', 'Force to rebuild the package only', false)
-    .option('-b, --bucket [bucket]', 'Bucket name')
-    .option('-t, --tag [tag]', 'Version tag name of package')
+    .option('-b, --bucket <bucket>', 'Bucket name')
+    .option('-t, --tag <tag>', 'Version tag name of package')
     .parse(process.argv);
 
 utils.spawn('node bin/build' + (program.force ? ' --force' : ''))

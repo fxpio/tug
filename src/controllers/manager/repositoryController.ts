@@ -28,7 +28,7 @@ import Joi from 'joi';
 export async function listRepository(req: Request, res: Response, next: Function): Promise<void> {
     let db = req.app.get('db') as Database;
     let repo = db.getRepository<CodeRepositoryRepository>(CodeRepositoryRepository);
-    res.json(await repo.search({}, ['packageName', 'url'], req.query.search, req.query.lastId));
+    res.json(await repo.search({}, ['packageName', 'url'], <string> req.query.search, <string> req.query.lastId));
 }
 
 /**

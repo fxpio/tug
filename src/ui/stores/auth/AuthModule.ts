@@ -91,9 +91,9 @@ export class AuthModule<R extends I18nModuleState> implements Module<AuthState, 
                     commit('loginSuccess');
 
                     if (redirect) {
-                        self.router.replace(redirect);
+                        await self.router.replace(<string> redirect);
                     } else {
-                        self.router.replace({name: 'home', params: {locale: rootState.i18n.locale}});
+                        await self.router.replace({name: 'home', params: {locale: rootState.i18n.locale}});
                     }
                 } catch (e) {
                     commit('loginError');

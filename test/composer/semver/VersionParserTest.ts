@@ -88,7 +88,9 @@ for (let i = 0; i < failingNormalizedVersionsKeys.length; ++i) {
         const error = t.throws(() => {
             let parser = new VersionParser();
             parser.normalize(values[0]);
-        }, VersionParserInvalidVersionError);
+        }, {
+            instanceOf: VersionParserInvalidVersionError
+        });
 
         t.true(error.message.startsWith('Invalid version string '));
     });

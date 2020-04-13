@@ -13,7 +13,7 @@ require('dotenv').config();
 const program = require('commander');
 const async = require('async');
 const fs = require('fs-extra');
-const unzip = require('unzip');
+const decompress = require('decompress');
 const AWS = require('aws-sdk');
 const utils = require('./utils/utils');
 
@@ -26,8 +26,8 @@ const CONTENT_PATH = './dist';
 
 program
     .description('Serve the Satis server in local')
-    .option('-p, --port [port]', 'The port to run the local server', 3000)
-    .option('-d, --dynamodb-port [port]', 'The port to run the local AWS DynamoDB server', null)
+    .option('-p, --port <port>', 'The port to run the local server', '3000')
+    .option('-d, --dynamodb-port <port>', 'The port to run the local AWS DynamoDB server', null)
     .parse(process.argv)
 ;
 
@@ -66,7 +66,7 @@ utils.spawn('node bin/config -e')
             }
 
             console.info('Extracting the archive of the local AWS DynamoDB server...');
-            await fs.createReadStream(dynamodbLocalZipPath).pipe(unzip.Extract({path: dynamodbLocalPath}));
+            await decompress(dynamodbLocalZipPath, dynamodbLocalPath);
             await fs.unlink(dynamodbLocalZipPath);
         }
     })

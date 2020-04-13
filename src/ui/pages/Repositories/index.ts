@@ -61,7 +61,7 @@ export class Repositories extends mixins(AjaxListContent)
     }
 
     public async fetchDataRequest(searchValue?: string): Promise<ListResponse<CodeRepository>> {
-        return await await this.$api.get<ApiRepositories>(ApiRepositories)
+        return await this.$api.get<ApiRepositories>(ApiRepositories)
             .list({lastId: this.lastId, search: this.search ? this.search : null}, this.previousRequest);
     }
 }

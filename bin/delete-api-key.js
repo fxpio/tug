@@ -21,8 +21,8 @@ const createHeaders = require('./utils/endpoint').createHeaders;
 
 program
     .description('Delete a API key')
-    .option('-e, --endpoint [url]', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
-    .option('-t, --token [token]', 'The API key')
+    .option('-e, --endpoint <url>', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
+    .option('-t, --token <token>', 'The API key')
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')

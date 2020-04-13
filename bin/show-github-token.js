@@ -21,7 +21,7 @@ const createHeaders = require('./utils/endpoint').createHeaders;
 
 program
     .description('Show your token for Github Webhooks')
-    .option('-e, --endpoint [url]', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
+    .option('-e, --endpoint <url>', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
     .parse(process.argv);
 
 utils.spawn('node bin/config -e')
