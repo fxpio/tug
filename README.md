@@ -75,6 +75,10 @@ file in this project:
 
 [Read the Documentation](doc/index.md)
 
+The latest version of the AWS CloudFormation Stack is to this url:
+
+https://fxp-satis-serverless.s3.amazonaws.com/latest.template
+
 Installation
 ------------
 
