@@ -26,20 +26,17 @@ VCS repositories makes every Composer update excessively long.
 
 - Deploy the service in minutes
 - Fully manage the remote service with the Progressive Web Application or the API Rest
-- All management commands use the API Rest of the Server
-- Authentication can be do with the AWS Security Token Service (session token) or the AWS IAM Credentials
-- Store the Composer package definitions, API keys and config in the DynamoDB
-- Put in cache the package versions and providers in S3
-- Create the Composer package definition when the branch or tag is created
-- Remove the Composer package definition when the branch or tag is deleted
-- Refresh the commit SHA1 on each commit
-- Track the download count of each package version by Composer
 - Server messages and the Progressive Web Application are localized in multiple languages
 - Available drivers:
   - Github
-- Automatically configuration of the AWS credentials if the [Shared Credentials File](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-shared.html)
-  is present on your machine
-- Automatically configuration of the AWS regions if the Shared Config File is present on your machine
+- Tiggers:
+  - Create the Composer package definition when the branch or tag is created
+  - Remove the Composer package definition when the branch or tag is deleted
+  - Refresh the commit SHA1 on each commit
+- Storage:
+  - Store the Composer package definitions, API keys and config in the DynamoDB
+  - Put in cache the package versions and providers in S3
+  - Track the download count of each package version by Composer
 - All API Rest to:
   - configure the server
   - list the repositories
@@ -53,18 +50,24 @@ VCS repositories makes every Composer update excessively long.
   - refresh all packages or a specific package version
   - delete all packages or a specific package version
   - clean and rebuild the cache
-- All commands to:
-  - configure interactively the project
-  - create or remove the S3 bucket to deploy the code
-  - build, package, and deploy automatically the project in AWS API Gateway, Lambda, SQS, DynamoDB, S3, IAM,
-    and Cloud Watch with the Cloud Formation stack
-  - remove the project on AWS (but keeping all the data in DynamoDB and S3)
+- All commands to manage the remote service:
+  - all management commands use the API Rest of the Server
+  - authentication can be do with the AWS Security Token Service (session token) or the AWS IAM Credentials
+  - automatically configuration of the AWS credentials if the [Shared Credentials File](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-shared.html)
+    is present on your machine
+  - automatically configuration of the AWS regions if the Shared Config File is present on your machine
   - enable or disable manually each Github repositories
   - generate or delete the token used by the Github Webhooks
   - generate or delete an API key
   - generate all package definitions for a specific repository
   - refresh all packages or a specific package version
   - delete all packages or a specific package version
+- All commands to create and deploy manually:
+  - configure interactively the project
+  - create or remove the S3 bucket to deploy the code
+  - build, package, and deploy automatically the project in AWS API Gateway, Lambda, SQS, DynamoDB, S3, IAM,
+    and Cloud Watch with the Cloud Formation stack
+  - remove the project on AWS (but keeping all the data in DynamoDB and S3)
   - serve the server in local for tests
 
 Documentation
