@@ -37,4 +37,7 @@ export default {
     'page.repositories.package-name': 'Package',
     'page.repositories.url': 'URL',
     'page.repositories.type': 'Type',
+    'page.packages.title': 'Packages',
+    'page.packages.package-name': 'Nom du package',
+    'page.packages.url': 'URL',
 };

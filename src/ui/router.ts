@@ -50,6 +50,14 @@ export function createRouter(): Router {
                     toolbar: () => import('@app/ui/pages/Repositories/ListToolbar').then(({ Toolbar }) => Toolbar),
                 },
             },
+            {   path: '/packages',
+                name: 'packages',
+                meta: {requiresAuth: true},
+                components: {
+                    default: () => import('@app/ui/pages/Packages').then(({ Packages }) => Packages),
+                    toolbar: () => import('@app/ui/pages/Packages/ListToolbar').then(({ Toolbar }) => Toolbar),
+                },
+            },
             {   path: "*",
                 name: 'error404',
                 components: {
