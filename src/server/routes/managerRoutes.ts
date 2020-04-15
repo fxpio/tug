@@ -14,7 +14,7 @@ import {
     deletePackages,
     listPackages,
     refreshCachePackages,
-    refreshPackages
+    refreshPackages,
 } from '@server/controllers/manager/packageController';
 import {disableRepository, enableRepository, listRepository} from '@server/controllers/manager/repositoryController';
 import {Authenticate} from '@server/middlewares/auth/Authenticate';

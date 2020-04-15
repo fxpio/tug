@@ -22,10 +22,10 @@ export class AwsDynamoDbDatabase extends Database {
     /**
      * Convert the data for DynamoDB.
      *
-     * @param {any}     data      The data
+     * @param {*}       data      The data
      * @param {boolean} [subData] Check if is a sub data
      *
-     * @return {any}
+     * @return {*}
      */
     public static marshall(data: any, subData: boolean = false): any {
         if (data instanceof Date) {
@@ -34,8 +34,9 @@ export class AwsDynamoDbDatabase extends Database {
 
         if (Array.isArray(data)) {
             const values: any[] = [];
-            for (let i = 0; i < data.length; ++i) {
-                values.push(AwsDynamoDbDatabase.marshall(data[i], true));
+
+            for (const val of data) {
+                values.push(AwsDynamoDbDatabase.marshall(val, true));
             }
 
             return values;
@@ -45,8 +46,7 @@ export class AwsDynamoDbDatabase extends Database {
             const keys = Object.keys(data);
             const value: LooseObject = {};
 
-            for (let i = 0; i < keys.length; ++i) {
-                const key = keys[i];
+            for (const key of keys) {
                 value[key] = AwsDynamoDbDatabase.marshall(data[key], true);
             }
 
@@ -95,7 +95,7 @@ export class AwsDynamoDbDatabase extends Database {
      * @inheritDoc
      */
     public async has(id: string): Promise<boolean> {
-        return null !== this.get(id);
+        return null !== await this.get(id);
     }
 
     /**

@@ -17,8 +17,27 @@ import {Response} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class RefreshPackagesReceiver extends BaseReceiver
-{
+export class RefreshPackagesReceiver extends BaseReceiver {
+
+    /**
+     * Create the refresh package message.
+     *
+     * @param {string}  repositoryUrl The repository url
+     * @param {string}  identifier    The identifier
+     * @param {string}  version       The version
+     * @param {boolean} force         Check if existing packages must be overridden
+     *
+     * @return {{type: string, repositoryUrl: string, identifier: string, version: string, force: boolean}}
+     */
+    private static createMessage(repositoryUrl: string, identifier: string, version: string, force: boolean): Object {
+        return {
+            type: 'refresh-package',
+            repositoryUrl,
+            identifier,
+            version,
+            force,
+        };
+    }
     private readonly repoManager: RepositoryManager;
 
     /**
@@ -44,46 +63,26 @@ export class RefreshPackagesReceiver extends BaseReceiver
      * @inheritDoc
      */
     public async doExecute(message: LooseObject, res?: Response): Promise<void> {
-        let force = true === message.force;
-        let repo = await this.repoManager.getAndInitRepository(message.repositoryUrl, force, res);
+        const force = true === message.force;
+        const repo = await this.repoManager.getAndInitRepository(message.repositoryUrl, force, res);
         if (!repo) {
             this.logger.log('verbose', `[Refresh Packages Receiver] Repository is not found for "${message.repositoryUrl}"`);
             return;
         }
 
-        let driver = repo.getDriver();
-        let branches = await driver.getBranches();
-        let tags = await driver.getTags();
-        let newMessages = [];
+        const driver = repo.getDriver();
+        const branches = await driver.getBranches();
+        const tags = await driver.getTags();
+        const newMessages = [];
 
-        for (let name of Object.keys(branches)) {
+        for (const name of Object.keys(branches)) {
             newMessages.push(RefreshPackagesReceiver.createMessage(message.repositoryUrl, branches[name], 'dev-' + name, force));
         }
 
-        for (let name of Object.keys(tags)) {
+        for (const name of Object.keys(tags)) {
             newMessages.push(RefreshPackagesReceiver.createMessage(message.repositoryUrl, tags[name], name, force));
         }
 
         await this.queue.sendBatch(newMessages);
-    }
-
-    /**
-     * Create the refresh package message.
-     *
-     * @param {string}  repositoryUrl The repository url
-     * @param {string}  identifier    The identifier
-     * @param {string}  version       The version
-     * @param {boolean} force         Check if existing packages must be overridden
-     *
-     * @return {{type: string, repositoryUrl: string, identifier: string, version: string, force: boolean}}
-     */
-    private static createMessage(repositoryUrl: string, identifier: string, version: string, force: boolean): Object {
-        return {
-            type: 'refresh-package',
-            repositoryUrl: repositoryUrl,
-            identifier: identifier,
-            version: version,
-            force: force
-        };
     }
 }

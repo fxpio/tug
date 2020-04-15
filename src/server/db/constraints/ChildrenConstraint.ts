@@ -13,8 +13,7 @@ import {LooseObject} from '@server/utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class ChildrenConstraint extends Constraint<Constraint[]>
-{
+export class ChildrenConstraint extends Constraint<Constraint[]> {
     /**
      * Constructor.
      *
@@ -32,7 +31,7 @@ export class ChildrenConstraint extends Constraint<Constraint[]>
     public getValues(): LooseObject {
         let values = {};
 
-        for (let constraint of <Constraint[]> this.getValue()) {
+        for (const constraint of this.getValue() as Constraint[]) {
             values = Object.assign(values, constraint.getValues());
         }
 

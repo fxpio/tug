@@ -12,6 +12,5 @@ import {FxpServerlessError} from '@server/errors/FxpServerlessError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class VersionParserError extends FxpServerlessError
-{
+export class VersionParserError extends FxpServerlessError {
 }

@@ -18,8 +18,18 @@ import Polyglot from 'node-polyglot';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class PolyglotTranslator implements Translator
-{
+export class PolyglotTranslator implements Translator {
+
+    /**
+     * Format the locale.
+     *
+     * @param {string} locale The locale.
+     *
+     * @return {string}
+     */
+    private static formatLocale(locale: string): string {
+        return locale.toLowerCase().replace(/_/g, '-');
+    }
     private fallbackLocale: string;
 
     private readonly translations: LooseObject<Polyglot>;
@@ -34,7 +44,7 @@ export class PolyglotTranslator implements Translator
         this.fallbackLocale = PolyglotTranslator.formatLocale(fallbackLocale);
         this.translations = {};
 
-        for (let locale of Object.keys(translations)) {
+        for (const locale of Object.keys(translations)) {
             this.addTranslation(locale, translations[locale]);
         }
     }
@@ -50,12 +60,12 @@ export class PolyglotTranslator implements Translator
      * @inheritDoc
      */
     public setLocaleByRequest(res: Response, req: Request): void {
-        let acceptLanguage = req.header('accept-language');
+        const acceptLanguage = req.header('accept-language');
         let isFound = false;
 
         if (acceptLanguage) {
-            let acceptLanguages = AcceptLanguageParser.parse(acceptLanguage);
-            for (let i of Object.keys(acceptLanguages)) {
+            const acceptLanguages = AcceptLanguageParser.parse(acceptLanguage);
+            for (const i of Object.keys(acceptLanguages)) {
                 let name = acceptLanguages[i].name;
 
                 if (this.hasTranslation(name)) {
@@ -107,7 +117,7 @@ export class PolyglotTranslator implements Translator
         locale = PolyglotTranslator.formatLocale(locale);
 
         if (!this.translations[locale]) {
-            this.translations[locale] = new Polyglot({locale: locale, interpolation: {prefix: '{{', suffix: '}}'}});
+            this.translations[locale] = new Polyglot({locale, interpolation: {prefix: '{{', suffix: '}}'}});
         }
 
         this.translations[locale].extend(translations);
@@ -124,7 +134,7 @@ export class PolyglotTranslator implements Translator
      * @inheritDoc
      */
     public trans(res: Response, key: string, parameters?: LooseObject<string>, locale?: string): string {
-        let value = key;
+        const value = key;
         locale = locale ? PolyglotTranslator.formatLocale(locale) : this.getLocale(res);
 
         if (this.translations[locale] && this.translations[locale].has(key)) {
@@ -154,16 +164,5 @@ export class PolyglotTranslator implements Translator
         }
 
         return value;
-    }
-
-    /**
-     * Format the locale.
-     *
-     * @param {string} locale The locale.
-     *
-     * @return {string}
-     */
-    private static formatLocale(locale: string): string {
-        return locale.toLowerCase().replace(/_/g, '-');
     }
 }

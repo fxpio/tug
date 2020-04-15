@@ -19,8 +19,7 @@ import {Response} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class RefreshPackageReceiver extends BaseReceiver
-{
+export class RefreshPackageReceiver extends BaseReceiver {
     private readonly repoManager: RepositoryManager;
     private readonly packageManager: PackageManager;
 
@@ -49,44 +48,44 @@ export class RefreshPackageReceiver extends BaseReceiver
      * @inheritDoc
      */
     public async doExecute(message: LooseObject, res?: Response): Promise<void> {
-        let force = true === message.force;
-        let repoUrl = message.repositoryUrl;
-        let identifier = message.identifier;
-        let version = message.version;
-        let isBranch = version.startsWith('dev-');
+        const force = true === message.force;
+        const repoUrl = message.repositoryUrl;
+        const identifier = message.identifier;
+        const version = message.version;
+        const isBranch = version.startsWith('dev-');
 
-        let repo = await this.repoManager.getAndInitRepository(repoUrl, false, res);
+        const repo = await this.repoManager.getAndInitRepository(repoUrl, false, res);
         if (!repo || !repo.getPackageName()) {
             return;
         }
 
-        let existingComposer = await this.packageManager.findPackage(repo.getPackageName() as string, version, res);
+        const existingComposer = await this.packageManager.findPackage(repo.getPackageName() as string, version, res);
 
         if (force || !existingComposer) {
-            let driver = repo.getDriver();
-            let composer = await driver.getComposerInformation(identifier);
+            const driver = repo.getDriver();
+            const composer = await driver.getComposerInformation(identifier);
 
             if (!composer) {
                 this.logger.log('warn', `[Refresh Package Receiver] Skipped ${isBranch ? 'branch' : 'tag'} (${version}) of "${repo.getPackageName()}", no composer file was found`);
                 return;
             }
 
-            if (composer['license'] && typeof composer['license'] === 'string') {
-                composer['license'] = [composer['license']];
+            if (composer.license && typeof composer.license === 'string') {
+                composer.license = [composer.license];
             }
 
-            composer['type'] = composer['type'] ? composer['type'] : 'library';
-            composer['version'] = version;
-            composer['version_normalized'] = this.packageManager.normalizeVersion(version);
-            composer['source'] = driver.getSource(identifier);
-            composer['dist'] = driver.getDist(identifier);
+            composer.type = composer.type ? composer.type : 'library';
+            composer.version = version;
+            composer.version_normalized = this.packageManager.normalizeVersion(version);
+            composer.source = driver.getSource(identifier);
+            composer.dist = driver.getDist(identifier);
 
-            let pack = new Package({composer: composer});
+            const pack = new Package({composer});
             this.logger.log('info', `[Refresh Package Receiver] Refreshing package version "${pack.getVersion()}" for "${pack.getName()}"`);
             await this.packageManager.update(pack);
             await this.queue.send({
                 type: 'build-package-versions-cache',
-                packageName: pack.getName()
+                packageName: pack.getName(),
             }, 1);
         }
     }

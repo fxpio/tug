@@ -24,13 +24,13 @@ import merge from 'lodash.merge';
  * @return {Object}
  */
 export function convertQueryCriteria(query: Query, indexName = 'model-index'): Object {
-    let exp: string|undefined,
-        model = query.getModel(),
-        keys: LooseObject = {'#model': 'model'},
-        values:LooseObject = {':model': {'S': model}};
+    let exp: string|undefined;
+    const model = query.getModel();
+    const keys: LooseObject = {'#model': 'model'};
+    const values: LooseObject = {':model': {S: model}};
 
-    let qValues = query.getValues();
-    for (let key of Object.keys(qValues)) {
+    const qValues = query.getValues();
+    for (const key of Object.keys(qValues)) {
         keys['#' + key] = key;
         values[':' + key] = AWS.DynamoDB.Converter.marshall({val: qValues[key]}).val;
     }
@@ -42,7 +42,7 @@ export function convertQueryCriteria(query: Query, indexName = 'model-index'): O
         KeyConditionExpression: '#model = :model',
         FilterExpression: exp ? exp : undefined,
         ExpressionAttributeNames: keys,
-        ExpressionAttributeValues: values
+        ExpressionAttributeValues: values,
     };
 }
 
@@ -60,13 +60,13 @@ export function criteriaToQuery(criteria: Query|LooseObject): Query {
 
     criteria = merge({}, criteria);
 
-    let model = criteria.model;
-    let constraints: Constraint[] = [];
+    const model = criteria.model;
+    const constraints: Constraint[] = [];
 
     delete criteria.model;
 
-    for (let key of Object.keys(criteria)) {
-        let constraint = criteria[key] instanceof Constraint ? criteria[key] : new Equal(key, criteria[key]);
+    for (const key of Object.keys(criteria)) {
+        const constraint = criteria[key] instanceof Constraint ? criteria[key] : new Equal(key, criteria[key]);
         constraints.push(constraint);
     }
 
@@ -94,7 +94,7 @@ export function formatDynamodbConstraint(constraint: Constraint): string {
             exp = `NOT(${formatDynamodbConstraint(constraint.getValue())})`;
             break;
         case 'IN':
-            let keys = Object.keys(constraint.getValues());
+            const keys = Object.keys(constraint.getValues());
 
             exp = constraint.getKey() + ' IN (' + (keys.length > 0 ? ':' : '') + keys.join(', :') + ')';
             break;
@@ -105,15 +105,15 @@ export function formatDynamodbConstraint(constraint: Constraint): string {
             exp = `contains(#${constraint.getKey()}, :${constraint.getKey()})`;
             break;
         case 'AND':
-            let parts: string[] = [];
-            for (let subConstraint of <Constraint[]> constraint.getValue()) {
+            const parts: string[] = [];
+            for (const subConstraint of constraint.getValue() as Constraint[]) {
                 parts.push(formatDynamodbConstraint(subConstraint));
             }
             exp = parts.length > 1 ? '(' + parts.join(' AND ') + ')' : parts.length > 0 ? parts.join(' AND ') : '';
             break;
         case 'OR':
-            let orParts: string[] = [];
-            for (let subConstraint of <Constraint[]> constraint.getValue()) {
+            const orParts: string[] = [];
+            for (const subConstraint of constraint.getValue() as Constraint[]) {
                 orParts.push(formatDynamodbConstraint(subConstraint));
             }
             exp = orParts.length > 1 ? '(' + orParts.join(' OR ') + ')' : orParts.length > 0 ? orParts.join(' AND ') : '';

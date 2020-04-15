@@ -13,8 +13,7 @@ import fs from 'fs-extra';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class LocalStorage implements DataStorage
-{
+export class LocalStorage implements DataStorage {
     private readonly basePath: string;
 
     /**
@@ -51,7 +50,7 @@ export class LocalStorage implements DataStorage
         if (undefined === data) {
             fs.ensureDirSync(this.basePath + '/' + key);
         } else {
-            fs.outputFileSync(this.basePath + '/' + key.replace(/\/$/, ''), data)
+            fs.outputFileSync(this.basePath + '/' + key.replace(/\/$/, ''), data);
         }
 
         return key;

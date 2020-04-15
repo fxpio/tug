@@ -15,8 +15,7 @@ import {LooseObject} from '@server/utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface DatabaseRepository
-{
+export interface DatabaseRepository {
     /**
      * Check if the id exist.
      *
@@ -60,7 +59,7 @@ export interface DatabaseRepository
      *
      * @return {Promise<Array<string>>}
      */
-    deletes(ids: string[]): Promise<Array<string>>;
+    deletes(ids: string[]): Promise<string[]>;
 
     /**
      * Find the records.
@@ -124,8 +123,7 @@ export interface DatabaseRepository
 /**
  * Interface of database repository constructor.
  */
-export interface DatabaseRepositoryConstructor
-{
+export interface DatabaseRepositoryConstructor {
     new (client: Database, prefix?: string): DatabaseRepository;
 
     /**

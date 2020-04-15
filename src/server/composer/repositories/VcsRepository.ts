@@ -19,8 +19,7 @@ import {URL} from 'url';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class VcsRepository
-{
+export class VcsRepository {
     private readonly drivers: LooseObject;
     private readonly config: Config;
     private readonly repoData: LooseObject;
@@ -38,14 +37,14 @@ export class VcsRepository
      */
     constructor(repoData: LooseObject, config: Config, drivers?: LooseObject) {
         this.drivers = drivers ? drivers : {
-            'github': GithubDriver
+            github: GithubDriver,
         };
 
         this.config = config;
         this.repoData = repoData;
         this.driver = null;
 
-        if (!this.repoData['url']) {
+        if (!this.repoData.url) {
             throw new VcsRepositoryAttributeRequiredError('url');
         }
     }
@@ -62,25 +61,25 @@ export class VcsRepository
             return this.driver;
         }
 
-        let url = this.repoData['url'];
-        let types = Object.keys(this.drivers);
-        let type = this.repoData['type'] ? this.repoData['type'].replace(/^vcs-/g, '') : '';
+        const url = this.repoData.url;
+        const types = Object.keys(this.drivers);
+        const type = this.repoData.type ? this.repoData.type.replace(/^vcs-/g, '') : '';
         let validType = null;
 
         if (url && this.drivers[type]) {
             validType = type;
         } else {
-            for (let i = 0; i < types.length; ++i) {
-                if (this.drivers[types[i]].supports(this.config, url)) {
-                    validType = types[i];
+            for (const type of types) {
+                if (this.drivers[type].supports(this.config, url)) {
+                    validType = type;
                     break;
                 }
             }
 
             if (!validType) {
-                for (let i = 0; i < types.length; ++i) {
-                    if (this.drivers[types[i]].supports(this.config, url, true)) {
-                        validType = types[i];
+                for (const type of types) {
+                    if (this.drivers[type].supports(this.config, url, true)) {
+                        validType = type;
                         break;
                     }
                 }
@@ -92,8 +91,8 @@ export class VcsRepository
         }
 
         this.driver = new this.drivers[validType](this.repoData, this.config) as VcsDriver;
-        this.repoData['type'] = 'vcs-' + validType;
-        this.repoData['url'] = this.driver.getUrl();
+        this.repoData.type = 'vcs-' + validType;
+        this.repoData.url = this.driver.getUrl();
 
         return this.driver;
     }
@@ -106,7 +105,7 @@ export class VcsRepository
     public getType(): string {
         this.getDriver();
 
-        return this.repoData['type'];
+        return this.repoData.type;
     }
 
     /**
@@ -117,7 +116,7 @@ export class VcsRepository
     public getUrl(): string {
         this.getDriver();
 
-        return this.repoData['url'];
+        return this.repoData.url;
     }
 
     /**
@@ -126,11 +125,11 @@ export class VcsRepository
      * @return {LooseObject}
      */
     public getData(): LooseObject {
-        let type = this.getType();
+        const type = this.getType();
 
-        if (!this.repoData['id']) {
-            let repoUrl = new URL(this.repoData['url']);
-            this.repoData['id'] = type + ':' + repoUrl.host + ':' + repoUrl.pathname.replace(/^\/|(\.[a-zA-Z0-9]{1,5})$/g, '');
+        if (!this.repoData.id) {
+            const repoUrl = new URL(this.repoData.url);
+            this.repoData.id = type + ':' + repoUrl.host + ':' + repoUrl.pathname.replace(/^\/|(\.[a-zA-Z0-9]{1,5})$/g, '');
         }
 
         return this.repoData;
@@ -142,7 +141,7 @@ export class VcsRepository
      * @return {string}
      */
     public getId(): string {
-        return this.getData()['id'];
+        return this.getData().id;
     }
 
     /**
@@ -152,9 +151,9 @@ export class VcsRepository
      */
     public setPackageName(name: string): void {
         if (name) {
-            this.repoData['packageName'] = name;
+            this.repoData.packageName = name;
         } else {
-            delete this.repoData['packageName'];
+            delete this.repoData.packageName;
         }
     }
 
@@ -164,7 +163,7 @@ export class VcsRepository
      * @return {string|null}
      */
     public getPackageName(): string|null {
-        return this.repoData['packageName'] ? this.repoData['packageName'] : null;
+        return this.repoData.packageName ? this.repoData.packageName : null;
     }
 
     /**
@@ -174,9 +173,9 @@ export class VcsRepository
      */
     public setLastHash(hash: string|null): void {
         if (hash) {
-            this.repoData['lastHash'] = hash;
+            this.repoData.lastHash = hash;
         } else {
-            delete this.repoData['lastHash'];
+            delete this.repoData.lastHash;
         }
     }
 
@@ -186,7 +185,7 @@ export class VcsRepository
      * @return {string|null}
      */
     public getLastHash(): string|null {
-        return this.repoData['lastHash'] ? this.repoData['lastHash'] : null;
+        return this.repoData.lastHash ? this.repoData.lastHash : null;
     }
 
     /**
@@ -196,9 +195,9 @@ export class VcsRepository
      */
     public setRootIdentifier(rootIdentifier: string): void {
         if (rootIdentifier) {
-            this.repoData['rootIdentifier'] = rootIdentifier;
+            this.repoData.rootIdentifier = rootIdentifier;
         } else {
-            delete this.repoData['rootIdentifier'];
+            delete this.repoData.rootIdentifier;
         }
     }
 
@@ -208,14 +207,14 @@ export class VcsRepository
      * @return {string|null}
      */
     public getRootIdentifier(): string|null {
-        return this.repoData['rootIdentifier'] ? this.repoData['rootIdentifier'] : null;
+        return this.repoData.rootIdentifier ? this.repoData.rootIdentifier : null;
     }
 
     /**
      * Add the download count of all package versions.
      */
     public addDownloadCount(): void {
-        this.repoData['downloadCount'] = this.getDownloadCount() + 1;
+        this.repoData.downloadCount = this.getDownloadCount() + 1;
     }
 
     /**
@@ -224,7 +223,7 @@ export class VcsRepository
      * @return {number}
      */
     public getDownloadCount(): number {
-        return this.repoData['downloadCount'] ? this.repoData['downloadCount'] : 0;
+        return this.repoData.downloadCount ? this.repoData.downloadCount : 0;
     }
 
     /**

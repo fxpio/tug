@@ -12,8 +12,7 @@ import {VcsDriverError} from '@server/errors/VcsDriverError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class VcsDriverInvalidUrlError extends VcsDriverError
-{
+export class VcsDriverInvalidUrlError extends VcsDriverError {
     public readonly vcsType: string;
     public readonly url: string;
 

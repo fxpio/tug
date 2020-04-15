@@ -12,8 +12,7 @@ import {VcsRepositoryError} from '@server/errors/VcsRepositoryError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class VcsRepositoryNotFoundError extends VcsRepositoryError
-{
+export class VcsRepositoryNotFoundError extends VcsRepositoryError {
     public readonly url: string;
 
     /**

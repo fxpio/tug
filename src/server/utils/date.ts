@@ -15,7 +15,7 @@
  * @return {string}
  */
 export function dateToRfc3339(date: Date): string {
-    function pad(n: number){
+    function pad(n: number) {
         return n < 10 ? '0' + n : n;
     }
 

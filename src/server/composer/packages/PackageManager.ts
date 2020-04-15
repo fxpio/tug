@@ -22,8 +22,7 @@ import {Response} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class PackageManager
-{
+export class PackageManager {
     private readonly repoManager: RepositoryManager;
     private readonly packageRepo: PackageRepository;
     private readonly queue: MessageQueue;
@@ -54,14 +53,14 @@ export class PackageManager
      */
     public async findPackage(packageName: string, version: string, res?: Response): Promise<Package|null> {
         let pack = null;
-        let repo = await this.repoManager.findRepository(packageName, res);
+        const repo = await this.repoManager.findRepository(packageName, res);
 
         if (repo) {
             try {
                 version = decodeURIComponent(version);
-                let normVersion = this.versionParser.normalize(version, version);
-                let res = await this.packageRepo.findOne({
-                    id: packageName + ':' + normVersion
+                const normVersion = this.versionParser.normalize(version, version);
+                const res = await this.packageRepo.findOne({
+                    id: packageName + ':' + normVersion,
                 });
 
                 if (res) {
@@ -84,13 +83,13 @@ export class PackageManager
      */
     public async findPackages(packageName: string, hash?: string, res?: Response): Promise<LooseObject<Package>> {
         let result: LooseObject = {};
-        let repo = await this.repoManager.findRepository(packageName, res);
+        const repo = await this.repoManager.findRepository(packageName, res);
 
         if (repo && (!hash || hash === repo.getLastHash())) {
             result = await retrieveAllVersions(packageName, this.packageRepo, {});
-            let packages: Package[] = Object.values(result);
+            const packages: Package[] = Object.values(result);
             result = {};
-            packages.sort(function (a: Package|any, b: Package|any) {
+            packages.sort((a: Package|any, b: Package|any) => {
                 if (a.getVersion() < b.getVersion()) {
                     return -1;
                 } else if (a.getVersion() > b.getVersion()) {
@@ -99,9 +98,9 @@ export class PackageManager
                     return 0;
                 }
             });
-            packages.sort(function (a: Package|any, b: Package|any) {
-                let aTime = (new Date(a.getComposer()['time'])).getTime();
-                let bTime = (new Date(b.getComposer()['time'])).getTime();
+            packages.sort((a: Package|any, b: Package|any) => {
+                const aTime = (new Date(a.getComposer().time)).getTime();
+                const bTime = (new Date(b.getComposer().time)).getTime();
                 if (aTime < bTime) {
                     return -1;
                 } else if (aTime > bTime) {
@@ -110,8 +109,9 @@ export class PackageManager
                     return 0;
                 }
             });
-            for (let i = 0; i < packages.length; ++i) {
-                result[packages[i].getVersion()] = packages[i];
+
+            for (const cPackage of packages) {
+                result[cPackage.getVersion()] = cPackage;
             }
         }
 
@@ -163,11 +163,11 @@ export class PackageManager
      * @throws RepositoryNotFoundError     When the repository is not found
      */
     public async refreshAllPackages(force: boolean = true, res?: Response): Promise<LooseObject> {
-        let repos = await this.repoManager.getRepositories(true, res);
-        let messages = [];
+        const repos = await this.repoManager.getRepositories(true, res);
+        const messages = [];
 
-        for (let name of Object.keys(repos)) {
-            messages.push({type: 'refresh-packages', repositoryUrl: repos[name].getUrl(), force: force});
+        for (const name of Object.keys(repos)) {
+            messages.push({type: 'refresh-packages', repositoryUrl: repos[name].getUrl(), force});
         }
 
         await this.queue.sendBatch(messages);
@@ -188,9 +188,9 @@ export class PackageManager
      * @throws RepositoryNotFoundError     When the repository is not found
      */
     public async refreshPackages(url: string, force: boolean = true, res?: Response): Promise<VcsRepository> {
-        let repo = await this.repoManager.getRepository(url, true, res) as VcsRepository;
+        const repo = await this.repoManager.getRepository(url, true, res) as VcsRepository;
 
-        await this.queue.send({type: 'refresh-packages', repositoryUrl: repo.getUrl(), force: force});
+        await this.queue.send({type: 'refresh-packages', repositoryUrl: repo.getUrl(), force});
 
         return repo;
     }
@@ -209,7 +209,7 @@ export class PackageManager
      * @throws RepositoryNotFoundError     When the repository is not found
      */
     public async refreshPackage(url: string, version: string, force: boolean = true, res?: Response): Promise<VcsRepository> {
-        let repo = await this.repoManager.getRepository(url, true, res) as VcsRepository;
+        const repo = await this.repoManager.getRepository(url, true, res) as VcsRepository;
         let identifier;
 
         if (version.startsWith('dev-')) {
@@ -221,9 +221,9 @@ export class PackageManager
         await this.queue.send({
             type: 'refresh-package',
             repositoryUrl: repo.getUrl(),
-            identifier: identifier,
-            version: version,
-            force: force
+            identifier,
+            version,
+            force,
         });
 
         return repo;
@@ -240,7 +240,7 @@ export class PackageManager
      * @throws RepositoryNotFoundError When the repository is not found
      */
     public async deletePackages(url: string, res?: Response): Promise<VcsRepository> {
-        let repo = await this.repoManager.getRepository(url, true, res) as VcsRepository;
+        const repo = await this.repoManager.getRepository(url, true, res) as VcsRepository;
 
         if (repo.isInitialized()) {
             await this.queue.send({type: 'delete-packages', packageName: repo.getPackageName()});
@@ -261,10 +261,10 @@ export class PackageManager
      * @throws RepositoryNotFoundError When the repository is not found
      */
     public async deletePackage(url: string, version: string, res?: Response): Promise<VcsRepository> {
-        let repo = await this.repoManager.getRepository(url, true, res) as VcsRepository;
+        const repo = await this.repoManager.getRepository(url, true, res) as VcsRepository;
 
         if (repo.isInitialized()) {
-            await this.queue.send({type: 'delete-package', packageName: repo.getPackageName(), version: version});
+            await this.queue.send({type: 'delete-package', packageName: repo.getPackageName(), version});
         }
 
         return repo;
@@ -278,10 +278,10 @@ export class PackageManager
      * @return {Promise<Object<string, VcsRepository>>}
      */
     public async refreshAllCachePackages(res?: Response): Promise<LooseObject> {
-        let repos = await this.repoManager.getRepositories(false, res);
-        let messages = [];
+        const repos = await this.repoManager.getRepositories(false, res);
+        const messages = [];
 
-        for (let name of Object.keys(repos)) {
+        for (const name of Object.keys(repos)) {
             messages.push({type: 'build-package-versions-cache', packageName: repos[name].getPackageName()});
         }
 
@@ -302,7 +302,7 @@ export class PackageManager
      * @throws RepositoryNotFoundError     When the repository is not found
      */
     public async refreshCachePackages(url: string, res?: Response): Promise<VcsRepository> {
-        let repo = await this.repoManager.getRepository(url, true, res) as VcsRepository;
+        const repo = await this.repoManager.getRepository(url, true, res) as VcsRepository;
 
         await this.queue.send({type: 'build-package-versions-cache', packageName: repo.getPackageName()});
 
@@ -319,8 +319,8 @@ export class PackageManager
      * @return {Promise<void>}
      */
     public async trackDownload(packageName: string, version: string, res?: Response): Promise<void> {
-        let repo = await this.repoManager.findRepository(packageName, res);
-        let pack = await this.findPackage(packageName, version, res);
+        const repo = await this.repoManager.findRepository(packageName, res);
+        const pack = await this.findPackage(packageName, version, res);
 
         if (repo && pack) {
             repo.addDownloadCount();

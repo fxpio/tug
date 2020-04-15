@@ -12,8 +12,7 @@ import {Constraint} from '@server/db/constraints/Constraint';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Contains extends Constraint<string>
-{
+export class Contains extends Constraint<string> {
     /**
      * Constructor.
      *

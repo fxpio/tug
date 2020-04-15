@@ -14,8 +14,7 @@ import {Request} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class BasicMockAuthBuilder implements AuthBuilder
-{
+export class BasicMockAuthBuilder implements AuthBuilder {
     private readonly username: string;
     private readonly password: string;
 

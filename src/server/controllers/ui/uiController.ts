@@ -8,7 +8,6 @@
  */
 
 import {AssetManager} from '@server/assets/AssetManager';
-import {ConfigManager} from '@server/configs/ConfigManager';
 import {Request, Response} from 'express';
 
 /**
@@ -35,8 +34,9 @@ export async function redirectHome(req: Request, res: Response, next: Function):
  */
 export async function showWebApp(req: Request, res: Response, next: Function): Promise<void> {
     res.send(`<!DOCTYPE html>
-<html>
+<html lang>
     <head>
+        <title></title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1 maximum-scale=1, user-scalable=no, minimal-ui">
         <link rel="manifest" href="${asset(req, 'admin/assets/manifest.json')}">

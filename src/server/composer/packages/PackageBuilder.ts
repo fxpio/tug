@@ -17,8 +17,7 @@ import {Response} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class PackageBuilder
-{
+export class PackageBuilder {
     private readonly repoManager: RepositoryManager;
     private readonly packageManager: PackageManager;
     private readonly cache: Cache;
@@ -47,18 +46,18 @@ export class PackageBuilder
      */
     public async buildVersions(packageName: string, hash?: string, res?: Response): Promise<LooseObject|null> {
         RepositoryManager.clearCache(res);
-        let repo = await this.repoManager.findRepository(packageName, res);
-        let result = await this.packageManager.findPackages(packageName, undefined, res);
+        const repo = await this.repoManager.findRepository(packageName, res);
+        const result = await this.packageManager.findPackages(packageName, undefined, res);
 
         if (repo) {
             if (Object.keys(result).length > 0) {
-                let data: LooseObject = {packages: {}};
+                const data: LooseObject = {packages: {}};
                 data.packages[packageName] = {};
-                for (let version of Object.keys(result)) {
-                    let pack = result[version];
+                for (const version of Object.keys(result)) {
+                    const pack = result[version];
                     data.packages[packageName][pack.getVersion()] = pack.getComposer();
                 }
-                let content = JSON.stringify(data);
+                const content = JSON.stringify(data);
 
                 if (hash) {
                     await this.cache.setPackageVersions(packageName, hash, content);
@@ -73,8 +72,8 @@ export class PackageBuilder
 
                 return {
                     name: packageName,
-                    hash: hash,
-                    content: content
+                    hash,
+                    content,
                 };
             } else {
                 if (null === hash) {
@@ -96,13 +95,13 @@ export class PackageBuilder
      * @return {Promise<string>}
      */
     public async buildRootPackages(res?: Response): Promise<string> {
-        let repos = await this.repoManager.getRepositories(false, res);
-        let data: LooseObject = {'notify-batch': '/downloads', packages: {}, includes: {}};
+        const repos = await this.repoManager.getRepositories(false, res);
+        const data: LooseObject = {'notify-batch': '/downloads', 'packages': {}, 'includes': {}};
 
-        for (let key of Object.keys(repos)) {
-            let name = repos[key].getPackageName();
-            let hash = repos[key].getLastHash();
-            data.includes[`p/${name}$${hash}.json`] = {'sha1': hash};
+        for (const key of Object.keys(repos)) {
+            const name = repos[key].getPackageName();
+            const hash = repos[key].getLastHash();
+            data.includes[`p/${name}$${hash}.json`] = {sha1: hash};
         }
 
         return await this.cache.setRootPackages(JSON.stringify(data));

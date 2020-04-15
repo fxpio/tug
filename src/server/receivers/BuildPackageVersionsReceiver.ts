@@ -17,8 +17,7 @@ import {Response} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class BuildPackageVersionsReceiver extends BaseReceiver
-{
+export class BuildPackageVersionsReceiver extends BaseReceiver {
     private readonly packageBuilder: PackageBuilder;
 
     /**

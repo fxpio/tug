@@ -13,8 +13,7 @@ import {LooseObject} from '@server/utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Query
-{
+export class Query {
     private constraint: Constraint;
     private model: string|null = null;
 

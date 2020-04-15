@@ -14,8 +14,7 @@ import {LooseObject} from '@server/utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Package
-{
+export class Package {
     private readonly packageData: LooseObject;
 
     /**
@@ -28,31 +27,31 @@ export class Package
     constructor(packageData: LooseObject) {
         this.packageData = packageData;
 
-        if (!this.packageData['composer']) {
+        if (!this.packageData.composer) {
             throw new PackageAttributeRequiredError('composer');
         }
 
-        if (typeof this.packageData['composer'] === 'string') {
-            this.packageData['composer'] = JSON.parse(this.packageData['composer']);
+        if (typeof this.packageData.composer === 'string') {
+            this.packageData.composer = JSON.parse(this.packageData.composer);
         }
 
-        if (!this.packageData['name']) {
-            if (this.packageData['composer']['name']) {
-                this.packageData['name'] = this.packageData['composer']['name'];
+        if (!this.packageData.name) {
+            if (this.packageData.composer.name) {
+                this.packageData.name = this.packageData.composer.name;
             } else {
                 throw new PackageAttributeRequiredError('name');
             }
         }
-        if (!this.packageData['version']) {
-            if (this.packageData['composer']['version']) {
-                this.packageData['version'] = this.packageData['composer']['version'];
+        if (!this.packageData.version) {
+            if (this.packageData.composer.version) {
+                this.packageData.version = this.packageData.composer.version;
             } else {
                 throw new PackageAttributeRequiredError('version');
             }
         }
-        if (!this.packageData['versionNormalized']) {
-            if (this.packageData['composer']['version_normalized']) {
-                this.packageData['versionNormalized'] = this.packageData['composer']['version_normalized'];
+        if (!this.packageData.versionNormalized) {
+            if (this.packageData.composer.version_normalized) {
+                this.packageData.versionNormalized = this.packageData.composer.version_normalized;
             } else {
                 throw new PackageAttributeRequiredError('versionNormalized');
             }
@@ -65,11 +64,11 @@ export class Package
      * @return {LooseObject}
      */
     public getData(): LooseObject {
-        if (!this.packageData['id']) {
-            this.packageData['id'] = this.getName() + ':' + this.getVersionNormalized();
+        if (!this.packageData.id) {
+            this.packageData.id = this.getName() + ':' + this.getVersionNormalized();
         }
 
-        let val = Object.assign({}, this.packageData);
+        const val = Object.assign({}, this.packageData);
         val.composer = JSON.stringify(val.composer);
 
         return val;
@@ -81,7 +80,7 @@ export class Package
      * @return {string}
      */
     public getId(): string {
-        return this.getData()['id'];
+        return this.getData().id;
     }
 
     /**
@@ -90,7 +89,7 @@ export class Package
      * @return {string}
      */
     public getName(): string {
-        return this.packageData['name'];
+        return this.packageData.name;
     }
 
     /**
@@ -99,7 +98,7 @@ export class Package
      * @return {string}
      */
     public getVersion(): string {
-        return this.packageData['version'];
+        return this.packageData.version;
     }
 
     /**
@@ -107,8 +106,8 @@ export class Package
      *
      * @return {string}
      */
-    public getVersionNormalized():string {
-        return this.packageData['versionNormalized'];
+    public getVersionNormalized(): string {
+        return this.packageData.versionNormalized;
     }
 
     /**
@@ -117,14 +116,14 @@ export class Package
      * @return {LooseObject}
      */
     public getComposer(): LooseObject {
-        return this.packageData['composer'];
+        return this.packageData.composer;
     }
 
     /**
      * Add the download count of this package version.
      */
     public addDownloadCount(): void {
-        this.packageData['downloadCount'] = this.getDownloadCount() + 1;
+        this.packageData.downloadCount = this.getDownloadCount() + 1;
     }
 
     /**
@@ -133,6 +132,6 @@ export class Package
      * @return {number}
      */
     public getDownloadCount(): number {
-        return this.packageData['downloadCount'] ? this.packageData['downloadCount'] : 0;
+        return this.packageData.downloadCount ? this.packageData.downloadCount : 0;
     }
 }

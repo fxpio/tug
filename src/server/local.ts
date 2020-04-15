@@ -54,7 +54,7 @@ const app = createApp({
             realAsset = baseUrl + realAsset;
         }
 
-        http.get(realAsset, function(assetRes: IncomingMessage) {
+        http.get(realAsset, (assetRes: IncomingMessage) => {
             if (200 === assetRes.statusCode) {
                 for (const name of Object.keys(assetRes.headers)) {
                     res.setHeader(name, assetRes.headers[name] as string);

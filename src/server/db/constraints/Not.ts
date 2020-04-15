@@ -13,8 +13,7 @@ import {LooseObject} from '@server/utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Not extends Constraint<Constraint>
-{
+export class Not extends Constraint<Constraint> {
     /**
      * Constructor.
      *

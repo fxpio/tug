@@ -8,9 +8,9 @@
  */
 
 import test from 'ava';
-import {Config} from '../../../../src/server/configs/Config';
-import {GithubDriver} from '../../../../src/server/composer/repositories/vcs-drivers/GithubDriver';
-import {LooseObject} from '../../../../src/server/utils/LooseObject';
+import {Config} from '@server/configs/Config';
+import {GithubDriver} from '@server/composer/repositories/vcs-drivers/GithubDriver';
+import {LooseObject} from '@server/utils/LooseObject';
 
 const supports: LooseObject = {
     'official domain http protocol': [true, 'https://github.com/fxpio/fxp-security'],
@@ -33,12 +33,11 @@ const supports: LooseObject = {
 };
 const supportsKeys = Object.keys(supports);
 
-for (let i = 0; i < supportsKeys.length; ++i) {
-    let name = supportsKeys[i];
-    let values = supports[name];
+for (const name of supportsKeys) {
+    const values = supports[name];
 
-    test('github driver: ' + name, t => {
-        let config = new Config();
+    test('github driver: ' + name, (t) => {
+        const config = new Config();
 
         t.deepEqual(values[0], GithubDriver.supports(config, values[1]));
     });

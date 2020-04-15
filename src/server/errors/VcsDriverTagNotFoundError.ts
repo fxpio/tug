@@ -12,8 +12,7 @@ import {VcsDriverIdentifierNotFoundError} from '@server/errors/VcsDriverIdentifi
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class VcsDriverTagNotFoundError extends VcsDriverIdentifierNotFoundError
-{
+export class VcsDriverTagNotFoundError extends VcsDriverIdentifierNotFoundError {
     /**
      * Constructor.
      *

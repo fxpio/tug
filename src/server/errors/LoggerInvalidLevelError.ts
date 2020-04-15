@@ -12,8 +12,7 @@ import {LoggerError} from '@server/errors/LoggerError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class LoggerInvalidLevelError extends LoggerError
-{
+export class LoggerInvalidLevelError extends LoggerError {
     public readonly level: string;
 
     public readonly availableLevels: string[];

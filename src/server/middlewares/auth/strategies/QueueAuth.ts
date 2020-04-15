@@ -14,8 +14,7 @@ import {Request} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class QueueAuth implements AuthStrategy
-{
+export class QueueAuth implements AuthStrategy {
     /**
      * @inheritDoc
      */

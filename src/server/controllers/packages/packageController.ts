@@ -24,8 +24,8 @@ import {Request, Response} from 'express';
  * @return {Promise<void>}
  */
 export async function showRootPackages(req: Request, res: Response, next: Function): Promise<void> {
-    let cache: Cache = req.app.get('cache');
-    let builder: PackageBuilder = req.app.get('package-builder');
+    const cache: Cache = req.app.get('cache');
+    const builder: PackageBuilder = req.app.get('package-builder');
 
     let content = await cache.getRootPackages();
 
@@ -47,10 +47,10 @@ export async function showRootPackages(req: Request, res: Response, next: Functi
  * @return {Promise<void>}
  */
 export async function showPackageVersion(req: Request, res: Response, next: Function): Promise<void> {
-    let manager: PackageManager = req.app.get('package-manager');
-    let packageName = req.params.vendor + '/' +req.params.package;
-    let version = req.params.version;
-    let resPackage = await manager.findPackage(packageName, version, res);
+    const manager: PackageManager = req.app.get('package-manager');
+    const packageName = req.params.vendor + '/' + req.params.package;
+    const version = req.params.version;
+    const resPackage = await manager.findPackage(packageName, version, res);
 
     if (resPackage) {
         res.json(resPackage.getComposer());
@@ -70,11 +70,11 @@ export async function showPackageVersion(req: Request, res: Response, next: Func
  * @return {Promise<void>}
  */
 export async function showPackageVersions(req: Request, res: Response, next: Function): Promise<void> {
-    let cache: Cache = req.app.get('cache');
-    let builder: PackageBuilder = req.app.get('package-builder');
+    const cache: Cache = req.app.get('cache');
+    const builder: PackageBuilder = req.app.get('package-builder');
     let packageName = req.params.vendor + '/' + req.params.package;
     let hash = null;
-    let matchHash = packageName.match(/([a-zA-Z0-9\-_\/]+)\$([\w\d]+)/);
+    const matchHash = packageName.match(/([a-zA-Z0-9\-_\/]+)\$([\w\d]+)/);
 
     if (matchHash) {
         packageName = matchHash[1];
@@ -82,7 +82,7 @@ export async function showPackageVersions(req: Request, res: Response, next: Fun
 
         let content = await cache.getPackageVersions(packageName, hash);
         if (!content) {
-            let result:LooseObject|null = await builder.buildVersions(packageName, hash, res);
+            const result: LooseObject|null = await builder.buildVersions(packageName, hash, res);
             content = result ? result.content : null;
         }
 
@@ -106,9 +106,9 @@ export async function showPackageVersions(req: Request, res: Response, next: Fun
  * @return {Promise<void>}
  */
 export async function trackDownloadBatch(req: Request, res: Response, next: Function): Promise<void> {
-    let packageManager: PackageManager = req.app.get('package-manager');
+    const packageManager: PackageManager = req.app.get('package-manager');
 
-    for (let track of req.body.downloads) {
+    for (const track of req.body.downloads) {
         await packageManager.trackDownload(track.name, track.version, res);
     }
 

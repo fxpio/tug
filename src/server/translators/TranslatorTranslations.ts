@@ -12,7 +12,6 @@ import {TranslatorTranslation} from '@server/translators/TranslatorTranslation';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface TranslatorTranslations
-{
+export interface TranslatorTranslations {
     [key: string]: TranslatorTranslation;
 }

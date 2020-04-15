@@ -17,8 +17,32 @@ import {VersionParserInvalidVersionError} from '@server/errors/VersionParserInva
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class VersionParser
-{
+export class VersionParser {
+
+    /**
+     * Expand shorthand stability string to long version.
+     *
+     * @param {string} stability
+     *
+     * @return {string}
+     */
+    public static expandStability(stability: string): string {
+        stability = stability.toLowerCase();
+
+        switch (stability) {
+            case 'a':
+                return 'alpha';
+            case 'b':
+                return 'beta';
+            case 'p':
+            case 'pl':
+                return 'patch';
+            case 'rc':
+                return 'RC';
+            default:
+                return stability;
+        }
+    }
     /**
      * Regex to match pre-release data (sort of).
      *
@@ -52,7 +76,7 @@ export class VersionParser
         }
 
         // strip off aliasing
-        let aliasMatch = version.match(/^([^,\s]+) +as +([^,\s]+)$/);
+        const aliasMatch = version.match(/^([^,\s]+) +as +([^,\s]+)$/);
         if (aliasMatch) {
             version = aliasMatch[1];
         }
@@ -68,7 +92,7 @@ export class VersionParser
         }
 
         // strip off build metadata
-        let metaMatch = version.match(/^([^,\s+]+)\+[^\s]+$/);
+        const metaMatch = version.match(/^([^,\s+]+)\+[^\s]+$/);
         if (metaMatch) {
             version = metaMatch[1];
         }
@@ -110,7 +134,7 @@ export class VersionParser
         }
 
         // match dev branches
-        let branchMatch = version.match(/(.*?)[.-]?dev$/i);
+        const branchMatch = version.match(/(.*?)[.-]?dev$/i);
         if (branchMatch) {
             try {
                 return this.normalizeBranch(branchMatch[1]);
@@ -129,13 +153,13 @@ export class VersionParser
      */
     public normalizeBranch(name: string): string {
         name = name.trim();
-        let validNames = ['master', 'trunk', 'default'];
+        const validNames = ['master', 'trunk', 'default'];
 
         if (validNames.includes(name)) {
             return this.normalize(name);
         }
 
-        let matches = name.match(/^v?(\d+)(\.(?:\d+|[xX*]))?(\.(?:\d+|[xX*]))?(\.(?:\d+|[xX*]))?$/i);
+        const matches = name.match(/^v?(\d+)(\.(?:\d+|[xX*]))?(\.(?:\d+|[xX*]))?(\.(?:\d+|[xX*]))?$/i);
         if (matches) {
             let version = '';
             for (let i = 1; i < 5; ++i) {
@@ -146,30 +170,5 @@ export class VersionParser
         }
 
         return 'dev-' + name;
-    }
-
-    /**
-     * Expand shorthand stability string to long version.
-     *
-     * @param {string} stability
-     *
-     * @return {string}
-     */
-    public static expandStability(stability: string): string {
-        stability = stability.toLowerCase();
-
-        switch (stability) {
-            case 'a':
-                return 'alpha';
-            case 'b':
-                return 'beta';
-            case 'p':
-            case 'pl':
-                return 'patch';
-            case 'rc':
-                return 'RC';
-            default:
-                return stability;
-        }
     }
 }

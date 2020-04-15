@@ -26,9 +26,9 @@ import Joi from 'joi';
  * @return {Promise<void>}
  */
 export async function listApiKey(req: Request, res: Response, next: Function): Promise<void> {
-    let db = req.app.get('db') as Database;
-    let repo = db.getRepository<ApiKeyRepository>(ApiKeyRepository);
-    res.json(await repo.search({}, ['id'], <string> req.query.search, <string> req.query.lastId));
+    const db = req.app.get('db') as Database;
+    const repo = db.getRepository<ApiKeyRepository>(ApiKeyRepository);
+    res.json(await repo.search({}, ['id'], req.query.search as string, req.query.lastId as string));
 }
 
 /**
@@ -42,18 +42,18 @@ export async function listApiKey(req: Request, res: Response, next: Function): P
  */
 export async function createApiKey(req: Request, res: Response, next: Function): Promise<void> {
     validateForm(req, {
-        token: Joi.string().min(10)
+        token: Joi.string().min(10),
     });
 
-    let translator = req.app.get('translator') as Translator;
-    let repo = (req.app.get('db') as Database).getRepository(ApiKeyRepository);
-    let token = req.body.token ? req.body.token : generateToken(40);
+    const translator = req.app.get('translator') as Translator;
+    const repo = (req.app.get('db') as Database).getRepository(ApiKeyRepository);
+    const token = req.body.token ? req.body.token : generateToken(40);
 
     await repo.put({id: token});
 
     res.json({
-        message: translator.trans(res, 'manager.api-key.created', {token: token}),
-        token: token
+        message: translator.trans(res, 'manager.api-key.created', {token}),
+        token,
     });
 }
 
@@ -68,23 +68,23 @@ export async function createApiKey(req: Request, res: Response, next: Function):
  */
 export async function deleteApiKey(req: Request, res: Response, next: Function): Promise<void> {
     validateForm(req, {
-        token: Joi.string().min(10)
+        token: Joi.string().min(10),
     });
 
-    let translator = req.app.get('translator') as Translator;
-    let repo = (req.app.get('db') as Database).getRepository(ApiKeyRepository);
-    let token = req.body.token;
+    const translator = req.app.get('translator') as Translator;
+    const repo = (req.app.get('db') as Database).getRepository(ApiKeyRepository);
+    const token = req.body.token;
 
     if (!token) {
         throw new HttpValidationError({
-            'token': translator.trans(res, 'validation.field.required')
+            token: translator.trans(res, 'validation.field.required'),
         });
     }
 
     await repo.delete(token);
 
     res.json({
-        message: translator.trans(res, 'manager.api-key.deleted', {token: token}),
-        token: token
+        message: translator.trans(res, 'manager.api-key.deleted', {token}),
+        token,
     });
 }

@@ -8,9 +8,9 @@
  */
 
 import test from 'ava';
-import {VersionParser} from '../../../src/server/composer/semver/VersionParser';
-import {VersionParserInvalidVersionError} from '../../../src/server/errors/VersionParserInvalidVersionError';
-import {LooseObject} from '../../../src/server/utils/LooseObject';
+import {VersionParser} from '@server/composer/semver/VersionParser';
+import {VersionParserInvalidVersionError} from '@server/errors/VersionParserInvalidVersionError';
+import {LooseObject} from '@server/utils/LooseObject';
 
 const successfulNormalizedVersions: LooseObject = {
     'none': ['1.0.0', '1.0.0.0'],
@@ -56,12 +56,11 @@ const successfulNormalizedVersions: LooseObject = {
 };
 const successfulNormalizedVersionsKeys = Object.keys(successfulNormalizedVersions);
 
-for (let i = 0; i < successfulNormalizedVersionsKeys.length; ++i) {
-    let name = successfulNormalizedVersionsKeys[i];
-    let values = successfulNormalizedVersions[name];
+for (const name of successfulNormalizedVersionsKeys) {
+    const values = successfulNormalizedVersions[name];
 
-    test('test normalize succeeds: ' + name, t => {
-        let parser = new VersionParser();
+    test('test normalize succeeds: ' + name, (t) => {
+        const parser = new VersionParser();
         t.is(parser.normalize(values[0]), values[1]);
     });
 }
@@ -80,16 +79,15 @@ const failingNormalizedVersions: LooseObject = {
 };
 const failingNormalizedVersionsKeys = Object.keys(failingNormalizedVersions);
 
-for (let i = 0; i < failingNormalizedVersionsKeys.length; ++i) {
-    let name = failingNormalizedVersionsKeys[i];
-    let values = failingNormalizedVersions[name];
+for (const name of failingNormalizedVersionsKeys) {
+    const values = failingNormalizedVersions[name];
 
-    test('test normalize fails: ' + name, t => {
+    test('test normalize fails: ' + name, (t) => {
         const error = t.throws(() => {
-            let parser = new VersionParser();
+            const parser = new VersionParser();
             parser.normalize(values[0]);
         }, {
-            instanceOf: VersionParserInvalidVersionError
+            instanceOf: VersionParserInvalidVersionError,
         });
 
         t.true(error.message.startsWith('Invalid version string '));
@@ -97,7 +95,7 @@ for (let i = 0; i < failingNormalizedVersionsKeys.length; ++i) {
 }
 
 
-const successfulNormalizedBranches:LooseObject = {
+const successfulNormalizedBranches: LooseObject = {
     'parses x': ['v1.x', '1.9999999.9999999.9999999-dev'],
     'parses *': ['v1.*', '1.9999999.9999999.9999999-dev'],
     'parses digits': ['v1.0', '1.0.9999999.9999999-dev'],
@@ -114,12 +112,11 @@ const successfulNormalizedBranches:LooseObject = {
 };
 const successfulNormalizedBranchesKeys = Object.keys(successfulNormalizedBranches);
 
-for (let i = 0; i < successfulNormalizedBranchesKeys.length; ++i) {
-    let name = successfulNormalizedBranchesKeys[i];
-    let values = successfulNormalizedBranches[name];
+for (const name of successfulNormalizedBranchesKeys) {
+    const values = successfulNormalizedBranches[name];
 
-    test('test normalize branch: ' + name, t => {
-        let parser = new VersionParser();
+    test('test normalize branch: ' + name, (t) => {
+        const parser = new VersionParser();
         t.is(parser.normalizeBranch(values[0]), values[1]);
     });
 }

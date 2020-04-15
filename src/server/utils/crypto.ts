@@ -18,7 +18,7 @@ import crypto from 'crypto';
  * @return {string}
  */
 export function createHash(content: string, algorithm?: string): string {
-    let hashHash = crypto.createHash(algorithm ? algorithm : 'sha1');
+    const hashHash = crypto.createHash(algorithm ? algorithm : 'sha1');
     hashHash.update(content);
 
     return hashHash.digest('hex');

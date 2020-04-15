@@ -14,8 +14,7 @@ import {Request, Response} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Authenticate
-{
+export class Authenticate {
     /**
      * Create the express middleware.
      *
@@ -25,7 +24,7 @@ export class Authenticate
      * @return {Function}
      */
     public static middleware(strategy: AuthStrategy, nextRoute: boolean = false): Function {
-        return async function (req: Request, res: Response, next: Function): Promise<void> {
+        return async (req: Request, res: Response, next: Function): Promise<void> => {
             if (await strategy.logIn(req)) {
                 next();
             } else if (nextRoute) {
@@ -33,6 +32,6 @@ export class Authenticate
             } else {
                 throw new HttpUnauthorizedError();
             }
-        }
+        };
     }
 }

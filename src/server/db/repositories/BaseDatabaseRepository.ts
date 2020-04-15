@@ -18,8 +18,7 @@ import {LooseObject} from '@server/utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class BaseDatabaseRepository implements DatabaseRepository
-{
+export class BaseDatabaseRepository implements DatabaseRepository {
     private client: Database;
 
     private readonly prefix?: string;
@@ -74,7 +73,7 @@ export class BaseDatabaseRepository implements DatabaseRepository
     /**
      * @inheritDoc
      */
-    public async deletes(ids: string[]): Promise<Array<string>> {
+    public async deletes(ids: string[]): Promise<string[]> {
         for (let i = 0; i < ids.length; ++i) {
             ids[i] = this.getPrefixedId(ids[i]);
         }
@@ -92,9 +91,9 @@ export class BaseDatabaseRepository implements DatabaseRepository
      * @inheritDoc
      */
     public async find(criteria: Query|LooseObject, startId?: string): Promise<Results> {
-        let res = await this.client.find(this.prepareCriteria(criteria), startId ? this.getPrefixedId(startId) : undefined);
+        const res = await this.client.find(this.prepareCriteria(criteria), startId ? this.getPrefixedId(startId) : undefined);
 
-        for (let item of res.getRows()) {
+        for (const item of res.getRows()) {
             this.cleanPrefix(item);
         }
 
@@ -112,9 +111,9 @@ export class BaseDatabaseRepository implements DatabaseRepository
      * @inheritDoc
      */
     public async search(criteria: Query|LooseObject, fields: string[], search?: string, startId?: string): Promise<Results> {
-        let res = await this.client.search(this.prepareCriteria(criteria), fields, search, startId ? this.getPrefixedId(startId) : undefined);
+        const res = await this.client.search(this.prepareCriteria(criteria), fields, search, startId ? this.getPrefixedId(startId) : undefined);
 
-        for (let item of res.getRows()) {
+        for (const item of res.getRows()) {
             this.cleanPrefix(item);
         }
 
@@ -125,44 +124,11 @@ export class BaseDatabaseRepository implements DatabaseRepository
      * @inheritDoc
      */
     public prepareCriteria(criteria: Query|LooseObject): Query {
-        let query = criteriaToQuery(criteria);
+        const query = criteriaToQuery(criteria);
         query.setModel(this.prefix ? this.prefix : null);
         query.setConstraint(this.prefixConstraint(query.getConstraint()));
 
         return query;
-    }
-
-    /**
-     * Prefix the id of constraint.
-     *
-     * @param {Constraint} constraint
-     *
-     * @return {Constraint}
-     */
-    protected prefixConstraint(constraint: Constraint): Constraint {
-        let val = constraint.getValue();
-
-        if ('id' === constraint.getKey()) {
-            let values = constraint.getValues();
-
-            if (typeof val === 'string') {
-                constraint.setValue(this.getPrefixedId(val));
-            }
-
-            if (values['id'] && typeof values['id'] === 'string') {
-                values['id'] = this.getPrefixedId(values['id']);
-            }
-        } else if (val instanceof Constraint) {
-            this.prefixConstraint(val);
-        } else if (Array.isArray(val)) {
-            for (let i = 0; i < val.length; ++i) {
-                if (val[i] instanceof Constraint) {
-                    this.prefixConstraint(val[i]);
-                }
-            }
-        }
-
-        return constraint;
     }
 
     /**
@@ -184,5 +150,38 @@ export class BaseDatabaseRepository implements DatabaseRepository
         }
 
         return data;
+    }
+
+    /**
+     * Prefix the id of constraint.
+     *
+     * @param {Constraint} constraint
+     *
+     * @return {Constraint}
+     */
+    protected prefixConstraint(constraint: Constraint): Constraint {
+        const val = constraint.getValue();
+
+        if ('id' === constraint.getKey()) {
+            const values = constraint.getValues();
+
+            if (typeof val === 'string') {
+                constraint.setValue(this.getPrefixedId(val));
+            }
+
+            if (values.id && typeof values.id === 'string') {
+                values.id = this.getPrefixedId(values.id);
+            }
+        } else if (val instanceof Constraint) {
+            this.prefixConstraint(val);
+        } else if (Array.isArray(val)) {
+            for (const arrayVal of val) {
+                if (arrayVal instanceof Constraint) {
+                    this.prefixConstraint(arrayVal);
+                }
+            }
+        }
+
+        return constraint;
     }
 }

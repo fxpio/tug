@@ -24,17 +24,17 @@ import {LooseObject} from '@server/utils/LooseObject';
  * @return {Promise<Object<string, Package>>}
  */
 export async function retrieveAllVersions(packageName: string, packageRepo: PackageRepository, packages: LooseObject, lastId?: string): Promise<LooseObject> {
-    let versionNames = Object.keys(packages);
-    let criteria: LooseObject = {name: packageName};
+    const versionNames = Object.keys(packages);
+    const criteria: LooseObject = {name: packageName};
 
     if (versionNames.length > 0) {
         criteria.version = new Not(new In('version', versionNames));
     }
 
-    let res = await packageRepo.find(criteria, lastId);
+    const res = await packageRepo.find(criteria, lastId);
 
-    for (let packageData of res.getRows()) {
-        let pack = new Package(packageData);
+    for (const packageData of res.getRows()) {
+        const pack = new Package(packageData);
         packages[pack.getVersion()] = pack;
     }
 

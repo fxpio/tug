@@ -14,8 +14,7 @@ import {Request, Response} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface Translator
-{
+export interface Translator {
     /**
      * Set the locale.
      *

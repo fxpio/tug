@@ -25,17 +25,17 @@ import Joi from 'joi';
  * @return {Promise<void>}
  */
 export async function listPackages(req: Request, res: Response, next: Function): Promise<void> {
-    let manager: PackageManager = req.app.get('package-manager');
-    let packageName = req.params.vendor + '/' + req.params.package;
-    let result = await manager.findPackages(packageName);
-    let versions: LooseObject = {};
+    const manager: PackageManager = req.app.get('package-manager');
+    const packageName = req.params.vendor + '/' + req.params.package;
+    const result = await manager.findPackages(packageName);
+    const versions: LooseObject = {};
 
     if (0 === Object.keys(result).length) {
         throw new HttpNotFoundError();
     }
 
-    for (let i of Object.keys(result)) {
-        let pack = result[i];
+    for (const i of Object.keys(result)) {
+        const pack = result[i];
         versions[pack.getVersion()] = pack.getComposer();
     }
 
@@ -57,27 +57,27 @@ export async function refreshPackages(req: Request, res: Response, next: Functio
     validateForm(req, {
         url: Joi.string(),
         version: Joi.string(),
-        force: Joi.boolean()
+        force: Joi.boolean(),
     });
 
-    let translator = req.app.get('translator') as Translator;
-    let packageManager: PackageManager = req.app.get('package-manager');
-    let url = req.body.url;
-    let version = req.body.version;
-    let force = true === req.body.force;
-    let response: LooseObject = {};
+    const translator = req.app.get('translator') as Translator;
+    const packageManager: PackageManager = req.app.get('package-manager');
+    const url = req.body.url;
+    const version = req.body.version;
+    const force = true === req.body.force;
+    const response: LooseObject = {};
 
     if (url) {
         response.url = (await packageManager.refreshPackages(url, force, res)).getUrl();
-        response.message = translator.trans(res, 'manager.package.refresh.versions', {url: url});
+        response.message = translator.trans(res, 'manager.package.refresh.versions', {url});
     } else if (url && version) {
         response.url = (await packageManager.refreshPackage(url, version, force, res)).getUrl();
-        response.message = translator.trans(res, 'manager.package.refresh.version', {url: url, version: version});
+        response.message = translator.trans(res, 'manager.package.refresh.version', {url, version});
     } else {
-        let repos = await packageManager.refreshAllPackages(force, res);
+        const repos = await packageManager.refreshAllPackages(force, res);
         response.message = translator.trans(res, 'manager.package.refresh.versions.all-repositories');
         response.urls = [];
-        for (let name of Object.keys(repos)) {
+        for (const name of Object.keys(repos)) {
             response.urls.push(repos[name].getUrl());
         }
     }
@@ -97,26 +97,26 @@ export async function refreshPackages(req: Request, res: Response, next: Functio
 export async function deletePackages(req: Request, res: Response, next: Function): Promise<void> {
     validateForm(req, {
         url: Joi.string().required(),
-        version: Joi.string()
+        version: Joi.string(),
     });
 
-    let translator = req.app.get('translator') as Translator;
-    let packageManager: PackageManager = req.app.get('package-manager');
+    const translator = req.app.get('translator') as Translator;
+    const packageManager: PackageManager = req.app.get('package-manager');
     let url = req.body.url;
-    let version = req.body.version;
+    const version = req.body.version;
     let message;
 
     if (version) {
         url = (await packageManager.deletePackage(url, version, res)).getUrl();
-        message = translator.trans(res, 'manager.package.delete.version', {url: url, version: version});
+        message = translator.trans(res, 'manager.package.delete.version', {url, version});
     } else {
         url = (await packageManager.deletePackages(url, res)).getUrl();
-        message = translator.trans(res, 'manager.package.delete.versions', {url: url});
+        message = translator.trans(res, 'manager.package.delete.versions', {url});
     }
 
     res.json({
-        message: message,
-        url: url
+        message,
+        url,
     });
 }
 
@@ -131,22 +131,22 @@ export async function deletePackages(req: Request, res: Response, next: Function
  */
 export async function refreshCachePackages(req: Request, res: Response, next: Function): Promise<void> {
     validateForm(req, {
-        url: Joi.string()
+        url: Joi.string(),
     });
 
-    let translator = req.app.get('translator') as Translator;
-    let packageManager: PackageManager = req.app.get('package-manager');
-    let url = req.body.url;
-    let response: LooseObject = {};
+    const translator = req.app.get('translator') as Translator;
+    const packageManager: PackageManager = req.app.get('package-manager');
+    const url = req.body.url;
+    const response: LooseObject = {};
 
     if (url) {
         response.name = (await packageManager.refreshCachePackages(url, res)).getPackageName();
         response.message = translator.trans(res, 'manager.package.refresh.cache.version', {packageName: response.name});
     } else {
-        let repos = await packageManager.refreshAllCachePackages(res);
+        const repos = await packageManager.refreshAllCachePackages(res);
         response.message = translator.trans(res, 'manager.package.refresh.cache.versions');
         response.names = [];
-        for (let name of Object.keys(repos)) {
+        for (const name of Object.keys(repos)) {
             response.names.push(repos[name].getPackageName());
         }
     }

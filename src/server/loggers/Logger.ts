@@ -14,8 +14,7 @@ import {LooseObject} from '@server/utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Logger
-{
+export class Logger {
     /**
      * @return {LooseObject}
      */
@@ -24,8 +23,23 @@ export class Logger
             error: 0,
             warn: 1,
             info: 2,
-            verbose: 3
+            verbose: 3,
         } as LooseObject;
+    }
+
+    /**
+     * Validate the logger level.
+     *
+     * @param {string} level The logger level
+     *
+     * @return {string}
+     */
+    private static validateLevel(level: string): string {
+        if (undefined === Logger.LEVELS[level]) {
+            throw new LoggerInvalidLevelError(level, Object.keys(Logger.LEVELS));
+        }
+
+        return level;
     }
 
     private readonly level: string;
@@ -48,7 +62,7 @@ export class Logger
      * Log a message by level.
      *
      * @param {string} level The logger level
-     * @param {any}          message The message
+     * @param {*}            message The message
      *
      * @throws LoggerError When the level does not exist
      */
@@ -61,20 +75,5 @@ export class Logger
             }
             console.info(`[${level.toUpperCase()}] ${message}`);
         }
-    }
-
-    /**
-     * Validate the logger level.
-     *
-     * @param {string} level The logger level
-     *
-     * @return {string}
-     */
-    private static validateLevel(level: string): string {
-        if (undefined === Logger.LEVELS[level]) {
-            throw new LoggerInvalidLevelError(level, Object.keys(Logger.LEVELS));
-        }
-
-        return level;
     }
 }

@@ -10,7 +10,6 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface TranslatorTranslation
-{
+export interface TranslatorTranslation {
     [key: string]: string;
 }

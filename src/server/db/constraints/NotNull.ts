@@ -12,8 +12,7 @@ import {NotEqual} from '@server/db/constraints/NotEqual';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class NotNull extends NotEqual<null>
-{
+export class NotNull extends NotEqual<null> {
     /**
      * Constructor.
      *

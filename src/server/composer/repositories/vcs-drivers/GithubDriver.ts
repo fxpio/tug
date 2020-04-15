@@ -19,8 +19,22 @@ import {LooseObject} from '@server/utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class GithubDriver extends VcsDriver
-{
+export class GithubDriver extends VcsDriver {
+
+    /**
+     * @inheritDoc
+     */
+    public static supports(config: Config, url: string, deep: boolean = false): boolean {
+        const matches = url.match(/^((?:https?|git):\/\/([^\/]+)\/|git@([^:]+):)([^\/]+)\/(.+?)(?:\.git|\/)?$/);
+
+        if (!matches) {
+            return false;
+        }
+
+        const originUrl = undefined !== matches[2] ? matches[2] : matches[3];
+
+        return config.get('github-domains').includes(originUrl.replace(/^www\./i, ''));
+    }
     private readonly originUrl: string;
     private readonly infoCache: LooseObject;
 
@@ -43,7 +57,7 @@ export class GithubDriver extends VcsDriver
     constructor(repoConfig: LooseObject, config: Config, remoteFilesystem?: RemoteFilesystem) {
         super(repoConfig, config, remoteFilesystem);
 
-        let match:LooseObject|null = this.url.match(/^(?:(?:https?|git):\/\/([^\/]+)\/|git@([^:]+):)([^\/]+)\/(.+?)(?:\.git|\/)?$/);
+        const match: LooseObject|null = this.url.match(/^(?:(?:https?|git):\/\/([^\/]+)\/|git@([^:]+):)([^\/]+)\/(.+?)(?:\.git|\/)?$/);
 
         if (null === match) {
             throw new VcsDriverInvalidUrlError('Github', this.url);
@@ -58,7 +72,7 @@ export class GithubDriver extends VcsDriver
         }
 
         this.url = `https://${this.originUrl}/${this.owner}/${this.repository}.git`;
-        this.repoConfig['url'] = this.url;
+        this.repoConfig.url = this.url;
         this.repoData = null;
         this.rootIdentifier = null;
         this.isPrivate = false;
@@ -66,21 +80,6 @@ export class GithubDriver extends VcsDriver
         this.infoCache = {};
         this.tags = null;
         this.branches = null;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static supports(config: Config, url: string, deep: boolean = false): boolean {
-        let matches = url.match(/^((?:https?|git):\/\/([^\/]+)\/|git@([^:]+):)([^\/]+)\/(.+?)(?:\.git|\/)?$/);
-
-        if (!matches) {
-            return false;
-        }
-
-        let originUrl = undefined !== matches[2] ? matches[2] : matches[3];
-
-        return config.get('github-domains').includes(originUrl.replace(/^www\./i, ''));
     }
 
     /**
@@ -96,7 +95,7 @@ export class GithubDriver extends VcsDriver
      * @return {string}
      */
     public getApiUrl(): string {
-        let apiUrl = 'github.com' === this.originUrl ? 'api.github.com' : `${this.originUrl}/api/v3`;
+        const apiUrl = 'github.com' === this.originUrl ? 'api.github.com' : `${this.originUrl}/api/v3`;
 
         return `https://${apiUrl}`;
     }
@@ -132,12 +131,12 @@ export class GithubDriver extends VcsDriver
      * @inheritDoc
      */
     public getSource(identifier: string): LooseObject {
-        let url = this.isPrivate ? this.generateSshUrl() : this.getUrl();
+        const url = this.isPrivate ? this.generateSshUrl() : this.getUrl();
 
         return {
             type: 'git',
-            url : url,
-            reference: identifier
+            url,
+            reference: identifier,
         };
     }
 
@@ -145,13 +144,13 @@ export class GithubDriver extends VcsDriver
      * @inheritDoc
      */
     public getDist(identifier: string): LooseObject {
-        let url = `${this.getApiUrl()}/repos/${this.owner}/${this.repository}/zipball/${identifier}`;
+        const url = `${this.getApiUrl()}/repos/${this.owner}/${this.repository}/zipball/${identifier}`;
 
         return {
             type: 'zip',
-            url: url,
+            url,
             reference: identifier,
-            shasum: ''
+            shasum: '',
         };
     }
 
@@ -174,11 +173,11 @@ export class GithubDriver extends VcsDriver
         let error = null;
 
         try {
-            let resourceFile:string = `${this.getApiUrl()}/repos/${this.owner}/${this.repository}/contents/${file}?ref=${encodeURIComponent(identifier)}`;
-            let resource = JSON.parse(await this.getContents(resourceFile) as string);
+            const resourceFile: string = `${this.getApiUrl()}/repos/${this.owner}/${this.repository}/contents/${file}?ref=${encodeURIComponent(identifier)}`;
+            const resource = JSON.parse(await this.getContents(resourceFile) as string);
 
-            if (resource['content'] && 'base64' === resource['encoding']) {
-                content = Buffer.from(resource['content'], 'base64').toString();
+            if (resource.content && 'base64' === resource.encoding) {
+                content = Buffer.from(resource.content, 'base64').toString();
             } else {
                 error = new VcsDriverContentNotFoundError(file, identifier);
             }
@@ -201,10 +200,10 @@ export class GithubDriver extends VcsDriver
      * @inheritDoc
      */
     public async getChangeDate(identifier: string): Promise<Date|null> {
-        let resource = `${this.getApiUrl()}/repos/${this.owner}/${this.repository}/commits/${encodeURIComponent(identifier)}`;
-        let commit = JSON.parse(await this.getContents(resource) as string);
+        const resource = `${this.getApiUrl()}/repos/${this.owner}/${this.repository}/commits/${encodeURIComponent(identifier)}`;
+        const commit = JSON.parse(await this.getContents(resource) as string);
 
-        return new Date(commit['commit']['committer']['date']);
+        return new Date(commit.commit.committer.date);
     }
 
     /**
@@ -213,14 +212,14 @@ export class GithubDriver extends VcsDriver
     public async getTags(): Promise<LooseObject> {
         if (null === this.tags) {
             this.tags = {};
-            let resourceFile = `${this.getApiUrl()}/repos/${this.owner}/${this.repository}/tags?per_page=100`;
+            const resourceFile = `${this.getApiUrl()}/repos/${this.owner}/${this.repository}/tags?per_page=100`;
             let resource = null;
 
             do {
-                let tagsData = JSON.parse(await this.getContents(resourceFile) as string);
+                const tagsData = JSON.parse(await this.getContents(resourceFile) as string);
                 if (tagsData) {
-                    for (let tag of tagsData) {
-                        this.tags[tag['name']] = tag['commit']['sha'];
+                    for (const tag of tagsData) {
+                        this.tags[tag.name] = tag.commit.sha;
                     }
                 }
 
@@ -237,18 +236,18 @@ export class GithubDriver extends VcsDriver
     public async getBranches(): Promise<LooseObject> {
         if (null === this.branches) {
             this.branches = {};
-            let resourceFile = `${this.getApiUrl()}/repos/${this.owner}/${this.repository}/git/refs/heads?per_page=100`;
+            const resourceFile = `${this.getApiUrl()}/repos/${this.owner}/${this.repository}/git/refs/heads?per_page=100`;
             let resource = null;
-            let branchBlacklist = ['gh-pages'];
+            const branchBlacklist = ['gh-pages'];
 
             do {
-                let branchData = JSON.parse(await this.getContents(resourceFile) as string);
+                const branchData = JSON.parse(await this.getContents(resourceFile) as string);
                 if (branchData) {
-                    for (let branch of branchData) {
-                        let name = branch['ref'].substr(11);
+                    for (const branch of branchData) {
+                        const name = branch.ref.substr(11);
 
                         if (!branchBlacklist.includes(name)) {
-                            this.branches[name] = branch['object']['sha'];
+                            this.branches[name] = branch.object.sha;
                         }
                     }
                 }
@@ -279,8 +278,8 @@ export class GithubDriver extends VcsDriver
             return;
         }
 
-        let repoDataUrl = `${this.getApiUrl()}/repos/${this.owner}/${this.repository}`;
-        let contentData: string|boolean = await this.getContents(repoDataUrl, true);
+        const repoDataUrl = `${this.getApiUrl()}/repos/${this.owner}/${this.repository}`;
+        const contentData: string|boolean = await this.getContents(repoDataUrl, true);
         try {
             this.repoData = JSON.parse(contentData as string);
         } catch (e) {
@@ -288,15 +287,15 @@ export class GithubDriver extends VcsDriver
         }
 
         if (this.repoData) {
-            this.owner = this.repoData['owner']['login'];
-            this.repository = this.repoData['name'];
-            this.isPrivate = undefined !== this.repoData['private'] && this.repoData['private'];
-            this.hasIssues = undefined !== this.repoData['has_issues'] && this.repoData['has_issues'];
+            this.owner = this.repoData.owner.login;
+            this.repository = this.repoData.name;
+            this.isPrivate = undefined !== this.repoData.private && this.repoData.private;
+            this.hasIssues = undefined !== this.repoData.has_issues && this.repoData.has_issues;
 
             if (this.repoData.hasOwnProperty('default_branch')) {
-                this.rootIdentifier = this.repoData['default_branch'];
+                this.rootIdentifier = this.repoData.default_branch;
             } else if (this.repoData.hasOwnProperty('master_branch')) {
-                this.rootIdentifier = this.repoData['master_branch'];
+                this.rootIdentifier = this.repoData.master_branch;
             }
         }
 
@@ -311,12 +310,12 @@ export class GithubDriver extends VcsDriver
      * @return {string|null}
      */
     private getNextPage(): string|null {
-        let headers:LooseObject = this.rfs.getLastHeaders();
+        const headers: LooseObject = this.rfs.getLastHeaders();
 
-        if (headers['link']) {
-            for (let i of Object.keys(headers['link'])) {
-                let link = headers['link'][i];
-                let match = link.match(/<(.+?)>; *rel="next"/);
+        if (headers.link) {
+            for (const i of Object.keys(headers.link)) {
+                const link = headers.link[i];
+                const match = link.match(/<(.+?)>; *rel="next"/);
 
                 if (match) {
                     return match[1];

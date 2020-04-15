@@ -10,8 +10,7 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class AcceptLanguageItem
-{
+export class AcceptLanguageItem {
     public readonly name: string;
     public readonly code: string;
     public readonly script: string|null;

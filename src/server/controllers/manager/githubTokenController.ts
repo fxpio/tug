@@ -27,24 +27,24 @@ import Joi from 'joi';
 export async function createGithubToken(req: Request, res: Response, next: Function): Promise<void> {
     validateForm(req, {
         token: Joi.string().min(10),
-        host: Joi.string()
+        host: Joi.string(),
     });
 
-    let configManager: ConfigManager = req.app.get('config-manager');
-    let translator = req.app.get('translator') as Translator;
-    let token = req.body.token ? req.body.token : generateToken(40);
-    let host = req.body.host ? req.body.host : 'github.com';
-    let data:LooseObject = {
+    const configManager: ConfigManager = req.app.get('config-manager');
+    const translator = req.app.get('translator') as Translator;
+    const token = req.body.token ? req.body.token : generateToken(40);
+    const host = req.body.host ? req.body.host : 'github.com';
+    const data: LooseObject = {
         'github-domains': [host],
-        'github-webhook': {}
+        'github-webhook': {},
     };
     data['github-webhook'][host] = token;
 
     await configManager.put(data);
 
     res.json({
-        message: translator.trans(res, 'manager.config.github-token.created', {token: token, host: host}),
-        token: token
+        message: translator.trans(res, 'manager.config.github-token.created', {token, host}),
+        token,
     });
 }
 
@@ -59,19 +59,19 @@ export async function createGithubToken(req: Request, res: Response, next: Funct
  */
 export async function deleteGithubToken(req: Request, res: Response, next: Function): Promise<void> {
     validateForm(req, {
-        host: Joi.string()
+        host: Joi.string(),
     });
 
-    let configManager: ConfigManager = req.app.get('config-manager');
-    let translator = req.app.get('translator') as Translator;
-    let host = req.body.host ? req.body.host : 'github.com';
+    const configManager: ConfigManager = req.app.get('config-manager');
+    const translator = req.app.get('translator') as Translator;
+    const host = req.body.host ? req.body.host : 'github.com';
 
-    let config = (await configManager.get()).all();
+    const config = (await configManager.get()).all();
     delete config['github-webhook'][host];
     await configManager.put(config);
 
     res.json({
-        message: translator.trans(res, 'manager.config.github-token.deleted', {host: host}),
+        message: translator.trans(res, 'manager.config.github-token.deleted', {host}),
     });
 }
 
@@ -85,16 +85,16 @@ export async function deleteGithubToken(req: Request, res: Response, next: Funct
  * @return {Promise<void>}
  */
 export async function showGithubToken(req: Request, res: Response, next: Function): Promise<void> {
-    let config = await (req.app.get('config-manager') as ConfigManager).get();
-    let translator = req.app.get('translator') as Translator;
-    let tokens = config.get('github-webhook');
+    const config = await (req.app.get('config-manager') as ConfigManager).get();
+    const translator = req.app.get('translator') as Translator;
+    const tokens = config.get('github-webhook');
     let message;
 
     if (tokens && Object.keys(tokens).length > 0) {
-        let tokenHosts = Object.keys(tokens);
+        const tokenHosts = Object.keys(tokens);
         let strTokens = '';
-        for (let i = 0; i < tokenHosts.length; ++i) {
-            strTokens += tokens[tokenHosts[i]] + ' (' + tokenHosts[i] + '), ';
+        for (const tokenHost of tokenHosts) {
+            strTokens += tokens[tokenHost] + ' (' + tokenHost + '), ';
         }
 
         message = translator.trans(res, 'manager.config.github-token', {tokens: strTokens.replace(/, $/g, '')});
@@ -103,7 +103,7 @@ export async function showGithubToken(req: Request, res: Response, next: Functio
     }
 
     res.json({
-        message: message,
-        tokens: tokens
+        message,
+        tokens,
     });
 }

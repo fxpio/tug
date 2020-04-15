@@ -14,8 +14,7 @@ import AWS from 'aws-sdk';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class AwsS3Storage implements DataStorage
-{
+export class AwsS3Storage implements DataStorage {
     private readonly client: AWS.S3;
 
     private readonly bucket: string;
@@ -28,7 +27,7 @@ export class AwsS3Storage implements DataStorage
      * @param {AWS.S3} [client] The AWS S3 client
      */
     constructor(bucket: string, region: string, client?: AWS.S3) {
-        this.client = client || new AWS.S3({apiVersion: '2006-03-01', region: region});
+        this.client = client || new AWS.S3({apiVersion: '2006-03-01', region});
         this.client.config.region = region;
         this.bucket = bucket;
     }
@@ -37,13 +36,13 @@ export class AwsS3Storage implements DataStorage
      * @inheritDoc
      */
     public async has(key: string): Promise<boolean> {
-        let params = {
+        const params = {
             Bucket: this.bucket,
             MaxKeys: 1,
-            Prefix: key
+            Prefix: key,
         };
 
-        let objects = await this.client.listObjectsV2(params).promise();
+        const objects = await this.client.listObjectsV2(params).promise();
 
         return 1 === objects.KeyCount;
     }
@@ -53,9 +52,9 @@ export class AwsS3Storage implements DataStorage
      */
     public async get(key: string): Promise<string|null> {
         try {
-            let params = {
+            const params = {
                 Bucket: this.bucket,
-                Key: key
+                Key: key,
             };
             return (await this.client.getObject(params).promise() as LooseObject).Body.toString();
         } catch (e) {}
@@ -67,9 +66,9 @@ export class AwsS3Storage implements DataStorage
      * @inheritDoc
      */
     public async put(key: string, data: string|Buffer): Promise<string> {
-        let params: LooseObject|any = {
+        const params: LooseObject|any = {
             Bucket: this.bucket,
-            Key: key.replace(/\/$/g, '')
+            Key: key.replace(/\/$/g, ''),
         };
 
         if (undefined === data) {
@@ -87,9 +86,9 @@ export class AwsS3Storage implements DataStorage
      * @inheritDoc
      */
     public async delete(key: string): Promise<string> {
-        let params = {
+        const params = {
             Bucket: this.bucket,
-            Key: key
+            Key: key,
         };
 
         await this.client.deleteObject(params).promise();

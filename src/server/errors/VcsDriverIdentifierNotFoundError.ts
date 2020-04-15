@@ -12,8 +12,7 @@ import {VcsDriverError} from '@server/errors/VcsDriverError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class VcsDriverIdentifierNotFoundError extends VcsDriverError
-{
+export class VcsDriverIdentifierNotFoundError extends VcsDriverError {
     public readonly type: string;
     public readonly name: string;
 

@@ -13,8 +13,7 @@ import {pregQuote} from '@server/utils/regex';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class VersionParserInvalidVersionError extends VersionParserError
-{
+export class VersionParserInvalidVersionError extends VersionParserError {
     public readonly version: string;
     public readonly fullVersion: string;
     public readonly isAlias: boolean;

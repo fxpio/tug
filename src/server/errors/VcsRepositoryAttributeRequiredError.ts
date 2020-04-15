@@ -12,8 +12,7 @@ import {VcsRepositoryError} from '@server/errors/VcsRepositoryError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class VcsRepositoryAttributeRequiredError extends VcsRepositoryError
-{
+export class VcsRepositoryAttributeRequiredError extends VcsRepositoryError {
     public readonly attribute: string;
 
     /**

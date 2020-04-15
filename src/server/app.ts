@@ -57,16 +57,16 @@ import path from 'path';
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function createApp(options: AppOptions): express.Express {
-    const app = options.app ? options.app : express(),
-        db = options.database,
-        storage = options.storage,
-        queue = options.queue,
-        logger = options.logger,
-        basicAuthStrategy = options.basicAuthStrategy,
-        basicAuthBuilder = options.basicAuthBuilder,
-        fallbackAssets = options.fallbackAssets,
-        assetManifestPath = path.resolve(__dirname, 'admin/assets-manifest.json'),
-        debug = options.debug;
+    const app = options.app ? options.app : express();
+    const db = options.database;
+    const storage = options.storage;
+    const queue = options.queue;
+    const logger = options.logger;
+    const basicAuthStrategy = options.basicAuthStrategy;
+    const basicAuthBuilder = options.basicAuthBuilder;
+    const fallbackAssets = options.fallbackAssets;
+    const assetManifestPath = path.resolve(__dirname, 'admin/assets-manifest.json');
+    const debug = options.debug;
 
     // add database repositories
     db.setRepository(ConfigRepository);
@@ -74,13 +74,13 @@ export function createApp(options: AppOptions): express.Express {
     db.setRepository(CodeRepositoryRepository);
     db.setRepository(PackageRepository);
 
-    const configManager = new ConfigManager(db.getRepository<ConfigRepository>(ConfigRepository)),
-        repoManager = new RepositoryManager(configManager, db.getRepository<CodeRepositoryRepository>(CodeRepositoryRepository), queue),
-        packageManager = new PackageManager(repoManager, db.getRepository<PackageRepository>(PackageRepository), queue),
-        cache = new Cache(storage),
-        packageBuilder = new PackageBuilder(repoManager, packageManager, cache),
-        assetManager = new AssetManager(assetManifestPath, debug),
-        translator = new PolyglotTranslator('en');
+    const configManager = new ConfigManager(db.getRepository<ConfigRepository>(ConfigRepository));
+    const repoManager = new RepositoryManager(configManager, db.getRepository<CodeRepositoryRepository>(CodeRepositoryRepository), queue);
+    const packageManager = new PackageManager(repoManager, db.getRepository<PackageRepository>(PackageRepository), queue);
+    const cache = new Cache(storage);
+    const packageBuilder = new PackageBuilder(repoManager, packageManager, cache);
+    const assetManager = new AssetManager(assetManifestPath, debug);
+    const translator = new PolyglotTranslator('en');
 
     // add translations
     translator.addTranslation('en', translationEn);

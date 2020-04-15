@@ -11,6 +11,7 @@
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export class FxpServerlessError extends Error {
+    // tslint:disable-next-line:variable-name
     private __proto__: Error;
 
     /**

@@ -13,8 +13,7 @@ import {LooseObject} from '@server/utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class LocalMessageQueue extends BaseMessageQueue
-{
+export class LocalMessageQueue extends BaseMessageQueue {
     /**
      * @inheritDoc
      */
@@ -30,8 +29,8 @@ export class LocalMessageQueue extends BaseMessageQueue
             return;
         }
 
-        let self = this;
-        setTimeout(async function () {
+        const self = this;
+        setTimeout(async () => {
             await self.receive(messages);
         }, (delay || 0) * 1000);
     }

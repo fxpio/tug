@@ -12,8 +12,7 @@ import {Constraint} from '@server/db/constraints/Constraint';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class AttributeExists extends Constraint<undefined>
-{
+export class AttributeExists extends Constraint<undefined> {
     /**
      * Constructor.
      *

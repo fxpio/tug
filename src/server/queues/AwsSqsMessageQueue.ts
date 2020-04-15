@@ -14,8 +14,7 @@ import AWS from 'aws-sdk';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class AwsSqsMessageQueue extends BaseMessageQueue
-{
+export class AwsSqsMessageQueue extends BaseMessageQueue {
     private readonly queueUrl: string;
     private readonly batchSize: number;
     private readonly client: AWS.SQS;
@@ -38,10 +37,10 @@ export class AwsSqsMessageQueue extends BaseMessageQueue
      * @inheritDoc
      */
     public async send(message: LooseObject, delay?: number): Promise<void> {
-        let params = {
+        const params = {
             QueueUrl: this.queueUrl,
             DelaySeconds: delay || 0,
-            MessageBody: typeof message === 'object' ? JSON.stringify(message) : message
+            MessageBody: typeof message === 'object' ? JSON.stringify(message) : message,
         };
         await this.client.sendMessage(params).promise();
     }
@@ -50,10 +49,10 @@ export class AwsSqsMessageQueue extends BaseMessageQueue
      * @inheritDoc
      */
     public async sendBatch(messages: LooseObject[], delay?: number): Promise<void> {
-        let nextMessages = [];
-        let params: LooseObject|any = {
+        const nextMessages = [];
+        const params: LooseObject|any = {
             QueueUrl: this.queueUrl,
-            Entries: []
+            Entries: [],
         };
 
         if (0 === messages.length) {
@@ -61,12 +60,12 @@ export class AwsSqsMessageQueue extends BaseMessageQueue
         }
 
         for (let i = 0; i < messages.length; ++i) {
-            let message = messages[i];
+            const message = messages[i];
             if (i < this.batchSize) {
                 params.Entries.push({
                     Id: 'message_' + i,
                     DelaySeconds: delay || 0,
-                    MessageBody: typeof message === 'object' ? JSON.stringify(message) : message
+                    MessageBody: typeof message === 'object' ? JSON.stringify(message) : message,
                 });
             } else {
                 nextMessages.push(message);

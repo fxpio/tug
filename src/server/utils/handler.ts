@@ -18,9 +18,9 @@ import {RequestHandlerParams} from 'express-serve-static-core';
  * @return {RequestHandlerParams}
  */
 export function asyncHandler(fn: Function): RequestHandlerParams {
-    return function (req: Request, res: Response, next: Function|any, ...args: any[]): Promise<Function> {
+    return ((req: Request, res: Response, next: Function|any, ...args: any[]): Promise<Function> => {
         return Promise
             .resolve(fn(req, res, next, ...args))
             .catch(next);
-    } as RequestHandlerParams;
+    }) as RequestHandlerParams;
 }

@@ -19,8 +19,20 @@ import {LooseObject} from '@server/utils/LooseObject';
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class VcsDriver
-{
+export class VcsDriver {
+
+    /**
+     * Checks if this driver can handle a given url.
+     *
+     * @param {Config}  config The config
+     * @param {string}  url    URL to validate/check
+     * @param {boolean} [deep] Unless true, only shallow checks (url matching typically) should be done
+     *
+     * @return {boolean}
+     */
+    public static supports(config: Config, url: string, deep: boolean = false): boolean {
+        return false;
+    }
     protected readonly repoConfig: LooseObject;
     protected readonly config: Config;
     protected readonly rfs: RemoteFilesystem;
@@ -35,23 +47,10 @@ export class VcsDriver
      * @param {RemoteFilesystem} [remoteFilesystem] The remote filesystem
      */
     constructor(repoConfig: LooseObject, config: Config, remoteFilesystem?: RemoteFilesystem) {
-        this.url = repoConfig['url'];
+        this.url = repoConfig.url;
         this.repoConfig = repoConfig;
         this.config = config;
         this.rfs = remoteFilesystem || new RemoteFilesystem(config);
-    }
-
-    /**
-     * Checks if this driver can handle a given url.
-     *
-     * @param {Config}  config The config
-     * @param {string}  url    URL to validate/check
-     * @param {boolean} [deep] Unless true, only shallow checks (url matching typically) should be done
-     *
-     * @return {boolean}
-     */
-    public static supports(config: Config, url: string, deep: boolean = false): boolean {
-        return false;
     }
 
     /**
@@ -140,18 +139,18 @@ export class VcsDriver
      * @return {Promise<LooseObject|null>} containing all infos from the composer.json file
      */
     public async getBaseComposerInformation(identifier: string): Promise<LooseObject|null> {
-        let composerFileContent = await this.getFileContent('composer.json', identifier);
+        const composerFileContent = await this.getFileContent('composer.json', identifier);
 
         if (!composerFileContent) {
             return null;
         }
 
-        let composer = JSON.parse(composerFileContent);
+        const composer = JSON.parse(composerFileContent);
 
-        if (!composer['time']) {
-            let changeDate = await this.getChangeDate(identifier);
+        if (!composer.time) {
+            const changeDate = await this.getChangeDate(identifier);
             if (changeDate) {
-                composer['time'] = dateToRfc3339(changeDate);
+                composer.time = dateToRfc3339(changeDate);
             }
         }
 
@@ -198,7 +197,7 @@ export class VcsDriver
      * @return {Promise<string>}
      */
     public async getTag(name: string): Promise<string> {
-        let tags = await this.getTags();
+        const tags = await this.getTags();
 
         if (undefined !== tags[name]) {
             return tags[name];
@@ -223,7 +222,7 @@ export class VcsDriver
      * @return {Promise<string>}
      */
     public async getBranch(name: string): Promise<string> {
-        let branches = await this.getBranches();
+        const branches = await this.getBranches();
 
         if (undefined !== branches[name]) {
             return branches[name];

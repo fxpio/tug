@@ -13,19 +13,18 @@ import {generateToken} from '@server/utils/token';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class In<V> extends Constraint<V>
-{
+export class In<V> extends Constraint<V> {
     /**
      * Constructor.
      *
      * @param {string} key   The key
-     * @param {any}    value The value
+     * @param {*}      value The value
      */
     constructor(key: string, value: V) {
         super('', key, value);
 
         this.values[key] = undefined;
-        let prefix = generateToken(4) + '_';
+        const prefix = generateToken(4) + '_';
 
         if (Array.isArray(value)) {
             for (let i = 0; i < value.length; ++i) {

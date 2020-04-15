@@ -10,8 +10,7 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface DataStorage
-{
+export interface DataStorage {
     /**
      * Check if the storage has the key.
      *

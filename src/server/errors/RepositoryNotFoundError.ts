@@ -12,8 +12,7 @@ import {RepositoryError} from '@server/errors/RepositoryError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class RepositoryNotFoundError extends RepositoryError
-{
+export class RepositoryNotFoundError extends RepositoryError {
     public readonly url: string;
 
     /**

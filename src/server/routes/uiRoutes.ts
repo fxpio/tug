@@ -22,10 +22,10 @@ import path from 'path';
  * @return {Router}
  */
 export function uiRoutes(router: Router, fallbackAssets?: RequestHandlerParams): Router {
-    let basePath = path.resolve(__dirname, 'admin');
+    const basePath = path.resolve(__dirname, 'admin');
 
     if (!fallbackAssets) {
-        fallbackAssets = function(req: Request, res: Response, next: NextFunction) {
+        fallbackAssets = (req: Request, res: Response, next: NextFunction) => {
             next();
         };
     }

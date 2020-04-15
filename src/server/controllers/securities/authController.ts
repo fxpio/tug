@@ -25,16 +25,16 @@ import Joi from 'joi';
 export async function createToken(req: Request, res: Response, next: Function): Promise<void> {
     validateForm(req, {
         username: Joi.string().required(),
-        password: Joi.string().required()
+        password: Joi.string().required(),
     });
 
-    let token = await (req.app.get('basic-auth-builder') as AuthBuilder).createToken(req);
+    const token = await (req.app.get('basic-auth-builder') as AuthBuilder).createToken(req);
 
     if (false === token) {
         throw new HttpUnauthorizedError();
     }
 
     res.json({
-        token: token
+        token,
     });
 }

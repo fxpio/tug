@@ -12,13 +12,12 @@ import {Constraint} from '@server/db/constraints/Constraint';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class NotEqual<V> extends Constraint<V>
-{
+export class NotEqual<V> extends Constraint<V> {
     /**
      * Constructor.
      *
      * @param {string} key   The key
-     * @param {any}    value The value
+     * @param {*}      value The value
      */
     constructor(key: string, value: V) {
         super('!=', key, value);

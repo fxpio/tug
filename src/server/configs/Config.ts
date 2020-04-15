@@ -50,7 +50,7 @@ export class Config {
      *
      * @param {string} key The key
      *
-     * @return {any}
+     * @return {*}
      */
     public get(key: string): any {
         const keys = key.split('[');

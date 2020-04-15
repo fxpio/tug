@@ -13,8 +13,7 @@ import {Constraint} from '@server/db/constraints/Constraint';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class And extends ChildrenConstraint
-{
+export class And extends ChildrenConstraint {
     /**
      * Constructor.
      *

@@ -11,7 +11,7 @@ import {
     showPackageVersion,
     showPackageVersions,
     showRootPackages,
-    trackDownloadBatch
+    trackDownloadBatch,
 } from '@server/controllers/packages/packageController';
 import {Authenticate} from '@server/middlewares/auth/Authenticate';
 import {BasicTokenAuth} from '@server/middlewares/auth/strategies/BasicTokenAuth';

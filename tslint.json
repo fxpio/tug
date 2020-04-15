@@ -5,10 +5,32 @@
     ],
     "linterOptions": {
         "exclude": [
-            "node_modules/**"
+            "builds/**",
+            "dist/**",
+            "dist-ts/**",
+            "doc/**",
+            "node_modules/**",
+            "var/**",
+            "**/*.cmd",
+            "**/*.ico",
+            "**/*.jpg",
+            "**/*.js",
+            "**/*.json",
+            "**/*.lock",
+            "**/*.md",
+            "**/*.png",
+            "**/*.svg",
+            "**/*.yaml",
+            "**/*.yml"
         ]
     },
     "rules": {
+        "ban-types": [
+            true,
+            [
+                "String"
+            ]
+        ],
         "quotemark": [
             true,
             "single"
@@ -26,6 +48,9 @@
             false,
             "log",
             "error"
-        ]
+        ],
+        "no-empty": false,
+        "no-shadowed-variable": false,
+        "max-line-length": false
     }
 }

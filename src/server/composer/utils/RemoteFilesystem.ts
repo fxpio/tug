@@ -17,8 +17,7 @@ import fetch, {Response} from 'node-fetch';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class RemoteFilesystem
-{
+export class RemoteFilesystem {
     private config: Config;
     private lastHeaders: Object;
 
@@ -44,13 +43,13 @@ export class RemoteFilesystem
      * @throws TransportError When fetch throws an error or the response is not a status code 200
      */
     public async get(originalUrl: string, fileUrl: string, options: Object = {}): Promise<string> {
-        let params: LooseObject = {
+        const params: LooseObject = {
             headers: {},
         };
 
         if (this.config.get('github-domains').includes(originalUrl)) {
             params.headers['Content-Type'] = 'application/json';
-            params.headers['Authorization'] = 'token ' + this.config.get('github-oauth[' + originalUrl + ']');
+            params.headers.Authorization = 'token ' + this.config.get('github-oauth[' + originalUrl + ']');
         }
 
         options = merge(options, params);

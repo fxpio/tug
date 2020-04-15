@@ -15,8 +15,7 @@ import {Request} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class BasicMockAuth implements AuthStrategy
-{
+export class BasicMockAuth implements AuthStrategy {
     private readonly requiredUsername: string;
     private readonly requiredPassword: string;
 
@@ -35,19 +34,19 @@ export class BasicMockAuth implements AuthStrategy
      * @inheritDoc
      */
     public async logIn(req: Request): Promise<boolean> {
-        let user = auth(req),
-            username,
-            password,
-            sessionToken;
+        const user = auth(req);
+        let username;
+        let password;
+        let sessionToken;
 
         if (user) {
             username = user.name;
             password = user.pass;
-        } else if (req.headers['authorization']) {
-            let auth = req.headers['authorization'] as string;
+        } else if (req.headers.authorization) {
+            const auth = req.headers.authorization as string;
 
             if (auth.startsWith('token ')) {
-                let parts = auth.substring(6).split(':');
+                const parts = auth.substring(6).split(':');
                 username = parts[0];
                 password = parts[1];
                 sessionToken = parts[2];

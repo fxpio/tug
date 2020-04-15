@@ -17,8 +17,7 @@ import {Response} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class DeletePackageReceiver extends BaseReceiver
-{
+export class DeletePackageReceiver extends BaseReceiver {
     private packageManager: PackageManager;
 
     /**
@@ -44,14 +43,14 @@ export class DeletePackageReceiver extends BaseReceiver
      * @inheritDoc
      */
     public async doExecute(message: LooseObject, res?: Response): Promise<void> {
-        let pack = await this.packageManager.findPackage(message.packageName, message.version, res);
+        const pack = await this.packageManager.findPackage(message.packageName, message.version, res);
 
         if (pack) {
             this.logger.log('info', `[Delete Package Receiver] Deleting package version "${message.version}" for "${message.packageName}"`);
             await this.packageManager.delete(pack);
             await this.queue.send({
                 type: 'build-package-versions-cache',
-                packageName: message.packageName
+                packageName: message.packageName,
             }, 1);
         } else {
             this.logger.log('verbose', `[Delete Package Receiver] Package version "${message.version}" is not found for "${message.packageName}"`);

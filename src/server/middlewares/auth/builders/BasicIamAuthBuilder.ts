@@ -14,17 +14,16 @@ import {Request} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class BasicIamAuthBuilder implements AuthBuilder
-{
+export class BasicIamAuthBuilder implements AuthBuilder {
     /**
      * @inheritDoc
      */
     public async createToken(req: Request): Promise<string|false> {
         try {
-            let creds = req.body;
-            let sts = new AWS.STS({apiVersion: '2011-06-15', accessKeyId: creds.username, secretAccessKey: creds.password});
-            let result = await sts.getSessionToken().promise();
-            let rc = result.Credentials;
+            const creds = req.body;
+            const sts = new AWS.STS({apiVersion: '2011-06-15', accessKeyId: creds.username, secretAccessKey: creds.password});
+            const result = await sts.getSessionToken().promise();
+            const rc = result.Credentials;
 
             if (rc) {
                 return `${rc.AccessKeyId}:${rc.SecretAccessKey}:${rc.SessionToken}`;

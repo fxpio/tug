@@ -12,8 +12,7 @@ import {TransportError} from '@server/errors/TransportError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class TransportResourceNotFoundError extends TransportError
-{
+export class TransportResourceNotFoundError extends TransportError {
     public readonly resourceUrl: string;
 
     /**

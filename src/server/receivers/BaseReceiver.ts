@@ -16,8 +16,7 @@ import {Response} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export abstract class BaseReceiver implements QueueReceiver
-{
+export abstract class BaseReceiver implements QueueReceiver {
     public static retryDelay: number = 2;
 
     protected readonly queue: MessageQueue;
@@ -42,7 +41,7 @@ export abstract class BaseReceiver implements QueueReceiver
             await this.doExecute(message, res);
         } catch (e) {
             if ('ProvisionedThroughputExceededException' === e.name) {
-                let delay = (message.retryDelay as number || 0) + BaseReceiver.retryDelay;
+                const delay = (message.retryDelay as number || 0) + BaseReceiver.retryDelay;
                 message.retryDelay = delay;
                 await this.queue.send(message, delay);
             } else {
@@ -60,7 +59,7 @@ export abstract class BaseReceiver implements QueueReceiver
     /**
      * @inheritDoc
      */
-    abstract supports(message: LooseObject): boolean;
+    public abstract supports(message: LooseObject): boolean;
 
     /**
      * Execute the receiver.
@@ -68,5 +67,5 @@ export abstract class BaseReceiver implements QueueReceiver
      * @param {LooseObject} message The message comes from queue
      * @param {Response}    [res]   The response
      */
-    abstract async doExecute(message: LooseObject, res?: Response): Promise<void>;
+    public abstract async doExecute(message: LooseObject, res?: Response): Promise<void>;
 }

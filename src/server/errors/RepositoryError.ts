@@ -12,6 +12,5 @@ import {FxpServerlessError} from '@server/errors/FxpServerlessError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class RepositoryError extends FxpServerlessError
-{
+export class RepositoryError extends FxpServerlessError {
 }

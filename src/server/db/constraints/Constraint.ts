@@ -12,8 +12,7 @@ import {LooseObject} from '@server/utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Constraint<V = any|undefined>
-{
+export class Constraint<V = any|undefined> {
     protected readonly operator: string;
     protected readonly key: string;
     protected value: V;

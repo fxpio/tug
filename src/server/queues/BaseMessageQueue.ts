@@ -15,9 +15,8 @@ import {Response} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class BaseMessageQueue implements MessageQueue
-{
-    private readonly receivers: Array<QueueReceiver>;
+export class BaseMessageQueue implements MessageQueue {
+    private readonly receivers: QueueReceiver[];
 
     /**
      * Constructor.
@@ -29,7 +28,7 @@ export class BaseMessageQueue implements MessageQueue
     /**
      * @inheritDoc
      */
-    subscribe(receiver: QueueReceiver): void {
+    public subscribe(receiver: QueueReceiver): void {
         this.receivers.push(receiver);
     }
 
@@ -37,15 +36,12 @@ export class BaseMessageQueue implements MessageQueue
      * @inheritDoc
      */
     public async receive(messages: LooseObject[], res?: Response): Promise<void> {
-        let ranReceivers:QueueReceiver[] = [];
+        const ranReceivers: QueueReceiver[] = [];
 
-        for (let i = 0; i < messages.length; ++i) {
-            for (let j = 0; j < this.receivers.length; ++j) {
-                /** @type {QueueReceiver} */
-                let receiver = this.receivers[j];
-
-                if (receiver.supports(messages[i])) {
-                    await receiver.execute(messages[i], res);
+        for (const message of messages) {
+            for (const receiver of this.receivers) {
+                if (receiver.supports(message)) {
+                    await receiver.execute(message, res);
 
                     if (!ranReceivers.includes(receiver)) {
                         ranReceivers.push(receiver);
@@ -54,10 +50,7 @@ export class BaseMessageQueue implements MessageQueue
             }
         }
 
-        for (let i = 0; i < ranReceivers.length; ++i) {
-            /** @type {QueueReceiver} */
-            let receiver = ranReceivers[i];
-
+        for (const receiver of ranReceivers) {
             await receiver.finish(res);
         }
     }

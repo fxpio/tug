@@ -79,7 +79,7 @@ export function convertURIError(err: Error, req: Request, res: Response, next: F
  */
 export function convertJsonSyntaxError(err: Error, req: Request, res: Response, next: Function): void {
     if (err instanceof SyntaxError && (err as LooseObject).status === 400) {
-        let translator = req.app.get('translator') as Translator;
+        const translator = req.app.get('translator') as Translator;
         throw new HttpBadRequestError(translator.trans(res, 'error.http.bad-request.invalid-json'));
     }
     next(err);
@@ -96,7 +96,7 @@ export function convertJsonSyntaxError(err: Error, req: Request, res: Response, 
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function convertVcsDriverError(err: Error, req: Request, res: Response, next: Function): void {
-    let translator = req.app.get('translator') as Translator;
+    const translator = req.app.get('translator') as Translator;
 
     if (err instanceof VcsDriverBranchNotFoundError) {
         throw new HttpNotFoundError(translator.trans(res, 'error.http.not-found.repository-branch', {name: err.name}));
@@ -118,7 +118,7 @@ export function convertVcsDriverError(err: Error, req: Request, res: Response, n
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function convertRepositoryError(err: Error, req: Request, res: Response, next: Function): void {
-    let translator = req.app.get('translator') as Translator;
+    const translator = req.app.get('translator') as Translator;
 
     if (err instanceof RepositoryNotFoundError) {
         throw new HttpNotFoundError(translator.trans(res, 'error.http.not-found.repository', {url: err.url}));
@@ -140,10 +140,10 @@ export function convertRepositoryError(err: Error, req: Request, res: Response, 
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function showError(err: Error, req: Request, res: Response, next: Function): void {
-    let translator = req.app.get('translator') as Translator;
-    let data: LooseObject = {
+    const translator = req.app.get('translator') as Translator;
+    const data: LooseObject = {
         code: 500,
-        message: translator.trans(res, 'error.http.internal-server')
+        message: translator.trans(res, 'error.http.internal-server'),
     };
 
     if (err instanceof HttpError) {
@@ -166,7 +166,7 @@ export function showError(err: Error, req: Request, res: Response, next: Functio
             data.errors = err.fieldErrors;
         }
     } else if (req.app.get('debug')) {
-        data.error = err.message
+        data.error = err.message;
     }
 
     res.status(data.code).json(data);

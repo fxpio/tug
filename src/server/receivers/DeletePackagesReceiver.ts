@@ -17,8 +17,7 @@ import {Response} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class DeletePackagesReceiver extends BaseReceiver
-{
+export class DeletePackagesReceiver extends BaseReceiver {
     private readonly packageRepo: PackageRepository;
 
     /**
@@ -44,11 +43,11 @@ export class DeletePackagesReceiver extends BaseReceiver
      * @inheritDoc
      */
     public async doExecute(message: LooseObject, res?: Response): Promise<void> {
-        let result = await this.packageRepo.find({name: message.packageName});
-        let ids = [];
-        let versions = [];
+        const result = await this.packageRepo.find({name: message.packageName});
+        const ids = [];
+        const versions = [];
 
-        for (let item of result.getRows()) {
+        for (const item of result.getRows()) {
             ids.push(item.id);
             versions.push(item.version);
         }
@@ -61,7 +60,7 @@ export class DeletePackagesReceiver extends BaseReceiver
         } else {
             await this.queue.send({
                 type: 'build-package-versions-cache',
-                packageName: message.packageName
+                packageName: message.packageName,
             }, 1);
         }
     }

@@ -14,8 +14,7 @@ import {Response} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface MessageQueue
-{
+export interface MessageQueue {
     /**
      * Subscribe a receiver in queue.
      *
@@ -37,7 +36,7 @@ export interface MessageQueue
      * @param {LooseObject} message
      * @param {number}      [delay]
      */
-    send(message: LooseObject, delay?: number): Promise<void>
+    send(message: LooseObject, delay?: number): Promise<void>;
 
     /**
      * Send messages in the queue.

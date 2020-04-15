@@ -12,8 +12,7 @@ import {Request} from 'express';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface AuthBuilder
-{
+export interface AuthBuilder {
     /**
      * Create token for auth.
      *

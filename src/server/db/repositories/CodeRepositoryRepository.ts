@@ -13,8 +13,14 @@ import {BaseDatabaseRepository} from '@server/db/repositories/BaseDatabaseReposi
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class CodeRepositoryRepository extends BaseDatabaseRepository
-{
+export class CodeRepositoryRepository extends BaseDatabaseRepository {
+
+    /**
+     * @inheritDoc
+     */
+    public static getName(): string {
+        return 'CodeRepository';
+    }
     /**
      * Constructor.
      *
@@ -22,12 +28,5 @@ export class CodeRepositoryRepository extends BaseDatabaseRepository
      */
     constructor(client: Database) {
         super(client, 'repositories');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static getName(): string {
-        return 'CodeRepository';
     }
 }

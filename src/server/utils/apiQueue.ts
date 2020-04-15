@@ -19,11 +19,9 @@ import {Request} from 'express';
  */
 export function isSqsRequest(req: LooseObject): boolean {
     if (req.apiGateway && req.apiGateway.event && req.apiGateway.event.Records) {
-        let event = req.apiGateway.event;
+        const event = req.apiGateway.event;
 
-        for (let i = 0; i < event.Records.length; ++i) {
-            let record = event.Records[i];
-
+        for (const record of event.Records) {
             if (isSqsMessage(record)) {
                 return true;
             }
@@ -55,15 +53,13 @@ export function isSqsMessage(message: LooseObject): boolean {
  *
  * @return {Array<LooseObject>}
  */
-export function getSqsMessageBodies(request: LooseObject): Array<LooseObject> {
-    let bodies = [];
+export function getSqsMessageBodies(request: LooseObject): LooseObject[] {
+    const bodies = [];
 
     if (request.apiGateway && request.apiGateway.event && request.apiGateway.event.Records) {
-        let event = request.apiGateway.event;
+        const event = request.apiGateway.event;
 
-        for (let i = 0; i < event.Records.length; ++i) {
-            let record = event.Records[i];
-
+        for (const record of event.Records) {
             if (isSqsMessage(record)) {
                 let body = record.body;
                 try {

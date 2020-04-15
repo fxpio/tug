@@ -29,9 +29,9 @@ import {LooseObject} from '@server/utils/LooseObject';
  * @return {Promise<Object>}
  */
 export async function retrieveAllRepositories(config: Config, codeRepoRepo: CodeRepositoryRepository, repositories: LooseObject, forceAll: boolean = false, lastId?: string): Promise<LooseObject> {
-    let packagesNames = Object.keys(repositories);
-    let criteria: LooseObject = {
-        packageName: new AttributeExists('packageName')
+    const packagesNames = Object.keys(repositories);
+    const criteria: LooseObject = {
+        packageName: new AttributeExists('packageName'),
     };
 
     if (packagesNames.length > 0) {
@@ -42,10 +42,10 @@ export async function retrieveAllRepositories(config: Config, codeRepoRepo: Code
         criteria.lastHash = new AttributeExists('lastHash');
     }
 
-    let res = await codeRepoRepo.find(criteria, lastId);
+    const res = await codeRepoRepo.find(criteria, lastId);
 
-    for (let repoData of res.getRows()) {
-        let name = repoData.packageName ? repoData.packageName : repoData.id;
+    for (const repoData of res.getRows()) {
+        const name = repoData.packageName ? repoData.packageName : repoData.id;
         repositories[name] = new VcsRepository(repoData, config);
     }
 

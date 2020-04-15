@@ -187,8 +187,8 @@ export class Database {
             const or = new Or([]);
             const prevConstraint = query.getConstraint();
 
-            for (let i = 0; i < fields.length; ++i) {
-                or.add(new Contains(fields[i], search));
+            for (const field of fields) {
+                or.add(new Contains(field, search));
             }
 
             const constraint = prevConstraint instanceof And ? prevConstraint as And : new And([prevConstraint]);

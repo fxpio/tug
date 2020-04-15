@@ -12,8 +12,7 @@ import {VcsDriverError} from '@server/errors/VcsDriverError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class VcsDriverInvalidJsonError extends VcsDriverError
-{
+export class VcsDriverInvalidJsonError extends VcsDriverError {
     public readonly repositoryDataUrl: string;
     public readonly message: string;
 
@@ -24,7 +23,7 @@ export class VcsDriverInvalidJsonError extends VcsDriverError
      * @param {string} message           The error message
      */
     constructor(repositoryDataUrl: string, message: string) {
-        super(`"${repositoryDataUrl}" does not contain valid JSON` + "\n" + message);
+        super(`"${repositoryDataUrl}" does not contain valid JSON` + '\n' + message);
         this.repositoryDataUrl = repositoryDataUrl;
         this.message = message;
     }

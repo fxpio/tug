@@ -21,14 +21,14 @@ import Joi from 'joi';
  * @throws HttpValidationError When the request form has errors
  */
 export function validateForm(req: Request, schemaKeys: LooseObject): void {
-    let schema = Joi.object().keys(schemaKeys);
-    let valResult = Joi.validate(req.body, schema);
+    const schema = Joi.object().keys(schemaKeys);
+    const valResult = Joi.validate(req.body, schema);
 
     if (valResult.error) {
-        let errorFields:LooseObject = {};
-        let details = valResult.error.details;
+        const errorFields: LooseObject = {};
+        const details = valResult.error.details;
 
-        for (let error of details) {
+        for (const error of details) {
             errorFields[error.path.join('.')] = error.message;
         }
 

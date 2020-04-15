@@ -15,7 +15,7 @@
  * @return {string}
  */
 export function generateToken(size: number): string {
-    let ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let token = '';
     size = size || 10;
 

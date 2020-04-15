@@ -26,9 +26,9 @@ import Joi from 'joi';
  * @return {Promise<void>}
  */
 export async function listRepository(req: Request, res: Response, next: Function): Promise<void> {
-    let db = req.app.get('db') as Database;
-    let repo = db.getRepository<CodeRepositoryRepository>(CodeRepositoryRepository);
-    res.json(await repo.search({}, ['packageName', 'url'], <string> req.query.search, <string> req.query.lastId));
+    const db = req.app.get('db') as Database;
+    const repo = db.getRepository<CodeRepositoryRepository>(CodeRepositoryRepository);
+    res.json(await repo.search({}, ['packageName', 'url'], req.query.search as string, req.query.lastId as string));
 }
 
 /**
@@ -45,17 +45,17 @@ export async function enableRepository(req: Request, res: Response, next: Functi
         url: Joi.string().required(),
     });
 
-    let repoManager = req.app.get('repository-manager') as RepositoryManager;
-    let translator = req.app.get('translator') as Translator;
-    let url = req.body.url;
-    let type = req.body.type;
-    let repo = await repoManager.register(url, type, res);
+    const repoManager = req.app.get('repository-manager') as RepositoryManager;
+    const translator = req.app.get('translator') as Translator;
+    const url = req.body.url;
+    const type = req.body.type;
+    const repo = await repoManager.register(url, type, res);
     (req.app.get('logger') as Logger).log('info', `[API Rest] Registration of the repository "${url}"`);
 
     res.json({
         message: translator.trans(res, 'manager.repository.created', {type: repo.getType(), url: repo.getUrl()}),
         url: repo.getUrl(),
-        type: repo.getType()
+        type: repo.getType(),
     });
 }
 
@@ -73,13 +73,13 @@ export async function disableRepository(req: Request, res: Response, next: Funct
         url: Joi.string().required(),
     });
 
-    let repoManager = req.app.get('repository-manager') as RepositoryManager;
-    let translator = req.app.get('translator') as Translator;
-    let url = await repoManager.unregister(req.body.url, res);
+    const repoManager = req.app.get('repository-manager') as RepositoryManager;
+    const translator = req.app.get('translator') as Translator;
+    const url = await repoManager.unregister(req.body.url, res);
     (req.app.get('logger') as Logger).log('info', `[API Rest] Unregistration of the repository "${url}"`);
 
     res.json({
-        message: translator.trans(res, 'manager.repository.deleted', {url: url}),
-        url: url
+        message: translator.trans(res, 'manager.repository.deleted', {url}),
+        url,
     });
 }
