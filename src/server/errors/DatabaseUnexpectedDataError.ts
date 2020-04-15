@@ -12,8 +12,7 @@ import {DatabaseError} from '@server/errors/DatabaseError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class DatabaseUnexpectedDataError extends DatabaseError
-{
+export class DatabaseUnexpectedDataError extends DatabaseError {
     public readonly value: any;
 
     /**

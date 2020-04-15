@@ -13,15 +13,14 @@ import merge from 'lodash.merge';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Config
-{
+export class Config {
     public static defaultConfig: LooseObject = {
         'github-domains': ['github.com'],
         'github-oauth': {},
         'github-webhook': {},
         'ui': {
-            'locale': 'en'
-        }
+            locale: 'en',
+        },
     };
 
     private config: LooseObject;
@@ -54,11 +53,11 @@ export class Config
      * @return {any}
      */
     public get(key: string): any {
-        let keys = key.split('[');
+        const keys = key.split('[');
         let config = this.all();
 
         for (let i = 0; i < keys.length; ++i) {
-            let subKey = keys[i].replace(/^[\['"`]+|[\]'"`]+$/g, '');
+            const subKey = keys[i].replace(/^[\['"`]+|[\]'"`]+$/g, '');
 
             if (config.hasOwnProperty(subKey)) {
                 if (keys.length - 1 > 0 && i < keys.length - 1) {

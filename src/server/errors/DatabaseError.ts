@@ -12,8 +12,7 @@ import {FxpServerlessError} from '@server/errors/FxpServerlessError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class DatabaseError extends FxpServerlessError
-{
+export class DatabaseError extends FxpServerlessError {
     /**
      * Constructor.
      *

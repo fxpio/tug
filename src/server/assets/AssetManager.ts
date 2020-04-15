@@ -13,12 +13,11 @@ import fs from 'fs';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class AssetManager
-{
+export class AssetManager {
     private readonly manifestFile: string;
     private readonly debug: boolean;
 
-    private manifest:LooseObject|null = null;
+    private manifest: LooseObject|null = null;
 
     /**
      * Constructor.
@@ -47,7 +46,7 @@ export class AssetManager
             }
         }
 
-        let val = this.manifest.hasOwnProperty(path) ? this.manifest[path] : path;
+        const val = this.manifest.hasOwnProperty(path) ? this.manifest[path] : path;
 
         if (this.debug) {
             this.manifest = null;

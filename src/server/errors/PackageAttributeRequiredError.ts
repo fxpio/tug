@@ -12,8 +12,7 @@ import {PackageError} from '@server/errors/PackageError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class PackageAttributeRequiredError extends PackageError
-{
+export class PackageAttributeRequiredError extends PackageError {
     public readonly attribute: string;
 
     /**

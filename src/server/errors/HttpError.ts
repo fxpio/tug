@@ -12,8 +12,7 @@ import {FxpServerlessError} from '@server/errors/FxpServerlessError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class HttpError extends FxpServerlessError
-{
+export class HttpError extends FxpServerlessError {
     public readonly statusCode: number;
 
     /**

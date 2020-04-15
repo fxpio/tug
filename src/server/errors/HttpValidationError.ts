@@ -12,8 +12,7 @@ import {HttpBadRequestError} from '@server/errors/HttpBadRequestError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class HttpValidationError extends HttpBadRequestError
-{
+export class HttpValidationError extends HttpBadRequestError {
     public readonly fieldErrors: Object;
 
     /**

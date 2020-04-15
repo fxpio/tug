@@ -34,10 +34,10 @@ const app = createApp({
     logger: new Logger(env.LOGGER_LEVEL, debug),
     basicAuthStrategy: new BasicMockAuth(env.AWS_ACCESS_KEY_ID as string, env.AWS_SECRET_ACCESS_KEY as string),
     basicAuthBuilder: new BasicMockAuthBuilder(env.AWS_ACCESS_KEY_ID as string, env.AWS_SECRET_ACCESS_KEY as string),
-    debug: debug,
-    fallbackAssets: function(req: Request, res: Response, next: Function) {
-        let assetManager = req.app.get('asset-manager') as AssetManager;
-        let asset = (new URL(`${req.protocol}://${req.get('host')}${req.originalUrl}`)).pathname.replace(/^\//g, '');
+    debug,
+    fallbackAssets(req: Request, res: Response, next: Function) {
+        const assetManager = req.app.get('asset-manager') as AssetManager;
+        const asset = (new URL(`${req.protocol}://${req.get('host')}${req.originalUrl}`)).pathname.replace(/^\//g, '');
         let realAsset = assetManager.get(asset);
 
         if (asset === realAsset) {
@@ -45,7 +45,7 @@ const app = createApp({
             if (undefined === baseUrl) {
                 baseUrl = '';
                 try {
-                    let config = fs.readJsonSync(__dirname + '/server-config.json') as LooseObject;
+                    const config = fs.readJsonSync(__dirname + '/server-config.json') as LooseObject;
                     baseUrl = config.assetBaseUrl ? config.assetBaseUrl : baseUrl;
                     req.app.set('asset-base-url', baseUrl);
                 } catch (e) {}
@@ -54,9 +54,9 @@ const app = createApp({
             realAsset = baseUrl + realAsset;
         }
 
-        http.get(realAsset, function (assetRes: IncomingMessage) {
+        http.get(realAsset, function(assetRes: IncomingMessage) {
             if (200 === assetRes.statusCode) {
-                for (let name of Object.keys(assetRes.headers)) {
+                for (const name of Object.keys(assetRes.headers)) {
                     res.setHeader(name, assetRes.headers[name] as string);
                 }
 
@@ -67,7 +67,7 @@ const app = createApp({
 
             next();
         });
-    }
+    },
 });
 
 app.listen(port);

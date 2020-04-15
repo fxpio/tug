@@ -12,8 +12,7 @@ import {HttpError} from '@server/errors/HttpError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class HttpBadRequestError extends HttpError
-{
+export class HttpBadRequestError extends HttpError {
     /**
      * Constructor.
      *

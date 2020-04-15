@@ -12,8 +12,7 @@ import {DatabaseError} from '@server/errors/DatabaseError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class DatabaseInvalidAttributeError extends DatabaseError
-{
+export class DatabaseInvalidAttributeError extends DatabaseError {
     public readonly attribute: string;
     public readonly givenType: string;
     public readonly value: any;

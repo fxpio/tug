@@ -14,8 +14,7 @@ import {LooseObject} from '@server/utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class ConfigManager
-{
+export class ConfigManager {
     private readonly configRepo: ConfigRepository;
 
     private config: Config|null;
@@ -38,7 +37,7 @@ export class ConfigManager
     public async get(): Promise<Config> {
         if (null === this.config) {
             this.config = new Config();
-            let data: LooseObject|null = await this.configRepo.get('global');
+            const data: LooseObject|null = await this.configRepo.get('global');
 
             if (data) {
                 delete data.id;
@@ -58,7 +57,7 @@ export class ConfigManager
      * @return {Promise<Config>}
      */
     public async put(config: Config|LooseObject): Promise<Config> {
-        let currentConfig = await this.get();
+        const currentConfig = await this.get();
         currentConfig.merge(config);
 
         await this.configRepo.put(Object.assign({}, currentConfig.all(), {id: 'global'}));

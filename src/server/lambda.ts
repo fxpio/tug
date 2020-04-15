@@ -51,7 +51,7 @@ const binaryMimeTypes = [
     'text/javascript',
     'text/plain',
     'text/text',
-    'text/xml'
+    'text/xml',
 ];
 
 const app = express();
@@ -62,14 +62,14 @@ app.use(compression());
 app.use(awsServerlessExpressMiddleware.eventContext());
 
 createApp({
-    app: app,
+    app,
     database: new AwsDynamoDbDatabase(env.AWS_DYNAMODB_TABLE as string, env.AWS_REGION as string, env.AWS_DYNAMODB_URL),
     storage: new AwsS3Storage(env.AWS_S3_BUCKET as string, env.AWS_REGION as string),
     queue: new AwsSqsMessageQueue(env.AWS_SQS_QUEUE_URL as string),
     logger: new Logger(env.LOGGER_LEVEL, debug),
     basicAuthStrategy: new BasicIamAuth(env.AWS_ACCOUNT_ID),
     basicAuthBuilder: new BasicIamAuthBuilder(),
-    debug: debug
+    debug,
 });
 
 const server = awsServerlessExpress.createServer(app, undefined, binaryMimeTypes);

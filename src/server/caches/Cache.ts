@@ -12,8 +12,7 @@ import {DataStorage} from '@server/storages/DataStorage';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Cache
-{
+export class Cache {
     private storage: DataStorage;
 
     /**

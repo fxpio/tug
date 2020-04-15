@@ -19,8 +19,7 @@ import {RequestHandlerParams} from 'express-serve-static-core';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface AppOptions
-{
+export interface AppOptions {
     app?: express.Express;
     database: Database;
     storage: DataStorage;

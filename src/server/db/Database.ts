@@ -23,8 +23,20 @@ import {LooseObject} from '@server/utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Database
-{
+export class Database {
+
+    /**
+     * Check if the data is valid.
+     *
+     * @param {*} data The data
+     *
+     * @throws DatabaseError When the data object has not the id property
+     */
+    public static validateData(data: any): void {
+        if (typeof data !== 'object' || !data.id) {
+            throw new DatabaseUnexpectedDataError(data);
+        }
+    }
     private readonly repositories: LooseObject;
 
     /**
@@ -169,34 +181,21 @@ export class Database
      * @return {Promise<Results>}
      */
     public async search(criteria: Query|LooseObject, fields: string[], search?: string, startId?: string): Promise<Results> {
-        let query = criteriaToQuery(criteria);
+        const query = criteriaToQuery(criteria);
 
         if (search) {
-            let or = new Or([]);
-            let prevConstraint = query.getConstraint();
+            const or = new Or([]);
+            const prevConstraint = query.getConstraint();
 
             for (let i = 0; i < fields.length; ++i) {
                 or.add(new Contains(fields[i], search));
             }
 
-            let constraint = prevConstraint instanceof And ? <And> prevConstraint : new And([prevConstraint]);
+            const constraint = prevConstraint instanceof And ? prevConstraint as And : new And([prevConstraint]);
             constraint.add(or);
             query.setConstraint(constraint);
         }
 
         return this.find(query, startId);
-    }
-
-    /**
-     * Check if the data is valid.
-     *
-     * @param {*} data The data
-     *
-     * @throws DatabaseError When the data object has not the id property
-     */
-    public static validateData(data: any): void {
-        if (typeof data !== 'object' || !data.id) {
-            throw new DatabaseUnexpectedDataError(data);
-        }
     }
 }

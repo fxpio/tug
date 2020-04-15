@@ -25,7 +25,7 @@ import {
     convertRouteNotFoundError,
     convertURIError,
     convertVcsDriverError,
-    showError
+    showError,
 } from '@server/middlewares/errors';
 import {logErrors} from '@server/middlewares/logs';
 import {defineLocale} from '@server/middlewares/translators';
@@ -57,7 +57,7 @@ import path from 'path';
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function createApp(options: AppOptions): express.Express {
-    let app = options.app ? options.app : express(),
+    const app = options.app ? options.app : express(),
         db = options.database,
         storage = options.storage,
         queue = options.queue,
@@ -74,7 +74,7 @@ export function createApp(options: AppOptions): express.Express {
     db.setRepository(CodeRepositoryRepository);
     db.setRepository(PackageRepository);
 
-    let configManager = new ConfigManager(db.getRepository<ConfigRepository>(ConfigRepository)),
+    const configManager = new ConfigManager(db.getRepository<ConfigRepository>(ConfigRepository)),
         repoManager = new RepositoryManager(configManager, db.getRepository<CodeRepositoryRepository>(CodeRepositoryRepository), queue),
         packageManager = new PackageManager(repoManager, db.getRepository<PackageRepository>(PackageRepository), queue),
         cache = new Cache(storage),

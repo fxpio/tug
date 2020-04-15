@@ -12,8 +12,7 @@ import {LooseObject} from '@server/utils/LooseObject';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Results
-{
+export class Results {
     private readonly results: LooseObject[];
 
     private readonly count: number;

@@ -12,8 +12,7 @@ import {DatabaseError} from '@server/errors/DatabaseError';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class DatabaseRepositoryNotFoundError extends DatabaseError
-{
+export class DatabaseRepositoryNotFoundError extends DatabaseError {
     public readonly name: string;
 
     /**
