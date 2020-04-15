@@ -23,7 +23,7 @@ const prod = 'production' === process.env.NODE_ENV || argv._.includes('productio
 const mode = prod ? 'production' : 'development';
 const isDevServer = process.argv[1] && process.argv[1].indexOf('webpack-dev-server') >= 0;
 const serverPort = parseInt(process.env.SERVER_PORT || 3000) + 2;
-const srcPath = path.resolve(__dirname, 'src');
+const srcPath = path.resolve(__dirname, 'src/app');
 const distPath = path.resolve(__dirname, 'dist');
 const basePath = 'admin';
 const assetPath = 'assets';
@@ -81,7 +81,7 @@ module.exports = {
 
     plugins: [
         new CopyWebpackPlugin([
-            {   from: path.resolve(srcPath, 'ui/assets'),
+            {   from: path.resolve(srcPath, 'assets'),
                 to: `${assetPath}/images/[path][name].[hash:8].[ext]`,
                 test: /.(webp|jpg|jpeg|png|gif|svg|ico)$/,
                 toType: 'template'
@@ -112,7 +112,7 @@ module.exports = {
             filename: `${assetPath}/manifest.[hash:8].json`,
             background_color: '#fafafa',
             icons: [
-                {   src: path.resolve('src/ui/assets/fluidicon.png'),
+                {   src: path.resolve('src/app/assets/fluidicon.png'),
                     sizes: [96, 128, 192, 256, 384, 512],
                     destination: `${assetPath}/images`,
                 }
@@ -124,7 +124,7 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.vue', '.json'],
         alias: {
             '@app': srcPath,
-            '@assets': path.resolve(srcPath, 'ui/assets'),
+            '@assets': path.resolve(srcPath, 'assets'),
             'vue$': 'vue/dist/vue.runtime.esm.js'
         }
     },
@@ -148,6 +148,6 @@ module.exports = {
     },
 
     entry: {
-        'assets/main': path.resolve(srcPath, 'ui/entry-client.ts')
+        'assets/main': path.resolve(srcPath, 'entry-client.ts')
     }
 };

@@ -14,7 +14,7 @@ require('webpack');
 
 const prod = 'production' === process.env.NODE_ENV || argv._.includes('production') || argv.production;
 const mode = prod ? 'production' : 'development';
-const entry = !argv.watch ? 'src/lambda.ts' : 'src/local.ts';
+const entry = !argv.watch ? 'src/server/lambda.ts' : 'src/server/local.ts';
 
 module.exports = {
     target: 'node',
@@ -38,8 +38,8 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js'],
         alias: {
-            '@app': path.resolve(__dirname, 'src'),
-            '@assets': path.resolve(__dirname, 'src/ui/assets'),
+            '@server': path.resolve(__dirname, 'src/server'),
+            '@assets': path.resolve(__dirname, 'src/app/assets'),
             'aws-serverless-express': path.resolve(__dirname, 'node_modules/aws-serverless-express/src')
         }
     },

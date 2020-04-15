@@ -8,9 +8,9 @@
  */
 
 import test from 'ava';
-import {VersionParser} from '../../../src/composer/semver/VersionParser';
-import {VersionParserInvalidVersionError} from '../../../src/errors/VersionParserInvalidVersionError';
-import {LooseObject} from '../../../src/utils/LooseObject';
+import {VersionParser} from '../../../src/server/composer/semver/VersionParser';
+import {VersionParserInvalidVersionError} from '../../../src/server/errors/VersionParserInvalidVersionError';
+import {LooseObject} from '../../../src/server/utils/LooseObject';
 
 const successfulNormalizedVersions: LooseObject = {
     'none': ['1.0.0', '1.0.0.0'],

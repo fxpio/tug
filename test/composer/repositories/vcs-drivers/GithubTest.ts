@@ -8,9 +8,9 @@
  */
 
 import test from 'ava';
-import {Config} from '../../../../src/configs/Config';
-import {GithubDriver} from '../../../../src/composer/repositories/vcs-drivers/GithubDriver';
-import {LooseObject} from '../../../../src/utils/LooseObject';
+import {Config} from '../../../../src/server/configs/Config';
+import {GithubDriver} from '../../../../src/server/composer/repositories/vcs-drivers/GithubDriver';
+import {LooseObject} from '../../../../src/server/utils/LooseObject';
 
 const supports: LooseObject = {
     'official domain http protocol': [true, 'https://github.com/fxpio/fxp-security'],

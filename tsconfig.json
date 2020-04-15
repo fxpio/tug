@@ -3,7 +3,8 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "@app/*": ["src/*"]
+            "@server/*": ["src/server/*"],
+            "@app/*": ["src/app/*"]
         },
         "outDir": "./dist-ts/",
         "sourceMap": true,
