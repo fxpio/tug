@@ -40,7 +40,11 @@ export class AssetManager
      */
     public get(path: string): string {
         if (null === this.manifest) {
-            this.manifest = JSON.parse(fs.readFileSync(this.manifestFile).toString()) as LooseObject;
+            try {
+                this.manifest = JSON.parse(fs.readFileSync(this.manifestFile).toString()) as LooseObject;
+            } catch (e) {
+                this.manifest = {};
+            }
         }
 
         let val = this.manifest.hasOwnProperty(path) ? this.manifest[path] : path;
