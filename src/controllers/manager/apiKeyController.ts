@@ -17,6 +17,21 @@ import {Request, Response} from 'express';
 import Joi from 'joi';
 
 /**
+ * List the api keys.
+ *
+ * @param {Request}  req  The request
+ * @param {Response} res  The response
+ * @param {Function} next The next callback
+ *
+ * @return {Promise<void>}
+ */
+export async function listApiKey(req: Request, res: Response, next: Function): Promise<void> {
+    let db = req.app.get('db') as Database;
+    let repo = db.getRepository<ApiKeyRepository>(ApiKeyRepository);
+    res.json(await repo.search({}, ['id'], <string> req.query.search, <string> req.query.lastId));
+}
+
+/**
  * Create the api key.
  *
  * @param {Request}  req  The request
