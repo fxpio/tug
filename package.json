@@ -1,7 +1,7 @@
 {
   "name": "@fxp/satis-serverless",
   "version": "1.0.0",
-  "description": "Serverless Composer repository for private PHP packages",
+  "description": "Composer private repository for private PHP packages on AWS Serverless",
   "main": "src/lambda.js",
   "repository": "git@github.com:fxpio/fxp-satis-serverless.git",
   "author": "François Pluchino <francois.pluchino@gmail.com>",
