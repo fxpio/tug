@@ -8,7 +8,6 @@
  */
 
 import {createApp} from '@server/app';
-import {AssetManager} from '@server/assets/AssetManager';
 import {AwsDynamoDbDatabase} from '@server/db/AwsDynamoDbDatabase';
 import {Logger} from '@server/loggers/Logger';
 import {BasicMockAuthBuilder} from '@server/middlewares/auth/builders/BasicMockAuthBuilder';
@@ -20,7 +19,6 @@ import dotenv from 'dotenv';
 import {Request, Response} from 'express';
 import fs from 'fs-extra';
 import http, {IncomingMessage} from 'http';
-import {URL} from 'url';
 
 dotenv.config();
 
@@ -36,25 +34,25 @@ const app = createApp({
     basicAuthBuilder: new BasicMockAuthBuilder(env.AWS_ACCESS_KEY_ID as string, env.AWS_SECRET_ACCESS_KEY as string),
     debug,
     fallbackAssets(req: Request, res: Response, next: Function) {
-        const assetManager = req.app.get('asset-manager') as AssetManager;
-        const asset = (new URL(`${req.protocol}://${req.get('host')}${req.originalUrl}`)).pathname.replace(/^\//g, '');
-        let realAsset = assetManager.get(asset);
-
-        if (asset === realAsset) {
-            let baseUrl = req.app.get('asset-base-url');
-            if (undefined === baseUrl) {
-                baseUrl = '';
-                try {
-                    const config = fs.readJsonSync(__dirname + '/server-config.json') as LooseObject;
-                    baseUrl = config.assetBaseUrl ? config.assetBaseUrl : baseUrl;
-                    req.app.set('asset-base-url', baseUrl);
-                } catch (e) {}
-            }
-
-            realAsset = baseUrl + realAsset;
+        let assetBaseUrl = req.app.get('asset-base-url');
+        if (undefined === assetBaseUrl) {
+            assetBaseUrl = '';
+            try {
+                const config = fs.readJsonSync(__dirname + '/remote-assets-config.json') as LooseObject;
+                assetBaseUrl = config.assetBaseUrl ? config.assetBaseUrl : assetBaseUrl;
+                req.app.set('asset-base-url', assetBaseUrl);
+            } catch (e) {}
         }
 
-        http.get(realAsset, (assetRes: IncomingMessage) => {
+        if (!assetBaseUrl) {
+            next();
+
+            return;
+        }
+
+        const path = '/' === req.path ? '/index.html' : req.path;
+
+        http.get(assetBaseUrl + path, (assetRes: IncomingMessage) => {
             if (200 === assetRes.statusCode) {
                 for (const name of Object.keys(assetRes.headers)) {
                     res.setHeader(name, assetRes.headers[name] as string);

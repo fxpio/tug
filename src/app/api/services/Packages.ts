@@ -7,17 +7,23 @@
  * file that was distributed with this source code.
  */
 
-import {BaseService} from '@app/api/BaseService';
-import {Canceler} from '@app/api/Canceler';
-import {ListOptions} from '@app/api/models/requests/ListOptions';
-import {CodeRepository} from '@app/api/models/responses/CodeRepository';
-import {ListResponse} from '@app/api/models/responses/ListResponse';
+import {BaseService} from './../BaseService';
+import {Canceler} from './../Canceler';
+import {ListOptions} from './../models/requests/ListOptions';
+import {CodeRepository} from './../models/responses/CodeRepository';
+import {ListResponse} from './../models/responses/ListResponse';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Packages extends BaseService
-{
+export class Packages extends BaseService {
+    /**
+     * @inheritDoc
+     */
+    public static getName() {
+        return 'Repositories';
+    }
+
     /**
      * List the packages.
      *
@@ -28,12 +34,5 @@ export class Packages extends BaseService
      */
     public async list(options?: ListOptions, canceler?: Canceler): Promise<ListResponse<CodeRepository>> {
         return this.requestList<CodeRepository>({url: '/manager/repositories', params: options || {}}, canceler);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static getName() {
-        return 'Repositories';
     }
 }

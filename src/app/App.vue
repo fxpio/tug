@@ -1,0 +1,106 @@
+<!--
+This file is part of the Fxp Satis Serverless package.
+
+(c) François Pluchino <francois.pluchino@gmail.com>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+-->
+
+<template>
+    <v-app>
+        <snackbar></snackbar>
+
+        <transition :name="transitionName">
+            <app-drawer :items="drawerItems" v-if="$store.state.auth.authenticated"></app-drawer>
+        </transition>
+
+        <transition :name="transitionName">
+            <router-view name="toolbar" v-if="$store.state.auth.authenticated"></router-view>
+        </transition>
+
+        <v-content>
+            <transition :name="transitionName" mode="out-in">
+                <router-view :key="$route.fullPath"></router-view>
+            </transition>
+        </v-content>
+
+        <router-view name="fab"></router-view>
+    </v-app>
+</template>
+
+<script lang="ts">
+    import AppDrawer from '@app/components/AppDrawer.vue';
+    import Snackbar from '@app/components/Snackbar.vue';
+    import Vue from 'vue';
+    import {Component, Watch} from 'vue-property-decorator';
+    import {MetaInfo} from 'vue-meta';
+
+    /**
+     * @author François Pluchino <francois.pluchino@gmail.com>
+     */
+    @Component({
+        components: {AppDrawer, Snackbar},
+    })
+    export default class App extends Vue {
+        public static readonly DEFAULT_TRANSITION: string = 'fade';
+
+        public transitionName: string = App.DEFAULT_TRANSITION;
+
+        public drawerItems: object[] = [
+            {icon: 'home', color: 'blue', text: 'views.home.title', route: {name: 'home'}},
+            {heading: 'menu.composer'},
+            {icon: 'folder', color: 'accent', text: 'views.repositories.title', route: {name: 'repositories'}},
+            {icon: 'insert_drive_file', color: 'accent', text: 'views.packages.title', route: {name: 'packages'}},
+            {heading: 'menu.configuration'},
+            {icon: 'vpn_key', color: 'grey', text: 'views.api-keys.title', route: undefined},
+            {icon: 'settings', color: 'grey', text: 'views.settings.title', route: {name: 'settings'}},
+            {divider: true},
+            {icon: 'info', color: 'grey', text: 'views.about.title', route: {name: 'about'}},
+        ];
+
+        public metaInfo(): MetaInfo {
+            return {
+                title: this.$t('views.home.title', {}) as string,
+                titleTemplate: (titleChunk) => titleChunk + ' · ' + this.$t('app.name'),
+            };
+        }
+
+        public get darkModeEnabled(): boolean {
+            return this.$store.state.darkMode.enabled;
+        }
+
+        @Watch('darkModeEnabled')
+        public watchDarkMode(enabled: boolean): void {
+            this.$vuetify.theme.dark = enabled;
+        }
+
+        public created(): void {
+            this.watchDarkMode(this.darkModeEnabled);
+            this.$router.beforeEach((to, from, next) => {
+                let transitionName = to.meta.transitionName || from.meta.transitionName;
+
+                if (transitionName === 'slide') {
+                    const toDepth = to.path.split('/').length;
+                    const fromDepth = from.path.split('/').length;
+                    transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+                }
+
+                this.transitionName = transitionName || App.DEFAULT_TRANSITION;
+
+                next();
+            });
+        }
+
+        public async mounted(): Promise<void> {
+            const pl = document.getElementById('pl');
+
+            if (pl) {
+                pl.addEventListener('transitionend', () => {
+                    pl.remove();
+                });
+                pl.style.opacity = '0';
+            }
+        }
+    }
+</script>

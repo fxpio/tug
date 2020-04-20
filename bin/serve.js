@@ -9,7 +9,7 @@
 
 'use strict';
 
-require('dotenv').config();
+require('dotenv').config({path: '.env.local'});
 const program = require('commander');
 const async = require('async');
 const fs = require('fs-extra');
@@ -132,7 +132,7 @@ utils.spawn('node bin/config -e')
             // compile and start the express server
             async.apply(utils.spawn, 'webpack --watch --config webpack.config.js'),
             // compile and start the webpack dev server for UI
-            async.apply(utils.spawn, 'webpack-dev-server --config webpack.ui.config.js')
+            async.apply(utils.spawn, 'vue-cli-service serve')
         ];
 
         if (!startLocalDynamoDb) {

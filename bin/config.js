@@ -16,8 +16,8 @@ const {prompt} = require('inquirer');
 const AWS = require('aws-sdk');
 const utils = require('./utils/utils');
 
-const ENV_PATH = './.env';
-const ENV_DIST_PATH = './.env.dist';
+const ENV_PATH = './.env.local';
+const ENV_DIST_PATH = './.env';
 
 let envs = utils.mergeVariables(utils.readEnvVariables(ENV_DIST_PATH), utils.readEnvVariables(ENV_PATH));
 let initialEnvs = Object.assign({}, envs);

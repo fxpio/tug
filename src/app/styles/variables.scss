@@ -1,0 +1,54 @@
+/*
+ * This file is part of the Fxp Satis Serverless package.
+ *
+ * (c) François Pluchino <francois.pluchino@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+@import "~vuetify/src/styles/tools/functions";
+@import "~vuetify/src/styles/settings/colors";
+
+// Fonts
+$roboto-font-path: '~roboto-fontface/fonts';
+$material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+
+// Transitions
+$transition: (
+    fast-out-slow-in: cubic-bezier(0.4, 0.0, 0.2, 1),
+    linear-out-slow-in: cubic-bezier(0.0, 0.0, 0.2, 1),
+    fast-out-linear-in: cubic-bezier(0.4, 0.0, 1, 1),
+    ease-in-out: cubic-bezier(0.4, 0.0, 0.6, 1),
+    fast-in-fast-out: cubic-bezier(.25, .8, .25, 1),
+    swing: cubic-bezier(.25, .8, .50, 1)
+);
+
+$primary-transition: 0.3s map-get($transition, 'swing') !default;
+$secondary-transition: 0.2s map-get($transition, 'ease-in-out') !default;
+
+// Theme
+$material-light: () !default;
+$material-light: map-deep-merge(
+        (
+            'app-bar': map-deep-get($grey, 'lighten-5'),
+            'background': map-deep-get($grey, 'lighten-5'),
+            'bg-color': map-deep-get($grey, 'lighten-5'),
+            'toolbar-border-color': map-deep-get($grey, 'lighten-3'),
+            'card-border-color': map-deep-get($grey, 'lighten-3'),
+        ),
+        $material-light
+);
+
+$material-dark: () !default;
+$material-dark: map-deep-merge(
+        (
+            'app-bar': #121212,
+            'background': #121212,
+            'bg-color': #121212,
+            'toolbar-border-color': map-deep-get($grey, 'darken-4'),
+            'card-border-color': map-deep-get($grey, 'darken-4'),
+        ),
+        $material-dark
+);

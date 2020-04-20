@@ -11,7 +11,7 @@
 
 'use strict';
 
-require('dotenv').config();
+require('dotenv').config({path: '.env.local'});
 const fetch = require('node-fetch');
 const program = require('commander');
 const utils = require('./utils/utils');

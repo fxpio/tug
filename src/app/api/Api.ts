@@ -7,22 +7,21 @@
  * file that was distributed with this source code.
  */
 
-import {ApiService, ApiServiceConstructor} from '@app/api/ApiService';
-import {Authorization} from '@app/api/services/Authorization';
-import {Repositories} from '@app/api/services/Repositories';
+import {ApiService, ApiServiceConstructor} from './ApiService';
+import {Authorization} from './services/Authorization';
+import {Repositories} from './services/Repositories';
 import {ApiServiceNotFoundError} from '@app/errors/ApiServiceNotFoundError';
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 
 const SERVICES: ApiServiceConstructor[] = [
     Authorization,
-    Repositories
+    Repositories,
 ];
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Api
-{
+export class Api {
     private readonly axios: AxiosInstance;
 
     private readonly services: ApiServices;
@@ -33,20 +32,20 @@ export class Api
      * @param {string}                  baseUrl    The base url
      * @param {ApiServiceConstructor[]} [services] The api services
      */
-    constructor (baseUrl: string, services?: ApiServiceConstructor[]) {
+    constructor(baseUrl: string, services?: ApiServiceConstructor[]) {
         this.axios = axios.create({
             baseURL: baseUrl,
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         });
 
         this.services = {};
         services = services ? services : SERVICES;
 
-        for (let i = 0; i < services.length; ++i) {
-            this.add(services[i]);
+        for (const service of services) {
+            this.add(service);
         }
     }
 
@@ -68,7 +67,7 @@ export class Api
      *
      * @return {ApiService}
      */
-    public get<T extends ApiService>(service: ApiServiceConstructor|string): T {
+    public get<T extends ApiService>(service: ApiServiceConstructor | string): T {
         let name = null;
 
         if (typeof service === 'string') {
@@ -94,7 +93,7 @@ export class Api
      *
      * @return {number}
      */
-    public addRequestInterceptor(onFulfilled?: (value: AxiosRequestConfig) => AxiosRequestConfig|Promise<AxiosRequestConfig>, onRejected?: (error: any) => any): number {
+    public addRequestInterceptor(onFulfilled?: (value: AxiosRequestConfig) => AxiosRequestConfig | Promise<AxiosRequestConfig>, onRejected?: (error: any) => any): number {
         return this.axios.interceptors.request.use(onFulfilled, onRejected);
     }
 
@@ -106,7 +105,7 @@ export class Api
      *
      * @return {number}
      */
-    public addResponseInterceptor(onFulfilled?: (value: AxiosResponse) => AxiosResponse|Promise<AxiosResponse>, onRejected?: (error: any) => any): number {
+    public addResponseInterceptor(onFulfilled?: (value: AxiosResponse) => AxiosResponse | Promise<AxiosResponse>, onRejected?: (error: any) => any): number {
         return this.axios.interceptors.response.use(onFulfilled, onRejected);
     }
 }
@@ -114,7 +113,6 @@ export class Api
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-interface ApiServices
-{
+interface ApiServices {
     [key: string]: ApiService;
 }

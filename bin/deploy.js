@@ -11,7 +11,7 @@
 
 'use strict';
 
-require('dotenv').config();
+require('dotenv').config({path: '.env.local'});
 const fs = require('fs');
 const program = require('commander');
 const AWS = require('aws-sdk');

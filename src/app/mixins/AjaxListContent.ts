@@ -12,33 +12,47 @@ import {ListResponse} from '@app/api/models/responses/ListResponse';
 import {getRequestErrorMessage} from '@app/utils/error';
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
+import {RequestError} from '@app/errors/RequestError';
+import {SnackbarMessage} from '@app/snackbars/SnackbarMessage';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 @Component
-export class AjaxListContent<I extends object> extends Vue
-{
+export class AjaxListContent<I extends object> extends Vue {
     public loading: boolean = false;
 
     public headers: object[] = [];
 
     public items: I[] = [];
 
-    public lastId: string|null = null;
+    public lastId: string | null = null;
 
     public search: string = '';
 
+    public previousError: RequestError | null = null;
+
     protected previousRequest?: Canceler;
+
+    public beforeDestroy(): void {
+        this.previousError = null;
+
+        if (this.previousRequest) {
+            this.previousRequest.cancel();
+            this.previousRequest = undefined;
+        }
+    }
 
     /**
      * Fetch data.
      *
-     * @param {string} [searchValue] The search value
+     * @param {string}  [searchValue] The search value
+     * @param {boolean} showSnackbar  Check if the error message must be displayed
      */
-    public async fetchData(searchValue?: string): Promise<void> {
+    public async fetchData(searchValue?: string, showSnackbar: boolean = false): Promise<void> {
         try {
             this.loading = true;
+            this.previousError = null;
             this.lastId = undefined !== searchValue ? null : this.lastId;
 
             if (this.previousRequest) {
@@ -46,19 +60,22 @@ export class AjaxListContent<I extends object> extends Vue
             }
             this.previousRequest = new Canceler();
 
-            let res = await this.fetchDataRequest(searchValue);
+            const res = await this.fetchDataRequest(searchValue);
             this.previousRequest = undefined;
 
-            this.loading = false;
             this.lastId = res.lastId;
             this.items = undefined !== searchValue ? [] : this.items;
 
-            for (let i = 0; i < res.results.length; ++i) {
-                this.items.push(res.results[i]);
+            for (const result of res.results) {
+                this.items.push(result);
             }
         } catch (e) {
-            this.loading = false;
-            this.$store.commit('snackbar/snack', {message: getRequestErrorMessage(this, e), color: 'error'});
+            const message = getRequestErrorMessage(this, e);
+            this.previousError = new RequestError(e, message);
+
+            if (showSnackbar) {
+                this.$snackbar.snack(new SnackbarMessage(message, 'error'));
+            }
         }
     }
 

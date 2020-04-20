@@ -7,11 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import {AppError} from '@app/errors/AppError';
+import {AppError} from './AppError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class ApiError extends AppError
-{
+export class ApiError extends AppError {
 }

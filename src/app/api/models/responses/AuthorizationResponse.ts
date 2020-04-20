@@ -10,7 +10,6 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface AuthorizationResponse
-{
+export interface AuthorizationResponse {
     token: string;
 }

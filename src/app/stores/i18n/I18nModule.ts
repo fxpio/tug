@@ -7,31 +7,28 @@
  * file that was distributed with this source code.
  */
 
-import {I18nModuleState} from '@app/stores/i18n/I18nModuleState';
-import {I18nState} from '@app/stores/i18n/I18nState';
+import {I18nModuleState} from './I18nModuleState';
+import {I18nState} from './I18nState';
+import moment from 'moment';
 import {Validator} from 'vee-validate';
-import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-import Router from 'vue-router';
 import {GetterTree, Module, MutationTree} from 'vuex';
+import vuetify from '@app/plugins/vuetify';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class I18nModule<R extends I18nModuleState> implements Module<I18nState, R>
-{
-    private readonly router: Router;
+export class I18nModule<R extends I18nModuleState> implements Module<I18nState, R> {
     private readonly i18n: VueI18n;
+
+    private readonly storage: Storage;
 
     /**
      * Constructor.
-     *
-     * @param router The router
-     * @param i18n   The router
      */
-    public constructor(router: Router, i18n: VueI18n) {
-        this.router = router;
+    public constructor(i18n: VueI18n, storage?: Storage) {
         this.i18n = i18n;
+        this.storage = storage ? storage : localStorage;
     }
 
     public get namespaced(): boolean {
@@ -41,7 +38,7 @@ export class I18nModule<R extends I18nModuleState> implements Module<I18nState, 
     public get state(): I18nState {
         return {
             locale: this.findLocale(),
-            fallback: <string> this.i18n.fallbackLocale
+            fallback: this.i18n.fallbackLocale as string,
         };
     }
 
@@ -57,11 +54,11 @@ export class I18nModule<R extends I18nModuleState> implements Module<I18nState, 
     }
 
     public get mutations(): MutationTree<I18nState> {
-        let self = this;
+        const self = this;
 
         return {
             setLocale(state: I18nState, locale: string): void {
-                let oldLocale = state.locale;
+                const oldLocale = state.locale;
                 locale = self.getAvailableLocale(locale) || self.i18n.locale;
 
                 if (oldLocale === locale) {
@@ -80,13 +77,13 @@ export class I18nModule<R extends I18nModuleState> implements Module<I18nState, 
      * @return {string}
      */
     private findLocale(): string {
-        let locale = localStorage.getItem('i18n:locale');
+        let locale = this.storage.getItem('i18n:locale');
 
         if (null === locale && window.navigator) {
-            let availables = window.navigator.languages;
+            const availables: any = window.navigator.languages;
 
-            for (let i = 0; i < availables.length; ++i) {
-                let availableLocale = this.getAvailableLocale(availables[i]);
+            for (const available of availables) {
+                const availableLocale = this.getAvailableLocale(available);
 
                 if (availableLocale) {
                     locale = availableLocale;
@@ -105,7 +102,7 @@ export class I18nModule<R extends I18nModuleState> implements Module<I18nState, 
      *
      * @return {string|null}
      */
-    private getAvailableLocale(locale: string|null): string|null {
+    private getAvailableLocale(locale: string | null): string | null {
         if (locale) {
             if (this.i18n.messages[locale]) {
                 return locale;
@@ -129,10 +126,11 @@ export class I18nModule<R extends I18nModuleState> implements Module<I18nState, 
      * @return {string}
      */
     private saveLocale(locale: string): string {
-        localStorage.setItem('i18n:locale', locale);
+        this.storage.setItem('i18n:locale', locale);
         this.i18n.locale = locale;
         Validator.localize(locale);
-        Vue.prototype.$vuetify.lang.current = locale;
+        vuetify.framework.lang.current = locale;
+        moment.locale(locale);
 
         return locale;
     }

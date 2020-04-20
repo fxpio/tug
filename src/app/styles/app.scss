@@ -1,0 +1,23 @@
+/*
+ * This file is part of the Fxp Satis Serverless package.
+ *
+ * (c) François Pluchino <francois.pluchino@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+@import '~vuetify/src/styles/styles';
+@import 'variables';
+
+@import 'elements/global';
+@import 'elements/transitions';
+@import 'elements/typography';
+@import 'elements/menu';
+
+@import 'vuetify/components/VBtn';
+@import 'vuetify/components/VNavigationDrawer';
+@import 'vuetify/components/VToolbar';
+@import 'vuetify/components/VTooltip';
+@import 'vuetify/components/VCard';
+@import 'vuetify/components/VIcon';

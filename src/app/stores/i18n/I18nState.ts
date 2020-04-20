@@ -10,8 +10,7 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface I18nState
-{
+export interface I18nState {
     locale: string;
     fallback: string;
 }

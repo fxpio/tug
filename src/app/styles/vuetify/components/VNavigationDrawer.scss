@@ -1,0 +1,28 @@
+/*
+ * This file is part of the Fxp Satis Serverless package.
+ *
+ * (c) François Pluchino <francois.pluchino@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+.v-application {
+    > .v-application--wrap {
+        > .v-navigation-drawer {
+            > .v-navigation-drawer__border {
+                display: none;
+            }
+        }
+    }
+}
+
+@media (min-width: 1264px) {
+    .v-application {
+        > .v-application--wrap {
+            > .v-navigation-drawer {
+                background-color: transparent;
+            }
+        }
+    }
+}

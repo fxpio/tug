@@ -12,16 +12,14 @@ import {AxiosInstance} from 'axios';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface ApiService
-{
+export interface ApiService {
 }
 
 /**
  * Interface of database repository constructor.
  */
-export interface ApiServiceConstructor
-{
-    new (client: AxiosInstance): ApiService;
+export interface ApiServiceConstructor {
+    new(client: AxiosInstance): ApiService;
 
     /**
      * Get the name of api service.

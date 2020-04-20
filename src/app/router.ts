@@ -7,94 +7,82 @@
  * file that was distributed with this source code.
  */
 
-import {RootState} from '@app/stores/RootState';
 import Vue from 'vue';
 import Router from 'vue-router';
-import {Route} from 'vue-router/types/router';
-import {Store} from 'vuex';
 
+/**
+ * @author François Pluchino <francois.pluchino@gmail.com>
+ */
 Vue.use(Router);
 
-/**
- * Create the router.
- *
- * @return {Router}
- *
- * @author François Pluchino <francois.pluchino@gmail.com>
- */
-export function createRouter(): Router {
-    return new Router({
-        mode: 'history',
-        base: '/admin/',
-        routes: [
-            {   path: '',
-                redirect: 'home'
+export default new Router({
+    mode: 'history',
+    base: '/admin',
+    routes: [
+        {
+            path: '',
+            redirect: 'home',
+        },
+        {
+            path: '/home',
+            name: 'home',
+            meta: {requiresAuth: true},
+            components: {
+                default: () => import(/* webpackChunkName: "home" */ '@app/views/Home.vue'),
+                toolbar: () => import(/* webpackChunkName: "home" */'@app/components/Toolbar.vue'),
             },
-            {   path: '/home',
-                name: 'home',
-                meta: {requiresAuth: true},
-                components: {
-                    default: () => import('@app/pages/Home').then(({ Home }) => Home),
-                    toolbar: () => import('@app/components/Toolbar').then(({ Toolbar }) => Toolbar),
-                }
+        },
+        {
+            path: '/repositories',
+            name: 'repositories',
+            meta: {requiresAuth: true},
+            components: {
+                default: () => import(/* webpackChunkName: "repositories" */ '@app/views/repositories/Repositories.vue'),
+                toolbar: () => import(/* webpackChunkName: "repositories" */'@app/components/SearchToolbar.vue'),
             },
-            {   path: '/login',
-                name: 'login',
-                component: () => import('@app/pages/Login').then(({ Login }) => Login)
+        },
+        {
+            path: '/packages',
+            name: 'packages',
+            meta: {requiresAuth: true},
+            components: {
+                default: () => import(/* webpackChunkName: "packages" */ '@app/views/packages/Packages.vue'),
+                toolbar: () => import(/* webpackChunkName: "packages" */'@app/components/SearchToolbar.vue'),
             },
-            {   path: '/repositories',
-                name: 'repositories',
-                meta: {requiresAuth: true},
-                components: {
-                    default: () => import('@app/pages/Repositories').then(({ Repositories }) => Repositories),
-                    toolbar: () => import('@app/pages/Repositories/ListToolbar').then(({ Toolbar }) => Toolbar),
-                },
+        },
+        {
+            path: '/settings',
+            name: 'settings',
+            meta: {requiresAuth: true},
+            components: {
+                default: () => import(/* webpackChunkName: "settings" */ '@app/views/Settings.vue'),
+                toolbar: () => import(/* webpackChunkName: "settings" */'@app/components/Toolbar.vue'),
             },
-            {   path: '/packages',
-                name: 'packages',
-                meta: {requiresAuth: true},
-                components: {
-                    default: () => import('@app/pages/Packages').then(({ Packages }) => Packages),
-                    toolbar: () => import('@app/pages/Packages/ListToolbar').then(({ Toolbar }) => Toolbar),
-                },
+        },
+        {
+            path: '/about',
+            name: 'about',
+            meta: {requiresAuth: true},
+            components: {
+                default: () => import(/* webpackChunkName: "about" */ '@app/views/About.vue'),
+                toolbar: () => import(/* webpackChunkName: "about" */'@app/components/Toolbar.vue'),
             },
-            {   path: "*",
-                name: 'error404',
-                components: {
-                    default: () => import('@app/components/Error404').then(({ Error404 }) => Error404),
-                    toolbar: () => import('@app/components/Toolbar').then(({ Toolbar }) => Toolbar),
-                }
-            }
-        ]
-    });
-}
-
-/**
- * Add the auth router guard.
- *
- * @param {VueRouter}        router
- * @param {Store<RootState>} store
- *
- * @author François Pluchino <francois.pluchino@gmail.com>
- */
-export function routerAddAuthGuard(router: Router, store: Store<RootState>): void {
-    router.beforeEach((to: Route, from: Route, next: Function) => {
-        let guard = undefined;
-
-        if (to.matched.some(record => record.meta.requiresAuth)) {
-            if (!store.getters['auth/isAuthenticated']) {
-                guard = {
-                    name: 'login',
-                    params: {
-                        locale: store.state.i18n.locale
-                    },
-                    query: {
-                        redirect: to.fullPath,
-                    },
-                };
-            }
-        }
-
-        next(guard);
-    });
-}
+        },
+        {
+            path: '/login',
+            name: 'login',
+            components: {
+                default: () => import(/* webpackChunkName: "login" */ '@app/views/Login.vue'),
+                toolbar: () => import(/* webpackChunkName: "login" */'@app/components/Toolbar.vue'),
+            },
+        },
+        {
+            path: '*',
+            name: 'not-found',
+            components: {
+                default: () => import('@app/views/NotFound.vue'),
+                toolbar: () => import('@app/components/Toolbar.vue'),
+            },
+        },
+    ],
+});

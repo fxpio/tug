@@ -10,7 +10,6 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface DrawerState
-{
-    show: boolean|null;
+export interface DrawerState {
+    show: boolean;
 }

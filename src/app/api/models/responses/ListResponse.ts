@@ -10,9 +10,8 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface ListResponse<T>
-{
-    results: Array<T>;
+export interface ListResponse<T> {
+    results: T[];
     count: number;
-    lastId: string|null;
+    lastId: string | null;
 }

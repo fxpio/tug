@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+        html {
+            overflow-y: scroll;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        *, ::before, ::after {
+            -webkit-box-sizing: inherit;
+            box-sizing: inherit;
+        }
+
+        #pl {
+            background-color: #43748d;
+            position: fixed;
+            z-index: 10000;
+            margin-top: 0;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            transition: opacity 0.2s linear;
+        }
+
+        #pl-ctr {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #pl-ctr-abs,
+        #pl-ctr-tl {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 200px;
+            width: 200px;
+            margin-top: -100px;
+            margin-left: -100px;
+        }
+
+        #pl-ctr-tl {
+            text-align: center;
+            height: auto;
+            margin-top: 80px;
+            font-size: 23px;
+            font-weight: bold;
+            font-family: sans-serif;
+            color: #ffffff;
+        }
+
+        .pl-obj {
+            -moz-border-radius: 50% 50% 50% 50%;
+            -webkit-border-radius: 50% 50% 50% 50%;
+            border-radius: 50% 50% 50% 50%;
+            position: absolute;
+            border-left: 5px solid #ffffff;
+            border-right: 5px solid #ffffff;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            -webkit-animation: animate 2s infinite;
+            animation: animate 2s infinite;
+        }
+
+        #pl-obj1 {
+            left: 75px;
+            top: 75px;
+            width: 50px;
+            height: 50px;
+        }
+
+        #pl-obj2 {
+            left: 65px;
+            top: 65px;
+            width: 70px;
+            height: 70px;
+            -webkit-animation-delay: 0.1s;
+            animation-delay: 0.1s;
+        }
+
+        #pl-obj3 {
+            left: 55px;
+            top: 55px;
+            width: 90px;
+            height: 90px;
+            -webkit-animation-delay: 0.2s;
+            animation-delay: 0.2s;
+        }
+
+        #pl-obj4 {
+            left: 45px;
+            top: 45px;
+            width: 110px;
+            height: 110px;
+            -webkit-animation-delay: 0.3s;
+            animation-delay: 0.3s;
+        }
+
+        @-webkit-keyframes animate {
+            50% {
+                -ms-transform: rotate(180deg);
+                -webkit-transform: rotate(180deg);
+                transform: rotate(180deg);
+            }
+
+            100% {
+                -ms-transform: rotate(0deg);
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+        }
+
+        @keyframes animate {
+            50% {
+                -ms-transform: rotate(180deg);
+                -webkit-transform: rotate(180deg);
+                transform: rotate(180deg);
+            }
+
+            100% {
+                -ms-transform: rotate(0deg);
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+        }
+    </style>
+</head>
+<body>
+<noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+        Please enable it to continue.</strong>
+</noscript>
+<div id="pl">
+    <div id="pl-ctr">
+        <div id="pl-ctr-abs">
+            <div class="pl-obj" id="pl-obj4"></div>
+            <div class="pl-obj" id="pl-obj3"></div>
+            <div class="pl-obj" id="pl-obj2"></div>
+            <div class="pl-obj" id="pl-obj1"></div>
+        </div>
+        <div id="pl-ctr-tl"><%= htmlWebpackPlugin.options.title %></div>
+    </div>
+</div>
+<div id="app"></div>
+</body>
+</html>

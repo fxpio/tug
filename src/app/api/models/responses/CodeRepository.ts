@@ -10,8 +10,7 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface CodeRepository
-{
+export interface CodeRepository {
     id: string;
     url: string;
     type: string;

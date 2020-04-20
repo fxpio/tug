@@ -10,9 +10,8 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface AuthState
-{
+export interface AuthState {
     authenticated: boolean;
     authenticationPending: boolean;
-    token: string|null;
+    token: string | null;
 }

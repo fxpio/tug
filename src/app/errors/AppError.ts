@@ -10,8 +10,8 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class AppError extends Error
-{
+export class AppError extends Error {
+    // tslint:disable-next-line:variable-name
     private __proto__: Error;
 
     /**

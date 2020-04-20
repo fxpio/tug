@@ -7,12 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import {I18nState} from '@app/stores/i18n/I18nState';
+import {I18nState} from './I18nState';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface I18nModuleState
-{
+export interface I18nModuleState {
     i18n: I18nState;
 }

@@ -10,8 +10,7 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Canceler
-{
+export class Canceler {
     private executor?: Function;
 
     /**

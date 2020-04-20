@@ -8,6 +8,8 @@
  */
 
 import {Canceler} from '@app/api/Canceler';
+import {RequestError} from '@app/errors/RequestError';
+import {SnackbarMessage} from '@app/snackbars/SnackbarMessage';
 import {getRequestErrorMessage} from '@app/utils/error';
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
@@ -16,41 +18,47 @@ import {Component} from 'vue-property-decorator';
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 @Component
-export class AjaxContent<D> extends Vue
-{
+export class AjaxContent extends Vue {
     public loading: boolean = false;
 
-    public data?: D;
+    public previousError: RequestError | null = null;
 
-    protected previousRequest?: Canceler;
+    public previousRequest?: Canceler;
+
+    public beforeDestroy(): void {
+        this.previousError = null;
+
+        if (this.previousRequest) {
+            this.previousRequest.cancel();
+            this.previousRequest = undefined;
+        }
+    }
 
     /**
      * Fetch data.
      */
-    public async fetchData(): Promise<void> {
+    public async fetchData<D>(request: (canceler: Canceler) => Promise<D>,
+                              showSnackbar: boolean = false): Promise<D | undefined> {
         try {
             this.loading = true;
+            this.previousError = null;
 
             if (this.previousRequest) {
                 this.previousRequest.cancel();
             }
             this.previousRequest = new Canceler();
 
-            let res = await this.fetchDataRequest();
+            const res: D = await request(this.previousRequest);
             this.previousRequest = undefined;
 
-            this.loading = false;
-            this.data = res ? res : undefined;
+            return res as D;
         } catch (e) {
-            this.loading = false;
-            this.$store.commit('snackbar/snack', {message: getRequestErrorMessage(this, e), color: 'error'});
-        }
-    }
+            const message = getRequestErrorMessage(this, e);
+            this.previousError = new RequestError(e, message);
 
-    /**
-     * Request of fetch data.
-     */
-    public async fetchDataRequest(): Promise<D|null> {
-        return null;
+            if (showSnackbar) {
+                this.$snackbar.snack(new SnackbarMessage(message, 'error'));
+            }
+        }
     }
 }

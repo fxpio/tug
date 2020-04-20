@@ -10,8 +10,7 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface ListOptions
-{
-    search?: string|null;
-    lastId?: string|null;
+export interface ListOptions {
+    search?: string | null;
+    lastId?: string | null;
 }

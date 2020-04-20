@@ -8,7 +8,6 @@
  */
 
 import {AppOptions} from '@server/AppOptions';
-import {AssetManager} from '@server/assets/AssetManager';
 import {Cache} from '@server/caches/Cache';
 import {PackageBuilder} from '@server/composer/packages/PackageBuilder';
 import {PackageManager} from '@server/composer/packages/PackageManager';
@@ -45,7 +44,6 @@ import {PolyglotTranslator} from '@server/translators/PolyglotTranslator';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
-import path from 'path';
 
 /**
  * Create the app server.
@@ -65,7 +63,6 @@ export function createApp(options: AppOptions): express.Express {
     const basicAuthStrategy = options.basicAuthStrategy;
     const basicAuthBuilder = options.basicAuthBuilder;
     const fallbackAssets = options.fallbackAssets;
-    const assetManifestPath = path.resolve(__dirname, 'admin/assets-manifest.json');
     const debug = options.debug;
 
     // add database repositories
@@ -79,7 +76,6 @@ export function createApp(options: AppOptions): express.Express {
     const packageManager = new PackageManager(repoManager, db.getRepository<PackageRepository>(PackageRepository), queue);
     const cache = new Cache(storage);
     const packageBuilder = new PackageBuilder(repoManager, packageManager, cache);
-    const assetManager = new AssetManager(assetManifestPath, debug);
     const translator = new PolyglotTranslator('en');
 
     // add translations
@@ -106,7 +102,6 @@ export function createApp(options: AppOptions): express.Express {
     app.set('storage', storage);
     app.set('cache', cache);
     app.set('queue', queue);
-    app.set('asset-manager', assetManager);
     app.set('translator', translator);
 
     // enable middlewares

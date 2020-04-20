@@ -7,12 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import {DrawerState} from '@app/stores/drawer/DrawerState';
+import {DrawerState} from './DrawerState';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface DrawerModuleState
-{
+export interface DrawerModuleState {
     drawer: DrawerState;
 }

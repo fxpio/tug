@@ -21,11 +21,11 @@ import Vue from 'vue';
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function getRequestErrorMessage(vue: Vue, err: Error): string {
-    if ((<AxiosError>err).response && (<AxiosResponse>(<AxiosError>err).response).status) {
-        if ((<AxiosResponse>(<AxiosError>err).response)
-                && (<AxiosResponse>(<AxiosError>err).response).data
-                && (<AxiosResponse>(<AxiosError>err).response).data.message) {
-            return (<AxiosResponse>(<AxiosError>err).response).data.message;
+    if ((err as AxiosError).response && ((err as AxiosError).response as AxiosResponse).status) {
+        if (((err as AxiosError).response as AxiosResponse)
+                && ((err as AxiosError).response as AxiosResponse).data
+                && ((err as AxiosError).response as AxiosResponse).data.message) {
+            return ((err as AxiosError).response as AxiosResponse).data.message;
         }
     }
 

@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {redirectHome, showWebApp} from '@server/controllers/ui/uiController';
+import {redirectHome} from '@server/controllers/ui/uiController';
 import {asyncHandler} from '@server/utils/handler';
 import express, {NextFunction, Request, Response, Router} from 'express';
 import {RequestHandlerParams} from 'express-serve-static-core';
@@ -30,11 +30,17 @@ export function uiRoutes(router: Router, fallbackAssets?: RequestHandlerParams):
         };
     }
 
+    const staticOtps = {
+        index: false,
+        redirect: false,
+        cacheControl: 'production' !== process.env.NODE_ENV,
+    };
+    const indexOpts = Object.assign({}, staticOtps, {cacheControl: false});
+
     router.get('/', asyncHandler(redirectHome));
-    router.get('/admin', asyncHandler(showWebApp));
-    router.use('/admin/sw.js', express.static(path.resolve(basePath, 'sw.js'), {index: false, redirect: false}), fallbackAssets);
-    router.use('/admin/assets', express.static(path.resolve(basePath, 'assets'), {index: false, redirect: false}), fallbackAssets);
-    router.get('/admin/*', asyncHandler(showWebApp));
+    router.use('/admin', express.static(path.resolve(basePath, 'index.html'), indexOpts));
+    router.use('/admin', express.static(basePath, staticOtps), fallbackAssets);
+    router.use('/admin/*', express.static(path.resolve(basePath, 'index.html'), indexOpts), fallbackAssets);
 
     return router;
 }

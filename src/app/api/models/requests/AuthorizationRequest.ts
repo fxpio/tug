@@ -12,6 +12,5 @@ import {AxiosBasicCredentials} from 'axios';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface AuthorizationRequest extends AxiosBasicCredentials
-{
+export interface AuthorizationRequest extends AxiosBasicCredentials {
 }

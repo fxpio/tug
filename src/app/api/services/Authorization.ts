@@ -7,16 +7,22 @@
  * file that was distributed with this source code.
  */
 
-import {Canceler} from '@app/api/Canceler';
-import {BaseService} from '@app/api/BaseService';
-import {AuthorizationRequest} from '@app/api/models/requests/AuthorizationRequest';
-import {AuthorizationResponse} from '@app/api/models/responses/AuthorizationResponse';
+import {Canceler} from './../Canceler';
+import {BaseService} from './../BaseService';
+import {AuthorizationRequest} from './../models/requests/AuthorizationRequest';
+import {AuthorizationResponse} from './../models/responses/AuthorizationResponse';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Authorization extends BaseService
-{
+export class Authorization extends BaseService {
+    /**
+     * @inheritDoc
+     */
+    public static getName() {
+        return 'Authorization';
+    }
+
     /**
      * Get or create the authorization.
      *
@@ -25,19 +31,12 @@ export class Authorization extends BaseService
      *
      * @return {Promise<AuthorizationResponse|null>}
      */
-    public async get(credentials: AuthorizationRequest, canceler?: Canceler): Promise<AuthorizationResponse|null> {
+    public async get(credentials: AuthorizationRequest, canceler?: Canceler): Promise<AuthorizationResponse | null> {
         return await this.request<AuthorizationResponse>({
             method: 'PUT',
             url: '/authorizations',
             auth: credentials,
-            data: credentials
+            data: credentials,
         });
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static getName() {
-        return 'Authorization';
     }
 }

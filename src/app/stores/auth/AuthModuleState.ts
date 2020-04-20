@@ -7,12 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import {AuthState} from '@app/stores/auth/AuthState';
+import {AuthState} from './AuthState';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface AuthModuleState
-{
+export interface AuthModuleState {
     auth: AuthState;
 }

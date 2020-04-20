@@ -7,16 +7,15 @@
  * file that was distributed with this source code.
  */
 
-import {ApiService} from '@app/api/ApiService';
-import {Canceler} from '@app/api/Canceler';
-import {ListResponse} from '@app/api/models/responses/ListResponse';
+import {ApiService} from './ApiService';
+import {Canceler} from './Canceler';
+import {ListResponse} from './models/responses/ListResponse';
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class BaseService implements ApiService
-{
+export class BaseService implements ApiService {
     protected readonly axios: AxiosInstance;
 
     /**
@@ -36,7 +35,7 @@ export class BaseService implements ApiService
      *
      * @return {Promise<T|null>}
      */
-    protected async request<T>(config: AxiosRequestConfig, canceler?: Canceler): Promise<T|null> {
+    protected async request<T>(config: AxiosRequestConfig, canceler?: Canceler): Promise<T | null> {
         if (canceler) {
             config.cancelToken = new axios.CancelToken(function executor(c) {
                 canceler.setExecutor(c);
@@ -44,7 +43,7 @@ export class BaseService implements ApiService
         }
 
         try {
-            let res = await this.axios.request(config);
+            const res = await this.axios.request(config);
 
             return res.data;
         } catch (e) {
@@ -69,7 +68,7 @@ export class BaseService implements ApiService
             config.method = 'GET';
         }
 
-        let res = await this.request<ListResponse<T>>(config, canceler);
+        const res = await this.request<ListResponse<T>>(config, canceler);
 
         return res ? res : {results: [], count: 0, lastId: null} as ListResponse<T>;
     }

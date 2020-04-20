@@ -11,7 +11,7 @@
 
 'use strict';
 
-require('dotenv').config();
+require('dotenv').config({path: '.env.local'});
 const program = require('commander');
 const fse = require('fs-extra');
 const utils = require('./utils/utils');
@@ -37,7 +37,7 @@ utils.spawn('node bin/config -e')
         fse.removeSync(CONTENT_PATH);
 
         await utils.spawn('webpack --config webpack.config.js' + (program.dev ? '' : ' --production'));
-        await utils.spawn('webpack --config webpack.ui.config.js' + (program.dev ? '' : ' --production'));
+        await utils.spawn('vue-cli-service build' + (program.dev ? ' --mode development' : ''));
 
         return false;
     })

@@ -7,14 +7,16 @@
  * file that was distributed with this source code.
  */
 
-import {AuthModuleState} from '@app/stores/auth/AuthModuleState';
-import {DrawerModuleState} from '@app/stores/drawer/DrawerModuleState';
-import {I18nModuleState} from '@app/stores/i18n/I18nModuleState';
-import {SnackbarModuleState} from '@app/stores/snackbar/SnackbarModuleState';
+import {AuthModuleState} from './auth/AuthModuleState';
+import {DarkModeModuleState} from './darkMode/DarkModeModuleState';
+import {DrawerModuleState} from './drawer/DrawerModuleState';
+import {I18nModuleState} from './i18n/I18nModuleState';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface RootState extends I18nModuleState, AuthModuleState, DrawerModuleState, SnackbarModuleState
-{
+export interface RootState extends AuthModuleState,
+    DarkModeModuleState,
+    DrawerModuleState,
+    I18nModuleState {
 }
