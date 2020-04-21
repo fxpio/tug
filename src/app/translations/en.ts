@@ -36,6 +36,8 @@ export default {
     'views.home.title': 'Home',
     'views.home.actions.add_repository': 'Add a repository',
     'views.repositories.title': 'Repositories',
+    'views.repositories.no-items': 'The added repositories are displayed here',
+    'views.repositories.add-first': 'Add your first repository',
     'views.repositories.package-name': 'Package',
     'views.repositories.url': 'URL',
     'views.repositories.type': 'Type',

@@ -36,6 +36,8 @@ export default {
     'views.home.title': 'Accueil',
     'views.home.actions.add_repository': 'Ajouter un dépôt',
     'views.repositories.title': 'Dépôts',
+    'views.repositories.no-items': 'Les dépôts ajoutés s\'affichent ici',
+    'views.repositories.add-first': 'Ajouter votre premier dépôt',
     'views.repositories.package-name': 'Package',
     'views.repositories.url': 'URL',
     'views.repositories.type': 'Type',

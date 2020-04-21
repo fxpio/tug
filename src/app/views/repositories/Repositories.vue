@@ -15,32 +15,46 @@ file that was distributed with this source code.
                     {{ $t('views.repositories.title') }}
                 </v-subheader>
 
-                <v-card flat>
-                    <v-data-table
-                            :headers="headers"
-                            :items="items"
-                            :loading="loading"
-                            hide-default-footer
-                            item-key="id">
-                        <template slot="items" slot-scope="props">
-                            <td>
-                                <span class="font-weight-bold">{{ props.item.packageName ? props.item.packageName : props.item.url }}</span>
-                                <br>
-                                <span class="font-italic">{{ props.item.type }}</span>
-                            </td>
-                            <td>
-                                <a :href="props.item.url" target="_blank">{{ $t('source') }}</a>
-                            </td>
+                <v-fade-transition mode="out-in">
+                    <loading v-if="firstLoading"></loading>
+
+                    <wall-message :message="$t('views.repositories.no-items')" v-else-if="!count">
+                        <template v-slot:icon>
+                            <v-row justify="center">
+                                <lottie width="280px" :options="{animationData: iconData}"></lottie>
+                            </v-row>
                         </template>
-                        <template slot="footer" v-if="lastId !== null">
-                            <td colspan="100%" class="pl-0 pr-0 text-xs-center">
-                                <v-btn color="accent" depressed ripple @click="fetchData()">
-                                    {{ $t('pagination.load-more') }}
-                                </v-btn>
-                            </td>
-                        </template>
-                    </v-data-table>
-                </v-card>
+
+                        <v-btn color="accent" ripple class="mt-3" :to="{name: 'repositories-add'}">{{ $t('views.repositories.add-first') }}</v-btn>
+                    </wall-message>
+
+                    <v-card flat v-else>
+                        <v-data-table
+                                :headers="headers"
+                                :items="items"
+                                :loading="loading"
+                                hide-default-footer
+                                item-key="id">
+                            <template slot="items" slot-scope="props">
+                                <td>
+                                    <span class="font-weight-bold">{{ props.item.packageName ? props.item.packageName : props.item.url }}</span>
+                                    <br>
+                                    <span class="font-italic">{{ props.item.type }}</span>
+                                </td>
+                                <td>
+                                    <a :href="props.item.url" target="_blank">{{ $t('source') }}</a>
+                                </td>
+                            </template>
+                            <template slot="footer" v-if="lastId !== null">
+                                <td colspan="100%" class="pl-0 pr-0 text-xs-center">
+                                    <v-btn color="accent" depressed ripple @click="fetchData()">
+                                        {{ $t('pagination.load-more') }}
+                                    </v-btn>
+                                </td>
+                            </template>
+                        </v-data-table>
+                    </v-card>
+                </v-fade-transition>
             </v-col>
         </v-row>
     </v-container>
@@ -54,12 +68,22 @@ file that was distributed with this source code.
     import {ListResponse} from '@app/api/models/responses/ListResponse';
     import {CodeRepository} from '@app/api/models/responses/CodeRepository';
     import {Repositories as ApiRepositories} from '@app/api/services/Repositories';
+    import WallMessage from '@app/components/WallMessage.vue';
+    import Loading from '@app/components/Loading.vue';
+    import Lottie from '@app/components/Lottie.vue';
+    import iconData from '@app/assets/animations/repositoryIcon.json';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
-    @Component
+    @Component({
+        components: {Lottie, Loading, WallMessage},
+    })
     export default class Repositories extends mixins(AjaxListContent) {
+        public get iconData(): object {
+            return  iconData;
+        }
+
         public metaInfo(): MetaInfo {
             return {
                 title: this.$t('views.repositories.title') as string,
@@ -84,7 +108,7 @@ file that was distributed with this source code.
                 this.search = searchValue;
             });
 
-            await this.fetchData();
+            await this.fetchData(undefined, true);
         }
 
         public destroyed() {
