@@ -35,7 +35,7 @@ $material-light: map-deep-merge(
             'app-bar': map-deep-get($grey, 'lighten-5'),
             'background': map-deep-get($grey, 'lighten-5'),
             'bg-color': map-deep-get($grey, 'lighten-5'),
-            'toolbar-border-color': map-deep-get($grey, 'lighten-3'),
+            'toolbar-border-color': transparent,
             'card-border-color': map-deep-get($grey, 'lighten-3'),
         ),
         $material-light
@@ -47,7 +47,7 @@ $material-dark: map-deep-merge(
             'app-bar': #121212,
             'background': #121212,
             'bg-color': #121212,
-            'toolbar-border-color': map-deep-get($grey, 'darken-4'),
+            'toolbar-border-color': transparent,
             'card-border-color': map-deep-get($grey, 'darken-4'),
         ),
         $material-dark
