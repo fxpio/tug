@@ -55,6 +55,7 @@ export class AjaxContent extends Vue {
         } catch (e) {
             const message = getRequestErrorMessage(this, e);
             this.previousError = new RequestError(e, message);
+            this.loading = false;
 
             if (showSnackbar) {
                 this.$snackbar.snack(new SnackbarMessage(message, 'error'));
