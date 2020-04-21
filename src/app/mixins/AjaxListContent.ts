@@ -69,11 +69,11 @@ export class AjaxListContent<I extends object> extends Vue {
             const res = await this.fetchDataRequest(searchValue);
             this.previousRequest = undefined;
 
-            this.lastId = res.lastId;
-            this.items = undefined !== searchValue ? [] : this.items;
-            this.count = res.count;
+            this.lastId = res.lastId ?? null;
+            this.items = undefined !== searchValue ? [] : (this.items ?? []);
+            this.count = res.count ?? null;
 
-            for (const result of res.results) {
+            for (const result of (res.results ?? [])) {
                 this.items.push(result);
             }
         } catch (e) {
