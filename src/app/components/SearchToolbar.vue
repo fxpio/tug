@@ -42,10 +42,15 @@ file that was distributed with this source code.
             this.$root.$on('toolbar-search-in', async (searchValue: string) => {
                 this.search = searchValue;
             });
+
+            this.$root.$on('toolbar-search-refresh', async () => {
+                this.$root.$emit('toolbar-search-out', this.search);
+            });
         }
 
         public destroyed() {
             this.$root.$off('toolbar-search-in');
+            this.$root.$off('toolbar-search-refresh');
         }
 
         @Watch('search')
