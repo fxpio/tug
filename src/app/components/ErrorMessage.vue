@@ -8,23 +8,26 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-row align="center" justify="center">
-        <v-col class="text-align-center">
+    <wall-message :message="message">
+        <template v-slot:icon>
             <v-icon :size="iconSize" :color="iconColor">{{ icon }}</v-icon>
-            <h2 :class="$store.state.darkMode.enabled ? null : 'grey--text'">{{ message }}</h2>
+        </template>
+
+        <template v-slot:default>
             <slot></slot>
-        </v-col>
-    </v-row>
+        </template>
+    </wall-message>
 </template>
 
 <script lang="ts">
     import {Component, Prop, Vue} from 'vue-property-decorator';
+    import WallMessage from '@app/components/WallMessage.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
     @Component({
-        components: {},
+        components: {WallMessage},
     })
     export default class ErrorMessage extends Vue {
         @Prop({type: String, required: true})
