@@ -42,6 +42,8 @@ export default {
     'views.repositories.url': 'URL',
     'views.repositories.type': 'Type',
     'views.packages.title': 'Packages',
+    'views.packages.no-items': 'Les packages ajoutés s\'affichent ici',
+    'views.packages.add-first': 'Ajouter votre premier package',
     'views.packages.package-name': 'Nom du package',
     'views.packages.url': 'URL',
     'views.api-keys.title': 'Clés API',
