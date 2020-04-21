@@ -12,6 +12,10 @@ file that was distributed with this source code.
         <v-container fill-height>
             <v-row no-gutters justify="center" align-content="center">
                 <v-col cols="12" sm="8" md="6" lg="5" xl="3">
+                    <v-row justify="center">
+                        <lottie transform="scale(2.6)" width="140px" height="140px;" :options="{animationData: iconData, loop: true}"></lottie>
+                    </v-row>
+
                     <h1 class="pb-4 text-center accent--text">{{ $t('app.name') }}</h1>
 
                     <v-card flat>
@@ -92,11 +96,17 @@ file that was distributed with this source code.
     import {getRequestErrorMessage} from '@app/utils/error';
     import {MetaInfo} from 'vue-meta';
     import {Component, Vue} from 'vue-property-decorator';
+    import Lottie from '@app/components/Lottie.vue';
+    import Loading from '@app/components/Loading.vue';
+    import WallMessage from '@app/components/WallMessage.vue';
+    import iconData from '@app/assets/animations/warehouseIcon.json';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
-    @Component
+    @Component({
+        components: {Lottie, Loading, WallMessage},
+    })
     export default class Login extends Vue {
         public formAlert: string|null = null;
 
@@ -105,6 +115,10 @@ file that was distributed with this source code.
         public password?: string|null = null;
 
         public showPassword: boolean = false;
+
+        public get iconData(): object {
+            return  iconData;
+        }
 
         public metaInfo(): MetaInfo {
             return {
