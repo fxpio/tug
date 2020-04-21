@@ -45,7 +45,7 @@ export class BaseService implements ApiService {
         try {
             const res = await this.axios.request(config);
 
-            return res.data;
+            return res ? res.data : null;
         } catch (e) {
             if (!axios.isCancel(e)) {
                 throw e;
