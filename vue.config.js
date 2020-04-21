@@ -70,6 +70,7 @@ module.exports = {
                 /\.map$/,
                 'robots.txt',
             ],
+            navigateFallback: `/${basePath}/index.html`,
         },
     },
 
