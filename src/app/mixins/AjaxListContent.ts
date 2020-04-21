@@ -26,6 +26,8 @@ export class AjaxListContent<I extends object> extends Vue {
 
     public items: I[] = [];
 
+    public count: number|null = null;
+
     public lastId: string | null = null;
 
     public search: string = '';
@@ -33,6 +35,10 @@ export class AjaxListContent<I extends object> extends Vue {
     public previousError: RequestError | null = null;
 
     protected previousRequest?: Canceler;
+
+    public get firstLoading(): boolean {
+        return null === this.count && this.loading;
+    }
 
     public beforeDestroy(): void {
         this.previousError = null;
@@ -65,6 +71,7 @@ export class AjaxListContent<I extends object> extends Vue {
 
             this.lastId = res.lastId;
             this.items = undefined !== searchValue ? [] : this.items;
+            this.count = res.count;
 
             for (const result of res.results) {
                 this.items.push(result);
