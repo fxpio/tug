@@ -29,6 +29,9 @@ file that was distributed with this source code.
         public height: string;
 
         @Prop({type: String})
+        public maxWidth: string;
+
+        @Prop({type: String})
         public transform: string;
 
         @Prop({type: Object, required: true})
@@ -38,11 +41,12 @@ file that was distributed with this source code.
 
         public get style(): object {
             return {
-                width: this.width,
-                height: this.height,
-                overflow: 'hidden',
-                margin: '0 auto',
-                transform: this.transform,
+                'width': this.width,
+                'height': this.height,
+                'max-width': this.maxWidth,
+                'overflow': 'hidden',
+                'margin': '0 auto',
+                'transform': this.transform,
             };
         }
 
