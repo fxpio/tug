@@ -30,6 +30,7 @@ export default {
     'offline': 'Offline',
     'pagination.load-more': 'Load more',
     'error.network': 'No network connection detected',
+    'error.internal': 'An error has occurred...',
     'error.404-page-not-found': 'Oops! Page not found',
     'menu.composer': 'Composer',
     'menu.configuration': 'Configuration',

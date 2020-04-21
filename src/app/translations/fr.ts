@@ -30,6 +30,7 @@ export default {
     'offline': 'Hor ligne',
     'pagination.load-more': 'Charger plus',
     'error.network': 'Aucune connexion réseau détectée',
+    'error.internal': 'Une erreur s\'est produite...',
     'error.404-page-not-found': 'Oops ! Page non trouvée',
     'menu.composer': 'Composer',
     'menu.configuration': 'Configuration',

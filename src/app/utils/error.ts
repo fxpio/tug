@@ -27,7 +27,11 @@ export function getRequestErrorMessage(vue: Vue, err: Error): string {
                 && ((err as AxiosError).response as AxiosResponse).data.message) {
             return ((err as AxiosError).response as AxiosResponse).data.message;
         }
+
+        return vue.$i18n ? vue.$i18n.t('error.network') as string : 'Error network';
     }
 
-    return vue.$i18n ? vue.$i18n.t('error.network') as string : 'Error network';
+    console.error(err);
+
+    return vue.$i18n ? vue.$i18n.t('error.internal') as string : 'Internal error';
 }
