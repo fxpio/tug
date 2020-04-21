@@ -42,6 +42,11 @@ export default new Router({
             },
         },
         {
+            path: '/repositories/add',
+            name: 'repositories-add',
+            redirect: 'home',
+        },
+        {
             path: '/packages',
             name: 'packages',
             meta: {requiresAuth: true},

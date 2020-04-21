@@ -25,7 +25,7 @@ file that was distributed with this source code.
                             </v-row>
                         </template>
 
-                        <v-btn color="accent" ripple class="mt-3" :to="{name: 'packages-add'}">{{ $t('views.packages.add-first') }}</v-btn>
+                        <v-btn color="accent" ripple class="mt-3" :to="{name: 'repositories-add'}">{{ $t('views.repositories.add-first') }}</v-btn>
                     </wall-message>
 
                     <v-card flat v-else>
