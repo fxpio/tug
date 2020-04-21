@@ -11,7 +11,7 @@ file that was distributed with this source code.
     <v-container fill-height>
         <v-row no-gutters justify="center" align="center">
             <v-col cols="12" align="center">
-                <v-icon size="14em" color="accent">loyalty</v-icon>
+                <lottie transform="scale(2.6)" width="180px" height="180px;" :options="{animationData: iconData}"></lottie>
                 <h1 class="pb-4 accent--text">{{ $t('app.name') }}</h1>
                 <h3>{{ $t('app.description') }}</h3>
                 <v-btn color="accent" ripple class="mt-3" :to="{name: 'home'}">{{ $t('views.home.actions.add_repository') }}</v-btn>
@@ -23,12 +23,22 @@ file that was distributed with this source code.
 <script lang="ts">
     import {MetaInfo} from 'vue-meta';
     import {Component, Vue} from 'vue-property-decorator';
+    import Lottie from '@app/components/Lottie.vue';
+    import Loading from '@app/components/Loading.vue';
+    import WallMessage from '@app/components/WallMessage.vue';
+    import iconData from '@app/assets/animations/warehouseIcon.json';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
-    @Component
+    @Component({
+        components: {Lottie, Loading, WallMessage},
+    })
     export default class Home extends Vue {
+        public get iconData(): object {
+            return  iconData;
+        }
+
         public metaInfo(): MetaInfo {
             return {
                 title: this.$t('views.home.title') as string,

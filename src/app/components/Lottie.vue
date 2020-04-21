@@ -28,6 +28,9 @@ file that was distributed with this source code.
         @Prop({type: String, default: '100%'})
         public height: string;
 
+        @Prop({type: String})
+        public transform: string;
+
         @Prop({type: Object, required: true})
         public options: AnimationConfigWithData;
 
@@ -39,6 +42,7 @@ file that was distributed with this source code.
                 height: this.height,
                 overflow: 'hidden',
                 margin: '0 auto',
+                transform: this.transform,
             };
         }
 
