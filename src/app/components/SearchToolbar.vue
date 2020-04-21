@@ -15,6 +15,7 @@ file that was distributed with this source code.
                 flat
                 solo-inverted
                 hide-details
+                clearable
                 prepend-inner-icon="search"
                 :label="$t('search')"
                 v-model="search"
