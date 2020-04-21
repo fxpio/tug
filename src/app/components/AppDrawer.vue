@@ -24,12 +24,14 @@ file that was distributed with this source code.
                         v-else
                         :key="i"
                         :to="item.route"
+                        :dense="item.dense"
+                        @click.stop="eventClick(item.click)"
                 >
                     <v-list-item-action>
-                        <v-icon :color="item.color">{{ item.icon }}</v-icon>
+                        <v-icon :color="item.color" :dense="item.dense">{{ item.icon }}</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
-                        <v-list-item-title>
+                        <v-list-item-title :class="item.textClass">
                             {{ $t(item.text) }}
                         </v-list-item-title>
                     </v-list-item-content>
@@ -58,6 +60,12 @@ file that was distributed with this source code.
 
         public set drawer(value) {
             this.$store.commit('drawer/toggle', value as boolean);
+        }
+
+        public eventClick(callable?: Function): void {
+            if (callable) {
+                callable();
+            }
         }
     }
 </script>

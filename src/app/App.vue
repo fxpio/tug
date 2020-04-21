@@ -57,6 +57,7 @@ file that was distributed with this source code.
             {icon: 'settings', color: 'grey', text: 'views.settings.title', route: {name: 'settings'}},
             {divider: true},
             {icon: 'info', color: 'grey', text: 'views.about.title', route: {name: 'about'}},
+            {icon: 'exit_to_app', color: 'grey lighten-1', textClass: 'grey--text lighten-1', text: 'logout', click: this.logout, dense: true},
         ];
 
         public metaInfo(): MetaInfo {
@@ -101,6 +102,10 @@ file that was distributed with this source code.
                 });
                 pl.style.opacity = '0';
             }
+        }
+
+        public async logout(): Promise<void> {
+            await this.$store.dispatch('auth/logout');
         }
     }
 </script>
