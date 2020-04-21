@@ -108,7 +108,7 @@ file that was distributed with this source code.
                 this.search = searchValue;
             });
 
-            await this.fetchData(undefined, true);
+            await this.fetchData();
         }
 
         public destroyed() {

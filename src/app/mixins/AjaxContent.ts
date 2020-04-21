@@ -38,7 +38,7 @@ export class AjaxContent extends Vue {
      * Fetch data.
      */
     public async fetchData<D>(request: (canceler: Canceler) => Promise<D>,
-                              showSnackbar: boolean = false): Promise<D | undefined> {
+                              showSnackbar: boolean = true): Promise<D | undefined> {
         try {
             this.loading = true;
             this.previousError = null;

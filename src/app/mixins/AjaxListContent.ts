@@ -55,7 +55,7 @@ export class AjaxListContent<I extends object> extends Vue {
      * @param {string}  [searchValue] The search value
      * @param {boolean} showSnackbar  Check if the error message must be displayed
      */
-    public async fetchData(searchValue?: string, showSnackbar: boolean = false): Promise<void> {
+    public async fetchData(searchValue?: string, showSnackbar: boolean = true): Promise<void> {
         try {
             this.loading = true;
             this.previousError = null;
