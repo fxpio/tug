@@ -17,19 +17,19 @@ import {register} from 'register-service-worker';
 if (process.env.NODE_ENV === 'production') {
     register(`${process.env.BASE_URL}service-worker.js`, {
         ready() {
-            // App is being served from cache by a service worker
+            console.log('App is being served from cache by a service worker.');
         },
         registered() {
-            // Service worker has been registered
+            console.log('Service worker has been registered.');
         },
         cached() {
-            // Content has been cached for offline use
+            console.log('Content has been cached for offline use.');
         },
         updatefound() {
-            // New content is downloading
+            console.log('New content is downloading.');
         },
         updated() {
-            // New content is available; please refresh
+            console.log('New content is available; please refresh.');
             const message = (new SnackbarMessage('sw.app.updated'))
                 .setTranslatable(true)
                 .setCloseButton(true)
@@ -43,10 +43,10 @@ if (process.env.NODE_ENV === 'production') {
             }));
         },
         offline() {
-            // No internet connection found. App is running in offline mode
+            console.log('No internet connection found. App is running in offline mode.');
         },
         error(error: Error) {
-            // Error during service worker registration
+            console.error('Error during service worker registration:', error);
         },
     });
 }
