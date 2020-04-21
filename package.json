@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
+    "@lottiefiles/lottie-player": "^0.5.1",
     "aws-serverless-express": "^3.3.8",
     "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",
