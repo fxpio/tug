@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {createApiKey, deleteApiKey} from '@server/controllers/manager/apiKeyController';
+import {createApiKey, deleteApiKey, listApiKey} from '@server/controllers/manager/apiKeyController';
 import {createGithubOauth, deleteGithubOauth, showGithubOauth} from '@server/controllers/manager/githubOauthController';
 import {createGithubToken, deleteGithubToken, showGithubToken} from '@server/controllers/manager/githubTokenController';
 import {
@@ -33,6 +33,7 @@ import {Router} from 'express';
 export function managerRoutes(router: Router, basicAuthStrategy: AuthStrategy): Router {
     router.use(asyncHandler(Authenticate.middleware(basicAuthStrategy)));
 
+    router.get('/api-keys', asyncHandler(listApiKey));
     router.post('/api-keys', asyncHandler(createApiKey));
     router.delete('/api-keys', asyncHandler(deleteApiKey));
 
