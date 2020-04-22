@@ -51,7 +51,6 @@ file that was distributed with this source code.
             {icon: 'home', color: 'blue', text: 'views.home.title', route: {name: 'home'}},
             {heading: 'menu.composer'},
             {icon: 'folder', color: 'accent', text: 'views.repositories.title', route: {name: 'repositories'}},
-            {icon: 'insert_drive_file', color: 'accent', text: 'views.packages.title', route: {name: 'packages'}},
             {heading: 'menu.configuration'},
             {icon: 'vpn_key', color: 'grey', text: 'views.api-keys.title', route: undefined},
             {icon: 'settings', color: 'grey', text: 'views.settings.title', route: {name: 'settings'}},
