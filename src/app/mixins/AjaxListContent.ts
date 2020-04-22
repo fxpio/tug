@@ -40,6 +40,10 @@ export class AjaxListContent<I extends object> extends Vue {
         return null === this.count && this.loading;
     }
 
+    public get hasNoItems(): boolean {
+        return !this.count && !this.search;
+    }
+
     public beforeDestroy(): void {
         this.previousError = null;
 

@@ -11,7 +11,7 @@ file that was distributed with this source code.
     <v-fade-transition mode="out-in">
         <loading v-if="firstLoading"></loading>
 
-        <wall-message :message="$t('views.repositories.no-items')" v-else-if="!count">
+        <wall-message :message="$t('views.repositories.no-items')" v-else-if="hasNoItems">
             <template v-slot:icon>
                 <slot name="no-items-icon"></slot>
             </template>
@@ -121,6 +121,8 @@ file that was distributed with this source code.
         components: {Lottie, WallMessage, Loading},
     })
     export default class SearchList extends mixins(AjaxListContent) {
+
+
         @Prop({type: Function, required: true})
         public fetchRequest: FetchRequestDataFunction;
 
