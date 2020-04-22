@@ -32,6 +32,7 @@ export default {
     'error.network': 'Aucune connexion réseau détectée',
     'error.internal': 'Une erreur s\'est produite...',
     'error.404-page-not-found': 'Oops ! Page non trouvée',
+    'error.go-to-home': 'Retourner à la maison',
     'menu.composer': 'Composer',
     'menu.configuration': 'Configuration',
     'views.home.title': 'Accueil',

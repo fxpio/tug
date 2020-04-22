@@ -9,7 +9,11 @@ file that was distributed with this source code.
 
 <template>
     <v-container fill-height>
-        <error-message :message="$t('error.404-page-not-found')"></error-message>
+        <error-message :message="$t('error.404-page-not-found')">
+            <v-btn depressed rounded small color="primary lighten-4" class="mt-5">
+                {{ $t('error.go-to-home') }}
+            </v-btn>
+        </error-message>
     </v-container>
 </template>
 

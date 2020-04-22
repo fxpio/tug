@@ -32,6 +32,7 @@ export default {
     'error.network': 'No network connection detected',
     'error.internal': 'An error has occurred...',
     'error.404-page-not-found': 'Oops! Page not found',
+    'error.go-to-home': 'Go to home',
     'menu.composer': 'Composer',
     'menu.configuration': 'Configuration',
     'views.home.title': 'Home',
