@@ -28,16 +28,69 @@ file that was distributed with this source code.
                     :loading="loading"
                     hide-default-footer
                     item-key="id">
-                <template slot="items" slot-scope="props">
-                    <td>
-                        <span class="font-weight-bold">{{ props.item.packageName ? props.item.packageName : props.item.url }}</span>
-                        <br>
-                        <span class="font-italic">{{ props.item.type }}</span>
-                    </td>
-                    <td>
-                        <a :href="props.item.url" target="_blank">{{ $t('source') }}</a>
-                    </td>
+
+                <template v-for="(values) in dataTableSlots"
+                          v-slot:[values[1]]="{
+                            expand,
+                            group,
+                            groupBy,
+                            groupedItems,
+                            header,
+                            headers,
+                            index,
+                            isExpanded,
+                            isMobile,
+                            isOpen,
+                            isSelected,
+                            item,
+                            items,
+                            itemsLength,
+                            on,
+                            options,
+                            pageStart,
+                            pageStop,
+                            pagination,
+                            props,
+                            remove,
+                            select,
+                            sort,
+                            toggle,
+                            updateOptions,
+                            value,
+                            widths,
+                          }"
+                >
+                    <slot :name="values[0]"
+                          :expand="expand"
+                          :group="group"
+                          :groupBy="groupBy"
+                          :groupedItems="groupedItems"
+                          :header="header"
+                          :headers="headers"
+                          :index="index"
+                          :isExpanded="isExpanded"
+                          :isMobile="isMobile"
+                          :isOpen="isOpen"
+                          :isSelected="isSelected"
+                          :item="item"
+                          :items="items"
+                          :itemsLength="itemsLength"
+                          :on="on"
+                          :options="options"
+                          :pageStart="pageStart"
+                          :pageStop="pageStop"
+                          :pagination="pagination"
+                          :props="props"
+                          :remove="remove"
+                          :select="select"
+                          :sort="sort"
+                          :toggle="toggle"
+                          :updateOptions="updateOptions"
+                          :value="value"
+                          :widths="widths"
+                    ></slot>
                 </template>
+
                 <template slot="footer" v-if="lastId !== null">
                     <td colspan="100%" class="pl-0 pr-0 text-xs-center">
                         <v-btn color="accent" depressed ripple @click="fetchData()">
@@ -70,6 +123,17 @@ file that was distributed with this source code.
     export default class SearchList extends mixins(AjaxListContent) {
         @Prop({type: Function, required: true})
         public fetchRequest: FetchRequestDataFunction;
+
+        public get dataTableSlots(): Map<string, string> {
+            const map = new Map();
+
+            for (const slotName of Object.keys(this.$scopedSlots)) {
+                if (slotName.startsWith('data-table.')) {
+                    map.set(slotName, slotName.substring(11));
+                }
+            }
+            return map;
+        }
 
         public async created(): Promise<void> {
             this.headers = this.$attrs.headers as any ?? [];
