@@ -23,7 +23,6 @@ export default new VueI18n({
     locale: 'en',
     fallbackLocale: 'en',
     missing: (locale, key) => {
-        console.warn(`I18n :: Key "${key}" is missing for locale "${locale}"`);
     },
     messages: {
         en: translationEn,
