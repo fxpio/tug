@@ -9,7 +9,8 @@ file that was distributed with this source code.
 
 <template>
     <v-navigation-drawer v-model="drawer" fixed clipped app>
-        <v-list shaped>
+        <v-fade-transition>
+        <v-list rounded v-if="$store.state.auth.authenticated">
             <template v-for="(item, i) in items">
                 <v-subheader v-if="item.heading" :key="i">
                     {{ $t(item.heading) }}
@@ -22,6 +23,8 @@ file that was distributed with this source code.
                 ></v-divider>
                 <v-list-item
                         v-else
+                        active-class="primary white--text white--icon"
+                        :ripple="false"
                         :key="i"
                         :to="item.route"
                         :dense="item.dense"
@@ -37,12 +40,25 @@ file that was distributed with this source code.
                     </v-list-item-content>
                 </v-list-item>
             </template>
+
+            <template v-for="(slotItem) in getSlotItems('list')"
+                      v-slot:[slotItem.target]>
+                <slot :name="slotItem.original"></slot>
+            </template>
         </v-list>
+        </v-fade-transition>
+
+        <template v-for="(slotItem) in getSlotItems('drawer')"
+                  v-slot:[slotItem.target]>
+            <slot :name="slotItem.original"></slot>
+        </template>
     </v-navigation-drawer>
 </template>
 
 <script lang="ts">
-    import {Component, Prop, Vue} from 'vue-property-decorator';
+    import {Component, Prop} from 'vue-property-decorator';
+    import {mixins} from 'vue-class-component';
+    import {SlotWrapper} from '@app/mixins/SlotWrapper';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
@@ -50,7 +66,7 @@ file that was distributed with this source code.
     @Component({
         components: {},
     })
-    export default class AppDrawer extends Vue {
+    export default class AppDrawer extends mixins(SlotWrapper) {
         @Prop(Array)
         public items!: object[];
 

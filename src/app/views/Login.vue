@@ -8,7 +8,8 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-fade-transition mode="out-in">
+    <v-dialog v-model="model" eager persistent fullscreen hide-overlay transition="fade">
+        <v-card class="fill-height">
         <v-container fill-height>
             <v-row no-gutters justify="center" align-content="center">
                 <v-col cols="12" sm="8" md="6" lg="5" xl="3">
@@ -18,14 +19,14 @@ file that was distributed with this source code.
 
                     <h1 class="pb-4 text-center accent--text">{{ $t('app.name') }}</h1>
 
-                    <v-card flat>
+                    <v-card flat class="pb-2">
                         <v-card-title primary-title>
                             <div class="headline primary--text">
                                 {{ $t('views.login.title') }}
                             </div>
                         </v-card-title>
 
-                        <v-card-text>
+                        <v-card-text class="pb-0">
                             <v-alert type="error" class="mt-3 mb-4" transition="scale-transition" :value="null !== formAlert">
                                 {{ formAlert }}
                             </v-alert>
@@ -67,18 +68,12 @@ file that was distributed with this source code.
                         </v-card-text>
 
                         <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn text
-                                   ripple
-                                   active-class=""
-                                   :disabled="$store.state.auth.authenticationPending"
-                                   @click.stop="$routerBack.back">
-                                {{$t('cancel')}}
-                            </v-btn>
                             <v-btn color="accent"
                                    depressed
                                    raised
                                    ripple
+                                   block
+                                   rounded
                                    :loading="$store.state.auth.authenticationPending"
                                    :disabled="$store.state.auth.authenticationPending"
                                    @click="login">
@@ -89,7 +84,8 @@ file that was distributed with this source code.
                 </v-col>
             </v-row>
         </v-container>
-    </v-fade-transition>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script lang="ts">
@@ -115,6 +111,8 @@ file that was distributed with this source code.
         public password?: string|null = null;
 
         public showPassword: boolean = false;
+
+        public model: boolean = true;
 
         public get iconData(): object {
             return  iconData;

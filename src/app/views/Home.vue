@@ -12,9 +12,11 @@ file that was distributed with this source code.
         <v-row no-gutters justify="center" align="center">
             <v-col cols="12" align="center">
                 <lottie transform="scale(2.6)" width="180px" height="180px;" :options="{animationData: iconData}"></lottie>
-                <h1 class="pb-4 accent--text">{{ $t('app.name') }}</h1>
-                <h3>{{ $t('app.description') }}</h3>
-                <v-btn color="accent" ripple class="mt-3" :to="{name: 'home'}">{{ $t('views.home.actions.add_repository') }}</v-btn>
+                <h1 class="pb-4 primary--text">{{ $t('app.name') }}</h1>
+                <h3 class="mb-5 text--secondary">{{ $t('app.description') }}</h3>
+                <v-btn depressed rounded ripple color="accent" class="mt-5" :to="{name: 'home'}">
+                    {{ $t('views.home.actions.add_repository') }}
+                </v-btn>
             </v-col>
         </v-row>
     </v-container>

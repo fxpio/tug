@@ -9,7 +9,8 @@ file that was distributed with this source code.
 
 <template>
     <v-fade-transition>
-        <v-app-bar app clipped-left elevate-on-scroll>
+        <v-app-bar app clipped-left elevation="0" v-if="!$store.state.auth.authenticated"></v-app-bar>
+        <v-app-bar app clipped-left elevate-on-scroll v-else>
             <slot name="menu">
                 <v-scale-transition origin="center center" mode="out-in">
                     <v-app-bar-nav-icon v-if="!showPreviousButton" @click.prevent="drawerButtonAction" key="menu-btn">

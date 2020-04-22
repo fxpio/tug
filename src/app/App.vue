@@ -12,11 +12,20 @@ file that was distributed with this source code.
         <snackbar></snackbar>
 
         <transition :name="transitionName">
-            <app-drawer :items="drawerItems" v-if="$store.state.auth.authenticated"></app-drawer>
+            <app-drawer :items="drawerItems">
+                <template v-slot:drawer.append>
+                    <div class="pa-4" v-if="$store.state.auth.authenticated">
+                        <v-btn block outlined rounded ripple small color="primary lighten-4" @click="logout">
+                            <v-icon left color="primary lighten-4">exit_to_app</v-icon>
+                            {{ $t('logout') }}
+                        </v-btn>
+                    </div>
+                </template>
+            </app-drawer>
         </transition>
 
         <transition :name="transitionName">
-            <router-view name="toolbar" v-if="$store.state.auth.authenticated"></router-view>
+            <router-view name="toolbar"></router-view>
         </transition>
 
         <v-content>
@@ -48,15 +57,14 @@ file that was distributed with this source code.
         public transitionName: string = App.DEFAULT_TRANSITION;
 
         public drawerItems: object[] = [
-            {icon: 'home', color: 'blue', text: 'views.home.title', route: {name: 'home'}},
+            {icon: 'home', color: 'primary', text: 'views.home.title', route: {name: 'home'}},
             {heading: 'menu.composer'},
-            {icon: 'folder', color: 'accent', text: 'views.repositories.title', route: {name: 'repositories'}},
+            {icon: 'folder', color: 'primary', text: 'views.repositories.title', route: {name: 'repositories'}},
             {heading: 'menu.configuration'},
             {icon: 'vpn_key', color: 'grey', text: 'views.api-keys.title', route: undefined},
             {icon: 'settings', color: 'grey', text: 'views.settings.title', route: {name: 'settings'}},
             {divider: true},
             {icon: 'info', color: 'grey', text: 'views.about.title', route: {name: 'about'}},
-            {icon: 'exit_to_app', color: 'grey lighten-1', textClass: 'grey--text lighten-1', text: 'logout', click: this.logout, dense: true},
         ];
 
         public metaInfo(): MetaInfo {

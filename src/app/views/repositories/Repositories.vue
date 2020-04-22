@@ -18,8 +18,14 @@ file that was distributed with this source code.
                         </v-row>
                     </template>
 
+                    <template v-slot:no-items.message>
+                        {{ $t('views.repositories.no-items') }}
+                    </template>
+
                     <template v-slot:no-items>
-                        <v-btn color="accent" ripple class="mt-3" :to="{name: 'repositories-add'}">{{ $t('views.repositories.add-first') }}</v-btn>
+                        <v-btn depressed rounded ripple color="accent" class="mt-5" :to="{name: 'repositories-add'}">
+                            {{ $t('views.repositories.add-first') }}
+                        </v-btn>
                     </template>
 
                     <template v-slot:header>

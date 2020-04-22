@@ -18,19 +18,10 @@ file that was distributed with this source code.
                     <v-list two-line>
                         <v-list-item>
                             <v-list-item-avatar>
-                                <v-icon size="52" :color="$store.state.auth.authenticated ? 'accent' : 'grey'">account_circle</v-icon>
+                                <v-icon size="52" :color="$store.state.auth.authenticated ? 'primary' : 'grey'">account_circle</v-icon>
                             </v-list-item-avatar>
 
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    <span v-if="$store.state.auth.authenticated">{{ $store.state.auth.fullName }}</span>
-                                    <span v-if="!$store.state.auth.authenticated">{{ $t('views.settings.no-account') }}</span>
-                                </v-list-item-title>
-
-                                <v-list-item-subtitle v-if="$store.state.auth.authenticated && $store.state.auth.email">
-                                    {{ $store.state.auth.email }}
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
+                            <v-list-item-content></v-list-item-content>
 
                             <v-list-item-action v-if="!$store.state.auth.authenticated">
                                 <v-tooltip left eager>
@@ -59,7 +50,7 @@ file that was distributed with this source code.
                                                 outlined
                                                 small
                                                 fab
-                                                :color="$store.state.darkMode.enabled ? null : 'accent'"
+                                                :color="$store.state.darkMode.enabled ? null : 'primary lighten-4'"
                                                 ripple
                                                 icon
                                                 @click="$store.dispatch('auth/logout', $router.currentRoute.fullPath)">

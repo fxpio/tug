@@ -1,0 +1,23 @@
+/*
+ * This file is part of the Fxp Satis Serverless package.
+ *
+ * (c) François Pluchino <francois.pluchino@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+.v-list-item {
+    transition: background-color 0.3s;
+}
+
+@include theme('v-list-item') using($material) {
+    &.v-list-item--active {
+        &.white--icon {
+            .v-icon {
+                color: #ffffff !important;
+                caret-color: #ffffff !important;
+            }
+        }
+    }
+}

@@ -11,7 +11,7 @@ file that was distributed with this source code.
     <v-fade-transition mode="out-in">
         <loading v-if="firstLoading" class="mt-5"></loading>
 
-        <wall-message :message="$t('views.repositories.no-items')" v-else-if="hasNoItems">
+        <wall-message v-else-if="hasNoItems">
             <template v-for="(slotItem) in getSlotItems('no-items')" v-slot:[slotItem.target]>
                 <slot :name="slotItem.original"></slot>
             </template>
