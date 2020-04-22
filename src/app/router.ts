@@ -47,15 +47,6 @@ export default new Router({
             redirect: 'home',
         },
         {
-            path: '/packages',
-            name: 'packages',
-            meta: {requiresAuth: true},
-            components: {
-                default: () => import(/* webpackChunkName: "packages" */ '@app/views/packages/Packages.vue'),
-                toolbar: () => import(/* webpackChunkName: "packages" */'@app/components/SearchToolbar.vue'),
-            },
-        },
-        {
             path: '/settings',
             name: 'settings',
             meta: {requiresAuth: true},
