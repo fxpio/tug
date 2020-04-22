@@ -34,6 +34,9 @@ file that was distributed with this source code.
         @Prop({type: String})
         public transform: string;
 
+        @Prop({type: Boolean, default: false})
+        public center: boolean;
+
         @Prop({type: Object, required: true})
         public options: AnimationConfigWithData;
 
@@ -45,7 +48,7 @@ file that was distributed with this source code.
                 'height': this.height,
                 'max-width': this.maxWidth,
                 'overflow': 'hidden',
-                'margin': '0 auto',
+                'margin': this.center ? '0 auto' : undefined,
                 'transform': this.transform,
             };
         }

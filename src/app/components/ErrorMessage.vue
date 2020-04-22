@@ -8,15 +8,17 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <wall-message :message="message">
-        <template v-slot:icon>
-            <lottie width="90%" max-width="600px" :options="{animationData: iconData, loop: true}"></lottie>
-        </template>
+    <v-row align="center" justify="center">
+        <wall-message :message="message">
+            <template v-slot:icon>
+                <lottie center width="90%" max-width="600px" :options="{animationData: iconData, loop: true}"></lottie>
+            </template>
 
-        <template v-slot:default>
-            <slot></slot>
-        </template>
-    </wall-message>
+            <template v-slot:default>
+                <slot></slot>
+            </template>
+        </wall-message>
+    </v-row>
 </template>
 
 <script lang="ts">

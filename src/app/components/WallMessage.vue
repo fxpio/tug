@@ -8,15 +8,13 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-row align="center" justify="center">
-        <v-col class="text-align-center">
-            <slot name="icon"></slot>
-            <h2 :class="$store.state.darkMode.enabled ? null : 'grey--text'" v-if="message">
-                {{ message }}
-            </h2>
-            <slot></slot>
-        </v-col>
-    </v-row>
+    <div class="text-align-center">
+        <slot name="icon"></slot>
+        <h2 :class="$store.state.darkMode.enabled ? null : 'grey--text'" v-if="message">
+            {{ message }}
+        </h2>
+        <slot></slot>
+    </div>
 </template>
 
 <script lang="ts">
