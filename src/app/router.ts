@@ -47,6 +47,20 @@ export default new Router({
             redirect: 'home',
         },
         {
+            path: '/api-keys',
+            name: 'api-keys',
+            meta: {requiresAuth: true},
+            components: {
+                default: () => import(/* webpackChunkName: "api-keys" */ '@app/views/api-keys/ApiKeys.vue'),
+                toolbar: () => import(/* webpackChunkName: "api-keys" */'@app/components/SearchToolbar.vue'),
+            },
+        },
+        {
+            path: '/api-keys/add',
+            name: 'api-keys-add',
+            redirect: 'home',
+        },
+        {
             path: '/settings',
             name: 'settings',
             meta: {requiresAuth: true},
