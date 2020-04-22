@@ -9,97 +9,97 @@ file that was distributed with this source code.
 
 <template>
     <v-fade-transition mode="out-in">
-        <loading v-if="firstLoading"></loading>
+        <loading v-if="firstLoading" class="mt-5"></loading>
 
         <wall-message :message="$t('views.repositories.no-items')" v-else-if="hasNoItems">
-            <template v-slot:icon>
-                <slot name="no-items-icon"></slot>
-            </template>
-
-            <template v-slot:default>
-                <slot name="no-items"></slot>
+            <template v-for="(slotItem) in getSlotItems('no-items')" v-slot:[slotItem.target]>
+                <slot :name="slotItem.original"></slot>
             </template>
         </wall-message>
 
-        <v-card flat v-else>
-            <v-data-table
-                    :headers="headers"
-                    :items="items"
-                    :loading="loading"
-                    hide-default-footer
-                    item-key="id">
+        <div v-else>
+            <slot name="header"></slot>
 
-                <template v-for="(values) in dataTableSlots"
-                          v-slot:[values[1]]="{
-                            expand,
-                            group,
-                            groupBy,
-                            groupedItems,
-                            header,
-                            headers,
-                            index,
-                            isExpanded,
-                            isMobile,
-                            isOpen,
-                            isSelected,
-                            item,
-                            items,
-                            itemsLength,
-                            on,
-                            options,
-                            pageStart,
-                            pageStop,
-                            pagination,
-                            props,
-                            remove,
-                            select,
-                            sort,
-                            toggle,
-                            updateOptions,
-                            value,
-                            widths,
-                          }"
-                >
-                    <slot :name="values[0]"
-                          :expand="expand"
-                          :group="group"
-                          :groupBy="groupBy"
-                          :groupedItems="groupedItems"
-                          :header="header"
-                          :headers="headers"
-                          :index="index"
-                          :isExpanded="isExpanded"
-                          :isMobile="isMobile"
-                          :isOpen="isOpen"
-                          :isSelected="isSelected"
-                          :item="item"
-                          :items="items"
-                          :itemsLength="itemsLength"
-                          :on="on"
-                          :options="options"
-                          :pageStart="pageStart"
-                          :pageStop="pageStop"
-                          :pagination="pagination"
-                          :props="props"
-                          :remove="remove"
-                          :select="select"
-                          :sort="sort"
-                          :toggle="toggle"
-                          :updateOptions="updateOptions"
-                          :value="value"
-                          :widths="widths"
-                    ></slot>
-                </template>
+            <v-card flat>
+                <v-data-table
+                        :headers="headers"
+                        :items="items"
+                        :loading="loading"
+                        hide-default-footer
+                        item-key="id">
 
-                <template slot="footer" v-if="lastId !== null">
-                    <td colspan="100%" class="pl-0 pr-0 text-xs-center">
-                        <v-btn color="accent" depressed ripple @click="fetchData()">
-                            {{ $t('pagination.load-more') }}
-                        </v-btn>
-                    </td>
-                </template>
-            </v-data-table>
-        </v-card>
+                    <template v-for="(slotItem) in getSlotItems('data-table')"
+                              v-slot:[slotItem.target]="{
+                                expand,
+                                group,
+                                groupBy,
+                                groupedItems,
+                                header,
+                                headers,
+                                index,
+                                isExpanded,
+                                isMobile,
+                                isOpen,
+                                isSelected,
+                                item,
+                                items,
+                                itemsLength,
+                                on,
+                                options,
+                                pageStart,
+                                pageStop,
+                                pagination,
+                                props,
+                                remove,
+                                select,
+                                sort,
+                                toggle,
+                                updateOptions,
+                                value,
+                                widths,
+                              }"
+                    >
+                        <slot :name="slotItem.original"
+                              :expand="expand"
+                              :group="group"
+                              :groupBy="groupBy"
+                              :groupedItems="groupedItems"
+                              :header="header"
+                              :headers="headers"
+                              :index="index"
+                              :isExpanded="isExpanded"
+                              :isMobile="isMobile"
+                              :isOpen="isOpen"
+                              :isSelected="isSelected"
+                              :item="item"
+                              :items="items"
+                              :itemsLength="itemsLength"
+                              :on="on"
+                              :options="options"
+                              :pageStart="pageStart"
+                              :pageStop="pageStop"
+                              :pagination="pagination"
+                              :props="props"
+                              :remove="remove"
+                              :select="select"
+                              :sort="sort"
+                              :toggle="toggle"
+                              :updateOptions="updateOptions"
+                              :value="value"
+                              :widths="widths"
+                        ></slot>
+                    </template>
+
+                    <template slot="footer" v-if="lastId !== null">
+                        <td colspan="100%" class="pl-0 pr-0 text-xs-center">
+                            <v-btn color="accent" depressed ripple @click="fetchData()">
+                                {{ $t('pagination.load-more') }}
+                            </v-btn>
+                        </td>
+                    </template>
+                </v-data-table>
+            </v-card>
+        </div>
     </v-fade-transition>
 </template>
 
@@ -113,6 +113,7 @@ file that was distributed with this source code.
     import {ListResponse} from '@app/api/models/responses/ListResponse';
     import {FetchRequestDataEvent} from '@app/events/requests/FetchRequestDataEvent';
     import {FetchRequestDataFunction} from '@app/events/requests/FetchRequestDataFunction';
+    import {SlotWrapper} from '@app/mixins/SlotWrapper';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
@@ -120,22 +121,9 @@ file that was distributed with this source code.
     @Component({
         components: {Lottie, WallMessage, Loading},
     })
-    export default class SearchList extends mixins(AjaxListContent) {
-
-
+    export default class SearchList extends mixins(AjaxListContent, SlotWrapper) {
         @Prop({type: Function, required: true})
         public fetchRequest: FetchRequestDataFunction;
-
-        public get dataTableSlots(): Map<string, string> {
-            const map = new Map();
-
-            for (const slotName of Object.keys(this.$scopedSlots)) {
-                if (slotName.startsWith('data-table.')) {
-                    map.set(slotName, slotName.substring(11));
-                }
-            }
-            return map;
-        }
 
         public async created(): Promise<void> {
             this.headers = this.$attrs.headers as any ?? [];

@@ -9,17 +9,24 @@ file that was distributed with this source code.
 
 <template>
     <v-container>
-        <v-row no-gutters justify="center">
+        <v-row>
             <v-col>
-                <v-subheader class="mt-4 primary--text">
-                    {{ $t('views.repositories.title') }}
-                </v-subheader>
-
                 <search-list :headers="headers" :fetch-request="fetchDataRequest">
-                    <template #no-items-icon>
+                    <template v-slot:no-items.icon>
                         <v-row justify="center">
                             <lottie width="280px" :options="{animationData: iconData}"></lottie>
                         </v-row>
+                    </template>
+
+                    <template v-slot:no-items>
+                        <v-btn color="accent" ripple class="mt-3" :to="{name: 'repositories-add'}">{{ $t('views.repositories.add-first') }}</v-btn>
+                    </template>
+
+                    <template v-slot:header>
+                        <v-subheader class="mt-4 mb-4 primary--text">
+                            <lottie width="48px" :options="{animationData: iconData}"></lottie>
+                            {{ $t('views.repositories.title') }}
+                        </v-subheader>
                     </template>
 
                     <template v-slot:data-table.item.name="{item}">
@@ -30,10 +37,6 @@ file that was distributed with this source code.
 
                     <template v-slot:data-table.item.url="{item}">
                         <a :href="item.url" target="_blank">{{ $t('source') }}</a>
-                    </template>
-
-                    <template v-slot:no-items>
-                        <v-btn color="accent" ripple class="mt-3" :to="{name: 'repositories-add'}">{{ $t('views.repositories.add-first') }}</v-btn>
                     </template>
                 </search-list>
             </v-col>
