@@ -1,10 +1,10 @@
-Fxp Satis Serverless
-====================
+Tug
+===
 
-[![Image of CloudFormation Launch Stack](doc/images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=FxpSatisServerless&templateURL=https://fxp-satis-serverless.s3.amazonaws.com/latest.template)
-[![Build Status](https://travis-ci.org/fxpio/satis-serverless.svg?branch=master)](https://travis-ci.org/fxpio/satis-serverless)
+[![Image of CloudFormation Launch Stack](doc/images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=Tug&templateURL=https://tug-dev.s3.amazonaws.com/latest.template)
+[![Build Status](https://travis-ci.org/fxpio/tug.svg?branch=master)](https://travis-ci.org/fxpio/tug)
 
-The Fxp Satis Serverless is a Composer private repository for private PHP packages installable with
+Tug is a Composer private repository for private PHP packages installable with
 [Composer](http://getcomposer.org). The main idea of this project is to have an intermediary between
 the management of its own server Packagist, or the use of a third party service, and the simple static
 packages generator like Satis. That is, do not be worried about updating package versions and SHA1s of
@@ -84,7 +84,7 @@ file in this project:
 
 The latest version of the AWS CloudFormation Stack is to this url:
 
-https://fxp-satis-serverless.s3.amazonaws.com/latest.template
+https://tug-dev.s3.amazonaws.com/latest.template
 
 Installation
 ------------
@@ -101,10 +101,10 @@ This project is under the MIT license. See the complete license in the bundle:
 About
 -----
 
-Fxp Satis Serverless is a [François Pluchino](https://github.com/francoispluchino) initiative.
-See also the list of [contributors](https://github.com/fxpio/fxp-satis-serverless/graphs/contributors).
+Tug is a [François Pluchino](https://github.com/francoispluchino) initiative.
+See also the list of [contributors](https://github.com/fxpio/tug/graphs/contributors).
 
 Reporting an issue or a feature request
 ---------------------------------------
 
-Issues and feature requests are tracked in the [Github issue tracker](https://github.com/fxpio/fxp-satis-serverless/issues).
+Issues and feature requests are tracked in the [Github issue tracker](https://github.com/fxpio/tug/issues).

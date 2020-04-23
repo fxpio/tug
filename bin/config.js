@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /*
- * This file is part of the Fxp Satis Serverless package.
+ * This file is part of the Tug package.
  *
  * (c) François Pluchino <francois.pluchino@gmail.com>
  *
@@ -23,7 +23,7 @@ let envs = utils.mergeVariables(utils.readEnvVariables(ENV_DIST_PATH), utils.rea
 let initialEnvs = Object.assign({}, envs);
 
 program
-    .description('Configure your Satis Serverless')
+    .description('Configure your Tug')
     .option('--aws-profile <name>', 'The profile name of AWS shared file (to configure automatically the credentials)', envs['AWS_PROFILE'])
     .option('--aws-access-key-id <key>', 'Your AWS Access Key ID (required if AWS Shared Credentials File is not found)', envs['AWS_ACCESS_KEY_ID'])
     .option('--aws-secret-access-key <secret>', 'Your AWS Secret Access Key (required if AWS Shared Credentials File is not found)', envs['AWS_SECRET_ACCESS_KEY'])

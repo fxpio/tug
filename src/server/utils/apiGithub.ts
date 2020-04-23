@@ -1,5 +1,5 @@
 /*
- * This file is part of the Fxp Satis Serverless package.
+ * This file is part of the Tug package.
  *
  * (c) François Pluchino <francois.pluchino@gmail.com>
  *

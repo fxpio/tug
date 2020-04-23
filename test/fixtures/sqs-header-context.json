@@ -1,11 +1,11 @@
 {
   "callbackWaitsForEmptyEventLoop": true,
-  "logGroupName": "/aws/lambda/FxpSatisServerless-Server-TESTUNIQUEID",
+  "logGroupName": "/aws/lambda/Tug-Server-TESTUNIQUEID",
   "logStreamName": "2018/06/29/[$LATEST]b6a142adcac642c7b0ea9accaa27fe68",
-  "functionName": "FxpSatisServerless-Server-TESTUNIQUEID",
+  "functionName": "Tug-Server-TESTUNIQUEID",
   "memoryLimitInMB": "1024",
   "functionVersion": "$LATEST",
   "invokeid": "fb2034a2-3afd-597f-bff0-671763f086c6",
   "awsRequestId": "fb2034a2-3afd-597f-bff0-671763f086c6",
-  "invokedFunctionArn": "arn:aws:lambda:eu-west-1:000000000000:function:FxpSatisServerless-Server-TESTUNIQUEID"
+  "invokedFunctionArn": "arn:aws:lambda:eu-west-1:000000000000:function:Tug-Server-TESTUNIQUEID"
 }

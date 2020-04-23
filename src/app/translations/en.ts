@@ -1,5 +1,5 @@
 /*
- * This file is part of the Fxp Satis Serverless package.
+ * This file is part of the Tug package.
  *
  * (c) François Pluchino <francois.pluchino@gmail.com>
  *
@@ -11,7 +11,7 @@
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export default {
-    'app.name': 'Fxp Satis Serverless',
+    'app.name': 'Tug',
     'app.description': 'Your private repository of Composer packages for your private PHP packages',
     'sw.app.updated': 'A new version of the application is available. Restart the application to use it',
     'next.count': 'Next ({count})',

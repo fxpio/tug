@@ -1,7 +1,7 @@
-Fxp Satis Serverless
-====================
+Tug
+===
 
-Welcome to the Fxp Satis Serverless - a serverless Composer repository for private repositories.
+Welcome on the Tug - a private Composer registry for private PHP packages on AWS Serverless.
 
 This document contains information on how to download, install, and start the API built with:
 
@@ -70,9 +70,9 @@ You have the option to install the server in one click or download, compile and 
 This installation process is the easiest and fastest, just click on the "CloudFormation Launch Stack" button,
 and follow the wizard:
 
-[![Image of CloudFormation Launch Stack](images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=FxpSatisServerless&templateURL=https://fxp-satis-serverless.s3.amazonaws.com/latest.template)
+[![Image of CloudFormation Launch Stack](images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=Tug&templateURL=https://tug-dev.s3.amazonaws.com/latest.template)
 
-1. Then click Next where you can enter a stack name (FxpSatisServerless is a good default)
+1. Then click Next where you can enter a stack name (Tug is a good default)
 2. Click Next
 3. Click Next again on the Options step (leaving the default options selected), to get to the final Review step
 4. a. In the Capabilities section of the Review step: check the acknowledgment checkboxes and click
@@ -88,10 +88,10 @@ and follow the wizard:
 #### 1.b.1. Clone the repository
 
 ```
-$ git clone git@github.com:fxpio/fxp-satis-serverless.git
+$ git clone git@github.com:fxpio/tug.git
 ```
 
-Or download the [archive](https://github.com/fxpio/fxp-satis-serverless/archive/master.zip) if you haven't Git.
+Or download the [archive](https://github.com/fxpio/tug/archive/master.zip) if you haven't Git.
 
 
 #### 1.b.2. Setup the project
@@ -149,7 +149,7 @@ $ bin/create-github-token
 
 In each repository or in a organization, create the webhook with:
 
-- Payload URL: `https://<your-custom-domain-for-satis>`
+- Payload URL: `https://<your-custom-domain-for-tug>`
 - Content type: `application/json`
 - Secret: `<your-created-token-for-github-webhooks-in-step-2.2>`
 - Which events would you like to trigger this webhook? `Just the push event.`
@@ -157,7 +157,7 @@ In each repository or in a organization, create the webhook with:
 
 ### 2.4. Create your first API key
 
-The API keys are to be used with Composer to allow the connection with your Satis Serverless.
+The API keys are to be used with Composer to allow the connection with your Tug.
 
 To create a new API key, run the command:
 
@@ -172,13 +172,13 @@ $ bin/create-api-key
 
 ## 3) Enjoy!
 
-Now that you have completed the basic installation and configuration of the Satis Serverless, you are ready to learn
+Now that you have completed the basic installation and configuration of Tug, you are ready to learn
 more about using this project.
 
 The following documents are available:
 
 - [Configure your custom domain with SSL](custom-domain-ssl.md)
-- [Using Satis Serverless in your project](include-in-project.md)
+- [Using Tug in your project](include-in-project.md)
 - [Manage the packages](manage-packages.md)
 - [Alternative installations](alternate-installations.md)
 - [Update the CloudFormation Stack](update-cloud-formation-stack.md)

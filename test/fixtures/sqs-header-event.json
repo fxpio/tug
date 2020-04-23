@@ -13,7 +13,7 @@
       "messageAttributes": {},
       "md5OfBody": "99914b932bd37a50b983c5e7c90ae93b",
       "eventSource": "aws:sqs",
-      "eventSourceARN": "arn:aws:sqs:eu-west-1:000000000000:FxpSatisServerless-Queue-TESTUNIQUEID",
+      "eventSourceARN": "arn:aws:sqs:eu-west-1:000000000000:Tug-Queue-TESTUNIQUEID",
       "awsRegion": "eu-west-1"
     }
   ]

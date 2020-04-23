@@ -1,5 +1,5 @@
 /*
- * This file is part of the Fxp Satis Serverless package.
+ * This file is part of the Tug package.
  *
  * (c) François Pluchino <francois.pluchino@gmail.com>
  *
@@ -18,7 +18,7 @@ const serverPort = serverApiPort + 2;
 const srcPath = path.resolve(__dirname, 'src/app');
 const distPath = path.resolve(__dirname, 'dist');
 const basePath = 'admin';
-const appName = 'Fxp Satis Serverless';
+const appName = 'Tug';
 const version = require("./package.json").version;
 
 const webpackPlugin = [

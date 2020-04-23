@@ -9,19 +9,19 @@ that you have already purchased your custom domain, and that you can edit your e
 Create the domain certificate in AWS Certificate Manager in your AWS region if you want to use a regional endpoint,
 or in the `us-west-1` region if you want to use the Edge Optimized endpoint:
 
-1. Add the root domain: `satis.example.tld` (example)
+1. Add the root domain: `tug.example.tld` (example)
 2. Validate and request the certificate
 
 ## 2. Create the domain in API Gateway
 
 Create the domain in API Gateway with:
 
-- Domain: `<your-custom-domain-for-satis>`
+- Domain: `<your-custom-domain-for-tug>`
 - Configuration of the endpoint: `Edge Optimized` or `Regional`
-- ACM Certificate: `<your-certificate-for-satis-domain>`
+- ACM Certificate: `<your-certificate-for-tug-domain>`
 - Base Path Mapping:
   - Path: ``
-  - Destination: `<your-satis-gateway-api>`
+  - Destination: `<your-tug-gateway-api>`
   - Stage: `prod`
 
 ### 3. Configure your DNS zone

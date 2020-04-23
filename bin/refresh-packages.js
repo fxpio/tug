@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /*
- * This file is part of the Fxp Satis Serverless package.
+ * This file is part of the Tug package.
  *
  * (c) François Pluchino <francois.pluchino@gmail.com>
  *
@@ -21,7 +21,7 @@ const createHeaders = require('./utils/endpoint').createHeaders;
 
 program
     .description('Refresh the versions of package')
-    .option('-e, --endpoint <url>', 'Define the endpoint of Satis Serverless API (use for local dev)', false)
+    .option('-e, --endpoint <url>', 'Define the endpoint of Tug API (use for local dev)', false)
     .option('-u, --url <url>', 'The repository URL, or empty to refresh all repositories')
     .option('-n, --version <version>', 'The specific version, or empty to refresh all versions')
     .option('-f, --force', 'Check if the package must be actualized even if it exists')

@@ -1,5 +1,5 @@
 /*
- * This file is part of the Fxp Satis Serverless package.
+ * This file is part of the Tug package.
  *
  * (c) François Pluchino <francois.pluchino@gmail.com>
  *
@@ -10,7 +10,7 @@
 const AWS = require('aws-sdk');
 
 /**
- * Retrieve the endpoint of the Satis Serverless API.
+ * Retrieve the endpoint of the Tug API.
  *
  * @param {commander} [program] The commander js
  *
@@ -36,7 +36,7 @@ module.exports.getEndpoint = async function getEndpoint(program) {
         }
     } catch (e) {}
 
-    throw new Error('Impossible to retrieve the endpoint of your Satis Serverless API');
+    throw new Error('Impossible to retrieve the endpoint of your Tug API');
 };
 
 /**

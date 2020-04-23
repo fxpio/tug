@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Serverless Composer repository for private PHP packages
+Description: Private Composer registry for private PHP packages on AWS Serverless
 
 Parameters:
   LoggerLevel:
@@ -14,15 +14,15 @@ Parameters:
       - verbose
     ConstraintDescription: Must be "error", "warn", "info" or "verbose"
 
-  SatisServerlessVersion:
-    Description: The version defined by the tag name in the Releases page (https://github.com/fxpio/satis-serverless/releases)
+  TugVersion:
+    Description: The version defined by the tag name in the Releases page (https://github.com/fxpio/tug/releases)
     Type: String
     Default: {S3_LAMBDA_CODE_VERSION}
 
 Resources:
   Endpoint:
     Type: AWS::Serverless::Api
-    Description: Endpoint of Satis Serverless
+    Description: Endpoint of Tug
     Properties:
       StageName: prod
       DefinitionBody:
@@ -158,7 +158,7 @@ Resources:
   Server:
     Type: AWS::Serverless::Function
     Properties:
-      Description: Logic of Satis Serverless
+      Description: Logic of Tug
       Runtime: nodejs12.x
       Handler: server.handler
       CodeUri:
@@ -167,7 +167,7 @@ Resources:
           Fn::Join:
           - ''
           - - 'builds/'
-            - Ref: SatisServerlessVersion
+            - Ref: TugVersion
             - '.zip'
       Timeout: 30
       MemorySize: 1024

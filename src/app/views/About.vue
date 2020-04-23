@@ -1,5 +1,5 @@
 <!--
-This file is part of the Fxp Satis Serverless package.
+This file is part of the Tug package.
 
 (c) François Pluchino <francois.pluchino@gmail.com>
 
@@ -32,7 +32,7 @@ file that was distributed with this source code.
                             </v-list-item-content>
                         </v-list-item>
 
-                        <v-list-item target="_blank" href="https://github.com/fxpio/satis-serverless/issues">
+                        <v-list-item target="_blank" href="https://github.com/fxpio/tug/issues">
                             <v-list-item-avatar>
                                 <v-icon color="accent">bug_report</v-icon>
                             </v-list-item-avatar>
@@ -47,7 +47,7 @@ file that was distributed with this source code.
                             </v-list-item-content>
                         </v-list-item>
 
-                        <v-list-item target="_blank" href="https://github.com/fxpio/satis-serverless/releases">
+                        <v-list-item target="_blank" href="https://github.com/fxpio/tug/releases">
                             <v-list-item-avatar>
                                 <v-icon color="accent">track_changes</v-icon>
                             </v-list-item-avatar>
@@ -82,7 +82,7 @@ file that was distributed with this source code.
                             </v-list-item-content>
                         </v-list-item>
 
-                        <v-list-item target="_blank" href="https://github.com/fxpio/satis-serverless">
+                        <v-list-item target="_blank" href="https://github.com/fxpio/tug">
                             <v-list-item-avatar>
                                 <v-icon color="accent">fab fa-github</v-icon>
                             </v-list-item-avatar>

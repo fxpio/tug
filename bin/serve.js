@@ -1,5 +1,5 @@
 /*
- * This file is part of the Fxp Satis Serverless package.
+ * This file is part of the Tug package.
  *
  * (c) François Pluchino <francois.pluchino@gmail.com>
  *
@@ -25,7 +25,7 @@ const dynamodbLocalZipPath = dynamodbLocalPath + '.zip';
 const CONTENT_PATH = './dist';
 
 program
-    .description('Serve the Satis server in local')
+    .description('Serve the Tug server in local')
     .option('-p, --port <port>', 'The port to run the local server', '3000')
     .option('-d, --dynamodb-port <port>', 'The port to run the local AWS DynamoDB server', null)
     .parse(process.argv)

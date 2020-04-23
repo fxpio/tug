@@ -1,9 +1,9 @@
 {
-  "name": "@fxp/satis-serverless",
+  "name": "@fxp/tug",
   "version": "1.0.0",
-  "description": "Composer private repository for private PHP packages on AWS Serverless",
+  "description": "Private Composer registry for private PHP packages on AWS Serverless",
   "main": "src/lambda.js",
-  "repository": "git@github.com:fxpio/fxp-satis-serverless.git",
+  "repository": "git@github.com:fxpio/tug.git",
   "author": "François Pluchino <francois.pluchino@gmail.com>",
   "license": "MIT",
   "private": true,

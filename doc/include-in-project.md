@@ -1,13 +1,13 @@
-Enable Satis Serverless in your project
-=======================================
+Enable Tug in your project
+==========================
 
-To enable the Satis Serverless for each PHP project with Composer, you must run this Composer command:
+To enable Tug for each PHP project with Composer, you must run this Composer command:
 
 ```
-$ composer config repositories.satis-serverless composer https://<your-custom-domain>
+$ composer config repositories.tug composer https://<your-custom-domain>
 ```
 
-> Of course, use your custom domain, and you also can change the name of the Composer repository.
+> Of course, use your custom domain, and you also can change the name of the Composer registry.
 
 ## Use the API key with Composer
 
