@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <div ref="lavContainer" :style="style"></div>
+    <div ref="lavContainer" class="lottie-wrapper" :style="style"></div>
 </template>
 
 <script lang="ts">
@@ -49,7 +49,6 @@ file that was distributed with this source code.
                 'max-width': this.maxWidth,
                 'overflow': 'hidden',
                 'margin': this.center ? '0 auto' : undefined,
-                'transform': this.transform,
             };
         }
 
@@ -63,12 +62,24 @@ file that was distributed with this source code.
             const params = Object.assign({}, defaultParams, this.options);
 
             this.animation = lottie.loadAnimation(params);
+            this.updateTransform();
             this.$emit('lottie-created', this.animation);
+        }
+
+        public beforeUpdate(): void {
+            this.updateTransform();
         }
 
         public destroyed(): void {
             if (this.animation) {
                 this.animation = undefined;
+            }
+        }
+
+        private updateTransform(): void {
+            if (this.animation && this.transform) {
+                const svgs: HTMLCollection = this.$el.getElementsByTagName('svg');
+                (svgs[0] as HTMLElement).style.transform = this.transform;
             }
         }
     }
