@@ -8,15 +8,9 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-dialog v-model="model" eager persistent fullscreen hide-overlay transition="fade">
-        <v-card class="fill-height">
         <v-container fill-height>
             <v-row no-gutters justify="center" align-content="center">
                 <v-col cols="12" sm="8" md="6" lg="5" xl="3">
-                    <v-row justify="center">
-                        <lottie transform="scale(2.6)" width="140px" height="140px;" :options="{animationData: iconData, loop: true}"></lottie>
-                    </v-row>
-
                     <h1 class="pb-4 text-center accent--text">{{ $t('app.name') }}</h1>
 
                     <v-card flat class="pb-2">
@@ -84,8 +78,6 @@ file that was distributed with this source code.
                 </v-col>
             </v-row>
         </v-container>
-        </v-card>
-    </v-dialog>
 </template>
 
 <script lang="ts">
@@ -115,7 +107,7 @@ file that was distributed with this source code.
         public model: boolean = true;
 
         public get iconData(): object {
-            return  iconData;
+            return iconData;
         }
 
         public metaInfo(): MetaInfo {

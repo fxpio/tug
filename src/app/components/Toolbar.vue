@@ -8,37 +8,34 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-fade-transition>
-        <v-app-bar app clipped-left elevation="0" v-if="!$store.state.auth.authenticated"></v-app-bar>
-        <v-app-bar app clipped-left elevate-on-scroll v-else>
-            <slot name="menu">
-                <v-scale-transition origin="center center" mode="out-in">
-                    <v-app-bar-nav-icon v-if="!showPreviousButton" @click.prevent="drawerButtonAction" key="menu-btn">
-                        <v-icon>menu</v-icon>
-                    </v-app-bar-nav-icon>
+    <v-app-bar app clipped-left elevate-on-scroll>
+        <slot name="menu">
+            <v-scale-transition origin="center center" mode="out-in">
+                <v-app-bar-nav-icon v-if="!showPreviousButton" @click.prevent="drawerButtonAction" key="menu-btn">
+                    <v-icon>menu</v-icon>
+                </v-app-bar-nav-icon>
 
-                    <v-btn icon v-else @click.prevent="previousButtonAction" @long-click="drawerButtonAction"
-                           key="previous-btn">
-                        <v-icon>arrow_back</v-icon>
-                    </v-btn>
-                </v-scale-transition>
-            </slot>
+                <v-btn icon v-else @click.prevent="previousButtonAction" @long-click="drawerButtonAction"
+                       key="previous-btn">
+                    <v-icon>arrow_back</v-icon>
+                </v-btn>
+            </v-scale-transition>
+        </slot>
 
-            <slot name="title">
-                <v-toolbar-title>{{ $t('app.name') }}</v-toolbar-title>
-            </slot>
+        <slot name="title">
+            <v-toolbar-title>{{ $t('app.name') }}</v-toolbar-title>
+        </slot>
 
-            <slot name="default">
-                <v-spacer></v-spacer>
-            </slot>
+        <slot name="default">
+            <v-spacer></v-spacer>
+        </slot>
 
-            <slot name="online-status">
-                <online-status></online-status>
-            </slot>
+        <slot name="online-status">
+            <online-status></online-status>
+        </slot>
 
-            <slot name="actions"></slot>
-        </v-app-bar>
-    </v-fade-transition>
+        <slot name="actions"></slot>
+    </v-app-bar>
 </template>
 
 <script lang="ts">

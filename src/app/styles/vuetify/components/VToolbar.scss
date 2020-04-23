@@ -20,6 +20,11 @@
     direction: rtl;
 }
 
+.v-toolbar--content {
+    display: flex;
+    flex-grow: 1 !important;
+}
+
 .v-toolbar {
     &.elevation-0 {
         border-bottom: 1px solid transparent;

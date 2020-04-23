@@ -27,6 +27,7 @@ import {createStore} from '@app/store';
 import '@app/registerServiceWorker';
 import '@app/styles/fonts.scss';
 import '@app/styles/app.scss';
+import SimpleSpacer from '@app/components/SimpleSpacer.vue';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -37,6 +38,7 @@ useVueRouterBackPlugin({router, forceHistory: true});
 const store = createStore<RootState>(router, i18n, apiClient);
 
 RouterGuards.addAuthGuard(router, store);
+RouterGuards.addDefaultComponentGuard(router, 'toolbar', SimpleSpacer);
 
 ApiInterceptors.addLocaleInterceptor(apiClient, store);
 ApiInterceptors.addAuthInterceptor(apiClient, store);

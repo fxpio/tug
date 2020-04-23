@@ -12,9 +12,9 @@ file that was distributed with this source code.
         <snackbar></snackbar>
 
         <transition :name="transitionName">
-            <app-drawer :items="drawerItems">
+            <app-drawer :items="drawerItems" v-if="$store.state.auth.authenticated">
                 <template v-slot:drawer.append>
-                    <div class="pa-4" v-if="$store.state.auth.authenticated">
+                    <div class="pa-4">
                         <v-btn block outlined rounded ripple small color="primary lighten-4" @click="logout">
                             <v-icon left color="primary lighten-4">exit_to_app</v-icon>
                             {{ $t('logout') }}
@@ -25,7 +25,11 @@ file that was distributed with this source code.
         </transition>
 
         <transition :name="transitionName">
-            <router-view name="toolbar"></router-view>
+            <toolbar v-if="$store.state.auth.authenticated">
+                <transition :name="transitionName" mode="out-in">
+                    <router-view name="toolbar" :key="$route.fullPath"></router-view>
+                </transition>
+            </toolbar>
         </transition>
 
         <v-content>
@@ -44,12 +48,13 @@ file that was distributed with this source code.
     import Vue from 'vue';
     import {Component, Watch} from 'vue-property-decorator';
     import {MetaInfo} from 'vue-meta';
+    import Toolbar from '@app/components/Toolbar.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
     @Component({
-        components: {AppDrawer, Snackbar},
+        components: {Toolbar, AppDrawer, Snackbar},
     })
     export default class App extends Vue {
         public static readonly DEFAULT_TRANSITION: string = 'fade';

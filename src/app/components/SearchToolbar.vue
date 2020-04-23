@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <Toolbar>
+    <div class="v-toolbar--content">
         <v-spacer></v-spacer>
 
         <v-text-field
@@ -24,19 +24,16 @@ file that was distributed with this source code.
         ></v-text-field>
 
         <v-spacer></v-spacer>
-    </Toolbar>
+    </div>
 </template>
 
 <script lang="ts">
     import {Component, Vue, Watch} from 'vue-property-decorator';
-    import Toolbar from '@app/components/Toolbar.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
-    @Component({
-        components: {Toolbar},
-    })
+    @Component
     export default class SearchToolbar extends Vue {
         public search: string = '';
 

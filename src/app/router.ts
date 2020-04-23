@@ -29,7 +29,6 @@ export default new Router({
             meta: {requiresAuth: true},
             components: {
                 default: () => import(/* webpackChunkName: "home" */ '@app/views/Home.vue'),
-                toolbar: () => import(/* webpackChunkName: "home" */'@app/components/Toolbar.vue'),
             },
         },
         {
@@ -66,7 +65,6 @@ export default new Router({
             meta: {requiresAuth: true},
             components: {
                 default: () => import(/* webpackChunkName: "settings" */ '@app/views/Settings.vue'),
-                toolbar: () => import(/* webpackChunkName: "settings" */'@app/components/Toolbar.vue'),
             },
         },
         {
@@ -75,7 +73,6 @@ export default new Router({
             meta: {requiresAuth: true},
             components: {
                 default: () => import(/* webpackChunkName: "about" */ '@app/views/About.vue'),
-                toolbar: () => import(/* webpackChunkName: "about" */'@app/components/Toolbar.vue'),
             },
         },
         {
@@ -83,7 +80,6 @@ export default new Router({
             name: 'login',
             components: {
                 default: () => import(/* webpackChunkName: "login" */ '@app/views/Login.vue'),
-                toolbar: () => import(/* webpackChunkName: "login" */'@app/components/Toolbar.vue'),
             },
         },
         {
@@ -91,7 +87,6 @@ export default new Router({
             name: 'not-found',
             components: {
                 default: () => import('@app/views/NotFound.vue'),
-                toolbar: () => import('@app/components/Toolbar.vue'),
             },
         },
     ],

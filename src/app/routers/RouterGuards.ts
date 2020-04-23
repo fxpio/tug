@@ -42,4 +42,20 @@ export default class RouterGuards {
             next(guard);
         });
     }
+
+    /**
+     * Add the default component in the current route if it is not defined.
+     */
+    public static addDefaultComponentGuard(router: Router, name: string, component: any): void {
+        router.beforeEach(async (to: Route, from: Route,
+                                 next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) => {
+            to.matched.forEach((record) => {
+                if (undefined === record.components[name]) {
+                    record.components.toolbar = component as any;
+                }
+            });
+
+            next();
+        });
+    }
 }

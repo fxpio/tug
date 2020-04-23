@@ -9,8 +9,7 @@ file that was distributed with this source code.
 
 <template>
     <v-navigation-drawer v-model="drawer" fixed clipped app>
-        <v-fade-transition>
-        <v-list rounded v-if="$store.state.auth.authenticated">
+        <v-list rounded>
             <template v-for="(item, i) in items">
                 <v-subheader v-if="item.heading" :key="i">
                     {{ $t(item.heading) }}
@@ -46,7 +45,6 @@ file that was distributed with this source code.
                 <slot :name="slotItem.original"></slot>
             </template>
         </v-list>
-        </v-fade-transition>
 
         <template v-for="(slotItem) in getSlotItems('drawer')"
                   v-slot:[slotItem.target]>

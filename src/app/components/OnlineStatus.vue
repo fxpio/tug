@@ -9,9 +9,9 @@ file that was distributed with this source code.
 
 <template>
     <tooltip position="left" :message="online ? $t('online') : $t('offline')">
-        <v-fade-transition>
-            <v-icon :color="online ? 'grey lighten-1' : 'warning'">{{ online ? 'cloud_done' : 'cloud_off' }}</v-icon>
-        </v-fade-transition>
+        <v-scale-transition origin="center center" mode="out-in">
+            <v-icon :color="online ? 'grey lighten-1' : 'warning'" :key="online">{{ online ? 'cloud_done' : 'cloud_off' }}</v-icon>
+        </v-scale-transition>
     </tooltip>
 </template>
 
