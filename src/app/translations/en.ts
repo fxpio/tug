@@ -12,7 +12,7 @@
  */
 export default {
     'app.name': 'Tug',
-    'app.description': 'Your private repository of Composer packages for your private PHP packages',
+    'app.description': 'Your private registry of Composer packages for your private PHP repositories',
     'sw.app.updated': 'A new version of the application is available. Restart the application to use it',
     'next.count': 'Next ({count})',
     'close': 'Close',

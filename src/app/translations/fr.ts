@@ -12,7 +12,7 @@
  */
 export default {
     'app.name': 'Tug',
-    'app.description': 'Votre référentiel privé de paquets Composer pour vos paquets PHP privés',
+    'app.description': 'Votre registre privé de paquets Composer pour vos dépôts privés PHP',
     'sw.app.updated': 'Une nouvelle version de l\'application est disponible. Relancez l\'application pour l\'utiliser',
     'next.count': 'Suivant ({count})',
     'close': 'Fermer',
