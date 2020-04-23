@@ -4,7 +4,7 @@ Tug
 [![Image of CloudFormation Launch Stack](doc/images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=Tug&templateURL=https://tug-dev.s3.amazonaws.com/latest.template)
 [![Build Status](https://travis-ci.org/fxpio/tug.svg?branch=master)](https://travis-ci.org/fxpio/tug)
 
-Tug is a Composer private repository for private PHP packages installable with
+Tug is a Composer private registry for private PHP packages installable with
 [Composer](http://getcomposer.org). The main idea of this project is to have an intermediary between
 the management of its own server Packagist, or the use of a third party service, and the simple static
 packages generator like Satis. That is, do not be worried about updating package versions and SHA1s of
