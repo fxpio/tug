@@ -8,11 +8,11 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-container fill-height>
+    <v-container>
         <v-row no-gutters justify="center" align="center">
             <v-col cols="12" align="center">
+                <v-subheader></v-subheader>
                 <lottie transform="scale(2.6)" width="180px" height="180px;" :options="{animationData: iconData}"></lottie>
-                <h1 class="pb-4 primary--text">{{ $t('app.name') }}</h1>
                 <h3 class="mb-5 text--secondary">{{ $t('app.description') }}</h3>
                 <v-btn depressed rounded ripple color="accent" class="mt-5" :to="{name: 'home'}">
                     {{ $t('views.home.actions.add_repository') }}
