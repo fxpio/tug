@@ -368,6 +368,9 @@ module.exports.downloadFile = function(url, dest) {
     return new Promise((resolve, reject) => {
         let responseSent = false;
 
+        // Ensure that the directory exists
+        fs.mkdirSync(fsPath.dirname(dest));
+
         http.get(url, response => {
             if (200 === response.statusCode) {
                 let file = fs.createWriteStream(dest);
