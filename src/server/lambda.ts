@@ -56,7 +56,7 @@ const binaryMimeTypes = [
 
 const app = express();
 const env = process.env;
-const debug = 'production' !== env.NODE_ENV;
+const debug = '1' === env.DEBUG;
 
 app.use(compression());
 app.use(awsServerlessExpressMiddleware.eventContext());

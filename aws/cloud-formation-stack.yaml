@@ -14,6 +14,15 @@ Parameters:
       - verbose
     ConstraintDescription: Must be "error", "warn", "info" or "verbose"
 
+  ModeDebug:
+    Description: Check if the debug must be enabled
+    Type: String
+    Default: 0
+    AllowedValues:
+      - 0
+      - 1
+    ConstraintDescription: Must be "0" to disable the debug, or "1" to enable the debug
+
   TugVersion:
     Description: The version defined by the tag name in the Releases page (https://github.com/fxpio/tug/releases)
     Type: String
@@ -187,6 +196,8 @@ Resources:
             Ref: Queue
           LOGGER_LEVEL:
             Ref: LoggerLevel
+          DEBUG:
+            Ref: ModeDebug
       Events:
         ProxyApiRoot:
           Type: Api

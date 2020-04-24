@@ -20,11 +20,11 @@ import {Request, Response} from 'express';
 import fs from 'fs-extra';
 import http, {IncomingMessage} from 'http';
 
-dotenv.config();
+dotenv.config({path: '.env.local'});
 
 const env = process.env;
 const port = env.SERVER_PORT || 3000;
-const debug = 'production' !== env.NODE_ENV;
+const debug = '1' === env.DEBUG;
 const app = createApp({
     database: new AwsDynamoDbDatabase(env.AWS_DYNAMODB_TABLE as string, env.AWS_REGION as string, env.AWS_DYNAMODB_URL),
     storage: new LocalStorage('@server/var/storage'),
