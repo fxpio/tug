@@ -191,26 +191,20 @@ if (program.interaction) {
             }
         },
         {
-            type : 'input',
+            type : 'list',
             name : 'loggerLevel',
             default: function () {
                 return envs['LOGGER_LEVEL'];
             },
             message : 'Enter the logger level:',
+            choices: function() {
+                return ['error', 'warn', 'info', 'verbose'];
+            },
             when: function () {
-                return utils.showOnlyEmptyOption(program, envs, 'LOGGER_LEVEL');
+                return utils.showOnlyEmptyOption(program, envs, 'AWS_REGION');
             },
             validate: function (value) {
-                let res = utils.requiredOption(value);
-
-                if (true === res) {
-                    let acceptedValues = ['error', 'warn', 'info', 'verbose'];
-                    if (!acceptedValues.includes(value)) {
-                        res = 'Only this values are accepted: "' + acceptedValues.join('", "') + '"';
-                    }
-                }
-
-                return res;
+                return utils.requiredOption(value);
             }
         }
     ];
