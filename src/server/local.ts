@@ -20,7 +20,7 @@ import {Request, Response} from 'express';
 import fs from 'fs-extra';
 import http, {IncomingMessage} from 'http';
 
-dotenv.config({path: '.env.local'});
+dotenv.config({path: '.env'});
 
 const env = process.env;
 const port = env.SERVER_PORT || 3000;

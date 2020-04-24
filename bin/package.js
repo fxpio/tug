@@ -11,7 +11,7 @@
 
 'use strict';
 
-require('dotenv').config({path: '.env.local'});
+require('dotenv').config();
 const path = require('path');
 const fs = require('fs-extra');
 const program = require('commander');
