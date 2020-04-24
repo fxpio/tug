@@ -33,9 +33,9 @@ export function uiRoutes(router: Router, fallbackAssets?: RequestHandlerParams):
     const staticOtps = {
         index: false,
         redirect: false,
-        cacheControl: 'production' !== process.env.NODE_ENV,
+        cacheControl: false,
     };
-    const indexOpts = Object.assign({}, staticOtps, {cacheControl: false});
+    const indexOpts = Object.assign({}, staticOtps);
 
     router.get('/', asyncHandler(redirectHome));
     router.use('/admin', express.static(path.resolve(basePath, 'index.html'), indexOpts));
