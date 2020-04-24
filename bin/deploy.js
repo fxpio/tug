@@ -11,7 +11,7 @@
 
 'use strict';
 
-require('dotenv').config();
+const env = require('./utils/env').loadEnvs();
 const fs = require('fs');
 const program = require('commander');
 const AWS = require('aws-sdk');
@@ -24,8 +24,8 @@ program
     .description('Deploy the packaged project in AWS Cloud Formation')
     .parse(process.argv);
 
-let stackName = process.env['AWS_STACK_NAME'];
-let cf = new AWS.CloudFormation({apiVersion: '2010-05-15', region: process.env['AWS_REGION']});
+let stackName = env['AWS_STACK_NAME'];
+let cf = new AWS.CloudFormation({apiVersion: '2010-05-15', region: env['AWS_REGION']});
 
 let createAction = function(action) {
     let changeName = stackName + '-' + utils.generateId(12);
@@ -37,7 +37,7 @@ let createAction = function(action) {
         Parameters: [
             {
                 ParameterKey: 'LoggerLevel',
-                ParameterValue: process.env.LOGGER_LEVEL ? process.env.LOGGER_LEVEL : 'error',
+                ParameterValue: env.LOGGER_LEVEL ? env.LOGGER_LEVEL : 'error',
                 UsePreviousValue: false
             }
         ],
@@ -53,7 +53,7 @@ let createAction = function(action) {
                            if ('CREATE_COMPLETE' === resDesc.Status) {
                                cf.executeChangeSet({ChangeSetName: changeName, StackName: stackName}).promise()
                                    .then(() => {
-                                       console.info(`AWS Cloud Formation stack "${process.env['AWS_STACK_NAME']}" was queued for the ${'UPDATE' === action ? 'update' : 'creation'} with successfully`);
+                                       console.info(`AWS Cloud Formation stack "${env['AWS_STACK_NAME']}" was queued for the ${'UPDATE' === action ? 'update' : 'creation'} with successfully`);
                                        done();
                                        resolve();
                                    }).catch(reject);

@@ -11,7 +11,7 @@
 
 'use strict';
 
-require('dotenv').config();
+const env = require('./utils/env').loadEnvs();
 const program = require('commander');
 const AWS = require('aws-sdk');
 const utils = require('./utils/utils');
@@ -23,11 +23,11 @@ program
 utils.spawn('node bin/config -e')
     .then(() => {
         console.info('Deletion of the S3 bucket is started...');
-        let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env['AWS_REGION']});
+        let s3 = new AWS.S3({apiVersion: '2006-03-01', region: env['AWS_REGION']});
 
-        return s3.deleteBucket({Bucket: process.env['AWS_S3_BUCKET_DEPLOY']}).promise();
+        return s3.deleteBucket({Bucket: env['AWS_S3_BUCKET_DEPLOY']}).promise();
     })
     .then(() => {
-        console.info(`AWS S3 bucket "${process.env['AWS_S3_BUCKET_DEPLOY']}" was deleted with successfully`);
+        console.info(`AWS S3 bucket "${env['AWS_S3_BUCKET_DEPLOY']}" was deleted with successfully`);
     })
     .catch(utils.displayError);

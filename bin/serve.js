@@ -9,7 +9,6 @@
 
 'use strict';
 
-require('dotenv').config();
 const program = require('commander');
 const async = require('async');
 const fs = require('fs-extra');
@@ -36,15 +35,17 @@ let startLocalDynamoDb = false;
 
 process.env.SERVER_PORT = program.port;
 
-if (undefined === process.env.AWS_DYNAMODB_URL) {
-    process.env.AWS_DYNAMODB_URL = 'http://localhost:' + dynamodbPort;
+const env = require('./utils/env').loadEnvs();
+
+if (undefined === env.AWS_DYNAMODB_URL) {
+    env.AWS_DYNAMODB_URL = 'http://localhost:' + dynamodbPort;
 }
 
-if (undefined === process.env.AWS_DYNAMODB_TABLE) {
-    process.env.AWS_DYNAMODB_TABLE = process.env.AWS_STACK_NAME + '-Database';
+if (undefined === env.AWS_DYNAMODB_TABLE) {
+    env.AWS_DYNAMODB_TABLE = env.AWS_STACK_NAME + '-Database';
 }
 
-if (process.env.AWS_DYNAMODB_URL.startsWith('http://localhost:')) {
+if (env.AWS_DYNAMODB_URL.startsWith('http://localhost:')) {
     startLocalDynamoDb = true;
 }
 
@@ -86,12 +87,12 @@ utils.spawn('node bin/config -e')
             async function () {
                 let db = new AWS.DynamoDB({
                     apiVersion: '2012-08-10',
-                    region: process.env.AWS_REGION,
-                    endpoint: process.env.AWS_DYNAMODB_URL ? process.env.AWS_DYNAMODB_URL : undefined
+                    region: env.AWS_REGION,
+                    endpoint: env.AWS_DYNAMODB_URL ? env.AWS_DYNAMODB_URL : undefined
                 });
 
                 try {
-                    await db.describeTable({TableName: process.env.AWS_DYNAMODB_TABLE}).promise();
+                    await db.describeTable({TableName: env.AWS_DYNAMODB_TABLE}).promise();
                 } catch (e) {
                     if ('ResourceNotFoundException' !== e.code || 400 !== e.statusCode) {
                         utils.displayError(e);
@@ -99,7 +100,7 @@ utils.spawn('node bin/config -e')
 
                     console.info('Creation of the table in AWS DynamoDB...');
                     await db.createTable({
-                        TableName: process.env.AWS_DYNAMODB_TABLE,
+                        TableName: env.AWS_DYNAMODB_TABLE,
                         AttributeDefinitions: [
                             {AttributeName: 'id', AttributeType: 'S'},
                             {AttributeName: 'model', AttributeType: 'S'}

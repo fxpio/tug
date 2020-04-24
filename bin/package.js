@@ -11,7 +11,7 @@
 
 'use strict';
 
-require('dotenv').config();
+const env = require('./utils/env').loadEnvs();
 const path = require('path');
 const fs = require('fs-extra');
 const program = require('commander');
@@ -65,13 +65,13 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
             return newPath;
         })
         .then(async (filePath) => {
-            let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env.AWS_REGION});
+            let s3 = new AWS.S3({apiVersion: '2006-03-01', region: env.AWS_REGION});
             let fileStream = fs.createReadStream(filePath);
             fileStream.on('error', utils.displayError);
 
             let params = {
                 ACL: program.tag || program.replace ? 'public-read' : undefined,
-                Bucket: program.bucket ? program.bucket : process.env.AWS_S3_BUCKET_DEPLOY,
+                Bucket: program.bucket ? program.bucket : env.AWS_S3_BUCKET_DEPLOY,
                 Key: utils.fixWinSlash(filePath).replace(/\/$/g, ''),
                 Body: fileStream
             };
@@ -80,7 +80,7 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
             return params.Key;
         })
         .then((key) => {
-            s3Keys['S3_LAMBDA_CODE_BUCKET'] = program.bucket ? program.bucket : process.env.AWS_S3_BUCKET_DEPLOY;
+            s3Keys['S3_LAMBDA_CODE_BUCKET'] = program.bucket ? program.bucket : env.AWS_S3_BUCKET_DEPLOY;
             s3Keys['S3_LAMBDA_CODE_VERSION'] = key.replace(BUILD_PATH.replace(/^.|\/|\/$/g, '') + '/', '').replace('.zip', '');
 
             return key;
@@ -94,13 +94,13 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
             fs.writeFileSync(BUILD_CLOUDFORMATION_PATH, data);
 
             if (program.tag || program.replace) {
-                let s3 = new AWS.S3({apiVersion: '2006-03-01', region: process.env.AWS_REGION});
+                let s3 = new AWS.S3({apiVersion: '2006-03-01', region: env.AWS_REGION});
                 let fileStream = fs.createReadStream(BUILD_CLOUDFORMATION_PATH);
                 fileStream.on('error', utils.displayError);
 
                 let params = {
                     ACL: program.tag || program.replace ? 'public-read' : undefined,
-                    Bucket: program.bucket ? program.bucket : process.env.AWS_S3_BUCKET_DEPLOY,
+                    Bucket: program.bucket ? program.bucket : env.AWS_S3_BUCKET_DEPLOY,
                     Key: `latest.template`,
                     Body: fileStream
                 };

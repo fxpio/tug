@@ -11,7 +11,6 @@
 
 'use strict';
 
-require('dotenv').config();
 const program = require('commander');
 const utils = require('./utils/utils');
 

@@ -11,7 +11,7 @@
 
 'use strict';
 
-require('dotenv').config();
+const env = require('./utils/env').loadEnvs();
 const program = require('commander');
 const AWS = require('aws-sdk');
 const utils = require('./utils/utils');
@@ -23,11 +23,11 @@ program
 utils.spawn('node bin/config -e')
     .then(() => {
         console.info('Deletion of the AWS Cloud Formation stack is started...');
-        let cf = new AWS.CloudFormation({apiVersion: '2010-05-15', region: process.env['AWS_REGION']});
+        let cf = new AWS.CloudFormation({apiVersion: '2010-05-15', region: env['AWS_REGION']});
 
-        return cf.deleteStack({StackName: process.env['AWS_STACK_NAME']}).promise();
+        return cf.deleteStack({StackName: env['AWS_STACK_NAME']}).promise();
     })
     .then(() => {
-        console.info(`AWS Cloud Formation stack "${process.env['AWS_STACK_NAME']}" was queued for the deletion with successfully`);
+        console.info(`AWS Cloud Formation stack "${env['AWS_STACK_NAME']}" was queued for the deletion with successfully`);
     })
     .catch(utils.displayError);
