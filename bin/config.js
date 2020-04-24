@@ -102,7 +102,9 @@ if (program.interaction) {
         {
             type : 'input',
             name : 'awsProfile',
-            default: envs['AWS_PROFILE'],
+            default: function () {
+                return envs['AWS_PROFILE'];
+            },
             message : 'Enter the profile name of the AWS shared file you want to use:',
             when: function () {
                 return utils.showOnlyEmptyOption(program, envs, 'AWS_PROFILE');
@@ -114,7 +116,9 @@ if (program.interaction) {
         {
             type : 'input',
             name : 'awsAccessKeyId',
-            default: envs['AWS_ACCESS_KEY_ID'],
+            default: function () {
+                return envs['AWS_ACCESS_KEY_ID'];
+            },
             message : 'Enter your AWS Access Key ID:',
             when: function (answers) {
                 let answerEnvs = {'AWS_PROFILE': answers.awsProfile},
@@ -130,7 +134,9 @@ if (program.interaction) {
         {
             type : 'input',
             name : 'awsSecretAccessKey',
-            default: envs['AWS_SECRET_ACCESS_KEY'],
+            default: function () {
+                return envs['AWS_SECRET_ACCESS_KEY'];
+            },
             message : 'Enter your AWS Secret Access Key:',
             when: function () {
                 return null === envs['AWS_SECRET_ACCESS_KEY'];
@@ -142,7 +148,9 @@ if (program.interaction) {
         {
             type : 'list',
             name : 'awsRegion',
-            default: envs['AWS_REGION'],
+            default: function () {
+                return envs['AWS_REGION'];
+            },
             message : 'Enter your AWS Region:',
             choices: function() {
                 return getAvailableRegions();
@@ -157,7 +165,9 @@ if (program.interaction) {
         {
             type : 'input',
             name : 'awsS3BucketDeploy',
-            default: envs['AWS_S3_BUCKET_DEPLOY'],
+            default: function () {
+                return envs['AWS_S3_BUCKET_DEPLOY'];
+            },
             message : 'Enter your AWS S3 bucket name:',
             when: function () {
                 return utils.showOnlyEmptyOption(program, envs, 'AWS_S3_BUCKET_DEPLOY');
@@ -169,7 +179,9 @@ if (program.interaction) {
         {
             type : 'input',
             name : 'awsStackName',
-            default: envs['AWS_STACK_NAME'],
+            default: function () {
+                return envs['AWS_STACK_NAME'];
+            },
             message : 'Enter your AWS Stack name:',
             when: function () {
                 return utils.showOnlyEmptyOption(program, envs, 'AWS_STACK_NAME');
@@ -181,7 +193,9 @@ if (program.interaction) {
         {
             type : 'input',
             name : 'loggerLevel',
-            default: envs['LOGGER_LEVEL'],
+            default: function () {
+                return envs['LOGGER_LEVEL'];
+            },
             message : 'Enter the logger level:',
             when: function () {
                 return utils.showOnlyEmptyOption(program, envs, 'LOGGER_LEVEL');
