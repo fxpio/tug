@@ -31,6 +31,7 @@ program
     .option('--aws-s3-bucket-deploy <bucket>', 'Your AWS S3 bucket name where the code must be deployed', envs['AWS_S3_BUCKET_DEPLOY'])
     .option('--aws-stack-name <stack>', 'Your AWS Stack name', envs['AWS_STACK_NAME'])
     .option('--logger-level <level>', 'The level of logger (error, warn, info, verbose)', envs['LOGGER_LEVEL'])
+    .option('--debug', 'Check if the debug mode is enabled (1, 0)', envs['DEBUG'] === '1')
     .option('-e, --only-empty', 'Display only questions of empty options', false)
     .option('-n, --no-interaction', 'Do not ask any interactive question', false)
     .parse(process.argv)
@@ -43,7 +44,8 @@ envs = utils.mergeVariables(envs, {
     AWS_REGION: program.awsRegion,
     AWS_S3_BUCKET_DEPLOY: program.awsS3BucketDeploy,
     AWS_STACK_NAME: program.awsStackName,
-    LOGGER_LEVEL: program.loggerLevel
+    LOGGER_LEVEL: program.loggerLevel,
+    DEBUG: program.debug ? '1' : '0',
 });
 
 let finishAction = function(envs) {
@@ -206,10 +208,36 @@ if (program.interaction) {
             validate: function (value) {
                 return utils.requiredOption(value);
             }
+        },
+        {
+            type : 'list',
+            name : 'debug',
+            default: function () {
+                return '1' === envs['DEBUG'] ? 'yes' : 'no';
+            },
+            message : 'Enable the debug mode?',
+            choices: function() {
+                return [
+                    'yes',
+                    'no',
+                ];
+            },
+            when: function () {
+                return utils.showOnlyEmptyOption(program, envs, 'DEBUG');
+            },
+            validate: function (value) {
+                return utils.requiredOption(value);
+            }
         }
     ];
 
     prompt(questions).then(function (answers) {
+        let debug = answers.debug;
+
+        if (undefined !== answers.debug) {
+            debug = ['1', 'yes'].includes(answers.debug) ? '1' : '0';
+        }
+
         envs = utils.mergeVariables(envs, {
             AWS_PROFILE: utils.cleanVariable(answers.awsProfile),
             AWS_ACCESS_KEY_ID: utils.cleanVariable(answers.awsAccessKeyId),
@@ -217,7 +245,8 @@ if (program.interaction) {
             AWS_REGION: utils.cleanVariable(answers.awsRegion),
             AWS_S3_BUCKET_DEPLOY: utils.cleanVariable(answers.awsS3BucketDeploy),
             AWS_STACK_NAME: utils.cleanVariable(answers.awsStackName),
-            LOGGER_LEVEL: utils.cleanVariable(answers.loggerLevel)
+            LOGGER_LEVEL: utils.cleanVariable(answers.loggerLevel),
+            DEBUG: utils.cleanVariable(debug),
         });
 
         finishAction(envs);
