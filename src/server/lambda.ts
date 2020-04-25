@@ -57,6 +57,8 @@ const binaryMimeTypes = [
 const app = express();
 const env = process.env;
 const debug = '1' === env.DEBUG;
+const redirectToApp = '1' === env.REDIRECT_TO_APP;
+const appBasePath = env.APP_BASE_PATH ? env.APP_BASE_PATH : '';
 
 app.use(compression());
 app.use(awsServerlessExpressMiddleware.eventContext());
@@ -69,11 +71,14 @@ createApp({
     logger: new Logger(env.LOGGER_LEVEL, debug),
     basicAuthStrategy: new BasicIamAuth(env.AWS_ACCOUNT_ID),
     basicAuthBuilder: new BasicIamAuthBuilder(),
+    redirectToApp,
+    appBasePath,
     debug,
 });
 
 const server = awsServerlessExpress.createServer(app, undefined, binaryMimeTypes);
 
 export function handler(event: any, context: any): void {
+    app.set('request-context-path', event.requestContext.path);
     awsServerlessExpress.proxy(server, event, context);
 }

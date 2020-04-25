@@ -27,6 +27,8 @@ export interface AppOptions {
     logger: Logger;
     basicAuthStrategy: AuthStrategy;
     basicAuthBuilder: AuthBuilder;
+    redirectToApp: boolean;
+    appBasePath: string;
     debug: boolean;
     fallbackAssets?: RequestHandlerParams;
 }

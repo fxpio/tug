@@ -25,6 +25,8 @@ dotenv.config({path: '.env'});
 const env = process.env;
 const port = env.SERVER_PORT || 3000;
 const debug = '1' === env.DEBUG;
+const redirectToApp = '1' === env.REDIRECT_TO_APP;
+const appBasePath = env.APP_BASE_PATH ? env.APP_BASE_PATH : '';
 const app = createApp({
     database: new AwsDynamoDbDatabase(env.AWS_DYNAMODB_TABLE as string, env.AWS_REGION as string, env.AWS_DYNAMODB_URL),
     storage: new LocalStorage('@server/var/storage'),
@@ -32,6 +34,8 @@ const app = createApp({
     logger: new Logger(env.LOGGER_LEVEL, debug),
     basicAuthStrategy: new BasicMockAuth(env.AWS_ACCESS_KEY_ID as string, env.AWS_SECRET_ACCESS_KEY as string),
     basicAuthBuilder: new BasicMockAuthBuilder(env.AWS_ACCESS_KEY_ID as string, env.AWS_SECRET_ACCESS_KEY as string),
+    redirectToApp,
+    appBasePath,
     debug,
     fallbackAssets(req: Request, res: Response, next: Function) {
         let assetBaseUrl = req.app.get('asset-base-url');
@@ -50,7 +54,7 @@ const app = createApp({
             return;
         }
 
-        const path = '/' === req.path ? '/index.html' : req.path;
+        const path = ['/', '/app'].includes(req.path) ? '/index.html' : req.path;
 
         http.get(assetBaseUrl + path, (assetRes: IncomingMessage) => {
             if (200 === assetRes.statusCode) {

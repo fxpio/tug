@@ -38,6 +38,7 @@ import {managerRoutes} from '@server/routes/managerRoutes';
 import {packageRoutes} from '@server/routes/packageRoutes';
 import {securityRoutes} from '@server/routes/securityRoutes';
 import {uiRoutes} from '@server/routes/uiRoutes';
+import {formatPath} from '@server/utils/ui';
 import translationEn from '@server/translations/en';
 import translationFr from '@server/translations/fr';
 import {PolyglotTranslator} from '@server/translators/PolyglotTranslator';
@@ -64,6 +65,7 @@ export function createApp(options: AppOptions): express.Express {
     const basicAuthBuilder = options.basicAuthBuilder;
     const fallbackAssets = options.fallbackAssets;
     const debug = options.debug;
+    const appBasePath = formatPath(options.appBasePath);
 
     // add database repositories
     db.setRepository(ConfigRepository);
@@ -103,6 +105,7 @@ export function createApp(options: AppOptions): express.Express {
     app.set('cache', cache);
     app.set('queue', queue);
     app.set('translator', translator);
+    app.set('app-base-path', appBasePath);
 
     // enable middlewares
     app.use(cors());
@@ -114,7 +117,7 @@ export function createApp(options: AppOptions): express.Express {
     app.use('/', hookRoutes(express.Router({})));
     app.use('/', securityRoutes(express.Router({}), basicAuthStrategy));
     app.use('/manager/', managerRoutes(express.Router({}), basicAuthStrategy));
-    app.use('/', uiRoutes(express.Router({}), fallbackAssets));
+    app.use('/', uiRoutes(express.Router({}), options.redirectToApp, appBasePath, fallbackAssets));
     app.use('/', packageRoutes(express.Router({})));
 
     // enable error and logger middlewares in end

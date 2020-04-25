@@ -15,13 +15,27 @@ Parameters:
     ConstraintDescription: Must be "error", "warn", "info" or "verbose"
 
   ModeDebug:
-    Description: Check if the debug must be enabled
+    Description: Check if the debug must be enabled ("0" to disable, or "1" to enable)
     Type: String
     Default: 0
     AllowedValues:
       - 0
       - 1
-    ConstraintDescription: Must be "0" to disable the debug, or "1" to enable the debug
+    ConstraintDescription: Must be "0" to disable, or "1" to enable
+
+  RedirectToApp:
+    Description: Check if root the url must be redirect to the path of the PWA ("0" to disable, or "1" to enable)
+    Type: String
+    Default: 1
+    AllowedValues:
+      - 0
+      - 1
+    ConstraintDescription: Must be "0" to disable, or "1" to enable
+
+  AppBasePath:
+    Description: The base path to serve the PWA
+    Type: String
+    Default: /admin
 
   TugVersion:
     Description: The version defined by the tag name in the Releases page (https://github.com/fxpio/tug/releases)
@@ -194,6 +208,10 @@ Resources:
             Ref: Storage
           AWS_SQS_QUEUE_URL:
             Ref: Queue
+          REDIRECT_TO_APP:
+            Ref: RedirectToApp
+          APP_BASE_PATH:
+            Ref: AppBasePath
           LOGGER_LEVEL:
             Ref: LoggerLevel
           DEBUG:

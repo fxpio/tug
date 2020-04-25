@@ -43,7 +43,7 @@ module.exports = {
             if (isDevServer) {
                 fs.ensureDirSync(distPath);
                 fs.writeJsonSync(path.resolve(distPath, 'remote-assets-config.json'), {
-                    assetBaseUrl: `http://localhost:${serverPort}/${basePath}`,
+                    assetBaseUrl: `http://localhost:${serverPort}`,
                 });
             }
         },
@@ -70,7 +70,7 @@ module.exports = {
                 /\.map$/,
                 'robots.txt',
             ],
-            navigateFallback: `/${basePath}/index.html`,
+            navigateFallback: `index.html`,
         },
     },
 
@@ -101,7 +101,7 @@ module.exports = {
         }
     },
 
-    publicPath: `/${basePath}/`,
+    publicPath: ``,
     outputDir: `${distPath}/${basePath}`,
     productionSourceMap: false,
     lintOnSave: 'production' !== process.env.NODE_ENV,

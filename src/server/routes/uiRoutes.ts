@@ -17,11 +17,13 @@ import path from 'path';
  * Generate the routes.
  *
  * @param {Router}               router           The router
+ * @param {boolean}              redirectToApp    Check if the redirection to the app is enabled
+ * @param {string}               appBasePath      The base path of the app
  * @param {RequestHandlerParams} [fallbackAssets] The fallback asset
  *
  * @return {Router}
  */
-export function uiRoutes(router: Router, fallbackAssets?: RequestHandlerParams): Router {
+export function uiRoutes(router: Router, redirectToApp: boolean, appBasePath: string, fallbackAssets?: RequestHandlerParams): Router {
     const basePath = path.resolve(__dirname, 'admin');
 
     if (!fallbackAssets) {
@@ -37,10 +39,14 @@ export function uiRoutes(router: Router, fallbackAssets?: RequestHandlerParams):
     };
     const indexOpts = Object.assign({}, staticOtps);
 
-    router.get('/', asyncHandler(redirectHome));
-    router.use('/admin', express.static(path.resolve(basePath, 'index.html'), indexOpts));
-    router.use('/admin', express.static(basePath, staticOtps), fallbackAssets);
-    router.use('/admin/*', express.static(path.resolve(basePath, 'index.html'), indexOpts), fallbackAssets);
+    if (redirectToApp) {
+        router.get('/', asyncHandler(redirectHome));
+    }
+
+    router.get(appBasePath, asyncHandler(redirectHome));
+    router.use(appBasePath + '/app', express.static(path.resolve(basePath, 'index.html'), indexOpts));
+    router.use(appBasePath, express.static(basePath, staticOtps), fallbackAssets);
+    router.use(appBasePath + '/*', express.static(path.resolve(basePath, 'index.html'), indexOpts), fallbackAssets);
 
     return router;
 }

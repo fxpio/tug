@@ -19,8 +19,8 @@ const utils = require('./utils/utils');
 const ENV_PATH = './.env';
 const ENV_DIST_PATH = './.env.dist';
 
-let envs = utils.mergeVariables(utils.readEnvVariables(ENV_DIST_PATH), utils.readEnvVariables(ENV_PATH));
-let initialEnvs = Object.assign({}, envs);
+let initialEnvs = utils.readEnvVariables(ENV_PATH);
+let envs = utils.mergeVariables(utils.readEnvVariables(ENV_DIST_PATH), initialEnvs);
 
 program
     .description('Configure your Tug')
@@ -31,7 +31,9 @@ program
     .option('--aws-s3-bucket-deploy <bucket>', 'Your AWS S3 bucket name where the code must be deployed', envs['AWS_S3_BUCKET_DEPLOY'])
     .option('--aws-stack-name <stack>', 'Your AWS Stack name', envs['AWS_STACK_NAME'])
     .option('--logger-level <level>', 'The level of logger (error, warn, info, verbose)', envs['LOGGER_LEVEL'])
-    .option('--debug', 'Check if the debug mode is enabled (1, 0)', envs['DEBUG'] === '1')
+    .option('--debug', 'Check if the debug mode is enabled', envs['DEBUG'] === '1')
+    .option('--redirect-to-app', 'Check if root the url must be redirect to the path of the PWA', envs['REDIRECT_TO_APP'] === '1')
+    .option('--app-base-path <uri>', 'The base path to serve the PWA', envs['APP_BASE_PATH'])
     .option('-e, --only-empty', 'Display only questions of empty options', false)
     .option('-n, --no-interaction', 'Do not ask any interactive question', false)
     .parse(process.argv)
@@ -46,6 +48,8 @@ envs = utils.mergeVariables(envs, {
     AWS_STACK_NAME: program.awsStackName,
     LOGGER_LEVEL: program.loggerLevel,
     DEBUG: program.debug ? '1' : '0',
+    REDIRECT_TO_APP: program.redirectToApp ? '1' : '0',
+    APP_BASE_PATH: program.appBasePath,
 });
 
 let finishAction = function(envs) {
@@ -228,14 +232,53 @@ if (program.interaction) {
             validate: function (value) {
                 return utils.requiredOption(value);
             }
-        }
+        },
+        {
+            type : 'list',
+            name : 'redirectToApp',
+            default: function () {
+                return '1' === envs['REDIRECT_TO_APP'] ? 'yes' : 'no';
+            },
+            message : 'Redirect the root url to the path of the PWA?',
+            choices: function() {
+                return [
+                    'yes',
+                    'no',
+                ];
+            },
+            when: function () {
+                return utils.showOnlyEmptyOption(program, envs, 'REDIRECT_TO_APP');
+            },
+            validate: function (value) {
+                return utils.requiredOption(value);
+            }
+        },
+        {
+            type : 'input',
+            name : 'appBasePath',
+            default: function () {
+                return envs['APP_BASE_PATH'];
+            },
+            message : 'Enter the base path of the PWA:',
+            when: function () {
+                return utils.showOnlyEmptyOption(program, envs, 'APP_BASE_PATH');
+            },
+            validate: function (value) {
+                return utils.requiredOption(value);
+            }
+        },
     ];
 
     prompt(questions).then(function (answers) {
         let debug = answers.debug;
+        let redirectToApp = answers.redirectToApp;
 
         if (undefined !== answers.debug) {
             debug = ['1', 'yes'].includes(answers.debug) ? '1' : '0';
+        }
+
+        if (undefined !== answers.redirectToApp) {
+            redirectToApp = ['1', 'yes'].includes(answers.redirectToApp) ? '1' : '0';
         }
 
         envs = utils.mergeVariables(envs, {
@@ -247,6 +290,8 @@ if (program.interaction) {
             AWS_STACK_NAME: utils.cleanVariable(answers.awsStackName),
             LOGGER_LEVEL: utils.cleanVariable(answers.loggerLevel),
             DEBUG: utils.cleanVariable(debug),
+            REDIRECT_TO_APP: utils.cleanVariable(redirectToApp),
+            APP_BASE_PATH: utils.cleanVariable(answers.appBasePath),
         });
 
         finishAction(envs);

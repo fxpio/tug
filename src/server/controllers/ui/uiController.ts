@@ -8,6 +8,7 @@
  */
 
 import {Request, Response} from 'express';
+import {getRedirectAppPath} from '@server/utils/ui';
 
 /**
  * Redirect to the home page.
@@ -19,5 +20,8 @@ import {Request, Response} from 'express';
  * @return {Promise<void>}
  */
 export async function redirectHome(req: Request, res: Response, next: Function): Promise<void> {
-    res.redirect('/admin');
+    let reqPath = req.app.get('request-context-path');
+    reqPath = reqPath ? reqPath : req.path;
+
+    res.redirect(getRedirectAppPath(req.app.get('app-base-path'), reqPath));
 }
