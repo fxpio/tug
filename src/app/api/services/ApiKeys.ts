@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import {BaseService} from './../BaseService';
-import {Canceler} from './../Canceler';
-import {ListOptions} from './../models/requests/ListOptions';
-import {ApiKey} from './../models/responses/ApiKey';
-import {ListResponse} from './../models/responses/ListResponse';
+import {BaseService} from '../BaseService';
+import {Canceler} from '../Canceler';
+import {ListOptions} from '../models/requests/ListOptions';
+import {ApiKey} from '../models/responses/ApiKey';
+import {ListResponse} from '../models/responses/ListResponse';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>

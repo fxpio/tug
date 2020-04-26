@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import {Canceler} from './../Canceler';
-import {BaseService} from './../BaseService';
-import {AuthorizationRequest} from './../models/requests/AuthorizationRequest';
-import {AuthorizationResponse} from './../models/responses/AuthorizationResponse';
+import {Canceler} from '../Canceler';
+import {BaseService} from '../BaseService';
+import {AuthorizationRequest} from '../models/requests/AuthorizationRequest';
+import {AuthorizationResponse} from '../models/responses/AuthorizationResponse';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
