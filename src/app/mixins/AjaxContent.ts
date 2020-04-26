@@ -37,8 +37,8 @@ export class AjaxContent extends Vue {
     /**
      * Fetch data.
      */
-    public async fetchData<D>(request: (canceler: Canceler) => Promise<D>,
-                              showSnackbar: boolean = true): Promise<D | undefined> {
+    public async fetchData<D>(request: (canceler: Canceler) => Promise<D | null>,
+                              showSnackbar: boolean = true): Promise<D | null> {
         try {
             this.loading = true;
             this.previousError = null;
@@ -48,7 +48,7 @@ export class AjaxContent extends Vue {
             }
             this.previousRequest = new Canceler();
 
-            const res: D = await request(this.previousRequest);
+            const res: D|null = await request(this.previousRequest);
             this.previousRequest = undefined;
 
             return res as D;
@@ -61,5 +61,7 @@ export class AjaxContent extends Vue {
                 this.$snackbar.snack(new SnackbarMessage(message, 'error'));
             }
         }
+
+        return null;
     }
 }
