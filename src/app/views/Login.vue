@@ -21,7 +21,7 @@ file that was distributed with this source code.
                         </v-card-title>
 
                         <v-card-text class="pb-0">
-                            <v-alert type="error" class="mt-3 mb-4" transition="scale-transition" :value="null !== formAlert">
+                            <v-alert type="error" class="mt-3 mb-4" transition="scale-transition" :value="showFormAlert">
                                 {{ formAlert }}
                             </v-alert>
 
@@ -83,11 +83,13 @@ file that was distributed with this source code.
 <script lang="ts">
     import {getRequestErrorMessage} from '@app/utils/error';
     import {MetaInfo} from 'vue-meta';
-    import {Component, Vue} from 'vue-property-decorator';
+    import {Component} from 'vue-property-decorator';
     import Lottie from '@app/components/Lottie.vue';
     import Loading from '@app/components/Loading.vue';
     import WallMessage from '@app/components/WallMessage.vue';
     import iconData from '@app/assets/animations/warehouseIcon.json';
+    import {mixins} from 'vue-class-component';
+    import {FormContent} from '@app/mixins/FormContent';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
@@ -95,16 +97,12 @@ file that was distributed with this source code.
     @Component({
         components: {Lottie, Loading, WallMessage},
     })
-    export default class Login extends Vue {
-        public formAlert: string|null = null;
-
+    export default class Login extends mixins(FormContent) {
         public username?: string|null = null;
 
         public password?: string|null = null;
 
         public showPassword: boolean = false;
-
-        public model: boolean = true;
 
         public get iconData(): object {
             return iconData;
@@ -117,14 +115,6 @@ file that was distributed with this source code.
         }
 
         public created(): void {
-            // Vee validate detects a null value as an entered value
-            // and the properties must be initialized with a value.
-            // To remove the error messages, the values must be undefined
-            this.username = undefined;
-            this.password = undefined;
-        }
-
-        public async mounted(): Promise<void> {
             this.username = this.$store.state.auth.username;
             this.password = this.$store.state.auth.password;
         }
