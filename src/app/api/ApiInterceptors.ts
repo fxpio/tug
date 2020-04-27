@@ -59,8 +59,8 @@ export default class ApiInterceptors {
     /**
      * Add the auth redirection interceptor.
      *
-     * @param {Api}        apiClient
-     * @param {Store<any>} store
+     * @param {Api}      apiClient
+     * @param {Store<*>} store
      *
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
