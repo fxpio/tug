@@ -36,7 +36,6 @@ export class I18nValidator extends Validator {
 
     public r(name: string, options?: RuleOptions): (value?: any) => boolean|string {
         const rule = this.getRule(name, options);
-        const func = super.r(name, options);
         const i18n = this.i18n;
 
         return (value?: any): boolean | string => {
