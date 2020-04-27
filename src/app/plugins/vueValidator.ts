@@ -16,7 +16,7 @@ import {RequiredRule} from '@app/validator/rules/RequiredRule';
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 const validator = new I18nValidator([
-    new RequiredRule(),
+    RequiredRule,
 ]);
 
 Vue.use(VueValidator, validator);

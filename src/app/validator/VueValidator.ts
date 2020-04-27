@@ -9,6 +9,7 @@
 
 import _Vue, {PluginObject} from 'vue';
 import {Validator} from './Validator';
+import {RuleOptions} from './RuleOptions';
 
 /**
  * Validator vue plugin.
@@ -18,8 +19,8 @@ import {Validator} from './Validator';
 export default {
     install: (Vue: typeof _Vue, options?: Validator): void => {
         Vue.prototype.$validator = options;
-        Vue.prototype.$r = (name: string): (value?: any) => boolean|string => {
-            return (options as Validator).r(name);
+        Vue.prototype.$r = (name: string, ruleOptions?: RuleOptions): (value?: any) => boolean|string => {
+            return (options as Validator).r(name, ruleOptions);
         };
     },
 } as PluginObject<Validator>;

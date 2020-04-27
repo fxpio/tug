@@ -7,17 +7,17 @@
  * file that was distributed with this source code.
  */
 
-import {RuleInterface} from '../RuleInterface';
+import {BaseRule} from '../BaseRule';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class RequiredRule implements RuleInterface {
-    public getName(): string {
+export class RequiredRule extends BaseRule {
+    public static getName(): string {
         return 'required';
     }
 
     public validate(value?: any): boolean|string {
-        return !!value || 'This value is required';
+        return !!value || this.getMessage('This value is required');
     }
 }

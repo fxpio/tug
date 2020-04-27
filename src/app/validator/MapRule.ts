@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import {RuleInterface} from './RuleInterface';
+import {RuleConstructor} from './Rule';
 
 /**
  * Interface for the map.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface MapRule<V extends RuleInterface = RuleInterface> {
+export interface MapRule<V extends RuleConstructor = RuleConstructor> {
     [key: string]: V;
 }

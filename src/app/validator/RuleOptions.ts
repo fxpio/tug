@@ -10,14 +10,7 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface RuleInterface {
-    /**
-     * Get the unique name of the rule.
-     */
-    getName(): string;
-
-    /**
-     * Validate the value.
-     */
-    validate(value?: any): boolean|string;
+export interface RuleOptions {
+    message?: string;
+    [key: string]: any;
 }

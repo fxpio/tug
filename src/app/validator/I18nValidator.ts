@@ -7,7 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import {RuleInterface} from './RuleInterface';
+import {RuleConstructor} from './Rule';
+import {RuleOptions} from './RuleOptions';
 import {Validator} from './Validator';
 import VueI18n from 'vue-i18n';
 
@@ -20,7 +21,7 @@ export class I18nValidator extends Validator {
     /**
      * Constructor.
      */
-    constructor(rules?: RuleInterface[], i18n?: VueI18n) {
+    constructor(rules?: RuleConstructor[], i18n?: VueI18n) {
         super(rules);
 
         this.i18n = i18n;
@@ -33,15 +34,17 @@ export class I18nValidator extends Validator {
         this.i18n = i18n;
     }
 
-    public r(name: string): (value?: any) => boolean|string {
-        const func = super.r(name);
+    public r(name: string, options?: RuleOptions): (value?: any) => boolean|string {
+        const rule = this.getRule(name, options);
+        const func = super.r(name, options);
         const i18n = this.i18n;
 
         return (value?: any): boolean | string => {
-            let res = func.call(null, value);
+            let res = rule.validate(value);
 
             if (i18n && typeof res === 'string') {
-                res = i18n.t(res, value) as string;
+                const transValues = Object.assign({}, rule.getOptions(), {value});
+                res = i18n.t(res, transValues) as string;
             }
 
             return res;
