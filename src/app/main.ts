@@ -14,11 +14,11 @@ import {useVueRouterBackPlugin} from '@app/plugins/vueRouterBack';
 import RouterGuards from '@app/routers/RouterGuards';
 import {RootState} from '@app/stores/RootState';
 import Vue from 'vue';
-import '@app/plugins/veeValidate';
 import '@app/plugins/vueMeta';
 import vuetify from '@app/plugins/vuetify';
 import '@app/plugins/vueLongClick';
 import i18n from '@app/plugins/vueI18n';
+import validator from '@app/plugins/vueValidator';
 import apiClient from '@app/plugins/vueApi';
 import '@app/plugins/vueSnackbar';
 import App from '@app/App.vue';
@@ -36,6 +36,7 @@ Vue.config.productionTip = false;
 useVueRouterBackPlugin({router, forceHistory: true});
 
 const store = createStore<RootState>(router, i18n, apiClient);
+validator.setI18n(i18n);
 
 RouterGuards.addAuthGuard(router, store);
 RouterGuards.addDefaultComponentGuard(router, 'toolbar', SimpleSpacer);

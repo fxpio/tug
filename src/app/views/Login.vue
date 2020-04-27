@@ -30,25 +30,18 @@ file that was distributed with this source code.
                                         type="text"
                                         :label="$i18n.t('views.login.username')"
                                         v-model="username"
-                                        data-vv-name="username"
-                                        :data-vv-as="$i18n.t('views.login.username')"
-                                        v-validate="'required'"
-                                        :error-messages="errors.collect('username')"
                                         @keydown.enter="login"
                                         outlined
                                         clearable
                                         autofocus
                                         :readonly="$store.state.auth.authenticationPending"
-                                        required>
+                                        :rules="[$r('required')]"
+                                >
                                 </v-text-field>
 
                                 <v-text-field
                                         :label="$i18n.t('views.login.password')"
                                         v-model="password"
-                                        data-vv-name="password"
-                                        :data-vv-as="$i18n.t('views.login.password')"
-                                        v-validate="'required'"
-                                        :error-messages="errors.collect('password')"
                                         :append-icon="showPassword ? 'visibility_off' : 'visibility'"
                                         :type="showPassword ? 'text' : 'password'"
                                         @click:append="showPassword = !showPassword"
@@ -56,7 +49,8 @@ file that was distributed with this source code.
                                         outlined
                                         clearable
                                         :readonly="$store.state.auth.authenticationPending"
-                                        required>
+                                        :rules="[$r('required')]"
+                                >
                                 </v-text-field>
                             </v-form>
                         </v-card-text>
@@ -81,7 +75,6 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
-    import {getRequestErrorMessage} from '@app/utils/error';
     import {MetaInfo} from 'vue-meta';
     import {Component} from 'vue-property-decorator';
     import Lottie from '@app/components/Lottie.vue';
@@ -90,6 +83,8 @@ file that was distributed with this source code.
     import iconData from '@app/assets/animations/warehouseIcon.json';
     import {mixins} from 'vue-class-component';
     import {FormContent} from '@app/mixins/FormContent';
+    import {VForm} from '@app/vuetify/VForm';
+    import {getRequestErrorMessage} from '@app/utils/error';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
@@ -114,17 +109,12 @@ file that was distributed with this source code.
             };
         }
 
-        public created(): void {
-            this.username = this.$store.state.auth.username;
-            this.password = this.$store.state.auth.password;
-        }
-
         public async beforeDestroy(): Promise<void> {
             await this.$store.dispatch('auth/cancel');
         }
 
         public async login(): Promise<void> {
-            if (await this.$validator.validateAll()) {
+            if ((this.$refs.form as VForm).validate()) {
                 try {
                     await this.$store.dispatch('auth/login', {
                         username: this.username,

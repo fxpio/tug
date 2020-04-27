@@ -8,12 +8,17 @@
  */
 
 import Vue from 'vue';
-import VeeValidate, {Validator} from 'vee-validate';
-import veeValidateFr from 'vee-validate/dist/locale/fr';
+import VueValidator from '@app/validator/VueValidator';
+import {I18nValidator} from '@app/validator/I18nValidator';
+import {RequiredRule} from '@app/validator/rules/RequiredRule';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-Vue.use(VeeValidate);
+const validator = new I18nValidator([
+    new RequiredRule(),
+]);
 
-Validator.localize('fr', veeValidateFr);
+Vue.use(VueValidator, validator);
+
+export default validator;

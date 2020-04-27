@@ -70,4 +70,6 @@ export default {
     'views.login.title': 'Connexion',
     'views.login.username': 'AWS Access Key ID',
     'views.login.password': 'AWS Secret Access Key',
+
+    'This value is required': 'Cette valeur est requise',
 };
