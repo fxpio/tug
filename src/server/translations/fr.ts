@@ -30,7 +30,7 @@ export default {
 
     'manager.config.github-oauth.empty': `Aucun jeton pour Github Oauth n'est sauvegardé`,
     'manager.config.github-oauth': `Les jetons Oauth pour connecter le serveur avec votre compte Github sont "{{tokens}}"`,
-    'manager.config.github-oauth.created': `Le jeton Oauth "{{token}}" pour connecter le serveur avec votre compte Github hébergé sur "{{host}" a été créé avec succès`,
+    'manager.config.github-oauth.created': `Le jeton Oauth "{{token}}" pour connecter le serveur avec votre compte Github hébergé sur "{{host}}" a été créé avec succès`,
     'manager.config.github-oauth.deleted': `Le jeton Oauth pour connecter le serveur avec votre compte Github hébergé sur "{{host}}" a été supprimé avec succès`,
     'manager.config.github-token.empty': `Aucun jeton pour les Webhooks Github n'est généré`,
     'manager.config.github-token': `Les jetons pour pour les Webhooks Github sont "{{tokens}}"`,

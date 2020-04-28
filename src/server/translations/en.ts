@@ -30,7 +30,7 @@ export default {
 
     'manager.config.github-oauth.empty': `No tokens for Github Oauth are saved`,
     'manager.config.github-oauth': `The Oauth tokens to connect the server with your Github account are "{{tokens}}"`,
-    'manager.config.github-oauth.created': `The Oauth token "{{token}}" to connect the server with your Github account hosted on "{{host}" was created successfully`,
+    'manager.config.github-oauth.created': `The Oauth token "{{token}}" to connect the server with your Github account hosted on "{{host}}" was created successfully`,
     'manager.config.github-oauth.deleted': `The Oauth token to connect the server with your Github account hosted on "{{host}}" was deleted successfully`,
     'manager.config.github-token.empty': `No tokens for Github Webhooks are generated`,
     'manager.config.github-token': `The tokens for Github Webhooks are "{{tokens}}"`,
