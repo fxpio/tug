@@ -44,6 +44,7 @@ export async function createGithubOauth(req: Request, res: Response, next: Funct
 
     res.json({
         message: translator.trans(res, 'manager.config.github-oauth.created', {token, host}),
+        host,
         token,
     });
 }
@@ -72,6 +73,7 @@ export async function deleteGithubOauth(req: Request, res: Response, next: Funct
 
     res.json({
         message: translator.trans(res, 'manager.config.github-oauth.deleted', {host}),
+        host,
     });
 }
 

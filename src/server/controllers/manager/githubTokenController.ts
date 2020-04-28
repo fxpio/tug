@@ -44,6 +44,7 @@ export async function createGithubToken(req: Request, res: Response, next: Funct
 
     res.json({
         message: translator.trans(res, 'manager.config.github-token.created', {token, host}),
+        host,
         token,
     });
 }
@@ -72,6 +73,7 @@ export async function deleteGithubToken(req: Request, res: Response, next: Funct
 
     res.json({
         message: translator.trans(res, 'manager.config.github-token.deleted', {host}),
+        host,
     });
 }
 

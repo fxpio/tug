@@ -12,7 +12,6 @@ import {MessageResponse} from '../MessageResponse';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface GithubOauthTokenResponse extends MessageResponse {
+export interface GithubOauthTokenDeleteResponse extends MessageResponse {
     host: string;
-    token: string;
 }

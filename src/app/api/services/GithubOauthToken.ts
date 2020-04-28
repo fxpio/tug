@@ -9,10 +9,12 @@
 
 import {BaseService} from '../BaseService';
 import {Canceler} from '../Canceler';
-import {GithubOauthTokenResponse} from '../models/responses/github/GithubOauthTokenResponse';
-import {GithubOauthTokenRequest} from '../models/requests/github/GithubOauthTokenRequest';
 import {MessageResponse} from '../models/responses/MessageResponse';
+import {GithubOauthTokensResponse} from '../models/responses/github/GithubOauthTokensResponse';
+import {GithubOauthTokenRequest} from '../models/requests/github/GithubOauthTokenRequest';
+import {GithubOauthTokenResponse} from '../models/responses/github/GithubOauthTokenResponse';
 import {GithubOauthTokenDeleteRequest} from '../models/requests/github/GithubOauthTokenDeleteRequest';
+import {GithubOauthTokenDeleteResponse} from '../models/responses/github/GithubOauthTokenDeleteResponse';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -30,10 +32,10 @@ export class GithubOauthToken extends BaseService {
      *
      * @param {Canceler} [canceler]
      *
-     * @return {Promise<GithubOauthTokenResponse|null>}
+     * @return {Promise<GithubOauthTokensResponse|null>}
      */
-    public async get(canceler?: Canceler): Promise<GithubOauthTokenResponse | null> {
-        return await this.request<GithubOauthTokenResponse>({
+    public async get(canceler?: Canceler): Promise<GithubOauthTokensResponse | null> {
+        return await this.request<GithubOauthTokensResponse>({
             method: 'GET',
             url: '/manager/github-oauth',
         });
@@ -50,10 +52,10 @@ export class GithubOauthToken extends BaseService {
 
     public async delete(data: GithubOauthTokenDeleteRequest,
                         canceler?: Canceler): Promise<MessageResponse> {
-        return await this.request<GithubOauthTokenResponse>({
+        return await this.request<GithubOauthTokenDeleteResponse>({
             method: 'DELETE',
             url: '/manager/github-oauth',
             data,
-        }, canceler) as GithubOauthTokenResponse;
+        }, canceler) as GithubOauthTokenDeleteResponse;
     }
 }
