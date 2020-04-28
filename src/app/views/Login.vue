@@ -83,7 +83,6 @@ file that was distributed with this source code.
     import iconData from '@app/assets/animations/warehouseIcon.json';
     import {mixins} from 'vue-class-component';
     import {FormContent} from '@app/mixins/FormContent';
-    import {VForm} from '@app/vuetify/VForm';
     import {getRequestErrorMessage} from '@app/utils/error';
 
     /**
@@ -98,6 +97,12 @@ file that was distributed with this source code.
         public password?: string|null = null;
 
         public showPassword: boolean = false;
+
+        public formAlert: string|null = null;
+
+        public get showFormAlert(): boolean {
+            return null !== this.formAlert;
+        }
 
         public get iconData(): object {
             return iconData;
@@ -114,7 +119,7 @@ file that was distributed with this source code.
         }
 
         public async login(): Promise<void> {
-            if ((this.$refs.form as VForm).validate()) {
+            if (this.isValidForm()) {
                 try {
                     await this.$store.dispatch('auth/login', {
                         username: this.username,
