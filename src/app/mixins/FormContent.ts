@@ -17,6 +17,11 @@ import {Component} from 'vue-property-decorator';
 export class FormContent extends Vue {
     public formAlert: string|null = null;
 
+    /**
+     * Must be used in the `v-model` directive of the `v-form` component.
+     */
+    public formValid: boolean = true;
+
     public get showFormAlert(): boolean {
         return null !== this.formAlert;
     }
