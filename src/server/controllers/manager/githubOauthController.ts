@@ -26,7 +26,7 @@ import Joi from 'joi';
  */
 export async function createGithubOauth(req: Request, res: Response, next: Function): Promise<void> {
     validateForm(req, {
-        token: Joi.string().required(),
+        token: Joi.string(),
         host: Joi.string(),
     });
 
