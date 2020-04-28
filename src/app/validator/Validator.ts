@@ -8,6 +8,7 @@
  */
 
 import {MapRule} from './MapRule';
+import {MessageUtil} from './utils/MessageUtil';
 import {ValidatorError} from './errors/ValidatorError';
 import {RuleOptions} from './RuleOptions';
 import {Rule, RuleConstructor} from './Rule';
@@ -84,8 +85,11 @@ export class Validator {
     public r(name: string, options?: RuleOptions): (value?: any) => boolean|string {
         const rule = this.getRule(name, options);
 
-        return (value?: any): boolean | string => {
-            return rule.validate(value);
+        return (value?: any): boolean|string => {
+            return MessageUtil.replace(
+                rule.validate(value),
+                Object.assign({}, rule.getOptions(), {value}),
+            );
         };
     }
 }
