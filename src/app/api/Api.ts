@@ -8,7 +8,7 @@
  */
 
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
-import {ApiServiceNotFoundError} from '@app/errors/ApiServiceNotFoundError';
+import {ApiServiceNotFoundError} from './errors/ApiServiceNotFoundError';
 import {ApiService, ApiServiceConstructor} from './ApiService';
 import {Authorization} from './services/Authorization';
 import {ApiKeys} from './services/ApiKeys';

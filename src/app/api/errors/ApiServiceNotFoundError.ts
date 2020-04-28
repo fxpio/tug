@@ -7,10 +7,14 @@
  * file that was distributed with this source code.
  */
 
-import {AppError} from './AppError';
+import {ApiServiceConstructor} from '../ApiService';
+import {ApiError} from './ApiError';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class ApiError extends AppError {
+export class ApiServiceNotFoundError extends ApiError {
+    constructor(service: ApiServiceConstructor|string) {
+        super(`The api service "${service}" is not found`);
+    }
 }
