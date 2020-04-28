@@ -9,6 +9,7 @@
 
 import {ApiService} from './ApiService';
 import {Canceler} from './Canceler';
+import {createApiError} from './utils/error';
 import {ListResponse} from './models/responses/ListResponse';
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 
@@ -48,7 +49,7 @@ export class BaseService implements ApiService {
             return res ? res.data : null;
         } catch (e) {
             if (!axios.isCancel(e)) {
-                throw e;
+                throw createApiError(e);
             }
         }
 

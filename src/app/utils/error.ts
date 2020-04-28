@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import {AxiosError, AxiosResponse} from 'axios';
 import Vue from 'vue';
+import {ApiRequestError} from '@app/api/errors/ApiRequestError';
 
 /**
  *  Get the error message of the request.
@@ -21,14 +21,10 @@ import Vue from 'vue';
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function getRequestErrorMessage(vue: Vue, err: Error): string {
-    if ((err as AxiosError).response && ((err as AxiosError).response as AxiosResponse).status) {
-        if (((err as AxiosError).response as AxiosResponse)
-                && ((err as AxiosError).response as AxiosResponse).data
-                && ((err as AxiosError).response as AxiosResponse).data.message) {
-            return ((err as AxiosError).response as AxiosResponse).data.message;
-        }
-
-        return vue.$i18n ? vue.$i18n.t('error.network') as string : 'Error network';
+    if (err instanceof ApiRequestError) {
+        return 'Error network' === err.message && vue.$i18n
+            ? vue.$i18n.t('error.network') as string
+            : err.message;
     }
 
     console.error(err);
