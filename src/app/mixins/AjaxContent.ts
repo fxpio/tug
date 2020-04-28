@@ -8,7 +8,6 @@
  */
 
 import {Canceler} from '@app/api/Canceler';
-import {ApiRequestError} from '@app/api/errors/ApiRequestError';
 import {SnackbarMessage} from '@app/snackbars/SnackbarMessage';
 import {BaseAjaxContent} from '@app/mixins/BaseAjaxContent';
 import {getRequestErrorMessage} from '@app/utils/error';
