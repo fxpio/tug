@@ -9,19 +9,16 @@
 
 import {Canceler} from '@app/api/Canceler';
 import {ListResponse} from '@app/api/models/responses/ListResponse';
-import {getRequestErrorMessage} from '@app/utils/error';
-import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
-import {RequestError} from '@app/errors/RequestError';
 import {SnackbarMessage} from '@app/snackbars/SnackbarMessage';
+import {BaseAjaxContent} from '@app/mixins/BaseAjaxContent';
+import {getRequestErrorMessage} from '@app/utils/error';
+import {Component} from 'vue-property-decorator';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 @Component
-export class AjaxListContent<I extends object> extends Vue {
-    public loading: boolean = false;
-
+export class AjaxListContent<I extends object> extends BaseAjaxContent {
     public headers: object[] = [];
 
     public items: I[] = [];
@@ -32,25 +29,12 @@ export class AjaxListContent<I extends object> extends Vue {
 
     public search: string = '';
 
-    public previousError: RequestError | null = null;
-
-    protected previousRequest?: Canceler;
-
     public get firstLoading(): boolean {
         return null === this.count && this.loading;
     }
 
     public get hasNoItems(): boolean {
         return !this.count && !this.search;
-    }
-
-    public beforeDestroy(): void {
-        this.previousError = null;
-
-        if (this.previousRequest) {
-            this.previousRequest.cancel();
-            this.previousRequest = undefined;
-        }
     }
 
     /**
@@ -81,12 +65,11 @@ export class AjaxListContent<I extends object> extends Vue {
                 this.items.push(result);
             }
         } catch (e) {
-            const message = getRequestErrorMessage(this, e);
-            this.previousError = new RequestError(e, message);
+            this.previousError = e;
             this.loading = false;
 
             if (showSnackbar) {
-                this.$snackbar.snack(new SnackbarMessage(message, 'error'));
+                this.$snackbar.snack(new SnackbarMessage(getRequestErrorMessage(this, e), 'error'));
             }
         }
     }

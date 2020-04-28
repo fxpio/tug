@@ -8,32 +8,17 @@
  */
 
 import {Canceler} from '@app/api/Canceler';
-import {RequestError} from '@app/errors/RequestError';
+import {ApiRequestError} from '@app/api/errors/ApiRequestError';
 import {SnackbarMessage} from '@app/snackbars/SnackbarMessage';
+import {BaseAjaxContent} from '@app/mixins/BaseAjaxContent';
 import {getRequestErrorMessage} from '@app/utils/error';
-import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 @Component
-export class AjaxContent extends Vue {
-    public loading: boolean = false;
-
-    public previousError: RequestError | null = null;
-
-    public previousRequest?: Canceler;
-
-    public beforeDestroy(): void {
-        this.previousError = null;
-
-        if (this.previousRequest) {
-            this.previousRequest.cancel();
-            this.previousRequest = undefined;
-        }
-    }
-
+export class AjaxContent extends BaseAjaxContent {
     /**
      * Fetch data.
      */
@@ -53,12 +38,11 @@ export class AjaxContent extends Vue {
 
             return res as D;
         } catch (e) {
-            const message = getRequestErrorMessage(this, e);
-            this.previousError = new RequestError(e, message);
+            this.previousError = e;
             this.loading = false;
 
             if (showSnackbar) {
-                this.$snackbar.snack(new SnackbarMessage(message, 'error'));
+                this.$snackbar.snack(new SnackbarMessage(getRequestErrorMessage(this, e), 'error'));
             }
         }
 
