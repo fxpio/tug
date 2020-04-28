@@ -109,6 +109,23 @@ file that was distributed with this source code.
                         </v-list-item>
                     </v-list>
                 </v-card>
+
+                <v-subheader class="mt-4 primary--text">
+                    {{ $t('views.settings.github') }}
+                </v-subheader>
+                <v-card flat>
+                    <v-list>
+                        <v-list-item>
+                            <v-list-item-content>
+                                <v-list-item-title>{{ $t('views.settings.oauth-token') }}</v-list-item-title>
+                            </v-list-item-content>
+
+                            <v-list-item-action class="mt-2 mb-2">
+                                <github-oauth-token-action origin="center right"></github-oauth-token-action>
+                            </v-list-item-action>
+                        </v-list-item>
+                    </v-list>
+                </v-card>
             </v-col>
         </v-row>
     </v-container>
@@ -117,11 +134,14 @@ file that was distributed with this source code.
 <script lang="ts">
     import {MetaInfo} from 'vue-meta';
     import {Component, Vue} from 'vue-property-decorator';
+    import GithubOauthTokenAction from '@app/components/settings/GithubOauthTokenAction.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
-    @Component
+    @Component({
+        components: {GithubOauthTokenAction},
+    })
     export default class Settings extends Vue {
         public languageAvailables: LanguageAvailable[] = [];
 
