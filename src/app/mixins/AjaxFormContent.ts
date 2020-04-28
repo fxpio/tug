@@ -11,6 +11,7 @@ import {Component} from 'vue-property-decorator';
 import {mixins} from 'vue-class-component';
 import {FormContent} from './FormContent';
 import {AjaxContent} from './AjaxContent';
+import {getRequestErrorMessage} from '@app/utils/error';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -18,7 +19,7 @@ import {AjaxContent} from './AjaxContent';
 @Component
 export class AjaxFormContent extends mixins(FormContent, AjaxContent) {
     public get formAlert(): string|null {
-        return this.previousError && this.previousError.message ? this.previousError.message : null;
+        return this.previousError ? getRequestErrorMessage(this, this.previousError) : null;
     }
 
     public get showFormAlert(): boolean {
