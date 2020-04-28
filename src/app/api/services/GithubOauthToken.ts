@@ -9,7 +9,6 @@
 
 import {BaseService} from '../BaseService';
 import {Canceler} from '../Canceler';
-import {MessageResponse} from '../models/responses/MessageResponse';
 import {GithubOauthTokensResponse} from '../models/responses/github/GithubOauthTokensResponse';
 import {GithubOauthTokenRequest} from '../models/requests/github/GithubOauthTokenRequest';
 import {GithubOauthTokenResponse} from '../models/responses/github/GithubOauthTokenResponse';
@@ -51,7 +50,7 @@ export class GithubOauthToken extends BaseService {
     }
 
     public async delete(data: GithubOauthTokenDeleteRequest,
-                        canceler?: Canceler): Promise<MessageResponse> {
+                        canceler?: Canceler): Promise<GithubOauthTokenDeleteResponse> {
         return await this.request<GithubOauthTokenDeleteResponse>({
             method: 'DELETE',
             url: '/manager/github-oauth',
