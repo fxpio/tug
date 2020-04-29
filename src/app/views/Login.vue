@@ -34,7 +34,7 @@ file that was distributed with this source code.
                                         outlined
                                         clearable
                                         autofocus
-                                        :readonly="$store.state.auth.authenticationPending"
+                                        :disabled="$store.state.auth.authenticationPending"
                                         :rules="[$r('required')]"
                                 >
                                 </v-text-field>
@@ -48,7 +48,7 @@ file that was distributed with this source code.
                                         @keydown.enter="login"
                                         outlined
                                         clearable
-                                        :readonly="$store.state.auth.authenticationPending"
+                                        :disabled="$store.state.auth.authenticationPending"
                                         :rules="[$r('required')]"
                                 >
                                 </v-text-field>
