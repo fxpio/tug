@@ -75,10 +75,10 @@ file that was distributed with this source code.
     import {GithubOauthTokensResponse} from '@app/api/models/responses/github/GithubOauthTokensResponse';
     import {GithubOauthToken} from '@app/api/services/GithubOauthToken';
     import {MapObject} from '@app/api/models/MapObject';
-    import GithubOauthTokenFormAdd from '@app/components/settings/GithubOauthTokenFormAdd.vue';
+    import GithubOauthTokenFormAdd from '@app/components/settings/github/oauthToken/GithubOauthTokenFormAdd.vue';
     import {GithubOauthTokenResponse} from '@app/api/models/responses/github/GithubOauthTokenResponse';
-    import GithubOauthTokenFormView from '@app/components/settings/GithubOauthTokenFormView.vue';
-    import GithubOauthTokenFormDelete from '@app/components/settings/GithubOauthTokenFormDelete.vue';
+    import GithubOauthTokenFormView from '@app/components/settings/github/oauthToken/GithubOauthTokenFormView.vue';
+    import GithubOauthTokenFormDelete from '@app/components/settings/github/oauthToken/GithubOauthTokenFormDelete.vue';
     import {GithubOauthTokenDeleteResponse} from '@app/api/models/responses/github/GithubOauthTokenDeleteResponse';
 
     /**

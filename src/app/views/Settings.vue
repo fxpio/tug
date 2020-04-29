@@ -134,7 +134,7 @@ file that was distributed with this source code.
 <script lang="ts">
     import {MetaInfo} from 'vue-meta';
     import {Component, Vue} from 'vue-property-decorator';
-    import GithubOauthTokenAction from '@app/components/settings/GithubOauthTokenAction.vue';
+    import GithubOauthTokenAction from '@app/components/settings/github/oauthToken/GithubOauthTokenAction.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
