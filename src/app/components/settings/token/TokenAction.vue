@@ -45,6 +45,7 @@ file that was distributed with this source code.
                 <token-form-add
                         :title="title"
                         :default-host="defaultHost"
+                        :token-required="createTokenRequired"
                         :create-token="createToken"
                         @cancel="dialog = false"
                         @added="tokenAdded"
@@ -109,6 +110,9 @@ file that was distributed with this source code.
 
         @Prop({type: String, required: true})
         public defaultHost: string;
+
+        @Prop({type: Boolean, default: false})
+        public createTokenRequired?: boolean;
 
         @Prop({type: String, default: 'accent'})
         public color: string;

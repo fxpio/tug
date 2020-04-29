@@ -13,6 +13,7 @@ file that was distributed with this source code.
         :fetch-tokens="fetchTokens"
         :create-token="createToken"
         :delete-token="deleteToken"
+        :create-token-required="true"
         default-host="github.com"
     >
     </token-action>

@@ -34,7 +34,7 @@ file that was distributed with this source code.
 
                 <v-switch
                         :label="$i18n.t('views.settings.token-auto-generation')"
-                        :disabled="loading"
+                        :disabled="loading || tokenRequired"
                         v-model="autoGeneration"
                         class="mt-0"
                 ></v-switch>
@@ -105,6 +105,9 @@ file that was distributed with this source code.
         @Prop({type: String})
         public defaultHost?: string|null;
 
+        @Prop({type: Boolean, default: false})
+        public tokenRequired?: boolean;
+
         public host?: string|null = null;
 
         public token?: string|null = null;
@@ -115,6 +118,8 @@ file that was distributed with this source code.
             if (!this.host && this.defaultHost) {
                 this.host = this.defaultHost;
             }
+
+            this.autoGeneration = !this.tokenRequired;
         }
 
         public async save(): Promise<void> {
