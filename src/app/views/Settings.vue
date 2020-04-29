@@ -115,9 +115,10 @@ file that was distributed with this source code.
                 </v-subheader>
                 <v-card flat>
                     <v-list>
-                        <v-list-item>
+                        <v-list-item three-line>
                             <v-list-item-content>
                                 <v-list-item-title>{{ $t('views.settings.oauth-token') }}</v-list-item-title>
+                                <v-list-item-subtitle>{{ $t('views.settings.oauth-token.description') }}</v-list-item-subtitle>
                             </v-list-item-content>
 
                             <v-list-item-action class="mt-2 mb-2">

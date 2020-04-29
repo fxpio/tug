@@ -64,6 +64,7 @@ export default {
     'views.settings.languages.fr': 'French',
     'views.settings.github': 'Github',
     'views.settings.oauth-token': 'oAuth token',
+    'views.settings.oauth-token.description': 'Used to connect Tug with your Github account',
     'views.settings.host': 'Host',
     'views.settings.token': 'Token',
     'views.settings.token-auto-generation': 'Generate automatically the token',
