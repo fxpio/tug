@@ -125,6 +125,17 @@ file that was distributed with this source code.
                                 <github-oauth-token-action origin="center right"></github-oauth-token-action>
                             </v-list-item-action>
                         </v-list-item>
+
+                        <v-list-item three-line>
+                            <v-list-item-content>
+                                <v-list-item-title>{{ $t('views.settings.webhook-token') }}</v-list-item-title>
+                                <v-list-item-subtitle>{{ $t('views.settings.webhook-token.description') }}</v-list-item-subtitle>
+                            </v-list-item-content>
+
+                            <v-list-item-action class="mt-2 mb-2">
+                                <github-token-action origin="center right"></github-token-action>
+                            </v-list-item-action>
+                        </v-list-item>
                     </v-list>
                 </v-card>
             </v-col>
@@ -136,12 +147,13 @@ file that was distributed with this source code.
     import {MetaInfo} from 'vue-meta';
     import {Component, Vue} from 'vue-property-decorator';
     import GithubOauthTokenAction from '@app/components/settings/github/GithubOauthTokenAction.vue';
+    import GithubTokenAction from '@app/components/settings/github/GithubTokenAction.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
     @Component({
-        components: {GithubOauthTokenAction},
+        components: {GithubTokenAction, GithubOauthTokenAction},
     })
     export default class Settings extends Vue {
         public languageAvailables: LanguageAvailable[] = [];

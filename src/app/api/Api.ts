@@ -14,12 +14,14 @@ import {Authorization} from './services/Authorization';
 import {ApiKeys} from './services/ApiKeys';
 import {Repositories} from './services/Repositories';
 import {GithubOauthToken} from './services/GithubOauthToken';
+import {GithubToken} from './services/GithubToken';
 
 const SERVICES: ApiServiceConstructor[] = [
     Authorization,
     ApiKeys,
     Repositories,
     GithubOauthToken,
+    GithubToken,
 ];
 
 /**

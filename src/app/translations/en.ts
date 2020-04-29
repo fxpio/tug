@@ -65,6 +65,8 @@ export default {
     'views.settings.github': 'Github',
     'views.settings.oauth-token': 'oAuth token',
     'views.settings.oauth-token.description': 'Used to connect Tug with your Github account',
+    'views.settings.webhook-token': 'Webhook token',
+    'views.settings.webhook-token.description': 'Used to connect Github webhook with Tug',
     'views.settings.host': 'Host',
     'views.settings.token': 'Token',
     'views.settings.token-auto-generation': 'Generate automatically the token',
