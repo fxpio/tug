@@ -7,10 +7,12 @@
  * file that was distributed with this source code.
  */
 
+import {MessageResponse} from '../MessageResponse';
+
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface GithubOauthTokenRequest {
+export interface TokenResponse extends MessageResponse {
     host: string;
     token: string;
 }

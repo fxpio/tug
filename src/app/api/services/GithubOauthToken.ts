@@ -9,11 +9,11 @@
 
 import {BaseService} from '../BaseService';
 import {Canceler} from '../Canceler';
-import {GithubOauthTokensResponse} from '../models/responses/github/GithubOauthTokensResponse';
-import {GithubOauthTokenRequest} from '../models/requests/github/GithubOauthTokenRequest';
-import {GithubOauthTokenResponse} from '../models/responses/github/GithubOauthTokenResponse';
-import {GithubOauthTokenDeleteRequest} from '../models/requests/github/GithubOauthTokenDeleteRequest';
-import {GithubOauthTokenDeleteResponse} from '../models/responses/github/GithubOauthTokenDeleteResponse';
+import {TokensResponse} from '../models/responses/tokens/TokensResponse';
+import {TokenRequest} from '../models/requests/tokens/TokenRequest';
+import {TokenResponse} from '../models/responses/tokens/TokenResponse';
+import {TokenDeleteRequest} from '@app/api/models/requests/tokens/TokenDeleteRequest';
+import {TokenDeleteResponse} from '../models/responses/tokens/TokenDeleteResponse';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -31,30 +31,30 @@ export class GithubOauthToken extends BaseService {
      *
      * @param {Canceler} [canceler]
      *
-     * @return {Promise<GithubOauthTokensResponse|null>}
+     * @return {Promise<TokensResponse|null>}
      */
-    public async get(canceler?: Canceler): Promise<GithubOauthTokensResponse | null> {
-        return await this.request<GithubOauthTokensResponse>({
+    public async get(canceler?: Canceler): Promise<TokensResponse|null> {
+        return await this.request<TokensResponse>({
             method: 'GET',
             url: '/manager/github-oauth',
         });
     }
 
-    public async create(data: GithubOauthTokenRequest,
-                        canceler?: Canceler): Promise<GithubOauthTokenResponse> {
-        return await this.request<GithubOauthTokenResponse>({
+    public async create(data: TokenRequest,
+                        canceler?: Canceler): Promise<TokenResponse> {
+        return await this.request<TokenResponse>({
             method: 'POST',
             url: '/manager/github-oauth',
             data,
-        }, canceler) as GithubOauthTokenResponse;
+        }, canceler) as TokenResponse;
     }
 
-    public async delete(data: GithubOauthTokenDeleteRequest,
-                        canceler?: Canceler): Promise<GithubOauthTokenDeleteResponse> {
-        return await this.request<GithubOauthTokenDeleteResponse>({
+    public async delete(data: TokenDeleteRequest,
+                        canceler?: Canceler): Promise<TokenDeleteResponse> {
+        return await this.request<TokenDeleteResponse>({
             method: 'DELETE',
             url: '/manager/github-oauth',
             data,
-        }, canceler) as GithubOauthTokenDeleteResponse;
+        }, canceler) as TokenDeleteResponse;
     }
 }

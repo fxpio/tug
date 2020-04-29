@@ -10,7 +10,7 @@ file that was distributed with this source code.
 <template>
     <div>
         <v-card-title class="primary--text">
-            {{ $t('views.settings.oauth-token') }}
+            {{ title }}
         </v-card-title>
 
         <v-card-text class="pt-4 pb-0">
@@ -27,13 +27,14 @@ file that was distributed with this source code.
                         outlined
                         clearable
                         autofocus
-                        :readonly="loading"
+                        :disabled="loading"
                         :rules="[$r('required')]"
                 >
                 </v-text-field>
 
                 <v-switch
                         :label="$i18n.t('views.settings.token-auto-generation')"
+                        :disabled="loading"
                         v-model="autoGeneration"
                         class="mt-0"
                 ></v-switch>
@@ -48,7 +49,7 @@ file that was distributed with this source code.
                             @keydown.enter="save"
                             outlined
                             clearable
-                            :readonly="loading"
+                            :disabled="loading"
                             :rules="[$r('required')]"
                     >
                     </v-text-field>
@@ -81,13 +82,12 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
-    import {Component} from 'vue-property-decorator';
+    import {Component, Prop} from 'vue-property-decorator';
     import {mixins} from 'vue-class-component';
     import {AjaxFormContent} from '@app/mixins/AjaxFormContent';
-    import {GithubOauthTokenResponse} from '@app/api/models/responses/github/GithubOauthTokenResponse';
     import {Canceler} from '@app/api/Canceler';
-    import {GithubOauthToken} from '@app/api/services/GithubOauthToken';
-    import {GithubOauthTokenRequest} from '@app/api/models/requests/github/GithubOauthTokenRequest';
+    import {TokenRequest} from '@app/api/models/requests/tokens/TokenRequest';
+    import {TokenResponse} from '@app/api/models/responses/tokens/TokenResponse';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
@@ -95,12 +95,27 @@ file that was distributed with this source code.
     @Component({
         components: {},
     })
-    export default class GithubOauthTokenFormAdd extends mixins(AjaxFormContent) {
-        public host?: string|null = 'github.com';
+    export default class TokenFormAdd extends mixins(AjaxFormContent) {
+        @Prop({type: String, required: true})
+        public title: string;
+
+        @Prop({type: Function, required: true})
+        public createToken: (data: TokenRequest, canceler: Canceler) => Promise<TokenResponse|null>;
+
+        @Prop({type: String})
+        public defaultHost?: string|null;
+
+        public host?: string|null = null;
 
         public token?: string|null = null;
 
         public autoGeneration: boolean = true;
+
+        public created(): void {
+            if (!this.host && this.defaultHost) {
+                this.host = this.defaultHost;
+            }
+        }
 
         public async save(): Promise<void> {
             if (!this.isValidForm()) {
@@ -110,9 +125,9 @@ file that was distributed with this source code.
             const data = {
                 host: this.host,
                 token: this.token ? this.token : undefined,
-            } as GithubOauthTokenRequest;
-            const res = await this.fetchData<GithubOauthTokenResponse>((canceler: Canceler) => {
-                return this.$api.get<GithubOauthToken>(GithubOauthToken).create(data, canceler);
+            } as TokenRequest;
+            const res = await this.fetchData<TokenResponse>((canceler: Canceler) => {
+                return this.createToken(data, canceler);
             }, false);
 
             if (res) {

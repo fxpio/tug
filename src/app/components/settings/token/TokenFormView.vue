@@ -10,7 +10,7 @@ file that was distributed with this source code.
 <template>
     <div>
         <v-card-title class="primary--text">
-            {{ $t('views.settings.oauth-token') }}
+            {{ title }}
         </v-card-title>
 
         <v-data-table hide-default-footer :items="tokens" item-key="host" :headers="headers">
@@ -57,7 +57,7 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
-    import {Component} from 'vue-property-decorator';
+    import {Component, Prop} from 'vue-property-decorator';
     import {mixins} from 'vue-class-component';
     import {AjaxFormContent} from '@app/mixins/AjaxFormContent';
 
@@ -65,7 +65,10 @@ file that was distributed with this source code.
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
     @Component
-    export default class GithubOauthTokenFormView extends mixins(AjaxFormContent) {
+    export default class TokenFormView extends mixins(AjaxFormContent) {
+        @Prop({type: String, required: true})
+        public title: string;
+
         public get headers() {
             return [
                 {

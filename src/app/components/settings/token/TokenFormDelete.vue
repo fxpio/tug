@@ -10,7 +10,7 @@ file that was distributed with this source code.
 <template>
     <div>
         <v-card-title class="primary--text">
-            {{ $t('views.settings.oauth-token') }}
+            {{ title }}
         </v-card-title>
 
         <v-card-text class="pt-4 pb-0">
@@ -34,7 +34,7 @@ file that was distributed with this source code.
                    rounded
                    :loading="loading"
                    :disabled="loading"
-                   @click="deleteToken">
+                   @click="deleteAction">
                 {{ $t('delete') }}
             </v-btn>
         </v-card-actions>
@@ -46,9 +46,8 @@ file that was distributed with this source code.
     import {mixins} from 'vue-class-component';
     import {AjaxContent} from '@app/mixins/AjaxContent';
     import {Canceler} from '@app/api/Canceler';
-    import {GithubOauthToken} from '@app/api/services/GithubOauthToken';
-    import {GithubOauthTokenDeleteRequest} from '@app/api/models/requests/github/GithubOauthTokenDeleteRequest';
-    import {GithubOauthTokenDeleteResponse} from '@app/api/models/responses/github/GithubOauthTokenDeleteResponse';
+    import {TokenDeleteResponse} from '@app/api/models/responses/tokens/TokenDeleteResponse';
+    import {TokenDeleteRequest} from '@app/api/models/requests/tokens/TokenDeleteRequest';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
@@ -56,16 +55,22 @@ file that was distributed with this source code.
     @Component({
         components: {},
     })
-    export default class GithubOauthTokenFormDelete extends mixins(AjaxContent) {
+    export default class TokenFormDelete extends mixins(AjaxContent) {
+        @Prop({type: String, required: true})
+        public title: string;
+
+        @Prop({type: Function, required: true})
+        public deleteToken: (data: TokenDeleteRequest, canceler: Canceler) => Promise<TokenDeleteResponse|null>;
+
         @Prop({type: String, required: true})
         public host: string;
 
-        public async deleteToken(): Promise<void> {
+        public async deleteAction(): Promise<void> {
             const data = {
                 host: this.host,
-            } as GithubOauthTokenDeleteRequest;
-            const res = await this.fetchData<GithubOauthTokenDeleteResponse>((canceler: Canceler) => {
-                return this.$api.get<GithubOauthToken>(GithubOauthToken).delete(data, canceler);
+            } as TokenDeleteRequest;
+            const res = await this.fetchData<TokenDeleteResponse>((canceler: Canceler) => {
+                return this.deleteToken(data, canceler);
             }, true);
 
             if (res) {

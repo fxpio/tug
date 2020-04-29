@@ -8,11 +8,11 @@
  */
 
 import {MessageResponse} from '../MessageResponse';
+import {MapObject} from '../../MapObject';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface GithubOauthTokenResponse extends MessageResponse {
-    host: string;
-    token: string;
+export interface TokensResponse extends MessageResponse {
+    tokens: MapObject<string>;
 }

@@ -42,26 +42,32 @@ file that was distributed with this source code.
 
         <v-card>
             <v-slide-x-transition mode="out-in">
-                <github-oauth-token-form-add
+                <token-form-add
+                        :title="title"
+                        :default-host="defaultHost"
+                        :create-token="createToken"
                         @cancel="dialog = false"
                         @added="tokenAdded"
                         v-if="'add' === dialogActionType">
-                </github-oauth-token-form-add>
+                </token-form-add>
 
-                <github-oauth-token-form-delete
+                <token-form-delete
+                        :title="title"
+                        :delete-token="deleteToken"
                         :host="hostToDelete"
                         @cancel="manualDialogActionType = 'show'"
                         @deleted="tokenDeleted"
                         v-else-if="'delete' === dialogActionType">
-                </github-oauth-token-form-delete>
+                </token-form-delete>
 
-                <github-oauth-token-form-view
+                <token-form-view
+                        :title="title"
                         @close="dialog = false"
                         @addrequested="addRequested"
                         @deleterequested="deleteRequested"
                         v-model="tokens"
                         v-else-if="'show' === dialogActionType">
-                </github-oauth-token-form-view>
+                </token-form-view>
             </v-slide-x-transition>
         </v-card>
     </v-dialog>
@@ -72,22 +78,38 @@ file that was distributed with this source code.
     import {mixins} from 'vue-class-component';
     import {AjaxContent} from '@app/mixins/AjaxContent';
     import {Canceler} from '@app/api/Canceler';
-    import {GithubOauthTokensResponse} from '@app/api/models/responses/github/GithubOauthTokensResponse';
-    import {GithubOauthToken} from '@app/api/services/GithubOauthToken';
     import {MapObject} from '@app/api/models/MapObject';
-    import GithubOauthTokenFormAdd from '@app/components/settings/github/oauthToken/GithubOauthTokenFormAdd.vue';
-    import {GithubOauthTokenResponse} from '@app/api/models/responses/github/GithubOauthTokenResponse';
-    import GithubOauthTokenFormView from '@app/components/settings/github/oauthToken/GithubOauthTokenFormView.vue';
-    import GithubOauthTokenFormDelete from '@app/components/settings/github/oauthToken/GithubOauthTokenFormDelete.vue';
-    import {GithubOauthTokenDeleteResponse} from '@app/api/models/responses/github/GithubOauthTokenDeleteResponse';
+    import {TokensResponse} from '@app/api/models/responses/tokens/TokensResponse';
+    import {TokenRequest} from '@app/api/models/requests/tokens/TokenRequest';
+    import {TokenResponse} from '@app/api/models/responses/tokens/TokenResponse';
+    import {TokenDeleteRequest} from '@app/api/models/requests/tokens/TokenDeleteRequest';
+    import {TokenDeleteResponse} from '@app/api/models/responses/tokens/TokenDeleteResponse';
+    import TokenFormAdd from './TokenFormAdd.vue';
+    import TokenFormView from './TokenFormView.vue';
+    import TokenFormDelete from './TokenFormDelete.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
     @Component({
-        components: {GithubOauthTokenFormDelete, GithubOauthTokenFormView, GithubOauthTokenFormAdd},
+        components: {TokenFormDelete, TokenFormView, TokenFormAdd},
     })
-    export default class GithubOauthTokenAction extends mixins(AjaxContent) {
+    export default class TokenAction extends mixins(AjaxContent) {
+        @Prop({type: String, required: true})
+        public title: string;
+
+        @Prop({type: Function, required: true})
+        public fetchTokens: (canceler: Canceler) => Promise<TokensResponse|null>;
+
+        @Prop({type: Function, required: true})
+        public createToken: (data: TokenRequest, canceler: Canceler) => Promise<TokenResponse|null>;
+
+        @Prop({type: Function, required: true})
+        public deleteToken: (data: TokenDeleteRequest, canceler: Canceler) => Promise<TokenDeleteResponse|null>;
+
+        @Prop({type: String, required: true})
+        public defaultHost: string;
+
         @Prop({type: String, default: 'accent'})
         public color: string;
 
@@ -139,8 +161,8 @@ file that was distributed with this source code.
         }
 
         public async created(): Promise<void> {
-            const res = await this.fetchData<GithubOauthTokensResponse>((canceler: Canceler) => {
-                return this.$api.get<GithubOauthToken>(GithubOauthToken).get(canceler);
+            const res = await this.fetchData<TokensResponse>((canceler: Canceler) => {
+                return this.fetchTokens(canceler);
             }, true);
 
             this.tokens = res?.tokens as MapObject ?? {};
@@ -148,7 +170,7 @@ file that was distributed with this source code.
             this.init = true;
         }
 
-        public tokenAdded(result: GithubOauthTokenResponse): void {
+        public tokenAdded(result: TokenResponse): void {
             this.tokens[result.host] = result.token;
             this.manualDialogActionType = 'show';
         }
@@ -157,7 +179,7 @@ file that was distributed with this source code.
             this.manualDialogActionType = 'add';
         }
 
-        public tokenDeleted(result: GithubOauthTokenDeleteResponse): void {
+        public tokenDeleted(result: TokenDeleteResponse): void {
             delete this.tokens[result.host];
             this.hostToDelete = null;
 

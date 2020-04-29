@@ -7,9 +7,11 @@
  * file that was distributed with this source code.
  */
 
+import {MessageResponse} from '../MessageResponse';
+
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface GithubOauthTokenDeleteRequest {
+export interface TokenDeleteResponse extends MessageResponse {
     host: string;
 }
