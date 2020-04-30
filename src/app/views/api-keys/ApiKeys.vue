@@ -46,6 +46,15 @@ file that was distributed with this source code.
                     <template v-slot:data-table.item.createdAt="{item}">
                         <span>{{ $fdt(item.createdAt) }}</span>
                     </template>
+
+                    <template v-slot:data-table.item.actions="{item}">
+                        <delete-action
+                                :title="$t('views.api-keys.name')"
+                                v-model="item"
+                                :delete-call="deleteItem"
+                                @deleted="$root.$emit('search-list-delete-item', item.id, 'id')">
+                        </delete-action>
+                    </template>
                 </search-list>
             </v-col>
         </v-row>
@@ -61,13 +70,17 @@ file that was distributed with this source code.
     import {ListResponse} from '@app/api/models/responses/ListResponse';
     import {ApiKey} from '@app/api/models/responses/ApiKey';
     import {FetchRequestDataEvent} from '@app/events/requests/FetchRequestDataEvent';
+    import {Canceler} from '@app/api/Canceler';
     import {ApiKeys as ApiApiKeys} from '@app/api/services/ApiKeys';
+    import {ApiKeyRequest} from '@app/api/models/requests/ApiKeyRequest';
+    import {ApiKeyResponse} from '@app/api/models/responses/ApiKeyResponse';
+    import DeleteAction from '@app/components/DeleteAction.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
     @Component({
-        components: {SearchList, Lottie},
+        components: {DeleteAction, SearchList, Lottie},
     })
     export default class ApiKeys extends Vue {
         public get iconData(): object {
@@ -91,6 +104,10 @@ file that was distributed with this source code.
                     sortable: false,
                     value: 'createdAt',
                 },
+                {   align: 'right',
+                    sortable: false,
+                    value: 'actions',
+                },
             ];
         }
 
@@ -103,6 +120,14 @@ file that was distributed with this source code.
         public async fetchDataRequest(event: FetchRequestDataEvent<ListResponse<ApiKey>>): Promise<ListResponse<ApiKey>> {
             return await this.$api.get<ApiApiKeys>(ApiApiKeys)
                 .list({lastId: event.lastId, search: event.search}, event.canceler) as ListResponse<ApiKey>;
+        }
+
+        public async deleteItem(item: any, canceler: Canceler): Promise<ApiKeyResponse> {
+            const data = {
+                token: item.id,
+            } as ApiKeyRequest;
+
+            return this.$api.get<ApiApiKeys>(ApiApiKeys).delete(data, canceler);
         }
     }
 </script>
