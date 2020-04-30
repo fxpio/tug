@@ -37,7 +37,7 @@ export default {
     'manager.config.github-token.created': `Le jeton "{{token}}" pour les Webhooks Github hébergés sur "{{host}}" a été créé avec succès`,
     'manager.config.github-token.deleted': `Le jeton pour les Webhooks Github hébergés sur "{{host}}" a été supprimé avec succès`,
 
-    'manager.api-key.created': `La clé API "{{token}" a été créé avec succès`,
+    'manager.api-key.created': `La clé API "{{token}}" a été créé avec succès`,
     'manager.api-key.deleted': `La clé API "{{token}}" a été supprimé avec succès`,
 
     'manager.package.refresh.versions.all-repositories': `L'actualisation de toutes les versions du paquet a démarré pour tous les dépôts`,

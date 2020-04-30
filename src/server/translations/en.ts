@@ -37,7 +37,7 @@ export default {
     'manager.config.github-token.created': `The token "{{token}}" for Github Webhooks hosted on "{{host}}" was created successfully`,
     'manager.config.github-token.deleted': `The token for Github Webhooks hosted on "{{host}}" was deleted successfully`,
 
-    'manager.api-key.created': `The API key "{{token}" was created successfully`,
+    'manager.api-key.created': `The API key "{{token}}" was created successfully`,
     'manager.api-key.deleted': `The API key "{{token}}" was deleted successfully`,
 
     'manager.package.refresh.versions.all-repositories': `Refreshing all package versions has started for all repositories`,
