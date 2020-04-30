@@ -46,4 +46,13 @@ export class ApiKeys extends BaseService {
             data,
         }, canceler) as ApiKeyResponse;
     }
+
+    public async delete(data: ApiKeyRequest,
+                        canceler?: Canceler): Promise<ApiKeyResponse> {
+        return await this.request<ApiKeyResponse>({
+            method: 'DELETE',
+            url: '/manager/api-keys',
+            data,
+        }, canceler) as ApiKeyResponse;
+    }
 }
