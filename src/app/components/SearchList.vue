@@ -136,11 +136,16 @@ file that was distributed with this source code.
                 this.search = searchValue;
             });
 
+            this.$root.$on('search-list-delete-item', async (value: string|number, key: string = 'id') => {
+                this.deleteItem(value, key);
+            });
+
             this.$root.$emit('toolbar-search-refresh');
         }
 
         public destroyed() {
             this.$root.$off('toolbar-search-out');
+            this.$root.$off('search-list-delete-item');
         }
 
         @Watch('search')

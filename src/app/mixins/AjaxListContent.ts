@@ -38,6 +38,28 @@ export class AjaxListContent<I extends object> extends BaseAjaxContent {
     }
 
     /**
+     * Delete the item by the unique key.
+     *
+     * @param {string|number} value The value unique key
+     * @param {string}        key   The property name of the key
+     */
+    public deleteItem(value: string|number, key: string = 'id'): number {
+        const res = this.items.findIndex((item: any) => {
+            return item[key] === value;
+        });
+
+        if (res >= 0) {
+            this.items.splice(res, 1);
+
+            if (this.count) {
+                this.count--;
+            }
+        }
+
+        return res;
+    }
+
+    /**
      * Fetch data.
      *
      * @param {string}  [searchValue] The search value
