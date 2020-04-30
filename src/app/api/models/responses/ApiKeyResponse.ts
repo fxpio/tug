@@ -8,10 +8,12 @@
  */
 
 import {MessageResponse} from './MessageResponse';
-import {ApiKey} from './ApiKey';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface ApiKeyResponse extends MessageResponse, ApiKey {
+export interface ApiKeyResponse extends MessageResponse {
+    fingerprint: string;
+    token: string;
+    createdAt: string;
 }

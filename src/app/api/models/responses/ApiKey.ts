@@ -11,6 +11,7 @@
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export interface ApiKey {
-    fingerprint: string;
-    token: string;
+    id: string;
+    fingerprint?: string;
+    createdAt: string;
 }
