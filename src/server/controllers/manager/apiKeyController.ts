@@ -42,6 +42,7 @@ export async function listApiKey(req: Request, res: Response, next: Function): P
  */
 export async function createApiKey(req: Request, res: Response, next: Function): Promise<void> {
     validateForm(req, {
+        fingerprint: Joi.string(),
         token: Joi.string().min(10),
     });
 
@@ -49,6 +50,7 @@ export async function createApiKey(req: Request, res: Response, next: Function):
     const repo = (req.app.get('db') as Database).getRepository(ApiKeyRepository);
     const data = {
         id: req.body.token ? req.body.token : generateToken(40),
+        fingerprint : req.body.fingerprint ? req.body.fingerprint : undefined,
         createdAt: (new Date()).toISOString(),
     };
 
@@ -56,6 +58,7 @@ export async function createApiKey(req: Request, res: Response, next: Function):
 
     res.json({
         message: translator.trans(res, 'manager.api-key.created', {token: data.id}),
+        fingerprint: data.fingerprint,
         token: data.id,
         createdAt: data.createdAt,
     });

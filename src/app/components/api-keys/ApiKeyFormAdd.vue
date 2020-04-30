@@ -19,6 +19,19 @@ file that was distributed with this source code.
             </v-alert>
 
             <v-form ref="form" @submit.prevent>
+                <v-text-field
+                        type="text"
+                        :label="$i18n.t('views.api-keys.fingerprint')"
+                        v-model="fingerprint"
+                        @keydown.enter="save"
+                        outlined
+                        clearable
+                        autofocus
+                        :disabled="loading"
+                        :hint="$t('views.api-keys.fingerprint.hint')"
+                >
+                </v-text-field>
+
                 <v-switch
                         :label="$i18n.t('views.api-keys-add.token-auto-generation')"
                         :disabled="loading"
@@ -87,6 +100,8 @@ file that was distributed with this source code.
         @Prop({type: String, required: true})
         public title: string;
 
+        public fingerprint?: string|null = null;
+
         public token?: string|null = null;
 
         public autoGeneration: boolean = true;
@@ -94,6 +109,7 @@ file that was distributed with this source code.
         public async save(): Promise<void> {
             if (this.isValidForm()) {
                 const data = {
+                    fingerprint: this.fingerprint ? this.fingerprint : undefined,
                     token: this.token ? this.token : undefined,
                 } as ApiKeyRequest;
                 const res = await this.fetchData<ApiKeyResponse>((canceler: Canceler) => {

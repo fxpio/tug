@@ -35,6 +35,10 @@ file that was distributed with this source code.
                         </v-subheader>
                     </template>
 
+                    <template v-slot:data-table.item.fingerprint="{item}">
+                        <span>{{ item.fingerprint ? item.fingerprint : $t('views.api-keys.no-fingerprint') }}</span>
+                    </template>
+
                     <template v-slot:data-table.item.token="{item}">
                         <span>{{ item.id }}</span>
                     </template>
@@ -72,6 +76,11 @@ file that was distributed with this source code.
 
         public get headers(): object[] {
             return [
+                {   text: this.$i18n.t('views.api-keys.fingerprint'),
+                    align: 'left',
+                    sortable: false,
+                    value: 'fingerprint',
+                },
                 {   text: this.$i18n.t('views.api-keys.token'),
                     align: 'left',
                     sortable: false,
