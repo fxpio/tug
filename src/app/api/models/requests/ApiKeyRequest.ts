@@ -10,6 +10,6 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface ApiKey {
+export interface ApiKeyRequest {
     token: string;
 }

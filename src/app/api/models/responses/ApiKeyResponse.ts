@@ -7,9 +7,11 @@
  * file that was distributed with this source code.
  */
 
+import {MessageResponse} from './MessageResponse';
+import {ApiKey} from './ApiKey';
+
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface ApiKey {
-    token: string;
+export interface ApiKeyResponse extends MessageResponse, ApiKey {
 }

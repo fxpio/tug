@@ -11,6 +11,8 @@ import {BaseService} from '../BaseService';
 import {Canceler} from '../Canceler';
 import {ListOptions} from '../models/requests/ListOptions';
 import {ApiKey} from '../models/responses/ApiKey';
+import {ApiKeyRequest} from '../models/requests/ApiKeyRequest';
+import {ApiKeyResponse} from '../models/responses/ApiKeyResponse';
 import {ListResponse} from '../models/responses/ListResponse';
 
 /**
@@ -34,5 +36,14 @@ export class ApiKeys extends BaseService {
      */
     public async list(options?: ListOptions, canceler?: Canceler): Promise<ListResponse<ApiKey>> {
         return this.requestList<ApiKey>({url: '/manager/api-keys', params: options || {}}, canceler);
+    }
+
+    public async create(data: ApiKeyRequest,
+                        canceler?: Canceler): Promise<ApiKeyResponse> {
+        return await this.request<ApiKeyResponse>({
+            method: 'POST',
+            url: '/manager/api-keys',
+            data,
+        }, canceler) as ApiKeyResponse;
     }
 }
