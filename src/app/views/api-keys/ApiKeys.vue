@@ -38,6 +38,10 @@ file that was distributed with this source code.
                     <template v-slot:data-table.item.token="{item}">
                         <span>{{ item.id }}</span>
                     </template>
+
+                    <template v-slot:data-table.item.createdAt="{item}">
+                        <span>{{ $fdt(item.createdAt) }}</span>
+                    </template>
                 </search-list>
             </v-col>
         </v-row>
@@ -72,6 +76,11 @@ file that was distributed with this source code.
                     align: 'left',
                     sortable: false,
                     value: 'token',
+                },
+                {   text: this.$i18n.t('views.api-keys.created-at'),
+                    align: 'left',
+                    sortable: false,
+                    value: 'createdAt',
                 },
             ];
         }

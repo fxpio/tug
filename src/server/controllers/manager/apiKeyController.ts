@@ -47,13 +47,17 @@ export async function createApiKey(req: Request, res: Response, next: Function):
 
     const translator = req.app.get('translator') as Translator;
     const repo = (req.app.get('db') as Database).getRepository(ApiKeyRepository);
-    const token = req.body.token ? req.body.token : generateToken(40);
+    const data = {
+        id: req.body.token ? req.body.token : generateToken(40),
+        createdAt: (new Date()).toISOString(),
+    };
 
-    await repo.put({id: token});
+    await repo.put(data);
 
     res.json({
-        message: translator.trans(res, 'manager.api-key.created', {token}),
-        token,
+        message: translator.trans(res, 'manager.api-key.created', {token: data.id}),
+        token: data.id,
+        createdAt: data.createdAt,
     });
 }
 

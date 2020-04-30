@@ -55,6 +55,7 @@ export default {
     'views.api-keys.no-items': 'The added api keys are displayed here',
     'views.api-keys.add-first': 'Add your first API key',
     'views.api-keys.token': 'Token',
+    'views.api-keys.created-at': 'Created at',
     'views.api-keys-add.title': 'Add API key',
     'views.api-keys-add.token-auto-generation': 'Generate automatically the API key',
     'views.settings.title': 'Settings',

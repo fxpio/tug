@@ -55,6 +55,7 @@ export default {
     'views.api-keys.no-items': 'Les clés API ajoutées s\'affichent ici',
     'views.api-keys.add-first': 'Ajouter votre première clé API',
     'views.api-keys.token': 'Jeton',
+    'views.api-keys.created-at': 'Créé le',
     'views.api-keys-add.title': 'Ajouter une clé API',
     'views.api-keys-add.token-auto-generation': 'Générer automatiquement la clé API',
     'views.settings.title': 'Paramètres',
