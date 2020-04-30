@@ -28,7 +28,7 @@ import Joi from 'joi';
 export async function listApiKey(req: Request, res: Response, next: Function): Promise<void> {
     const db = req.app.get('db') as Database;
     const repo = db.getRepository<ApiKeyRepository>(ApiKeyRepository);
-    res.json(await repo.search({}, ['id'], req.query.search as string, req.query.lastId as string));
+    res.json(await repo.search({}, ['id', 'fingerprint'], req.query.search as string, req.query.lastId as string));
 }
 
 /**
