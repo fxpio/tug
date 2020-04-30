@@ -66,6 +66,7 @@ file that was distributed with this source code.
             {heading: 'menu.composer'},
             {icon: 'folder', color: 'primary', text: 'views.repositories.title', route: {name: 'repositories'}},
             {heading: 'menu.configuration'},
+            {icon: 'add', color: 'grey', dense: true, text: 'views.api-keys-add.title', route: {name: 'api-keys-add'}},
             {icon: 'vpn_key', color: 'grey', text: 'views.api-keys.title', route: {name: 'api-keys'}},
             {icon: 'settings', color: 'grey', text: 'views.settings.title', route: {name: 'settings'}},
             {divider: true},

@@ -35,14 +35,8 @@ file that was distributed with this source code.
                         </v-subheader>
                     </template>
 
-                    <template v-slot:data-table.item.name="{item}">
-                        <span class="font-weight-bold">{{ item.packageName ? item.packageName : item.url }}</span>
-                        <br>
-                        <span class="font-italic">{{ item.type }}</span>
-                    </template>
-
-                    <template v-slot:data-table.item.url="{item}">
-                        <a :href="item.url" target="_blank">{{ $t('source') }}</a>
+                    <template v-slot:data-table.item.token="{item}">
+                        <span>{{ item.id }}</span>
                     </template>
                 </search-list>
             </v-col>
