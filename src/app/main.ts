@@ -19,6 +19,7 @@ import vuetify from '@app/plugins/vuetify';
 import '@app/plugins/vueLongClick';
 import i18n from '@app/plugins/vueI18n';
 import validator from '@app/plugins/vueValidator';
+import formatter from '@app/plugins/vueFormatter';
 import apiClient from '@app/plugins/vueApi';
 import '@app/plugins/vueSnackbar';
 import App from '@app/App.vue';
@@ -37,6 +38,7 @@ useVueRouterBackPlugin({router, forceHistory: true});
 
 const store = createStore<RootState>(router, i18n, apiClient);
 validator.setI18n(i18n);
+formatter.setI18n(i18n);
 
 RouterGuards.addAuthGuard(router, store);
 RouterGuards.addDefaultComponentGuard(router, 'toolbar', SimpleSpacer);
