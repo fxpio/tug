@@ -23,6 +23,7 @@ file that was distributed with this source code.
                         type="text"
                         :label="$i18n.t('views.api-keys.fingerprint')"
                         v-model="fingerprint"
+                        :error-messages="fieldErrors('fingerprint')"
                         @keydown.enter="save"
                         outlined
                         clearable
