@@ -11,7 +11,6 @@ import {Config} from '@server/configs/Config';
 import {TransportError} from '@server/errors/TransportError';
 import {TransportResourceNotFoundError} from '@server/errors/TransportResourceNotFoundError';
 import {LooseObject} from '@server/utils/LooseObject';
-import merge from 'lodash.merge';
 import fetch, {Response} from 'node-fetch';
 
 /**
@@ -52,7 +51,7 @@ export class RemoteFilesystem {
             params.headers.Authorization = 'token ' + this.config.get('github-oauth[' + originalUrl + ']');
         }
 
-        options = merge(options, params);
+        options = Object.assign({}, options, params);
 
         return await fetch(fileUrl, options)
             .then(async (res: Response) => {

@@ -13,7 +13,6 @@ import {Equal} from '@server/db/constraints/Equal';
 import {Query} from '@server/db/constraints/Query';
 import {LooseObject} from '@server/utils/LooseObject';
 import AWS from 'aws-sdk';
-import merge from 'lodash.merge';
 
 /**
  * Convert the criteria into dynamo db parameters for query.
@@ -58,7 +57,7 @@ export function criteriaToQuery(criteria: Query|LooseObject): Query {
         return criteria;
     }
 
-    criteria = merge({}, criteria);
+    criteria = Object.assign({}, criteria);
 
     const model = criteria.model;
     const constraints: Constraint[] = [];

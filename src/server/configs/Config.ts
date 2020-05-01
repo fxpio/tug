@@ -8,7 +8,6 @@
  */
 
 import {LooseObject} from '@server/utils/LooseObject';
-import merge from 'lodash.merge';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -29,7 +28,7 @@ export class Config {
      * Constructor.
      */
     constructor() {
-        this.config = merge({}, Config.defaultConfig);
+        this.config = Object.assign({}, Config.defaultConfig);
     }
 
     /**
@@ -39,9 +38,9 @@ export class Config {
      */
     public merge(config: Config|LooseObject|null): void {
         if (config instanceof Config) {
-            this.config = merge(this.config, config.all());
+            this.config = Object.assign(this.config, config.all());
         } else if (typeof config === 'object') {
-            this.config = merge(this.config, config);
+            this.config = Object.assign(this.config, config);
         }
     }
 
