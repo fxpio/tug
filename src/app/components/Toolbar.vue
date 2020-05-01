@@ -23,7 +23,7 @@ file that was distributed with this source code.
         </slot>
 
         <slot name="title">
-            <v-toolbar-title>{{ $t('app.name') }}</v-toolbar-title>
+            <v-toolbar-title class="d-none d-sm-block">{{ $t('app.name') }}</v-toolbar-title>
         </slot>
 
         <slot name="default">

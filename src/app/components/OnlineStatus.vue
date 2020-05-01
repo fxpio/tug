@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <tooltip position="left" :message="online ? $t('online') : $t('offline')">
+    <tooltip position="left" :message="online ? $t('online') : $t('offline')" class="ml-3">
         <v-scale-transition origin="center center" mode="out-in">
             <v-icon :color="online ? 'grey lighten-1' : 'warning'" :key="online">{{ online ? 'cloud_done' : 'cloud_off' }}</v-icon>
         </v-scale-transition>
