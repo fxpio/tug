@@ -49,6 +49,14 @@ export class Repositories extends BaseService {
         }, canceler) as RepositoryResponse;
     }
 
+    public async show(id: string,
+                      canceler?: Canceler): Promise<CodeRepository> {
+        return await this.request<CodeRepository>({
+            method: 'GET',
+            url: '/manager/repositories/' + encodeURIComponent(id),
+        }, canceler) as CodeRepository;
+    }
+
     public async disable(data: RepositoryRequest,
                          canceler?: Canceler): Promise<RepositoryResponse> {
         return await this.request<RepositoryResponse>({

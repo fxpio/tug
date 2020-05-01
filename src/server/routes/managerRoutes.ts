@@ -16,7 +16,12 @@ import {
     refreshCachePackages,
     refreshPackages,
 } from '@server/controllers/manager/packageController';
-import {disableRepository, enableRepository, listRepository} from '@server/controllers/manager/repositoryController';
+import {
+    disableRepository,
+    enableRepository,
+    listRepository,
+    showRepository
+} from '@server/controllers/manager/repositoryController';
 import {Authenticate} from '@server/middlewares/auth/Authenticate';
 import {AuthStrategy} from '@server/middlewares/auth/strategies/AuthStrategy';
 import {asyncHandler} from '@server/utils/handler';
@@ -48,6 +53,7 @@ export function managerRoutes(router: Router, basicAuthStrategy: AuthStrategy): 
     router.get('/repositories', asyncHandler(listRepository));
     router.post('/repositories', asyncHandler(enableRepository));
     router.delete('/repositories', asyncHandler(disableRepository));
+    router.get('/repositories/:id', asyncHandler(showRepository));
 
     router.put('/packages/refresh', asyncHandler(refreshPackages));
     router.put('/packages/refresh-all', asyncHandler(refreshCachePackages));

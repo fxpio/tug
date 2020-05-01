@@ -16,5 +16,5 @@ export interface CodeRepository {
     type: string;
     packageName?: string;
     rootIdentifier?: string;
-    lastHash: string;
+    lastHash?: string;
 }

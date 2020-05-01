@@ -8,6 +8,7 @@
  */
 
 import {RepositoryManager} from '@server/composer/repositories/RepositoryManager';
+import {RepositoryNotFoundError} from '@server/errors/RepositoryNotFoundError';
 import {Database} from '@server/db/Database';
 import {CodeRepositoryRepository} from '@server/db/repositories/CodeRepositoryRepository';
 import {Logger} from '@server/loggers/Logger';
@@ -58,6 +59,27 @@ export async function enableRepository(req: Request, res: Response, next: Functi
         url: repo.getUrl(),
         type: repo.getType(),
     });
+}
+
+/**
+ * Show the repository.
+ *
+ * @param {Request}  req  The request
+ * @param {Response} res  The response
+ * @param {Function} next The next callback
+ *
+ * @return {Promise<void>}
+ */
+export async function showRepository(req: Request, res: Response, next: Function): Promise<void> {
+    const db = req.app.get('db') as Database;
+    const repo1 = db.getRepository<CodeRepositoryRepository>(CodeRepositoryRepository);
+    const result = await repo1.findOne({id: req.params.id});
+
+    if (null === result) {
+        throw new RepositoryNotFoundError(req.params.id);
+    }
+
+    res.json(result);
 }
 
 /**
