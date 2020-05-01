@@ -38,6 +38,11 @@ for (const name of supportsKeys) {
 
     test('github driver: ' + name, (t) => {
         const config = new Config();
+        config.merge({
+            'github-oauth': {
+                'github.com': 'token',
+            },
+        });
 
         t.deepEqual(values[0], GithubDriver.supports(config, values[1]));
     });

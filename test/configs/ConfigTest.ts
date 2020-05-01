@@ -14,7 +14,6 @@ import {Config} from '@server/configs/Config';
 test('test config to get default values', (t) => {
     const config = new Config();
 
-    t.deepEqual(config.get('github-domains'), ['github.com']);
     t.deepEqual(config.get('github-oauth'), {});
 });
 
@@ -33,7 +32,6 @@ test('test config to get nonexistent value', (t) => {
 test('test config to check if key exists', (t) => {
     const config = new Config();
 
-    t.true(config.has('github-domains'));
     t.true(config.has('github-oauth'));
     t.false(config.has('invalid-key'));
     t.false(config.has('github-oauth[invalid-key]'));
