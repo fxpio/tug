@@ -38,6 +38,7 @@ export class AjaxContent extends BaseAjaxContent {
             return res as D;
         } catch (e) {
             this.previousError = e;
+            this.previousRequest = undefined;
             this.loading = false;
 
             if (showSnackbar) {
