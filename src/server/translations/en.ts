@@ -22,7 +22,7 @@ export default {
     'error.http.not-found.repository-branch': `Branch "{{name}}" is not found`,
     'error.http.not-found.repository-tag': `Tag "{{name}}" is not found`,
     'error.http.not-found.repository': `The repository with the url "{{url}}" is not found`,
-    'error.http.not-supported.repository': `The repository with the url "{{url}}" is not supported`,
+    'error.http.not-supported.repository': `The repository with the url "{{url}}" is not supported. Check also that Tug is well connected to the service of the repository`,
     'error.http.internal-server': `Internal server error`,
 
     'manager.repository.created': `The "{{type}}" repository with the URL "{{url}}" were enabled successfully`,

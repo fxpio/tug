@@ -22,7 +22,7 @@ export default {
     'error.http.not-found.repository-branch': `La branche"{{name}}" est introuvable`,
     'error.http.not-found.repository-tag': `Le tag "{{name}}" est introuvable`,
     'error.http.not-found.repository': `Le dépôt avec l'url "{{url}}" est introuvable`,
-    'error.http.not-supported.repository': `Le dépôt avec l'url "{{url}}" n'est pas supporté`,
+    'error.http.not-supported.repository': `Le dépôt avec l'url "{{url}}" n'est pas supporté. Vérifiez aussi que Tug est bien connecté au service du dépôt`,
     'error.http.internal-server': `Erreur interne du serveur`,
 
     'manager.repository.created': `Le dépôt "{{type}}" avec l'URL "{{url}}" a été activé avec succès`,
