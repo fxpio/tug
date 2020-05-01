@@ -44,6 +44,15 @@ file that was distributed with this source code.
                     <template v-slot:data-table.item.url="{item}">
                         <a :href="item.url" target="_blank">{{ $t('source') }}</a>
                     </template>
+
+                    <template v-slot:data-table.item.actions="{item}">
+                        <delete-action
+                                :title="$t('views.repositories.title')"
+                                v-model="item"
+                                :delete-call="deleteItem"
+                                @deleted="$root.$emit('search-list-delete-item', item.id, 'id')">
+                        </delete-action>
+                    </template>
                 </search-list>
             </v-col>
         </v-row>
@@ -60,12 +69,16 @@ file that was distributed with this source code.
     import {CodeRepository} from '@app/api/models/responses/CodeRepository';
     import {FetchRequestDataEvent} from '@app/events/requests/FetchRequestDataEvent';
     import {Repositories as ApiRepositories} from '@app/api/services/Repositories';
+    import DeleteAction from '@app/components/DeleteAction.vue';
+    import {Canceler} from '@app/api/Canceler';
+    import {RepositoryResponse} from '@app/api/models/responses/RepositoryResponse';
+    import {RepositoryRequest} from '@app/api/models/requests/RepositoryRequest';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
     @Component({
-        components: {SearchList, Lottie},
+        components: {DeleteAction, SearchList, Lottie},
     })
     export default class Repositories extends Vue {
         public get iconData(): object {
@@ -84,6 +97,10 @@ file that was distributed with this source code.
                     sortable: false,
                     value: 'url',
                 },
+                {   align: 'right',
+                    sortable: false,
+                    value: 'actions',
+                },
             ];
         }
 
@@ -96,6 +113,14 @@ file that was distributed with this source code.
         public async fetchDataRequest(event: FetchRequestDataEvent<ListResponse<CodeRepository>>): Promise<ListResponse<CodeRepository>> {
             return await this.$api.get<ApiRepositories>(ApiRepositories)
                 .list({lastId: event.lastId, search: event.search}, event.canceler) as ListResponse<CodeRepository>;
+        }
+
+        public async deleteItem(item: any, canceler: Canceler): Promise<RepositoryResponse> {
+            const data = {
+                url: item.url,
+            } as RepositoryRequest;
+
+            return this.$api.get<ApiRepositories>(ApiRepositories).disable(data, canceler);
         }
     }
 </script>
