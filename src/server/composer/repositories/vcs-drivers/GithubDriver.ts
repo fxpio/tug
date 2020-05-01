@@ -33,8 +33,9 @@ export class GithubDriver extends VcsDriver {
 
         const originUrl = undefined !== matches[2] ? matches[2] : matches[3];
 
-        return config.get('github-domains').includes(originUrl.replace(/^www\./i, ''));
+        return Object.keys(config.get('github-oauth')).includes(originUrl.replace(/^www\./i, ''));
     }
+
     private readonly originUrl: string;
     private readonly infoCache: LooseObject;
 

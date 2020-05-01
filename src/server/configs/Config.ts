@@ -14,7 +14,6 @@ import {LooseObject} from '@server/utils/LooseObject';
  */
 export class Config {
     public static defaultConfig: LooseObject = {
-        'github-domains': ['github.com'],
         'github-oauth': {},
         'github-webhook': {},
         'ui': {

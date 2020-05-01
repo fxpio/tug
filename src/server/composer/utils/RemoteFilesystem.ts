@@ -18,6 +18,7 @@ import fetch, {Response} from 'node-fetch';
  */
 export class RemoteFilesystem {
     private config: Config;
+
     private lastHeaders: Object;
 
     /**
@@ -46,7 +47,7 @@ export class RemoteFilesystem {
             headers: {},
         };
 
-        if (this.config.get('github-domains').includes(originalUrl)) {
+        if (Object.keys(this.config.get('github-oauth')).includes(originalUrl)) {
             params.headers['Content-Type'] = 'application/json';
             params.headers.Authorization = 'token ' + this.config.get('github-oauth[' + originalUrl + ']');
         }

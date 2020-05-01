@@ -35,7 +35,6 @@ export async function createGithubOauth(req: Request, res: Response, next: Funct
     const token = req.body.token ? req.body.token : generateToken(40);
     const host = req.body.host ? req.body.host : 'github.com';
     const data: LooseObject = {
-        'github-domains': [host],
         'github-oauth': {},
     };
     data['github-oauth'][host] = token;
