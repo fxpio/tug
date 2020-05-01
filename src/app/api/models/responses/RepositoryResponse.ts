@@ -14,4 +14,5 @@ import {MessageResponse} from './MessageResponse';
  */
 export interface RepositoryResponse extends MessageResponse {
     url: string;
+    type?: string;
 }

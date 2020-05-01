@@ -43,6 +43,7 @@ export async function listRepository(req: Request, res: Response, next: Function
 export async function enableRepository(req: Request, res: Response, next: Function): Promise<void> {
     validateForm(req, {
         url: Joi.string().required(),
+        type: Joi.string(),
     });
 
     const repoManager = req.app.get('repository-manager') as RepositoryManager;

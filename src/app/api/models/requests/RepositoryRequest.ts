@@ -12,4 +12,5 @@
  */
 export interface RepositoryRequest {
     url: string;
+    type?: string;
 }
