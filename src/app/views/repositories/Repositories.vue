@@ -36,9 +36,40 @@ file that was distributed with this source code.
                     </template>
 
                     <template v-slot:data-table.item.name="{item}">
-                        <span class="font-weight-bold">{{ item.packageName ? item.packageName : item.url }}</span>
-                        <br>
-                        <span class="font-italic">{{ item.type }}</span>
+                        <div class="font-weight-bold">
+                            {{ item.packageName ? item.packageName : item.url }}
+                        </div>
+                        <v-chip v-if="!!item.type" x-small color="info" outlined>
+                            {{ item.type }}
+                        </v-chip>
+                    </template>
+
+                    <template v-slot:data-table.item.lastHash="{item}">
+                        <div v-if="!!item.lastHash">
+                            <v-chip x-small>
+                                {{ item.lastHash }}
+                            </v-chip>
+                        </div>
+
+                        <div v-else>
+                            <v-tooltip top>
+                                <template v-slot:activator="{ on }">
+                                    <v-chip x-small color="warning" v-on="on">
+                                        {{ $t('views.repositories.last-hash.no-auto-updated') }}
+                                    </v-chip>
+                                </template>
+                                <span>{{ $t('views.repositories.last-hash.no-auto-updated.hint') }}</span>
+                            </v-tooltip>
+                        </div>
+
+                        <v-tooltip top v-if="!!item.rootIdentifier">
+                            <template v-slot:activator="{ on }">
+                                <v-chip x-small color="primary" v-on="on">
+                                    {{ item.rootIdentifier }}
+                                </v-chip>
+                            </template>
+                            <span>{{ $t('views.repositories.root-identifier') }}</span>
+                        </v-tooltip>
                     </template>
 
                     <template v-slot:data-table.item.url="{item}">
@@ -91,6 +122,11 @@ file that was distributed with this source code.
                     align: 'left',
                     sortable: false,
                     value: 'name',
+                },
+                {   text: this.$i18n.t('views.repositories.last-hash'),
+                    align: 'left',
+                    sortable: false,
+                    value: 'lastHash',
                 },
                 {   text: this.$i18n.t('views.repositories.url'),
                     align: 'left',
