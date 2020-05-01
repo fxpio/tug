@@ -48,4 +48,13 @@ export class Repositories extends BaseService {
             data,
         }, canceler) as RepositoryResponse;
     }
+
+    public async disable(data: RepositoryRequest,
+                         canceler?: Canceler): Promise<RepositoryResponse> {
+        return await this.request<RepositoryResponse>({
+            method: 'DELETE',
+            url: '/manager/repositories',
+            data,
+        }, canceler) as RepositoryResponse;
+    }
 }
