@@ -12,6 +12,8 @@ import {Canceler} from '../Canceler';
 import {ListOptions} from '../models/requests/ListOptions';
 import {CodeRepository} from '../models/responses/CodeRepository';
 import {ListResponse} from '../models/responses/ListResponse';
+import {RepositoryRequest} from '../models/requests/RepositoryRequest';
+import {RepositoryResponse} from '../models/responses/RepositoryResponse';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -36,5 +38,14 @@ export class Repositories extends BaseService {
         return this.requestList<CodeRepository>({
             url: '/manager/repositories', params: options || {},
         }, canceler);
+    }
+
+    public async enable(data: RepositoryRequest,
+                        canceler?: Canceler): Promise<RepositoryResponse> {
+        return await this.request<RepositoryResponse>({
+            method: 'POST',
+            url: '/manager/repositories',
+            data,
+        }, canceler) as RepositoryResponse;
     }
 }
