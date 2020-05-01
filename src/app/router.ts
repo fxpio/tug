@@ -42,7 +42,10 @@ export default new Router({
         {
             path: '/repositories/add',
             name: 'repositories-add',
-            redirect: 'home',
+            meta: {requiresAuth: true},
+            components: {
+                default: () => import(/* webpackChunkName: "repositories" */ '@app/views/repositories/RepositoryAdd.vue'),
+            },
         },
         {
             path: '/api-keys',

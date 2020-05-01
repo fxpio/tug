@@ -46,6 +46,8 @@ export default {
     'views.repositories.package-name': 'Package',
     'views.repositories.url': 'URL',
     'views.repositories.type': 'Type',
+    'views.repositories-add.title': 'Ajouter un dépôt',
+    'views.repositories-add.type-manual': 'Définir manuellement le type de VCS',
     'views.packages.title': 'Packages',
     'views.packages.no-items': 'Les packages ajoutés s\'affichent ici',
     'views.packages.package-name': 'Nom du package',
