@@ -36,18 +36,7 @@ file that was distributed with this source code.
                     </template>
 
                     <template v-slot:data-table.item.service="{item}">
-                        <v-tooltip right>
-                            <template v-slot:activator="{ on }">
-                                <v-icon color="black" v-on="on" v-if="'vcs-github' === item.type">
-                                    fab fa-github
-                                </v-icon>
-
-                                <v-icon v-on="on" v-else>
-                                    fa-code-branch
-                                </v-icon>
-                            </template>
-                            <span>{{ item.type }}</span>
-                        </v-tooltip>
+                        <repository-service :type="item.type"></repository-service>
                     </template>
 
                     <template v-slot:data-table.item.name="{item}">
@@ -117,12 +106,13 @@ file that was distributed with this source code.
     import {Canceler} from '@app/api/Canceler';
     import {RepositoryResponse} from '@app/api/models/responses/RepositoryResponse';
     import {RepositoryRequest} from '@app/api/models/requests/RepositoryRequest';
+    import RepositoryService from "@app/components/repositories/RepositoryService.vue";
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
     @Component({
-        components: {DeleteAction, SearchList, Lottie},
+        components: {RepositoryService, DeleteAction, SearchList, Lottie},
     })
     export default class Repositories extends Vue {
         public get iconData(): object {
