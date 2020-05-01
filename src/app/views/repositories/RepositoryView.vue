@@ -16,9 +16,24 @@ file that was distributed with this source code.
                     <not-found v-else-if="!repo"></not-found>
 
                     <div v-else>
-                        <v-subheader class="primary--text">
-                            {{ $t('views.repositories.title') }}
-                        </v-subheader>
+                        <v-row class="ma-0" align="center">
+                            <v-col cols="10" class="ma-0 pa-0">
+                                <v-subheader class="primary--text">
+                                    {{ $t('views.repositories.title') }}
+                                </v-subheader>
+                            </v-col>
+                            <v-col cols="2" class="text-right">
+                                <v-btn color="primary"
+                                       depressed
+                                       ripple
+                                       rounded
+                                       small
+                                       @click="refresh()"
+                                >
+                                    <v-icon small>refresh</v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
 
                         <v-card flat>
                             <v-container>
@@ -67,6 +82,29 @@ file that was distributed with this source code.
                                     </col-label>
                                 </v-row>
                             </v-container>
+
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+
+                                <delete-action
+                                        :title="$t('views.repositories.title')"
+                                        v-model="repo"
+                                        :delete-call="deleteRepo"
+                                        @deleted="$router.push({name: 'repositories'})">
+                                    <template v-slot="{on}">
+                                        <v-btn v-on="on"
+                                               color="error"
+                                               class="ml-2"
+                                               outlined
+                                               ripple
+                                        >
+                                            <v-icon small>delete</v-icon>
+                                        </v-btn>
+                                    </template>
+                                </delete-action>
+
+                                <v-spacer></v-spacer>
+                            </v-card-actions>
                         </v-card>
                     </div>
                 </v-fade-transition>
@@ -80,23 +118,31 @@ file that was distributed with this source code.
     import {mixins} from 'vue-class-component';
     import {AjaxContent} from '@app/mixins/AjaxContent';
     import Loading from '@app/components/Loading.vue';
-    import {Repositories} from '@app/api/services/Repositories';
+    import {Repositories as ApiRepositories, Repositories} from '@app/api/services/Repositories';
     import {CodeRepository} from '@app/api/models/responses/CodeRepository';
     import NotFound from '@app/views/NotFound.vue';
     import ColLabel from '@app/components/grid/ColLabel.vue';
     import RepositoryService from '@app/components/repositories/RepositoryService.vue';
     import ColSpacer from '@app/components/grid/ColSpacer.vue';
+    import DeleteAction from "@app/components/DeleteAction.vue";
+    import {RepositoryRequest} from '@app/api/models/requests/RepositoryRequest';
+    import {RepositoryResponse} from '@app/api/models/responses/RepositoryResponse';
+    import {Canceler} from '@app/api/Canceler';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
     @Component({
-        components: {ColSpacer, RepositoryService, ColLabel, NotFound, Loading},
+        components: {DeleteAction, ColSpacer, RepositoryService, ColLabel, NotFound, Loading},
     })
     export default class RepositoryView extends mixins(AjaxContent) {
         private repo: CodeRepository|null = null;
 
         public async created(): Promise<void> {
+            await this.refresh();
+        }
+
+        public async refresh(): Promise<void> {
             const id: string = this.$route.params.id;
 
             this.repo = await this.fetchData((canceler) => {
@@ -104,6 +150,14 @@ file that was distributed with this source code.
             }, false);
 
             this.loading = false;
+        }
+
+        public async deleteRepo(item: any, canceler: Canceler): Promise<RepositoryResponse> {
+            const data = {
+                url: this.repo ? this.repo.url : undefined,
+            } as RepositoryRequest;
+
+            return this.$api.get<ApiRepositories>(ApiRepositories).disable(data, canceler);
         }
     }
 </script>

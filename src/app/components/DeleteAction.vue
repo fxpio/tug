@@ -10,16 +10,18 @@ file that was distributed with this source code.
 <template>
     <v-dialog v-model="dialog" persistent max-width="400">
         <template v-slot:activator="{on}">
-            <v-btn v-on="on"
-                   color="error"
-                   :class="classes"
-                   outlined
-                   ripple
-                   rounded
-                   small
-            >
-                <v-icon small>delete</v-icon>
-            </v-btn>
+            <slot name="default" :on="on">
+                <v-btn v-on="on"
+                       color="error"
+                       :class="classes"
+                       outlined
+                       ripple
+                       rounded
+                       small
+                >
+                    <v-icon small>delete</v-icon>
+                </v-btn>
+            </slot>
         </template>
         <v-card>
             <v-card-title class="primary--text">
