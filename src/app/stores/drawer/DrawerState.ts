@@ -11,5 +11,6 @@
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export interface DrawerState {
+    mini: boolean;
     show: boolean;
 }

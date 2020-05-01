@@ -8,23 +8,22 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-app-bar app clipped-left elevate-on-scroll>
+    <v-app-bar app elevate-on-scroll>
         <slot name="menu">
             <v-scale-transition origin="center center" mode="out-in">
-                <v-app-bar-nav-icon v-if="!showPreviousButton" @click.prevent="drawerButtonAction" key="menu-btn">
+                <v-app-bar-nav-icon v-if="!showPreviousButton" @click.prevent="drawerButtonAction"
+                                    key="menu-btn" class="mr-2">
                     <v-icon>menu</v-icon>
                 </v-app-bar-nav-icon>
 
                 <v-btn icon v-else @click.prevent="previousButtonAction" @long-click="drawerButtonAction"
-                       key="previous-btn">
+                       key="previous-btn" class="mr-2">
                     <v-icon>arrow_back</v-icon>
                 </v-btn>
             </v-scale-transition>
         </slot>
 
-        <slot name="title">
-            <v-toolbar-title class="d-none d-sm-block">{{ $t('app.name') }}</v-toolbar-title>
-        </slot>
+        <slot name="title"></slot>
 
         <slot name="default">
             <v-spacer></v-spacer>

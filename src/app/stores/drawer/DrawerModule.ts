@@ -27,6 +27,9 @@ export class DrawerModule<R extends DrawerModuleState> implements Module<DrawerS
 
     public get state(): DrawerState {
         return {
+            mini: null === this.storage.getItem('drawer:mini')
+                ? false
+                : 'true' === (this.storage.getItem('drawer:mini')),
             show: null === this.storage.getItem('drawer:show')
                 ? true
                 : 'true' === (this.storage.getItem('drawer:show')),
@@ -37,6 +40,10 @@ export class DrawerModule<R extends DrawerModuleState> implements Module<DrawerS
         const self = this;
 
         return {
+            toggleMini(state: DrawerState, mini?: boolean): void {
+                state.mini = undefined === mini ? !state.mini : mini;
+                self.storage.setItem('drawer:mini', state.mini ? 'true' : 'false');
+            },
             toggle(state: DrawerState, show?: boolean): void {
                 state.show = undefined === show ? !state.show : show;
                 self.storage.setItem('drawer:show', state.show ? 'true' : 'false');

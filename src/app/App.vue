@@ -14,12 +14,17 @@ file that was distributed with this source code.
         <transition :name="transitionName">
             <app-drawer :items="drawerItems" v-if="$store.state.auth.authenticated">
                 <template v-slot:drawer.append>
-                    <div class="pa-4">
-                        <v-btn block outlined rounded ripple small color="primary lighten-4" @click="logout">
-                            <v-icon left color="primary lighten-4">exit_to_app</v-icon>
-                            {{ $t('logout') }}
-                        </v-btn>
-                    </div>
+                    <v-list rounded>
+                        <v-list-item dense :ripple="false" @click="logout">
+                            <v-list-item-icon>
+                                <v-icon dense left color="primary lighten-4">exit_to_app</v-icon>
+                            </v-list-item-icon>
+
+                            <v-list-item-content class="primary--text text--lighten-4">
+                                {{ $t('logout') }}
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
                 </template>
             </app-drawer>
         </transition>
