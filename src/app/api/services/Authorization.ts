@@ -37,6 +37,6 @@ export class Authorization extends BaseService {
             url: '/authorizations',
             auth: credentials,
             data: credentials,
-        });
+        }, canceler);
     }
 }

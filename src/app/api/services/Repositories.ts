@@ -33,6 +33,8 @@ export class Repositories extends BaseService {
      * @return {Promise<ListResponse<CodeRepository>>}
      */
     public async list(options?: ListOptions, canceler?: Canceler): Promise<ListResponse<CodeRepository>> {
-        return this.requestList<CodeRepository>({url: '/manager/repositories', params: options || {}}, canceler);
+        return this.requestList<CodeRepository>({
+            url: '/manager/repositories', params: options || {},
+        }, canceler);
     }
 }

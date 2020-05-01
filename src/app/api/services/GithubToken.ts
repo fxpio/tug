@@ -37,7 +37,7 @@ export class GithubToken extends BaseService {
         return await this.request<TokensResponse>({
             method: 'GET',
             url: '/manager/github-token',
-        });
+        }, canceler);
     }
 
     public async create(data: TokenRequest,
