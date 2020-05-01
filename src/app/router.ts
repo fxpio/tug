@@ -48,6 +48,14 @@ export default new Router({
             },
         },
         {
+            path: '/repositories/p/:id',
+            name: 'repositories-package',
+            meta: {requiresAuth: true},
+            components: {
+                default: () => import(/* webpackChunkName: "repositories" */ '@app/views/repositories/RepositoryView.vue'),
+            },
+        },
+        {
             path: '/api-keys',
             name: 'api-keys',
             meta: {requiresAuth: true},

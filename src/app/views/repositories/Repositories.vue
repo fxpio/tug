@@ -40,9 +40,11 @@ file that was distributed with this source code.
                     </template>
 
                     <template v-slot:data-table.item.name="{item}">
-                        <div class="font-weight-bold">
+                        <router-link
+                                class="font-weight-bold"
+                                :to="{name: 'repositories-package', params: {id: item.id}}">
                             {{ item.packageName ? item.packageName : item.url }}
-                        </div>
+                        </router-link>
                     </template>
 
                     <template v-slot:data-table.item.lastHash="{item}">
@@ -105,7 +107,7 @@ file that was distributed with this source code.
     import {Canceler} from '@app/api/Canceler';
     import {RepositoryResponse} from '@app/api/models/responses/RepositoryResponse';
     import {RepositoryRequest} from '@app/api/models/requests/RepositoryRequest';
-    import RepositoryService from "@app/components/repositories/RepositoryService.vue";
+    import RepositoryService from '@app/components/repositories/RepositoryService.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
