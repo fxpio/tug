@@ -90,6 +90,7 @@ file that was distributed with this source code.
 
                     <template v-slot:data-table.item.actions="{item}">
                         <delete-action
+                                classes="mt-1"
                                 :title="$t('views.repositories.title')"
                                 v-model="item"
                                 :delete-call="deleteItem"

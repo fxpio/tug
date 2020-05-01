@@ -12,6 +12,7 @@ file that was distributed with this source code.
         <template v-slot:activator="{on}">
             <v-btn v-on="on"
                    color="error"
+                   :class="classes"
                    outlined
                    ripple
                    rounded
@@ -69,6 +70,9 @@ file that was distributed with this source code.
     export default class DeleteAction extends mixins(AjaxContent) {
         @Prop({type: String, required: true})
         public title: string;
+
+        @Prop({type: String})
+        public classes?: string;
 
         @Prop({type: Function, required: true})
         public deleteCall: (data: any, canceler: Canceler) => Promise<any|null>;
