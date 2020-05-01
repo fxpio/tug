@@ -18,7 +18,23 @@ file that was distributed with this source code.
         </wall-message>
 
         <div v-else>
-            <slot name="header"></slot>
+            <v-row class="ma-0" align="center">
+                <v-col cols="10" class="ma-0 pa-0">
+                    <slot name="header"></slot>
+                </v-col>
+                <v-col cols="2" class="text-right">
+                    <v-btn color="primary"
+                           depressed
+                           ripple
+                           rounded
+                           small
+                           :loading="loading"
+                           @click="refresh()"
+                    >
+                        <v-icon small>refresh</v-icon>
+                    </v-btn>
+                </v-col>
+            </v-row>
 
             <v-card flat>
                 <v-data-table

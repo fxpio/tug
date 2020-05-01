@@ -59,6 +59,11 @@ export class AjaxListContent<I extends object> extends BaseAjaxContent {
         return res;
     }
 
+    public async refresh(showSnackbar: boolean = true): Promise<void> {
+        this.lastId = null;
+        await this.fetchData(this.search, showSnackbar);
+    }
+
     /**
      * Fetch data.
      *
