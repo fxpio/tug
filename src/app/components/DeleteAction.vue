@@ -16,7 +16,6 @@ file that was distributed with this source code.
                    ripple
                    rounded
                    small
-                   @click=""
             >
                 <v-icon small>delete</v-icon>
             </v-btn>
