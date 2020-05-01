@@ -76,9 +76,14 @@ file that was distributed with this source code.
                                             {{ repo.lastHash }}
                                         </v-chip>
 
-                                        <v-icon v-else color="warning">
-                                            fa-exclamation-triangle
-                                        </v-icon>
+                                        <v-tooltip top v-else>
+                                            <template v-slot:activator="{ on }">
+                                                <span v-on="on" class="warning--text">
+                                                    {{ $t('views.repositories.last-hash.no-auto-updated') }}
+                                                </span>
+                                            </template>
+                                            <span>{{ $t('views.repositories.last-hash.no-auto-updated.hint') }}</span>
+                                        </v-tooltip>
                                     </col-label>
                                 </v-row>
                             </v-container>
@@ -98,7 +103,7 @@ file that was distributed with this source code.
                                                outlined
                                                ripple
                                         >
-                                            <v-icon small>delete</v-icon>
+                                            {{ $t('delete') }}
                                         </v-btn>
                                     </template>
                                 </delete-action>
