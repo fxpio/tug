@@ -35,13 +35,25 @@ file that was distributed with this source code.
                         </v-subheader>
                     </template>
 
+                    <template v-slot:data-table.item.service="{item}">
+                        <v-tooltip right>
+                            <template v-slot:activator="{ on }">
+                                <v-icon color="black" v-on="on" v-if="'vcs-github' === item.type">
+                                    fab fa-github
+                                </v-icon>
+
+                                <v-icon v-on="on" v-else>
+                                    fa-code-branch
+                                </v-icon>
+                            </template>
+                            <span>{{ item.type }}</span>
+                        </v-tooltip>
+                    </template>
+
                     <template v-slot:data-table.item.name="{item}">
                         <div class="font-weight-bold">
                             {{ item.packageName ? item.packageName : item.url }}
                         </div>
-                        <v-chip v-if="!!item.type" x-small color="info" outlined>
-                            {{ item.type }}
-                        </v-chip>
                     </template>
 
                     <template v-slot:data-table.item.lastHash="{item}">
@@ -118,6 +130,11 @@ file that was distributed with this source code.
 
         public get headers(): object[] {
             return [
+                {   align: 'center',
+                    sortable: false,
+                    value: 'service',
+                    width: 60,
+                },
                 {   text: this.$i18n.t('views.repositories.package-name'),
                     align: 'left',
                     sortable: false,
