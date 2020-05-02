@@ -28,6 +28,36 @@ export class Packages extends BaseService {
     }
 
     /**
+     * Refresh all packages of all repositories.
+     */
+    public async refreshAll(force: boolean = false, canceler?: Canceler): Promise<PackageRefreshResponse> {
+        return await this.refresh({
+            force,
+        }, canceler);
+    }
+
+    /**
+     * Refresh all packages of a repository.
+     */
+    public async refreshOne(url: string, force: boolean = false, canceler?: Canceler): Promise<PackageRefreshResponse> {
+        return await this.refresh({
+            url,
+            force,
+        }, canceler);
+    }
+
+    /**
+     * Refresh a single package of a repository.
+     */
+    public async refreshOneVersion(url: string, version: string, force: boolean = false, canceler?: Canceler): Promise<PackageRefreshResponse> {
+        return await this.refresh({
+            url,
+            version,
+            force,
+        }, canceler);
+    }
+
+    /**
      * Refresh all packages or a single package of a repository.
      */
     public async refresh(data: PackageRefreshRequest,
@@ -37,6 +67,22 @@ export class Packages extends BaseService {
             url: '/manager/packages/refresh',
             data,
         }, canceler) as PackageRefreshResponse;
+    }
+
+    /**
+     * Refresh only the cache for all packages of all repositories.
+     */
+    public async refreshCacheAll(canceler?: Canceler): Promise<PackageCacheRefreshResponse> {
+        return await this.refreshCache({}, canceler);
+    }
+
+    /**
+     * Refresh only the cache for all packages of a repository.
+     */
+    public async refreshCacheOne(url: string, canceler?: Canceler): Promise<PackageCacheRefreshResponse> {
+        return await this.refreshCache({
+            url,
+        }, canceler);
     }
 
     /**
