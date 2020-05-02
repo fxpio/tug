@@ -29,7 +29,7 @@ const redirectToApp = '1' === env.REDIRECT_TO_APP;
 const appBasePath = env.APP_BASE_PATH ? env.APP_BASE_PATH : '';
 const app = createApp({
     database: new AwsDynamoDbDatabase(env.AWS_DYNAMODB_TABLE as string, env.AWS_REGION as string, env.AWS_DYNAMODB_URL),
-    storage: new LocalStorage('@server/var/storage'),
+    storage: new LocalStorage('./var/storage'),
     queue: new LocalMessageQueue(),
     logger: new Logger(env.LOGGER_LEVEL, debug),
     basicAuthStrategy: new BasicMockAuth(env.AWS_ACCESS_KEY_ID as string, env.AWS_SECRET_ACCESS_KEY as string),
