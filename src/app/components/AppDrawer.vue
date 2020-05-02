@@ -55,7 +55,6 @@ file that was distributed with this source code.
                 <v-list-item
                         v-else
                         active-class="primary white--text white--icon"
-                        exact
                         :ripple="false"
                         :key="i"
                         :to="item.route"

@@ -69,10 +69,10 @@ file that was distributed with this source code.
         public drawerItems: object[] = [
             {icon: 'home', color: 'primary', text: 'views.home.title', route: {name: 'home'}},
             {heading: 'menu.composer'},
-            {icon: 'add', color: 'primary', dense: true, text: 'views.repositories-add.title', route: {name: 'repositories-add'}},
+            {icon: 'add', color: 'primary', dense: true, text: 'views.repositories-add.title', route: {name: 'repositories-add-redirect'}},
             {icon: 'folder', color: 'primary', text: 'views.repositories.title', route: {name: 'repositories'}},
             {heading: 'menu.configuration'},
-            {icon: 'add', color: 'grey', dense: true, text: 'views.api-keys-add.title', route: {name: 'api-keys-add'}},
+            {icon: 'add', color: 'grey', dense: true, text: 'views.api-keys-add.title', route: {name: 'api-keys-add-redirect'}},
             {icon: 'vpn_key', color: 'grey', text: 'views.api-keys.title', route: {name: 'api-keys'}},
             {icon: 'settings', color: 'grey', text: 'views.settings.title', route: {name: 'settings'}},
             {divider: true},

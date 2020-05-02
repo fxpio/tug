@@ -20,7 +20,7 @@ export default new Router({
     routes: [
         {
             path: '',
-            redirect: 'home',
+            redirect: {name: 'home'},
         },
         {
             path: '/home',
@@ -38,6 +38,11 @@ export default new Router({
                 default: () => import(/* webpackChunkName: "repositories" */ '@app/views/repositories/Repositories.vue'),
                 toolbar: () => import(/* webpackChunkName: "repositories" */'@app/components/SearchToolbar.vue'),
             },
+        },
+        {
+            path: '/redirect/repositories-add',
+            name: 'repositories-add-redirect',
+            redirect: {name: 'repositories-add'},
         },
         {
             path: '/repositories/add',
@@ -63,6 +68,11 @@ export default new Router({
                 default: () => import(/* webpackChunkName: "api-keys" */ '@app/views/api-keys/ApiKeys.vue'),
                 toolbar: () => import(/* webpackChunkName: "api-keys" */'@app/components/SearchToolbar.vue'),
             },
+        },
+        {
+            path: '/redirect/api-keys-add',
+            name: 'api-keys-add-redirect',
+            redirect: {name: 'api-keys-add'},
         },
         {
             path: '/api-keys/add',
