@@ -67,12 +67,12 @@ export async function refreshPackages(req: Request, res: Response, next: Functio
     const force = true === req.body.force;
     const response: LooseObject = {};
 
-    if (url) {
-        response.url = (await packageManager.refreshPackages(url, force, res)).getUrl();
-        response.message = translator.trans(res, 'manager.package.refresh.versions', {url});
-    } else if (url && version) {
+    if (url && version) {
         response.url = (await packageManager.refreshPackage(url, version, force, res)).getUrl();
         response.message = translator.trans(res, 'manager.package.refresh.version', {url, version});
+    } else if (url) {
+        response.url = (await packageManager.refreshPackages(url, force, res)).getUrl();
+        response.message = translator.trans(res, 'manager.package.refresh.versions', {url});
     } else {
         const repos = await packageManager.refreshAllPackages(force, res);
         response.message = translator.trans(res, 'manager.package.refresh.versions.all-repositories');
