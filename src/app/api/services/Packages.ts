@@ -35,7 +35,7 @@ export class Packages extends BaseService {
      */
     public async getAll(packageName: string, canceler?: Canceler): Promise<PackagesResponse> {
         return await this.request<PackagesResponse>({
-            method: 'PUT',
+            method: 'GET',
             url: '/manager/packages/' + packageName + '/versions',
         }, canceler) as PackagesResponse;
     }
