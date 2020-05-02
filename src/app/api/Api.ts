@@ -11,17 +11,19 @@ import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 import {ApiServiceNotFoundError} from './errors/ApiServiceNotFoundError';
 import {ApiService, ApiServiceConstructor} from './ApiService';
 import {Authorization} from './services/Authorization';
-import {ApiKeys} from './services/ApiKeys';
-import {Repositories} from './services/Repositories';
 import {GithubOauthToken} from './services/GithubOauthToken';
 import {GithubToken} from './services/GithubToken';
+import {Repositories} from './services/Repositories';
+import {ApiKeys} from './services/ApiKeys';
+import {Packages} from '@app/api/services/Packages';
 
 const SERVICES: ApiServiceConstructor[] = [
     Authorization,
-    ApiKeys,
-    Repositories,
     GithubOauthToken,
     GithubToken,
+    ApiKeys,
+    Repositories,
+    Packages,
 ];
 
 /**
