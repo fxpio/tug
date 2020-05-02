@@ -8,28 +8,43 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-dialog v-model="dialog" persistent max-width="400" class="v-btn">
+    <v-dialog v-model="dialog" persistent :max-width="maxWidth" class="v-btn">
         <template v-slot:activator="{on}">
-            <slot name="default" :on="on">
+            <slot name="default"
+                  :on="on"
+                  :btnLoading="loading"
+                  :btnColor="color"
+                  :btnClasses="classes"
+                  :btnRipple="ripple"
+                  :btnRounded="rounded"
+                  :btnDepressed="depressed"
+                  :btnOutlined="outlined"
+                  :btnsmall="small"
+            >
                 <v-btn v-on="on"
-                       color="error"
+                       :color="color"
                        :class="classes"
-                       outlined
-                       ripple
-                       rounded
-                       small
+                       :ripple="ripple"
+                       :rounded="rounded"
+                       :depressed="depressed"
+                       :outlined="outlined"
+                       :small="small"
                 >
-                    <v-icon small>delete</v-icon>
+                    <v-icon :small="small">delete</v-icon>
                 </v-btn>
             </slot>
         </template>
         <v-card>
             <v-card-title class="primary--text">
-                {{ title }}
+                <slot name="title">
+                    {{ title }}
+                </slot>
             </v-card-title>
 
             <v-card-text class="pt-4">
-                {{ $t('delete.confirmation.text') }}
+                <slot name="text">
+                    {{ $t('delete.confirmation.text') }}
+                </slot>
             </v-card-text>
 
             <v-card-actions>
@@ -73,8 +88,29 @@ file that was distributed with this source code.
         @Prop({type: String, required: true})
         public title: string;
 
+        @Prop({type: String, default: '400'})
+        public maxWidth: string;
+
+        @Prop({type: String, default: 'error'})
+        public color: string;
+
         @Prop({type: String})
         public classes?: string;
+
+        @Prop({type: Boolean, default: false})
+        public ripple: boolean;
+
+        @Prop({type: Boolean, default: false})
+        public rounded: boolean;
+
+        @Prop({type: Boolean, default: false})
+        public depressed: boolean;
+
+        @Prop({type: Boolean, default: true})
+        public outlined: boolean;
+
+        @Prop({type: Boolean, default: false})
+        public small: boolean;
 
         @Prop({type: Function, required: true})
         public deleteCall: (data: any, canceler: Canceler) => Promise<any|null>;

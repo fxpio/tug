@@ -105,17 +105,9 @@ file that was distributed with this source code.
                                         :title="$t('views.repositories.title')"
                                         v-model="repo"
                                         :delete-call="deleteRepo"
+                                        outlined
                                         @deleted="$router.push({name: 'repositories'})"
                                 >
-                                    <template v-slot="{on}">
-                                        <v-btn v-on="on"
-                                               color="error"
-                                               outlined
-                                               ripple
-                                        >
-                                            <v-icon small>delete</v-icon>
-                                        </v-btn>
-                                    </template>
                                 </delete-action>
 
                                 <v-spacer></v-spacer>

@@ -98,6 +98,8 @@ file that was distributed with this source code.
                                 :title="$t('views.repositories.title')"
                                 v-model="item"
                                 :delete-call="deleteItem"
+                                rounded
+                                small
                                 @deleted="$root.$emit('search-list-delete-item', item.id, 'id')">
                         </delete-action>
                     </template>
