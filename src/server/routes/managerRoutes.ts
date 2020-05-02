@@ -20,7 +20,7 @@ import {
     disableRepository,
     enableRepository,
     listRepository,
-    showRepository
+    showRepository,
 } from '@server/controllers/manager/repositoryController';
 import {Authenticate} from '@server/middlewares/auth/Authenticate';
 import {AuthStrategy} from '@server/middlewares/auth/strategies/AuthStrategy';
