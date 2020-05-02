@@ -141,6 +141,7 @@ export async function refreshCachePackages(req: Request, res: Response, next: Fu
 
     if (url) {
         response.name = (await packageManager.refreshCachePackages(url, res)).getPackageName();
+        response.name = response.name ? response.name : url;
         response.message = translator.trans(res, 'manager.package.refresh.cache.version', {packageName: response.name});
     } else {
         const repos = await packageManager.refreshAllCachePackages(res);
