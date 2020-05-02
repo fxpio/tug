@@ -19,10 +19,12 @@ file that was distributed with this source code.
 
         <div v-else>
             <v-row class="ma-0" align="center">
-                <v-col cols="10" class="ma-0 pa-0">
+                <v-col cols="6" md="8" lg="10" class="ma-0 pa-0">
                     <slot name="header"></slot>
                 </v-col>
-                <v-col cols="2" class="text-right">
+                <v-col cols="6" md="4" lg="2" class="search-list__actions">
+                    <slot name="header-actions"></slot>
+
                     <v-btn color="primary"
                            depressed
                            ripple
