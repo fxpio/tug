@@ -106,7 +106,6 @@ file that was distributed with this source code.
                                     <template v-slot="{on}">
                                         <v-btn v-on="on"
                                                color="error"
-                                               class="ml-2"
                                                outlined
                                                ripple
                                         >

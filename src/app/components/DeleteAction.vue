@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-dialog v-model="dialog" persistent max-width="400">
+    <v-dialog v-model="dialog" persistent max-width="400" class="v-btn">
         <template v-slot:activator="{on}">
             <slot name="default" :on="on">
                 <v-btn v-on="on"
