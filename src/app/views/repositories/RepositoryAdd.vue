@@ -41,6 +41,7 @@ file that was distributed with this source code.
     import RepositoryFormAdd from '@app/components/repositories/RepositoryFormAdd.vue';
     import {RepositoryResponse} from '@app/api/models/responses/RepositoryResponse';
     import {SnackbarMessage} from '@app/snackbars/SnackbarMessage';
+    import {MetaInfo} from 'vue-meta';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
@@ -49,6 +50,12 @@ file that was distributed with this source code.
         components: {RepositoryFormAdd, Loading},
     })
     export default class RepositoryAdd extends mixins(AjaxContent) {
+        public metaInfo(): MetaInfo {
+            return {
+                title: this.$t('views.repositories-add.title') as string,
+            };
+        }
+
         public repositoryAdded(repository: RepositoryResponse): void {
             this.$router.replace({name: 'repositories'});
             this.$snackbar.snack(new SnackbarMessage(repository.message, 'success'));

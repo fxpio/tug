@@ -146,6 +146,7 @@ file that was distributed with this source code.
     import Lottie from '@app/components/Lottie.vue';
     import iconData from '@app/assets/animations/repositoryIcon.json';
     import RefreshPackageAction from '@app/components/packages/RefreshPackageAction.vue';
+    import {MetaInfo} from 'vue-meta';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
@@ -161,6 +162,15 @@ file that was distributed with this source code.
 
         public get iconData(): object {
             return  iconData;
+        }
+
+        public metaInfo(): MetaInfo {
+            let name = this.repo?.packageName ?? this.repo?.url;
+            name = name ?? this.$i18n.t('error.404-page-not-found') as string;
+
+            return {
+                title: this.$t('views.repositories.title') as string + ' - ' + name,
+            };
         }
 
         public async created(): Promise<void> {

@@ -41,6 +41,7 @@ file that was distributed with this source code.
     import ApiKeyFormAdd from '@app/components/api-keys/ApiKeyFormAdd.vue';
     import {ApiKeyResponse} from '@app/api/models/responses/ApiKeyResponse';
     import {SnackbarMessage} from '@app/snackbars/SnackbarMessage';
+    import {MetaInfo} from 'vue-meta';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
@@ -49,6 +50,12 @@ file that was distributed with this source code.
         components: {ApiKeyFormAdd, Loading},
     })
     export default class ApiKeyAdd extends mixins(AjaxContent) {
+        public metaInfo(): MetaInfo {
+            return {
+                title: this.$t('views.api-keys-add.title') as string,
+            };
+        }
+
         public apiKeyAdded(apiKey: ApiKeyResponse): void {
             this.$router.replace({name: 'api-keys'});
             this.$snackbar.snack(new SnackbarMessage(apiKey.message, 'success'));
