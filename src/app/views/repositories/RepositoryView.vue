@@ -38,7 +38,7 @@ file that was distributed with this source code.
 
                         <v-card flat>
                             <v-container>
-                                <v-alert type="warning" v-if="!repo.lastHash">
+                                <v-alert type="warning" v-if="!repo.packageName || !repo.lastHash">
                                     <div>{{ $t('views.repositories.last-hash.no-auto-updated') }}</div>
                                     <div class="caption">{{ $t('views.repositories.last-hash.no-auto-updated.hint') }}</div>
                                 </v-alert>
@@ -65,7 +65,7 @@ file that was distributed with this source code.
                                     </col-label>
 
                                     <col-label :label="$t('views.repositories.root-identifier')">
-                                        <v-chip color="primary" v-if="!!repo.rootIdentifier">
+                                        <v-chip small color="primary" v-if="!!repo.rootIdentifier">
                                             {{ repo.rootIdentifier }}
                                         </v-chip>
 
@@ -78,7 +78,7 @@ file that was distributed with this source code.
                                 <v-row>
                                     <col-spacer></col-spacer>
                                     <col-label :label="$t('views.repositories.last-hash')">
-                                        <v-chip v-if="!!repo.lastHash">
+                                        <v-chip small v-if="!!repo.lastHash">
                                             {{ repo.lastHash }}
                                         </v-chip>
 
