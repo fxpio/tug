@@ -38,6 +38,11 @@ file that was distributed with this source code.
 
                         <v-card flat>
                             <v-container>
+                                <v-alert type="warning" v-if="!repo.lastHash">
+                                    <div>{{ $t('views.repositories.last-hash.no-auto-updated') }}</div>
+                                    <div class="caption">{{ $t('views.repositories.last-hash.no-auto-updated.hint') }}</div>
+                                </v-alert>
+
                                 <v-row>
                                     <col-label :label="$t('views.repositories.type')">
                                         <repository-service :type="repo.type"></repository-service>
@@ -77,20 +82,9 @@ file that was distributed with this source code.
                                             {{ repo.lastHash }}
                                         </v-chip>
 
-                                        <div v-else>
-                                            <v-tooltip top>
-                                                <template v-slot:activator="{ on }">
-                                                    <v-icon color="warning" v-on="on">
-                                                        fa-exclamation-triangle
-                                                    </v-icon>
-                                                </template>
-                                                <span>{{ $t('views.repositories.last-hash.no-auto-updated.hint') }}</span>
-                                            </v-tooltip>
-
-                                            <span class="warning--text caption">
-                                                {{ $t('views.repositories.last-hash.no-auto-updated') }}
-                                            </span>
-                                        </div>
+                                        <v-icon v-else color="warning">
+                                            fa-exclamation-triangle
+                                        </v-icon>
                                     </col-label>
                                 </v-row>
                             </v-container>
@@ -109,7 +103,7 @@ file that was distributed with this source code.
                                                outlined
                                                ripple
                                         >
-                                            {{ $t('delete') }}
+                                            <v-icon small>delete</v-icon>
                                         </v-btn>
                                     </template>
                                 </delete-action>

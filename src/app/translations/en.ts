@@ -49,7 +49,7 @@ export default {
     'views.repositories.root-identifier': 'Root identifier',
     'views.repositories.last-hash': 'Last hash',
     'views.repositories.last-hash.no-auto-updated': 'Repository is not auto updated',
-    'views.repositories.last-hash.no-auto-updated.hint': 'Connect Tug to the Service\'s Webhooks',
+    'views.repositories.last-hash.no-auto-updated.hint': 'Connect Tug to the Service\'s Webhooks and update the packages manually',
     'views.repositories-add.title': 'Add a repository',
     'views.repositories-add.type-manual': 'Define manually the type of VCS',
     'views.packages.title': 'Packages',

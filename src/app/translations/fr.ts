@@ -49,7 +49,7 @@ export default {
     'views.repositories.root-identifier': 'Identifiant racine',
     'views.repositories.last-hash': 'Dernier hash',
     'views.repositories.last-hash.no-auto-updated': 'Le référentiel n\'est pas mis à jour automatiquement',
-    'views.repositories.last-hash.no-auto-updated.hint': 'Connectez Tug aux Webhooks du service',
+    'views.repositories.last-hash.no-auto-updated.hint': 'Connectez Tug aux Webhooks du service et actualisez les packages manuellement',
     'views.repositories-add.title': 'Ajouter un dépôt',
     'views.repositories-add.type-manual': 'Définir manuellement le type de VCS',
     'views.packages.title': 'Packages',
