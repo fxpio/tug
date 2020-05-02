@@ -35,6 +35,20 @@ file that was distributed with this source code.
                         </v-subheader>
                     </template>
 
+                    <template v-slot:header-actions>
+                        <refresh-package-action
+                                color="primary"
+                                depressed
+                                rounded
+                                ripple
+                                small
+                        >
+                            <template v-slot:btn-content="{small}">
+                                <v-icon :small="small">settings_backup_restore</v-icon>
+                            </template>
+                        </refresh-package-action>
+                    </template>
+
                     <template v-slot:data-table.item.service="{item}">
                         <repository-service :type="item.type"></repository-service>
                     </template>
@@ -108,12 +122,13 @@ file that was distributed with this source code.
     import {RepositoryResponse} from '@app/api/models/responses/RepositoryResponse';
     import {RepositoryRequest} from '@app/api/models/requests/RepositoryRequest';
     import RepositoryService from '@app/components/repositories/RepositoryService.vue';
+    import RefreshPackageAction from '@app/components/packages/RefreshPackageAction.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
     @Component({
-        components: {RepositoryService, DeleteAction, SearchList, Lottie},
+        components: {RefreshPackageAction, RepositoryService, DeleteAction, SearchList, Lottie},
     })
     export default class Repositories extends Vue {
         public get iconData(): object {

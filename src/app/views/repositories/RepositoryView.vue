@@ -92,11 +92,21 @@ file that was distributed with this source code.
                             <v-card-actions>
                                 <v-spacer></v-spacer>
 
+                                <refresh-package-action
+                                        :url="repo.url"
+                                        color="primary"
+                                        depressed
+                                        ripple
+                                        :small="false"
+                                >
+                                </refresh-package-action>
+
                                 <delete-action
                                         :title="$t('views.repositories.title')"
                                         v-model="repo"
                                         :delete-call="deleteRepo"
-                                        @deleted="$router.push({name: 'repositories'})">
+                                        @deleted="$router.push({name: 'repositories'})"
+                                >
                                     <template v-slot="{on}">
                                         <v-btn v-on="on"
                                                color="error"
@@ -135,12 +145,16 @@ file that was distributed with this source code.
     import {Canceler} from '@app/api/Canceler';
     import Lottie from '@app/components/Lottie.vue';
     import iconData from '@app/assets/animations/repositoryIcon.json';
+    import RefreshPackageAction from '@app/components/packages/RefreshPackageAction.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
     @Component({
-        components: {Lottie, DeleteAction, ColSpacer, RepositoryService, ColLabel, NotFound, Loading},
+        components: {
+            RefreshPackageAction,
+            Lottie, DeleteAction, ColSpacer, RepositoryService, ColLabel, NotFound, Loading,
+        },
     })
     export default class RepositoryView extends mixins(AjaxContent) {
         private repo: CodeRepository|null = null;
