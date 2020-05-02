@@ -9,6 +9,7 @@
 
 import {BaseService} from '../BaseService';
 import {Canceler} from '../Canceler';
+import {PackagesResponse} from '@app/api/models/responses/PackagesResponse';
 import {PackageRefreshRequest} from '@app/api/models/requests/PackageRefreshRequest';
 import {PackageRefreshResponse} from '@app/api/models/responses/PackageRefreshResponse';
 import {PackageRefreshCacheRequest} from '@app/api/models/requests/PackageRefreshCacheRequest';
@@ -25,6 +26,18 @@ export class Packages extends BaseService {
      */
     public static getName() {
         return 'Packages';
+    }
+
+    /**
+     * Get all the package versions.
+     *
+     * Note: The API returns a 404 error status code if no package is found.
+     */
+    public async getAll(packageName: string, canceler?: Canceler): Promise<PackagesResponse> {
+        return await this.request<PackagesResponse>({
+            method: 'PUT',
+            url: '/manager/packages/' + packageName + '/versions',
+        }, canceler) as PackagesResponse;
     }
 
     /**
