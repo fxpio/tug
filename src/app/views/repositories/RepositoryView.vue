@@ -19,6 +19,7 @@ file that was distributed with this source code.
                         <v-row class="ma-0" align="center">
                             <v-col cols="10" class="ma-0 pa-0">
                                 <v-subheader class="primary--text">
+                                    <lottie width="48px" :options="{animationData: iconData}"></lottie>
                                     {{ $t('views.repositories.title') }}
                                 </v-subheader>
                             </v-col>
@@ -76,14 +77,20 @@ file that was distributed with this source code.
                                             {{ repo.lastHash }}
                                         </v-chip>
 
-                                        <v-tooltip top v-else>
-                                            <template v-slot:activator="{ on }">
-                                                <span v-on="on" class="warning--text">
-                                                    {{ $t('views.repositories.last-hash.no-auto-updated') }}
-                                                </span>
-                                            </template>
-                                            <span>{{ $t('views.repositories.last-hash.no-auto-updated.hint') }}</span>
-                                        </v-tooltip>
+                                        <div v-else>
+                                            <v-tooltip top>
+                                                <template v-slot:activator="{ on }">
+                                                    <v-icon color="warning" v-on="on">
+                                                        fa-exclamation-triangle
+                                                    </v-icon>
+                                                </template>
+                                                <span>{{ $t('views.repositories.last-hash.no-auto-updated.hint') }}</span>
+                                            </v-tooltip>
+
+                                            <span class="warning--text caption">
+                                                {{ $t('views.repositories.last-hash.no-auto-updated') }}
+                                            </span>
+                                        </div>
                                     </col-label>
                                 </v-row>
                             </v-container>
@@ -129,19 +136,25 @@ file that was distributed with this source code.
     import ColLabel from '@app/components/grid/ColLabel.vue';
     import RepositoryService from '@app/components/repositories/RepositoryService.vue';
     import ColSpacer from '@app/components/grid/ColSpacer.vue';
-    import DeleteAction from "@app/components/DeleteAction.vue";
+    import DeleteAction from '@app/components/DeleteAction.vue';
     import {RepositoryRequest} from '@app/api/models/requests/RepositoryRequest';
     import {RepositoryResponse} from '@app/api/models/responses/RepositoryResponse';
     import {Canceler} from '@app/api/Canceler';
+    import Lottie from '@app/components/Lottie.vue';
+    import iconData from '@app/assets/animations/repositoryIcon.json';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
     @Component({
-        components: {DeleteAction, ColSpacer, RepositoryService, ColLabel, NotFound, Loading},
+        components: {Lottie, DeleteAction, ColSpacer, RepositoryService, ColLabel, NotFound, Loading},
     })
     export default class RepositoryView extends mixins(AjaxContent) {
         private repo: CodeRepository|null = null;
+
+        public get iconData(): object {
+            return  iconData;
+        }
 
         public async created(): Promise<void> {
             await this.refresh();

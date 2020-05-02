@@ -44,6 +44,7 @@ file that was distributed with this source code.
             const classes: any = {
                 'font-weight-bold': true,
                 'word-break-all': true,
+                'text-right': true,
             };
 
             classes[this.labelColor] = true;
