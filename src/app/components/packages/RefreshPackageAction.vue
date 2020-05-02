@@ -97,7 +97,7 @@ file that was distributed with this source code.
                         <v-icon :small="small">refresh</v-icon>
                     </slot>
                     &nbsp;
-                    <v-icon>arrow_drop_down</v-icon>
+                    <v-icon :small="small">arrow_drop_down</v-icon>
                 </v-btn>
             </slot>
         </template>

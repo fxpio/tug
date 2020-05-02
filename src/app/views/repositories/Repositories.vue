@@ -37,7 +37,7 @@ file that was distributed with this source code.
 
                     <template v-slot:header-actions>
                         <refresh-package-action
-                                color="primary"
+                                color="accent"
                                 depressed
                                 rounded
                                 ripple
