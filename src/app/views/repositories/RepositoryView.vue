@@ -179,9 +179,9 @@ file that was distributed with this source code.
             this.loading = false;
         }
 
-        public async deleteRepo(item: any, canceler: Canceler): Promise<RepositoryResponse> {
+        public async deleteRepo(repo: CodeRepository, canceler: Canceler): Promise<RepositoryResponse> {
             const data = {
-                url: this.repo ? this.repo.url : undefined,
+                url: repo.url,
             } as RepositoryRequest;
 
             return this.$api.get<ApiRepositories>(ApiRepositories).disable(data, canceler);
