@@ -79,6 +79,10 @@ createApp({
 const server = awsServerlessExpress.createServer(app, undefined, binaryMimeTypes);
 
 export function handler(event: any, context: any): void {
-    app.set('request-context-path', event.requestContext.path);
+    const contextPath = event.requestContext && event.requestContext.path
+        ? event.requestContext.path
+        : '/';
+
+    app.set('request-context-path', contextPath);
     awsServerlessExpress.proxy(server, event, context);
 }
