@@ -73,7 +73,7 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
-    import {Component, Prop} from 'vue-property-decorator';
+    import {Component, Model, Prop} from 'vue-property-decorator';
     import {mixins} from 'vue-class-component';
     import {AjaxContent} from '@app/mixins/AjaxContent';
     import {Canceler} from '@app/api/Canceler';
@@ -115,11 +115,15 @@ file that was distributed with this source code.
         @Prop({type: Function, required: true})
         public deleteCall: (data: any, canceler: Canceler) => Promise<any|null>;
 
+        @Model()
+        @Prop()
+        private data: any;
+
         private dialog: boolean = false;
 
         public async deleteAction(): Promise<void> {
             const res = await this.fetchData<any>((canceler: Canceler) => {
-                return this.deleteCall(this.$attrs.value, canceler);
+                return this.deleteCall(this.data, canceler);
             }, true);
 
             if (res) {

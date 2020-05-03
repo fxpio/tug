@@ -57,7 +57,7 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
-    import {Component, Prop} from 'vue-property-decorator';
+    import {Component, Model, Prop} from 'vue-property-decorator';
     import {mixins} from 'vue-class-component';
     import {AjaxFormContent} from '@app/mixins/AjaxFormContent';
 
@@ -68,6 +68,9 @@ file that was distributed with this source code.
     export default class TokenFormView extends mixins(AjaxFormContent) {
         @Prop({type: String, required: true})
         public title: string;
+
+        @Model()
+        private value: object|any;
 
         public get headers() {
             return [
@@ -91,10 +94,10 @@ file that was distributed with this source code.
         public get tokens(): object[] {
             const values: object[] = [];
 
-            for (const host of Object.keys(this.$attrs.value)) {
+            for (const host of Object.keys(this.value)) {
                 values.push({
                     host,
-                    token: (this.$attrs.value as any)[host as string],
+                    token: this.value[host],
                 });
             }
 
