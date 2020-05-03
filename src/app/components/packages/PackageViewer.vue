@@ -79,7 +79,7 @@ file that was distributed with this source code.
      */
     @Component
     export default class PackageViewer extends mixins(AjaxContent) {
-        @Prop({type: String, default: '900'})
+        @Prop({type: String})
         public maxWidth?: string;
 
         @Prop({type: String, default: 'accent'})
