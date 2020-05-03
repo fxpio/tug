@@ -102,12 +102,30 @@ file that was distributed with this source code.
                                 </refresh-package-action>
 
                                 <delete-action
+                                        :title="$t('views.packages.title')"
+                                        :text="$t('views.packages.remove-confirmation')"
+                                        v-model="repo"
+                                        color="red darken-3"
+                                        outlined
+                                        :delete-call="deleteAllPackages"
+                                        @deleted="onAllPackagesDeleted"
+                                >
+                                    <template v-slot:btn-icon="{small}">
+                                        <v-icon :small="small">delete_sweep</v-icon>
+                                    </template>
+                                </delete-action>
+
+                                <delete-action
                                         :title="$t('views.repositories.title')"
+                                        :text="$t('views.repositories.remove-confirmation')"
                                         v-model="repo"
                                         :delete-call="deleteRepo"
                                         outlined
                                         @deleted="$router.push({name: 'repositories'})"
                                 >
+                                    <template v-slot:btn-icon="{small}">
+                                        <v-icon :small="small">delete_forever</v-icon>
+                                    </template>
                                 </delete-action>
 
                                 <v-spacer></v-spacer>
@@ -154,6 +172,9 @@ file that was distributed with this source code.
     import RefreshPackageAction from '@app/components/packages/RefreshPackageAction.vue';
     import {MetaInfo} from 'vue-meta';
     import PackageVersions from '@app/components/packages/PackageVersions.vue';
+    import {PackageDeleteResponse} from '@app/api/models/responses/PackageDeleteResponse';
+    import {SnackbarMessage} from '@app/snackbars/SnackbarMessage';
+    import {Packages} from '@app/api/services/Packages';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
@@ -205,6 +226,14 @@ file that was distributed with this source code.
             } as RepositoryRequest;
 
             return this.$api.get<ApiRepositories>(ApiRepositories).disable(data, canceler);
+        }
+
+        public async deleteAllPackages(repo: CodeRepository, canceler: Canceler): Promise<RepositoryResponse> {
+            return this.$api.get<Packages>(Packages).deleteAll(repo.url, canceler);
+        }
+
+        public async onAllPackagesDeleted(res: PackageDeleteResponse) {
+            this.$snackbar.snack(new SnackbarMessage(res.message, 'success'));
         }
     }
 </script>

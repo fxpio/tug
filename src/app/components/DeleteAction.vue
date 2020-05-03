@@ -30,7 +30,9 @@ file that was distributed with this source code.
                        :outlined="outlined"
                        :small="small"
                 >
-                    <v-icon :small="small">delete</v-icon>
+                    <slot name="btn-icon">
+                        <v-icon :small="small">delete</v-icon>
+                    </slot>
                 </v-btn>
             </slot>
         </template>
@@ -43,7 +45,7 @@ file that was distributed with this source code.
 
             <v-card-text class="pt-4">
                 <slot name="text">
-                    {{ $t('delete.confirmation.text') }}
+                    {{ text ? text : $t('delete.confirmation.text') }}
                 </slot>
             </v-card-text>
 
@@ -88,10 +90,13 @@ file that was distributed with this source code.
         @Prop({type: String, required: true})
         public title: string;
 
+        @Prop({type: String})
+        public text?: string;
+
         @Prop({type: String, default: '400'})
         public maxWidth: string;
 
-        @Prop({type: String, default: 'error'})
+        @Prop({type: String, default: 'red darken-3'})
         public color: string;
 
         @Prop({type: String})
