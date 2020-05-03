@@ -119,6 +119,10 @@ file that was distributed with this source code.
         }
 
         public async refresh(): Promise<void> {
+            if (!this.repository.packageName) {
+                return;
+            }
+
             const res = await this.fetchData((canceler: Canceler) => {
                 return this.$api.get<Packages>(Packages).getAll(this.repository.packageName as string, canceler);
             }, true);
