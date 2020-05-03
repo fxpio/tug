@@ -64,6 +64,8 @@ export default {
     'views.packages.no-items': 'The added packages are displayed here',
     'views.packages.package-name': 'Package name',
     'views.packages.url': 'URL',
+    'views.packages.version': 'Version',
+    'views.packages.time': 'Publication date',
     'views.api-keys.title': 'API keys',
     'views.api-keys.name': 'API key',
     'views.api-keys.no-items': 'The added api keys are displayed here',

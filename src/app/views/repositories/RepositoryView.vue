@@ -94,7 +94,7 @@ file that was distributed with this source code.
 
                                 <refresh-package-action
                                         :url="repo.url"
-                                        color="primary"
+                                        color="accent"
                                         depressed
                                         ripple
                                         :small="false"
@@ -113,6 +113,19 @@ file that was distributed with this source code.
                                 <v-spacer></v-spacer>
                             </v-card-actions>
                         </v-card>
+
+                        <!-- Packages -->
+                        <v-row class="ma-0 mt-6" align="center">
+                            <v-col class="ma-0 pa-0">
+                                <v-subheader class="primary--text">
+                                    <lottie width="48px" :options="{animationData: iconDataPackage}"></lottie>
+                                    {{ $t('views.packages.title') }}
+                                </v-subheader>
+                            </v-col>
+                        </v-row>
+
+                        <package-versions v-model.sync="repo">
+                        </package-versions>
                     </div>
                 </v-fade-transition>
             </v-col>
@@ -137,14 +150,17 @@ file that was distributed with this source code.
     import {Canceler} from '@app/api/Canceler';
     import Lottie from '@app/components/Lottie.vue';
     import iconData from '@app/assets/animations/repositoryIcon.json';
+    import iconDataPackage from '@app/assets/animations/packageIcon.json';
     import RefreshPackageAction from '@app/components/packages/RefreshPackageAction.vue';
     import {MetaInfo} from 'vue-meta';
+    import PackageVersions from '@app/components/packages/PackageVersions.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
     @Component({
         components: {
+            PackageVersions,
             RefreshPackageAction,
             Lottie, DeleteAction, ColSpacer, RepositoryService, ColLabel, NotFound, Loading,
         },
@@ -154,6 +170,10 @@ file that was distributed with this source code.
 
         public get iconData(): object {
             return  iconData;
+        }
+
+        public get iconDataPackage(): object {
+            return  iconDataPackage;
         }
 
         public metaInfo(): MetaInfo {
