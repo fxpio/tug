@@ -17,6 +17,7 @@ import Vue from 'vue';
 import '@app/plugins/vueMeta';
 import vuetify from '@app/plugins/vuetify';
 import '@app/plugins/vueLongClick';
+import '@app/plugins/vueJsonViewer';
 import i18n from '@app/plugins/vueI18n';
 import validator from '@app/plugins/vueValidator';
 import formatter from '@app/plugins/vueFormatter';

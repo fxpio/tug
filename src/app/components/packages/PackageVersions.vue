@@ -42,16 +42,26 @@ file that was distributed with this source code.
                 </template>
 
                 <template v-slot:item.actions="{item}">
-                    <delete-action
-                            :title="$t('views.packages.title')"
-                            :data="item"
-                            outlined
-                            rounded
-                            small
-                            :delete-call="deleteVersion"
-                            @deleted="onVersionDeleted"
-                    >
-                    </delete-action>
+                    <div class="v-data-table-actions">
+                        <package-viewer
+                                v-model="item"
+                                depressed
+                                rounded
+                                small
+                        >
+                        </package-viewer>
+
+                        <delete-action
+                                :title="$t('views.packages.title')"
+                                :data="item"
+                                outlined
+                                rounded
+                                small
+                                :delete-call="deleteVersion"
+                                @deleted="onVersionDeleted"
+                        >
+                        </delete-action>
+                    </div>
                 </template>
             </v-data-table>
         </v-card>
@@ -73,12 +83,13 @@ file that was distributed with this source code.
     import {PackageDeleteRequest} from '@app/api/models/requests/PackageDeleteRequest';
     import {PackageDeleteResponse} from '@app/api/models/responses/PackageDeleteResponse';
     import {SnackbarMessage} from '@app/snackbars/SnackbarMessage';
+    import PackageViewer from '@app/components/packages/PackageViewer.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
     @Component({
-        components: {DeleteAction, RefreshPackageAction, Loading},
+        components: {PackageViewer, DeleteAction, RefreshPackageAction, Loading},
     })
     export default class PackageVersions extends mixins(AjaxContent) {
         @Model()
@@ -98,8 +109,7 @@ file that was distributed with this source code.
                 {   text: this.$i18n.t('views.packages.time'),
                     value: 'time',
                 },
-                {   align: 'right',
-                    value: 'actions',
+                {   value: 'actions',
                 },
             ];
         }

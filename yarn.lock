@@ -10168,6 +10168,11 @@ vue-i18n@^8.17.2:
   resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.17.3.tgz#f366082d5784c3c35e8ffda733cb3f3990a3900d"
   integrity sha512-sWjGOL7dXo6rYcPQmlY8FN/beLxq2aCnTZMSxfW0yW78rRGpqWrqXJURH56kvMYCnyNCepBjGWEEW0rbFiig5Q==
 
+vue-json-component@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/vue-json-component/-/vue-json-component-0.4.1.tgz#a21d4ddaeec6358c614a96d8f3fac6716666d92b"
+  integrity sha512-8Tw4C5LJOT09BRKjQx8F5itheP7UIeZtUUJvWnSltb0UFQZSrXw/4B32z3pelWo38MtoglaSmFTYpyxFIWWNRg==
+
 vue-loader@^15.9.1:
   version "15.9.1"
   resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-15.9.1.tgz#bd2ab8f3d281e51d7b81d15390a58424d142243e"
