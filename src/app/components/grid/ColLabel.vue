@@ -43,7 +43,7 @@ file that was distributed with this source code.
         public get labelClasses(): object {
             const classes: any = {
                 'font-weight-bold': true,
-                'word-break-all': true,
+                'word-break-word': true,
                 'text-right': true,
             };
 
