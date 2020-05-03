@@ -106,7 +106,7 @@ file that was distributed with this source code.
                                 </refresh-package-action>
 
                                 <delete-action
-                                        :title="$t('views.packages.title')"
+                                        :title="$t('views.packages.title') + (repo.packageName ? ' ' + repo.packageName : '')"
                                         :text="$t('views.packages.remove-confirmation')"
                                         v-model="repo"
                                         color="red darken-3"
@@ -120,7 +120,7 @@ file that was distributed with this source code.
                                 </delete-action>
 
                                 <delete-action
-                                        :title="$t('views.repositories.title')"
+                                        :title="$t('views.repositories.title') + (repo.packageName ? ' ' + repo.packageName : '')"
                                         :text="$t('views.repositories.remove-confirmation')"
                                         v-model="repo"
                                         :delete-call="deleteRepo"

@@ -95,7 +95,8 @@ file that was distributed with this source code.
 
                     <template v-slot:data-table.item.actions="{item}">
                         <delete-action
-                                :title="$t('views.repositories.title')"
+                                :title="$t('views.repositories.title') + (item.packageName ? ' ' + item.packageName : '')"
+                                :text="$t('views.repositories.remove-confirmation')"
                                 v-model="item"
                                 :delete-call="deleteItem"
                                 rounded
