@@ -30,7 +30,7 @@ export async function listPackages(req: Request, res: Response, next: Function):
     const result = await manager.findPackages(packageName);
     const versions: LooseObject = {};
 
-    if (0 === Object.keys(result).length) {
+    if (null === result) {
         throw new HttpNotFoundError();
     }
 

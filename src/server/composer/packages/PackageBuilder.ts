@@ -49,7 +49,7 @@ export class PackageBuilder {
         const repo = await this.repoManager.findRepository(packageName, res);
         const result = await this.packageManager.findPackages(packageName, undefined, res);
 
-        if (repo) {
+        if (repo && null !== result) {
             if (Object.keys(result).length > 0) {
                 const data: LooseObject = {packages: {}};
                 data.packages[packageName] = {};

@@ -79,11 +79,15 @@ export class PackageManager {
      * @param {string}   hash        The hash
      * @param {Response} [res]       The response
      *
-     * @return {Promise<LooseObject<string, Package>>}
+     * @return {Promise<LooseObject<string, Package>|null>}
      */
-    public async findPackages(packageName: string, hash?: string, res?: Response): Promise<LooseObject<Package>> {
+    public async findPackages(packageName: string, hash?: string, res?: Response): Promise<LooseObject<Package>|null> {
         let result: LooseObject = {};
         const repo = await this.repoManager.findRepository(packageName, res);
+
+        if (!repo) {
+            return null;
+        }
 
         if (repo && (!hash || hash === repo.getLastHash())) {
             result = await retrieveAllVersions(packageName, this.packageRepo, {});
