@@ -17,4 +17,5 @@ export interface CodeRepository {
     packageName?: string;
     rootIdentifier?: string;
     lastHash?: string;
+    downloadCount?: number;
 }

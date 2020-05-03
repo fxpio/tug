@@ -76,7 +76,11 @@ file that was distributed with this source code.
                                 </v-row>
 
                                 <v-row>
-                                    <col-spacer></col-spacer>
+                                    <col-label :label="$t('views.repositories.download-count')">
+                                        {{ $tc('views.repositories.installations', repo.downloadCount ? repo.downloadCount : 0) }}
+                                    </col-label>
+
+
                                     <col-label :label="$t('views.repositories.last-hash')">
                                         <v-chip small v-if="!!repo.lastHash">
                                             {{ repo.lastHash }}

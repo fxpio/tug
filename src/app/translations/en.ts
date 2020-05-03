@@ -56,6 +56,8 @@ export default {
     'views.repositories.url': 'URL',
     'views.repositories.type': 'Type',
     'views.repositories.root-identifier': 'Root identifier',
+    'views.repositories.download-count': 'Installation count',
+    'views.repositories.installations': 'no installation | 1 installation | {count} installations',
     'views.repositories.last-hash': 'Last hash',
     'views.repositories.last-hash.no-auto-updated': 'Repository is not auto updated',
     'views.repositories.last-hash.no-auto-updated.hint': 'Connect Tug to the Service\'s Webhooks and update the packages manually',
