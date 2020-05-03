@@ -26,6 +26,7 @@ import {Authenticate} from '@server/middlewares/auth/Authenticate';
 import {AuthStrategy} from '@server/middlewares/auth/strategies/AuthStrategy';
 import {asyncHandler} from '@server/utils/handler';
 import {Router} from 'express';
+import {HttpNotFoundError} from '@server/errors/HttpNotFoundError';
 
 /**
  * Generate the routes.
@@ -60,6 +61,10 @@ export function managerRoutes(router: Router, basicAuthStrategy: AuthStrategy): 
     router.delete('/packages', asyncHandler(deletePackages));
 
     router.get('/packages/:vendor/:package/versions', asyncHandler(listPackages));
+
+    router.use(asyncHandler(() => {
+        throw new HttpNotFoundError();
+    }));
 
     return router;
 }
