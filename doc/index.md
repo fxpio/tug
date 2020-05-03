@@ -118,8 +118,12 @@ a custom domain. In this case, see [this page](custom-domain-ssl.md).
 
 ### 2.1. Create the oAuth token for Github
 
-To connect the server with your Github account, you must configure the Github oAuth token. To create a oAuth token,
-run the command:
+To connect the server with your Github account, you must configure the Github oAuth token.
+
+To create a oAuth token, open the PWA and in the `Settings` section click
+on the `Add` button of the `oAuth token` line item. Add your Github personal token just before.
+
+Or run the command:
 
 ```
 $ bin/create-github-oauth --token <your-github-personal-token>
@@ -133,7 +137,10 @@ $ bin/create-github-oauth --token <your-github-personal-token>
 
 ### 2.2. Create the token for Github Webhooks
 
-To create a token to use in Github webhooks, run the command:
+To create a token to use in Github webhooks, open the PWA and in the `Settings` section click
+on the `Add` button of the `Webhook token` line item.
+
+Or run the command:
 
 ```
 $ bin/create-github-token
@@ -159,7 +166,10 @@ In each repository or in a organization, create the webhook with:
 
 The API keys are to be used with Composer to allow the connection with your Tug.
 
-To create a new API key, run the command:
+To create a new API key, open the PWA and click on the `Add API key` section. Add optionally
+your fingerprint, and let Tug generate the key.
+
+Or run the command:
 
 ```
 $ bin/create-api-key
