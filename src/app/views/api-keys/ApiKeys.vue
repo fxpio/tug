@@ -51,6 +51,8 @@ file that was distributed with this source code.
                         <delete-action
                                 :title="$t('views.api-keys.name')"
                                 v-model="item"
+                                rounded
+                                small
                                 :delete-call="deleteItem"
                                 @deleted="$root.$emit('search-list-delete-item', item.id, 'id')">
                         </delete-action>
