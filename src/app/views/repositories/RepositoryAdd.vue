@@ -57,7 +57,7 @@ file that was distributed with this source code.
         }
 
         public repositoryAdded(repository: RepositoryResponse): void {
-            this.$router.replace({name: 'repositories'});
+            this.$router.push({name: 'repositories'});
             this.$snackbar.snack(new SnackbarMessage(repository.message, 'success'));
         }
     }

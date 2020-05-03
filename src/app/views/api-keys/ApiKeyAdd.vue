@@ -57,7 +57,7 @@ file that was distributed with this source code.
         }
 
         public apiKeyAdded(apiKey: ApiKeyResponse): void {
-            this.$router.replace({name: 'api-keys'});
+            this.$router.push({name: 'api-keys'});
             this.$snackbar.snack(new SnackbarMessage(apiKey.message, 'success'));
         }
     }
