@@ -10,14 +10,19 @@ file that was distributed with this source code.
 <template>
     <v-container>
         <v-row no-gutters justify="center" align="center">
-            <v-col cols="12" align="center">
+            <div class="text-center">
                 <v-subheader></v-subheader>
-                <lottie transform="scale(2.6)" width="180px" height="180px;" :options="{animationData: iconData}"></lottie>
+                <lottie transform="scale(2.6)"
+                        width="180px"
+                        height="180px;"
+                        center
+                        :options="{animationData: iconData}"
+                ></lottie>
                 <h3 class="mb-5 text--secondary">{{ $t('app.description') }}</h3>
                 <v-btn depressed rounded ripple color="accent" class="mt-5" :to="{name: 'repositories-add'}">
                     {{ $t('views.home.actions.add_repository') }}
                 </v-btn>
-            </v-col>
+            </div>
         </v-row>
     </v-container>
 </template>
