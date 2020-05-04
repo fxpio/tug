@@ -67,16 +67,16 @@ file that was distributed with this source code.
         public transitionName: string = App.DEFAULT_TRANSITION;
 
         public drawerItems: object[] = [
-            {icon: 'home', color: ['primary', 'primary lighten-3'], text: 'views.home.title', route: {name: 'home'}},
+            {icon: 'fa-store', color: ['primary', 'primary lighten-3'], text: 'views.home.title', route: {name: 'home'}},
             {heading: 'menu.composer'},
             {icon: 'add', color: ['primary', 'primary lighten-3'], dense: true, text: 'views.repositories-add.title', route: {name: 'repositories-add-redirect'}},
-            {icon: 'folder', color: ['primary', 'primary lighten-3'], text: 'views.repositories.title', route: {name: 'repositories'}},
+            {icon: 'fa-folder-open', color: ['primary', 'primary lighten-3'], text: 'views.repositories.title', route: {name: 'repositories'}},
             {heading: 'menu.configuration'},
             {icon: 'add', color: 'grey', dense: true, text: 'views.api-keys-add.title', route: {name: 'api-keys-add-redirect'}},
-            {icon: 'vpn_key', color: 'grey', text: 'views.api-keys.title', route: {name: 'api-keys'}},
-            {icon: 'settings', color: 'grey', text: 'views.settings.title', route: {name: 'settings'}},
+            {icon: 'fa-key', color: 'grey', text: 'views.api-keys.title', route: {name: 'api-keys'}},
+            {icon: 'fa-cog', color: 'grey', text: 'views.settings.title', route: {name: 'settings'}},
             {divider: true},
-            {icon: 'info', color: 'grey', text: 'views.about.title', route: {name: 'about'}},
+            {icon: 'fa-info-circle', color: 'grey', text: 'views.about.title', route: {name: 'about'}},
         ];
 
         public metaInfo(): MetaInfo {

@@ -7,6 +7,20 @@
  * file that was distributed with this source code.
  */
 
+@import "~vuetify/src/components/VIcon/variables";
+
 .v-icon {
     user-select: none;
+
+    &.fa,
+    .fas {
+        font-size: $icon-size - 3;
+    }
+
+    &--dense {
+        &.fa,
+        .fas {
+            font-size: $icon-size-dense - 6;
+        }
+    }
 }
