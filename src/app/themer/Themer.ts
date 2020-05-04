@@ -35,6 +35,53 @@ export class Themer {
         return classes;
     }
 
+    /**
+     * Update the html meta theme color with the background color of the selected element.
+     */
+    public static updateThemeColor(classNames: string): void {
+        const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+        const app = document.getElementsByClassName(classNames);
+
+        if (themeColor && app.length > 0) {
+            window.setTimeout(() => {
+                let bgColor = window.getComputedStyle(app[0], null)
+                    .getPropertyValue('background-color');
+
+                bgColor = Themer.rgbToHex(bgColor);
+
+                if (bgColor) {
+                    themeColor.content = bgColor;
+                }
+            }, 1);
+        }
+    }
+
+    /**
+     * Convert the string RGB value into the hexadecimal.
+     */
+    public static rgbToHex(rgb: string): string {
+        const sep = rgb.indexOf(',') > -1 ? ',' : ' ';
+        const rgbs = rgb.substr(4).split(')')[0].split(sep);
+
+        let r = (+rgbs[0]).toString(16);
+        let g = (+rgbs[1]).toString(16);
+        let b = (+rgbs[2]).toString(16);
+
+        if (1 === r.length) {
+            r = '0' + r;
+        }
+
+        if (1 === g.length) {
+            g = '0' + g;
+        }
+
+        if (1 === b.length) {
+            b = '0' + b;
+        }
+
+        return '#' + r + g + b;
+    }
+
     private store: Store<DarkModeModuleState>;
 
     /**

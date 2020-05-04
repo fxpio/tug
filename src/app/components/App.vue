@@ -54,6 +54,7 @@ file that was distributed with this source code.
     import {Component, Watch} from 'vue-property-decorator';
     import {MetaInfo} from 'vue-meta';
     import Toolbar from '@app/components/Toolbar.vue';
+    import {Themer} from '@app/themer/Themer';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
@@ -93,6 +94,7 @@ file that was distributed with this source code.
         @Watch('darkModeEnabled')
         public watchDarkMode(enabled: boolean): void {
             this.$vuetify.theme.dark = enabled;
+            Themer.updateThemeColor('v-application');
         }
 
         public created(): void {
@@ -113,6 +115,7 @@ file that was distributed with this source code.
         }
 
         public async mounted(): Promise<void> {
+            Themer.updateThemeColor('v-application');
             const pl = document.getElementById('pl');
 
             if (pl) {
