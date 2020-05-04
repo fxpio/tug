@@ -47,15 +47,28 @@ file that was distributed with this source code.
                                 v-model="item"
                                 depressed
                                 rounded
+                                ripple
                                 small
                         >
                         </package-viewer>
+
+                        <refresh-package-action
+                                :url="repository.url"
+                                :version="item.version"
+                                color="accent"
+                                depressed
+                                rounded
+                                ripple
+                                small
+                        >
+                        </refresh-package-action>
 
                         <delete-action
                                 :title="$t('views.packages.title')"
                                 :data="item"
                                 outlined
                                 rounded
+                                ripple
                                 small
                                 :delete-call="deleteVersion"
                                 @deleted="onVersionDeleted"
