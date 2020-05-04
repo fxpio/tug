@@ -14,8 +14,8 @@ file that was distributed with this source code.
                     <h1 class="pb-4 text-center accent--text">{{ $t('app.name') }}</h1>
 
                     <v-card flat class="pb-2">
-                        <v-card-title primary-title>
-                            <div class="headline primary--text">
+                        <v-card-title>
+                            <div :class="$classes('headline primary--text', 'text--lighten-3')">
                                 {{ $t('views.login.title') }}
                             </div>
                         </v-card-title>

@@ -62,7 +62,7 @@ file that was distributed with this source code.
                         @click.stop="eventClick(item.click)"
                 >
                     <v-list-item-icon>
-                        <v-icon :color="item.color" :dense="item.dense">{{ item.icon }}</v-icon>
+                        <v-icon :color="$color(item.color)" :dense="item.dense">{{ item.icon }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title :class="item.textClass">

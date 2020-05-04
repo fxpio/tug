@@ -40,16 +40,18 @@ file that was distributed with this source code.
         @Prop({type: String, default: 'primary--text'})
         public labelColor: string;
 
+        @Prop({type: String, default: 'text--lighten-3'})
+        public labelDarkColor: string;
+
         public get labelClasses(): object {
-            const classes: any = {
+            return this.$classes({
                 'font-weight-bold': true,
                 'word-break-word': true,
                 'text-md-right': true,
-            };
-
-            classes[this.labelColor] = true;
-
-            return classes;
+                [this.labelColor]: true,
+            }, {
+                [this.labelDarkColor]: true,
+            });
         }
     }
 </script>

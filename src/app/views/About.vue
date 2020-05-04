@@ -11,7 +11,7 @@ file that was distributed with this source code.
     <v-container>
         <v-row no-gutters justify="center">
             <v-col cols="12" sm="10" md="8" xl="6">
-                <v-subheader class="mt-4 primary--text">
+                <v-subheader :class="$classes('mt-4 primary--text', 'text--lighten-3')">
                     {{ $t('views.about.title') }}
                 </v-subheader>
 
@@ -61,7 +61,7 @@ file that was distributed with this source code.
                     </v-list>
                 </v-card>
 
-                <v-subheader class="mt-4 primary--text">
+                <v-subheader :class="$classes('mt-4 primary--text', 'text--lighten-3')">
                     {{ $t('views.about.sections.author') }}
                 </v-subheader>
 

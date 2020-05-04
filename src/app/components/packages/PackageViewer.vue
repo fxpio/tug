@@ -40,7 +40,9 @@ file that was distributed with this source code.
         <v-card>
             <v-toolbar flat>
                 <v-toolbar-title class="no-max-width">
-                    <span class="font-weight-bold primary--text">{{ package.name }}</span>
+                    <span :class="$classes('font-weight-bold primary--text', 'text--lighten-3')">
+                        {{ package.name }}
+                    </span>
                     <span> - </span>
                     <span class="font-italic">{{ package.version }}</span>
                 </v-toolbar-title>

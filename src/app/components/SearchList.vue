@@ -25,7 +25,7 @@ file that was distributed with this source code.
                 <v-col cols="6" md="4" lg="2" class="search-list__actions">
                     <slot name="header-actions"></slot>
 
-                    <v-btn color="primary"
+                    <v-btn :color="$color('primary', 'primary lighten-2')"
                            depressed
                            ripple
                            rounded

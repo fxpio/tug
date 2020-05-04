@@ -37,7 +37,7 @@ file that was distributed with this source code.
             </slot>
         </template>
         <v-card>
-            <v-card-title class="primary--text">
+            <v-card-title :class="$classes('primary--text', 'text--lighten-3')">
                 <slot name="title">
                     {{ title }}
                 </slot>

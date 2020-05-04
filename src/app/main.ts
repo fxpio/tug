@@ -26,6 +26,7 @@ import '@app/plugins/vueSnackbar';
 import App from '@app/App.vue';
 import router from '@app/router';
 import {createStore} from '@app/store';
+import {createThemer} from '@app/plugins/vueThemer';
 import '@app/registerServiceWorker';
 import '@app/styles/fonts.scss';
 import '@app/styles/app.scss';
@@ -38,6 +39,7 @@ Vue.config.productionTip = false;
 useVueRouterBackPlugin({router, forceHistory: true});
 
 const store = createStore<RootState>(router, i18n, apiClient);
+createThemer(store);
 validator.setI18n(i18n);
 formatter.setI18n(i18n);
 

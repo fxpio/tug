@@ -15,7 +15,7 @@ file that was distributed with this source code.
                     <loading v-if="loading" class="mt-5"></loading>
 
                     <div v-else>
-                        <v-subheader class="primary--text">
+                        <v-subheader :class="$classes('primary--text', 'text--lighten-3')">
                             {{ $t('views.api-keys.title') }}
                         </v-subheader>
 

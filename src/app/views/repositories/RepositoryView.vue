@@ -18,13 +18,13 @@ file that was distributed with this source code.
                     <div v-else>
                         <v-row class="ma-0" align="center">
                             <v-col cols="10" class="ma-0 pa-0">
-                                <v-subheader class="primary--text">
+                                <v-subheader :class="$classes('primary--text', 'text--lighten-3')">
                                     <lottie width="48px" :options="{animationData: iconData}"></lottie>
                                     {{ $t('views.repositories.title') }}
                                 </v-subheader>
                             </v-col>
                             <v-col cols="2" class="text-right">
-                                <v-btn color="primary"
+                                <v-btn :color="$color('primary', 'primary lighten-2')"
                                        depressed
                                        ripple
                                        rounded
@@ -49,7 +49,12 @@ file that was distributed with this source code.
                                     </col-label>
 
                                     <col-label :label="$t('views.repositories.url')">
-                                        <a :href="repo.url" target="_blank">{{ repo.url }}</a>
+                                        <a :href="repo.url"
+                                           target="_blank"
+                                           :class="$classes('primary--text', 'text--lighten-3')"
+                                        >
+                                            {{ repo.url }}
+                                        </a>
                                     </col-label>
                                 </v-row>
 
@@ -65,7 +70,7 @@ file that was distributed with this source code.
                                     </col-label>
 
                                     <col-label :label="$t('views.repositories.root-identifier')">
-                                        <v-chip small color="primary" v-if="!!repo.rootIdentifier">
+                                        <v-chip small color="secondary" v-if="!!repo.rootIdentifier">
                                             {{ repo.rootIdentifier }}
                                         </v-chip>
 
@@ -139,7 +144,7 @@ file that was distributed with this source code.
                         <!-- Packages -->
                         <v-row class="ma-0 mt-6" align="center">
                             <v-col class="ma-0 pa-0">
-                                <v-subheader class="primary--text">
+                                <v-subheader :class="$classes('primary--text', 'text--lighten-3')">
                                     <lottie width="48px" :options="{animationData: iconDataPackage}"></lottie>
                                     {{ $t('views.packages.title') }}
                                 </v-subheader>

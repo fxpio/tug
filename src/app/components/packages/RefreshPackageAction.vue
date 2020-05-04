@@ -16,7 +16,7 @@ file that was distributed with this source code.
                   :url="url"
                   :version="version"
                   :btnLoading="loading"
-                  :btnColor="color"
+                  :btnColor="$color(color, darkColor)"
                   :btnClasses="classes"
                   :btnRipple="ripple"
                   :btnRounded="rounded"
@@ -36,7 +36,7 @@ file that was distributed with this source code.
                   :refreshCacheOne="refreshCacheOne"
             >
                 <v-btn v-on="on"
-                       :color="color"
+                       :color="$color(color, darkColor)"
                        :loading="loading"
                        :class="classes"
                        :ripple="ripple"
@@ -63,7 +63,7 @@ file that was distributed with this source code.
                   :url="url"
                   :version="version"
                   :btnLoading="loading"
-                  :btnColor="color"
+                  :btnColor="$color(color, darkColor)"
                   :btnClasses="classes"
                   :btnRipple="ripple"
                   :btnRounded="rounded"
@@ -83,7 +83,7 @@ file that was distributed with this source code.
                   :refreshCacheOne="refreshCacheOne"
             >
                 <v-btn v-on="on"
-                       :color="color"
+                       :color="$color(color, darkColor)"
                        :loading="loading"
                        :class="classes"
                        :ripple="ripple"
@@ -106,7 +106,7 @@ file that was distributed with this source code.
               :url="url"
               :version="version"
               :btnLoading="loading"
-              :btnColor="color"
+              :btnColor="$color(color, darkColor)"
               :btnClasses="classes"
               :btnRipple="ripple"
               :btnRounded="rounded"
@@ -126,7 +126,7 @@ file that was distributed with this source code.
               :refreshCacheOne="refreshCacheOne"
         >
             <!-- Default list items of multiple mode -->
-            <v-list :color="color" dark>
+            <v-list :color="$color(color, darkColor)" dark>
                 <v-list-item v-if="url && version"
                              @click="refreshOneVersion(url, version, false)">
                     <v-list-item-content>
@@ -221,6 +221,9 @@ file that was distributed with this source code.
 
         @Prop({type: String, default: 'primary'})
         public color: string;
+
+        @Prop({type: String})
+        public darkColor?: string;
 
         @Prop({type: String})
         public classes?: string;

@@ -10,7 +10,13 @@ file that was distributed with this source code.
 <template>
     <v-container fill-height>
         <error-message :message="$t('error.404-page-not-found')">
-            <v-btn depressed rounded small color="primary lighten-4" class="mt-5" :to="{name: 'home'}">
+            <v-btn depressed
+                   rounded
+                   small
+                   :color="$color('primary lighten-4', 'primary lighten-3')"
+                   class="mt-5"
+                   :to="{name: 'home'}"
+            >
                 {{ $t('error.go-to-home') }}
             </v-btn>
         </error-message>

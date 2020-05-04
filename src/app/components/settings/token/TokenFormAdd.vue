@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 <template>
     <div>
-        <v-card-title class="primary--text">
+        <v-card-title :class="$classes('primary--text', 'text--lighten-3')">
             {{ title }}
         </v-card-title>
 
@@ -37,6 +37,7 @@ file that was distributed with this source code.
                         :disabled="loading || tokenRequired"
                         v-model="autoGeneration"
                         class="mt-0"
+                        :color="$color('primary', 'primary lighten-3')"
                 ></v-switch>
 
                 <v-slide-x-reverse-transition>

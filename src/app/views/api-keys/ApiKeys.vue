@@ -29,7 +29,7 @@ file that was distributed with this source code.
                     </template>
 
                     <template v-slot:header>
-                        <v-subheader class="mt-4 mb-4 primary--text">
+                        <v-subheader :class="$classes('mt-4 mb-4 primary--text', 'text--lighten-3')">
                             <lottie width="48px" :options="{animationData: iconData}"></lottie>
                             {{ $t('views.api-keys.title') }}
                         </v-subheader>

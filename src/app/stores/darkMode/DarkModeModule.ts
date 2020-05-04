@@ -14,7 +14,7 @@ import {Module, MutationTree} from 'vuex';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class DarkModeModule<R extends DarkModeModuleState> implements Module<DarkModeState, R> {
+export class DarkModeModule<R extends DarkModeModuleState = DarkModeModuleState> implements Module<DarkModeState, R> {
     private readonly storage: Storage;
 
     public constructor(storage?: Storage) {

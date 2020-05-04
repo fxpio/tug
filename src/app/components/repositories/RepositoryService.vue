@@ -10,7 +10,10 @@ file that was distributed with this source code.
 <template>
     <v-tooltip top>
         <template v-slot:activator="{on}">
-            <v-icon color="black" v-on="on" v-if="'vcs-github' === type">
+            <v-icon v-on="on"
+                    v-if="'vcs-github' === type"
+                    :color="$color('black', 'grey lighten-2')"
+            >
                 fab fa-github
             </v-icon>
 

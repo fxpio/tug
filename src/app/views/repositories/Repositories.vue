@@ -29,7 +29,7 @@ file that was distributed with this source code.
                     </template>
 
                     <template v-slot:header>
-                        <v-subheader class="mt-4 mb-4 primary--text">
+                        <v-subheader :class="$classes('mt-4 mb-4 primary--text', 'text--lighten-3')">
                             <lottie width="48px" :options="{animationData: iconData}"></lottie>
                             {{ $t('views.repositories.title') }}
                         </v-subheader>
@@ -55,7 +55,7 @@ file that was distributed with this source code.
 
                     <template v-slot:data-table.item.name="{item}">
                         <router-link
-                                class="font-weight-bold"
+                                :class="$classes('font-weight-bold', 'primary--text text--lighten-3')"
                                 :to="{name: 'repositories-package', params: {id: item.id}}">
                             {{ item.packageName ? item.packageName : item.url }}
                         </router-link>
@@ -88,6 +88,7 @@ file that was distributed with this source code.
                                small
                                outlined
                                target="_blank"
+                               :color="$color('primary', 'primary lighten-3')"
                                :href="item.url"
                         >
                             {{ $t('source') }}

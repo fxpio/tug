@@ -17,10 +17,10 @@ file that was distributed with this source code.
                     <v-list rounded>
                         <v-list-item dense :ripple="false" @click="logout">
                             <v-list-item-icon>
-                                <v-icon dense left color="primary lighten-4">exit_to_app</v-icon>
+                                <v-icon dense left :color="$color('primary lighten-4', 'primary lighten-3')">exit_to_app</v-icon>
                             </v-list-item-icon>
 
-                            <v-list-item-content class="primary--text text--lighten-4">
+                            <v-list-item-content :class="$classes('primary--text text--lighten-4', {'text--lighten-3': true, 'text--lighten-4': false})">
                                 {{ $t('logout') }}
                             </v-list-item-content>
                         </v-list-item>
@@ -67,10 +67,10 @@ file that was distributed with this source code.
         public transitionName: string = App.DEFAULT_TRANSITION;
 
         public drawerItems: object[] = [
-            {icon: 'home', color: 'primary', text: 'views.home.title', route: {name: 'home'}},
+            {icon: 'home', color: ['primary', 'primary lighten-3'], text: 'views.home.title', route: {name: 'home'}},
             {heading: 'menu.composer'},
-            {icon: 'add', color: 'primary', dense: true, text: 'views.repositories-add.title', route: {name: 'repositories-add-redirect'}},
-            {icon: 'folder', color: 'primary', text: 'views.repositories.title', route: {name: 'repositories'}},
+            {icon: 'add', color: ['primary', 'primary lighten-3'], dense: true, text: 'views.repositories-add.title', route: {name: 'repositories-add-redirect'}},
+            {icon: 'folder', color: ['primary', 'primary lighten-3'], text: 'views.repositories.title', route: {name: 'repositories'}},
             {heading: 'menu.configuration'},
             {icon: 'add', color: 'grey', dense: true, text: 'views.api-keys-add.title', route: {name: 'api-keys-add-redirect'}},
             {icon: 'vpn_key', color: 'grey', text: 'views.api-keys.title', route: {name: 'api-keys'}},

@@ -11,14 +11,14 @@ file that was distributed with this source code.
     <v-container>
         <v-row no-gutters justify="center" align-content="space-between">
             <v-col cols="12" sm="10" md="8" xl="6">
-                <v-subheader class="primary--text">
+                <v-subheader :class="$classes('primary--text', 'text--lighten-3')">
                     {{ $t('views.settings.account') }}
                 </v-subheader>
                 <v-card flat>
                     <v-list two-line>
                         <v-list-item>
                             <v-list-item-avatar>
-                                <v-icon size="52" :color="$store.state.auth.authenticated ? 'primary' : 'grey'">account_circle</v-icon>
+                                <v-icon size="52" :color="$color($store.state.auth.authenticated ? 'primary' : 'grey', $store.state.auth.authenticated ? 'primary lighten-3' : 'grey')">account_circle</v-icon>
                             </v-list-item-avatar>
 
                             <v-list-item-content></v-list-item-content>
@@ -31,7 +31,7 @@ file that was distributed with this source code.
                                                 outlined
                                                 small
                                                 fab
-                                                :color="$store.state.darkMode.enabled ? null : 'accent'"
+                                                :color="$color('accent', '')"
                                                 ripple
                                                 icon
                                                 @click="login">
@@ -50,7 +50,7 @@ file that was distributed with this source code.
                                                 outlined
                                                 small
                                                 fab
-                                                :color="$store.state.darkMode.enabled ? null : 'primary lighten-4'"
+                                                :color="$color('primary lighten-3', '')"
                                                 ripple
                                                 icon
                                                 @click="$store.dispatch('auth/logout', $router.currentRoute.fullPath)">
@@ -64,7 +64,7 @@ file that was distributed with this source code.
                     </v-list>
                 </v-card>
 
-                <v-subheader class="mt-4 primary--text">
+                <v-subheader :class="$classes('mt-4 primary--text', 'text--lighten-3')">
                     {{ $t('views.settings.general') }}
                 </v-subheader>
                 <v-card flat>
@@ -104,13 +104,13 @@ file that was distributed with this source code.
                             </v-list-item-content>
 
                             <v-list-item-action>
-                                <v-switch hide-details v-model="darkMode"></v-switch>
+                                <v-switch hide-details v-model="darkMode" :color="$color('primary', 'primary lighten-3')"></v-switch>
                             </v-list-item-action>
                         </v-list-item>
                     </v-list>
                 </v-card>
 
-                <v-subheader class="mt-4 primary--text">
+                <v-subheader :class="$classes('mt-4 primary--text', 'text--lighten-3')">
                     {{ $t('views.settings.github') }}
                 </v-subheader>
                 <v-card flat>
