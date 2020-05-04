@@ -61,14 +61,17 @@ file that was distributed with this source code.
                         </router-link>
                     </template>
 
-                    <template v-slot:data-table.item.lastHash="{item}">
-                        <div v-if="!!item.lastHash">
-                            <v-chip x-small>
-                                {{ item.lastHash }}
-                            </v-chip>
-                        </div>
+                    <template v-slot:data-table.item.rootIdentifier="{item}">
+                        <v-tooltip top v-if="!!item.rootIdentifier">
+                            <template v-slot:activator="{ on }">
+                                <v-chip small color="secondary" v-on="on">
+                                    {{ item.rootIdentifier }}
+                                </v-chip>
+                            </template>
+                            <span>{{ $t('views.repositories.root-identifier') }}</span>
+                        </v-tooltip>
 
-                        <div v-else>
+                        <div v-if="!item.packageName || !item.lastHash">
                             <v-tooltip top>
                                 <template v-slot:activator="{ on }">
                                     <v-chip x-small color="warning" v-on="on">
@@ -78,19 +81,17 @@ file that was distributed with this source code.
                                 <span>{{ $t('views.repositories.last-hash.no-auto-updated.hint') }}</span>
                             </v-tooltip>
                         </div>
-
-                        <v-tooltip top v-if="!!item.rootIdentifier">
-                            <template v-slot:activator="{ on }">
-                                <v-chip x-small color="primary" v-on="on">
-                                    {{ item.rootIdentifier }}
-                                </v-chip>
-                            </template>
-                            <span>{{ $t('views.repositories.root-identifier') }}</span>
-                        </v-tooltip>
                     </template>
 
                     <template v-slot:data-table.item.url="{item}">
-                        <a :href="item.url" target="_blank">{{ $t('source') }}</a>
+                        <v-btn rounded
+                               small
+                               outlined
+                               target="_blank"
+                               :href="item.url"
+                        >
+                            {{ $t('source') }}
+                        </v-btn>
                     </template>
 
                     <template v-slot:data-table.item.actions="{item}">
@@ -150,10 +151,10 @@ file that was distributed with this source code.
                     sortable: false,
                     value: 'name',
                 },
-                {   text: this.$i18n.t('views.repositories.last-hash'),
+                {   text: this.$i18n.t('views.repositories.root-identifier'),
                     align: 'left',
                     sortable: false,
-                    value: 'lastHash',
+                    value: 'rootIdentifier',
                 },
                 {   text: this.$i18n.t('views.repositories.url'),
                     align: 'left',
