@@ -16,7 +16,7 @@ file that was distributed with this source code.
                 </slot>
             </v-col>
 
-            <v-col class="word-break-all">
+            <v-col class="col-label-content">
                 <slot name="default"></slot>
             </v-col>
         </v-row>
@@ -55,3 +55,17 @@ file that was distributed with this source code.
         }
     }
 </script>
+
+<style lang="scss">
+    .col-label-content {
+        word-break: break-word;
+
+        .v-chip {
+            height: auto;
+
+            .v-chip__content {
+                white-space: normal;
+            }
+        }
+    }
+</style>
