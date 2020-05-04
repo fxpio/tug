@@ -29,6 +29,7 @@ file that was distributed with this source code.
                         autofocus
                         :disabled="loading"
                         :rules="[$r('required')]"
+                        :color="$color('primary', 'primary lighten-3')"
                 >
                 </v-text-field>
 
@@ -52,6 +53,7 @@ file that was distributed with this source code.
                             clearable
                             :disabled="loading"
                             :rules="[$r('required')]"
+                            :color="$color('primary', 'primary lighten-3')"
                     >
                     </v-text-field>
                 </v-slide-x-reverse-transition>
