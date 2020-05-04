@@ -38,7 +38,7 @@ file that was distributed with this source code.
         </template>
 
         <v-card>
-            <v-toolbar flat>
+            <v-toolbar flat class="transparent">
                 <v-toolbar-title class="no-max-width">
                     <span :class="$classes('font-weight-bold primary--text', 'text--lighten-3')">
                         {{ package.name }}

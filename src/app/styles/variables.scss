@@ -41,14 +41,34 @@ $material-light: map-deep-merge(
         $material-light
 );
 
+$material-dark-elevation-colors: () !default;
+$material-dark-elevation-colors: (
+        '0': #181d23,
+        '1': #2d363f,
+        '2': #333c45,
+        '3': #384249,
+        '4': #272727,
+        '6': #2C2C2C,
+        '8': #2E2E2E,
+        '12': #333333,
+        '16': #363636,
+        '24': #373737
+);
+
 $material-dark: () !default;
 $material-dark: map-deep-merge(
         (
-            'app-bar': #121212,
-            'background': #121212,
-            'bg-color': #121212,
+            'app-bar': #181d23,
+            'background': #181d23,
+            'bg-color': #181d23,
             'toolbar-border-color': transparent,
-            'card-border-color': map-deep-get($grey, 'darken-4'),
+            'cards': #2d363f,
+            'card-border-color': #384249,
+            'table': (
+                'active': #687897,
+                'hover': map-get($material-dark-elevation-colors, '3'),
+                'group': map-get($material-dark-elevation-colors, '3')
+            ),
         ),
         $material-dark
 );
