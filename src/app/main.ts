@@ -8,7 +8,7 @@
  */
 
 import 'core-js/stable';
-import '@app/registerHooks';
+import '@app/plugins/vuePropertyDecorator';
 import ApiInterceptors from '@app/api/ApiInterceptors';
 import {useVueRouterBackPlugin} from '@app/plugins/vueRouterBack';
 import RouterGuards from '@app/routers/RouterGuards';
