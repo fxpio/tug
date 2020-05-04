@@ -11,9 +11,11 @@
 @import "~vuetify/src/styles/settings/colors";
 
 // Fonts
-$roboto-font-path: '~roboto-fontface/fonts';
+$nunito-font-path: '~@app/assets/fonts';
 $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
 $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+
+$body-font-family: 'Nunito', sans-serif !default;
 
 // Transitions
 $transition: (

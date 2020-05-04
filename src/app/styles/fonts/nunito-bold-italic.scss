@@ -1,0 +1,20 @@
+/*
+ * This file is part of the Tug package.
+ *
+ * (c) François Pluchino <francois.pluchino@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('#{$nunito-font-path}/nunito-bolditalic.eot');
+  src: url('#{$nunito-font-path}/nunito-bolditalic.eot?#iefix') format('embedded-opentype'),
+  url('#{$nunito-font-path}/nunito-bolditalic.woff2') format('woff2'),
+  url('#{$nunito-font-path}/nunito-bolditalic.woff') format('woff'),
+  url('#{$nunito-font-path}/nunito-bolditalic.ttf') format('truetype'),
+  url('#{$nunito-font-path}/nunito-bolditalic.svg#Nunito') format('svg');
+  font-weight: bold;
+  font-style: italic;
+}
