@@ -23,7 +23,7 @@ import validator from '@app/plugins/vueValidator';
 import formatter from '@app/plugins/vueFormatter';
 import apiClient from '@app/plugins/vueApi';
 import '@app/plugins/vueSnackbar';
-import App from '@app/App.vue';
+import App from '@app/components/App.vue';
 import router from '@app/router';
 import {createStore} from '@app/store';
 import {createThemer} from '@app/plugins/vueThemer';
