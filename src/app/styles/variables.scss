@@ -34,11 +34,11 @@ $secondary-transition: 0.2s map-get($transition, 'ease-in-out') !default;
 $material-light: () !default;
 $material-light: map-deep-merge(
         (
-            'app-bar': map-deep-get($grey, 'lighten-5'),
-            'background': map-deep-get($grey, 'lighten-5'),
-            'bg-color': map-deep-get($grey, 'lighten-5'),
+            'app-bar': #f8f9fd,
+            'background': #f8f9fd,
+            'bg-color': #f8f9fd,
             'toolbar-border-color': transparent,
-            'card-border-color': map-deep-get($grey, 'lighten-3'),
+            'card-border-color': #ebf0fa,
         ),
         $material-light
 );
