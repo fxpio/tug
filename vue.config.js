@@ -56,11 +56,11 @@ module.exports = {
     pwa: {
         name: appName,
         appleMobileWebAppCapable: 'yes',
-        themeColor: '#fafafa',
-        msTileColor: '#fafafa',
+        themeColor: '#f8f9fd',
+        msTileColor: '#f8f9fd',
         manifestOptions: {
             start_url: './index.html',
-            background_color: '#fafafa',
+            background_color: '#f8f9fd',
         },
         workboxPluginMode: 'GenerateSW',
         workboxOptions: {
