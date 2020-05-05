@@ -52,6 +52,7 @@ file that was distributed with this source code.
                 <v-btn
                         depressed
                         fab
+                        text
                         small
                         @click="dialog = !dialog"
                 >
