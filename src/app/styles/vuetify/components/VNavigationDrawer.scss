@@ -34,12 +34,14 @@
     .v-application {
         > .v-application--wrap {
             > .v-navigation-drawer {
-                background-color: transparent;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
             }
 
             @include theme('v-navigation-drawer') using($material) {
                 & {
-                    border-right-color: transparent;
+                    background-color: map-deep-get($material, 'bg-color');
+                    border-right-color: map-deep-get($material, 'bg-color');
                 }
             }
         }
