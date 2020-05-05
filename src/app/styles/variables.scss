@@ -39,6 +39,7 @@ $material-light: map-deep-merge(
             'bg-color': #f8f9fd,
             'toolbar-border-color': transparent,
             'card-border-color': #ebf0fa,
+            'dividers': #ebf0fa,
         ),
         $material-light
 );
@@ -66,6 +67,8 @@ $material-dark: map-deep-merge(
             'toolbar-border-color': transparent,
             'cards': #2d363f,
             'card-border-color': #384249,
+            'dividers': #384249,
+            'navigation-drawer': #2d363f,
             'table': (
                 'active': #687897,
                 'hover': map-get($material-dark-elevation-colors, '3'),

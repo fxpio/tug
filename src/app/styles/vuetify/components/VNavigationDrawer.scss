@@ -7,11 +7,24 @@
  * file that was distributed with this source code.
  */
 
+@import '~vuetify/src/components/VNavigationDrawer/variables';
+
 .v-application {
     > .v-application--wrap {
         > .v-navigation-drawer {
+            border-top-right-radius: 24px;
+            border-bottom-right-radius: 24px;
+            overflow: hidden;
+            border-right: $navigation-drawer-border-width solid transparent;
+
             > .v-navigation-drawer__border {
                 display: none;
+            }
+        }
+
+        @include theme('v-navigation-drawer') using($material) {
+            & {
+                border-right-color: map-deep-get($material, 'dividers');
             }
         }
     }
@@ -22,6 +35,12 @@
         > .v-application--wrap {
             > .v-navigation-drawer {
                 background-color: transparent;
+            }
+
+            @include theme('v-navigation-drawer') using($material) {
+                & {
+                    border-right-color: transparent;
+                }
             }
         }
     }
