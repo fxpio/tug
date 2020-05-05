@@ -8,7 +8,12 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-dialog v-model="dialog" persistent :max-width="maxWidth" class="v-btn">
+    <v-scroller-dialog
+            v-model="dialog"
+            persistent
+            :max-width="maxWidth"
+            class="v-btn"
+    >
         <template v-slot:activator="{on}">
             <slot name="default"
                   :on="on"
@@ -71,7 +76,7 @@ file that was distributed with this source code.
                 </v-btn>
             </v-card-actions>
         </v-card>
-    </v-dialog>
+    </v-scroller-dialog>
 </template>
 
 <script lang="ts">

@@ -55,6 +55,7 @@ file that was distributed with this source code.
     import {MetaInfo} from 'vue-meta';
     import Toolbar from '@app/components/Toolbar.vue';
     import {Themer} from '@app/themer/Themer';
+    import {Scroller} from '@app/scroller/Scroller';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
@@ -79,6 +80,8 @@ file that was distributed with this source code.
             {divider: true},
             {icon: 'fa-info-circle', color: 'grey', text: 'views.about.title', route: {name: 'about'}},
         ];
+
+        private scroller: Scroller;
 
         public metaInfo(): MetaInfo {
             return {
@@ -115,6 +118,9 @@ file that was distributed with this source code.
         }
 
         public async mounted(): Promise<void> {
+            this.scroller = new Scroller(document.querySelectorAll('body')[0], {
+                resize: 'vertical',
+            });
             Themer.updateThemeColor('v-application');
             const pl = document.getElementById('pl');
 
@@ -124,6 +130,10 @@ file that was distributed with this source code.
                 });
                 pl.style.opacity = '0';
             }
+        }
+
+        public destroyed(): void {
+            this.scroller.destroy();
         }
 
         public async logout(): Promise<void> {

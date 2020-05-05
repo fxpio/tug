@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-app-bar app elevate-on-scroll>
+    <v-scroller-app-bar app elevate-on-scroll :scroll-target.sync="scrollTarget">
         <slot name="menu">
             <v-scale-transition origin="center center" mode="out-in">
                 <v-app-bar-nav-icon v-if="!showPreviousButton" @click.prevent="drawerButtonAction"
@@ -34,7 +34,7 @@ file that was distributed with this source code.
         </slot>
 
         <slot name="actions"></slot>
-    </v-app-bar>
+    </v-scroller-app-bar>
 </template>
 
 <script lang="ts">
@@ -52,6 +52,8 @@ file that was distributed with this source code.
 
         private unSyncRouterHook?: Function;
 
+        private scrollTarget: string|null = null;
+
         public created(): void {
             const self = this;
 
@@ -60,6 +62,10 @@ file that was distributed with this source code.
             this.unSyncRouterHook = this.$router.afterEach(() => {
                 self.showPreviousButton = !self.$routerBack.isRoot();
             });
+        }
+
+        public mounted(): void {
+            this.scrollTarget = 'body > .os-padding > .os-viewport';
         }
 
         public beforeDestroy(): void {

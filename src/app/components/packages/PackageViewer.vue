@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-dialog v-model="dialog" persistent :max-width="maxWidth" class="v-btn">
+    <v-dialog v-model="dialog" :max-width="maxWidth" class="v-btn" content-class="package-viewer-dialog">
         <template v-slot:activator="{on}">
             <slot name="default"
                   :on="on"
@@ -59,14 +59,14 @@ file that was distributed with this source code.
                     <v-icon>close</v-icon>
                 </v-btn>
             </v-toolbar>
-            <div class="pa-4 json-viewer-wrapper">
+            <scroller class="pa-4 json-viewer-wrapper">
                 <json-view
                         :rootKey="package.version"
                         :data="package"
                         :maxDepth="maxDepth"
                         :colorScheme="colorScheme"
                 ></json-view>
-            </div>
+            </scroller>
         </v-card>
     </v-dialog>
 </template>
@@ -76,11 +76,14 @@ file that was distributed with this source code.
     import {mixins} from 'vue-class-component';
     import {AjaxContent} from '@app/mixins/AjaxContent';
     import {Package} from '@app/api/models/responses/Package';
+    import Scroller from '@app/components/Scroller.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
-    @Component
+    @Component({
+        components: {Scroller},
+    })
     export default class PackageViewer extends mixins(AjaxContent) {
         @Prop({type: String})
         public maxWidth?: string;
@@ -120,9 +123,14 @@ file that was distributed with this source code.
     }
 </script>
 
-<style lang="scss" scoped="scoped">
+<style lang="scss">
     .json-viewer-wrapper {
-        max-height: 80vh;
-        overflow: auto;
+        max-height: 75vh;
+    }
+
+    .v-dialog {
+        &.package-viewer-dialog {
+            max-height: inherit;
+        }
     }
 </style>

@@ -23,10 +23,12 @@ import validator from '@app/plugins/vueValidator';
 import formatter from '@app/plugins/vueFormatter';
 import apiClient from '@app/plugins/vueApi';
 import '@app/plugins/vueSnackbar';
+import '@app/plugins/vueOverlayScrollbars';
 import App from '@app/components/App.vue';
 import router from '@app/router';
 import {createStore} from '@app/store';
 import {createThemer} from '@app/plugins/vueThemer';
+import {Scroller} from '@app/scroller/Scroller';
 import '@app/registerServiceWorker';
 import '@app/styles/fonts.scss';
 import '@app/styles/app.scss';
@@ -40,6 +42,7 @@ useVueRouterBackPlugin({router, forceHistory: true});
 
 const store = createStore<RootState>(router, i18n, apiClient);
 createThemer(store);
+Scroller.setStore(store);
 validator.setI18n(i18n);
 formatter.setI18n(i18n);
 

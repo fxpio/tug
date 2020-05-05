@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-navigation-drawer
+    <v-scroller-navigation-drawer
             v-model="drawer"
             fixed
             app
@@ -82,7 +82,7 @@ file that was distributed with this source code.
                   v-slot:[slotItem.target]>
             <slot :name="slotItem.original"></slot>
         </template>
-    </v-navigation-drawer>
+    </v-scroller-navigation-drawer>
 </template>
 
 <script lang="ts">

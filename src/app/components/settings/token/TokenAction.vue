@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-dialog
+    <v-scroller-dialog
             v-model="dialog"
             :close-on-content-click="false"
             persistent
@@ -71,7 +71,7 @@ file that was distributed with this source code.
                 </token-form-view>
             </v-slide-x-transition>
         </v-card>
-    </v-dialog>
+    </v-scroller-dialog>
 </template>
 
 <script lang="ts">
