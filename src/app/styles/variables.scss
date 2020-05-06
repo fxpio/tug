@@ -46,7 +46,7 @@ $material-light: map-deep-merge(
 
 $material-dark-elevation-colors: () !default;
 $material-dark-elevation-colors: (
-        '0': #181d23,
+        '0': #182029,
         '1': #2d363f,
         '2': #333c45,
         '3': #384249,
@@ -61,9 +61,9 @@ $material-dark-elevation-colors: (
 $material-dark: () !default;
 $material-dark: map-deep-merge(
         (
-            'app-bar': #181d23,
-            'background': #181d23,
-            'bg-color': #181d23,
+            'app-bar': #182029,
+            'background': #182029,
+            'bg-color': #182029,
             'toolbar-border-color': transparent,
             'cards': #2d363f,
             'card-border-color': #384249,
