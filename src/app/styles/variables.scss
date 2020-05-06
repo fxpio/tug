@@ -30,6 +30,11 @@ $transition: (
 $primary-transition: 0.3s map-get($transition, 'swing') !default;
 $secondary-transition: 0.2s map-get($transition, 'ease-in-out') !default;
 
+// Scrollbar
+$scrollbar-size: 6px !default;
+$scrollbar-width: thin !default;
+$scrollbar-radius: $scrollbar-size !default;
+
 // Theme
 $material-light: () !default;
 $material-light: map-deep-merge(
@@ -40,6 +45,14 @@ $material-light: map-deep-merge(
             'toolbar-border-color': transparent,
             'card-border-color': #ebf0fa,
             'dividers': #ebf0fa,
+            'scrollbar-track': rgba(#182029, 0.07),
+            'scrollbar-track-hover': rgba(#182029, 0.1),
+            'scrollbar-track-html': #f8f9fd,
+            'scrollbar-track-html-hover': #e1e3e7,
+            'scrollbar-thumb': rgba(#182029, 0.07),
+            'scrollbar-thumb-html': transparent,
+            'scrollbar-thumb-hover': rgba(#182029, 0.2),
+            'scrollbar-thumb-hover-thumb-hover': rgba(#182029, 0.4),
         ),
         $material-light
 );
@@ -68,6 +81,14 @@ $material-dark: map-deep-merge(
             'cards': #2d363f,
             'card-border-color': #384249,
             'dividers': #384249,
+            'scrollbar-track': rgba(#f8f9fd, 0.05),
+            'scrollbar-track-hover': rgba(#f8f9fd, 0.1),
+            'scrollbar-track-html': #182029,
+            'scrollbar-track-html-hover': #2f363f,
+            'scrollbar-thumb': rgba(#f8f9fd, 0.1),
+            'scrollbar-thumb-html': transparent,
+            'scrollbar-thumb-hover': rgba(#f8f9fd, 0.3),
+            'scrollbar-thumb-hover-thumb-hover': rgba(#f8f9fd, 0.4),
             'navigation-drawer': #2d363f,
             'table': (
                 'active': #687897,

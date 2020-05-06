@@ -55,7 +55,6 @@ file that was distributed with this source code.
     import {MetaInfo} from 'vue-meta';
     import Toolbar from '@app/components/Toolbar.vue';
     import {Themer} from '@app/themer/Themer';
-    import {Scroller} from '@app/scroller/Scroller';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
@@ -81,8 +80,6 @@ file that was distributed with this source code.
             {icon: 'fa-info-circle', color: 'grey', text: 'views.about.title', route: {name: 'about'}},
         ];
 
-        private scroller: Scroller;
-
         public metaInfo(): MetaInfo {
             return {
                 title: this.$t('views.home.title', {}) as string,
@@ -98,6 +95,9 @@ file that was distributed with this source code.
         public watchDarkMode(enabled: boolean): void {
             this.$vuetify.theme.dark = enabled;
             Themer.updateThemeColor('v-application');
+            const htmlEl = document.getElementsByTagName('html')[0];
+            htmlEl.classList.remove('theme--light', 'theme--dark');
+            htmlEl.classList.add('theme--' + (enabled ? 'dark' : 'light'));
         }
 
         public created(): void {
@@ -118,22 +118,16 @@ file that was distributed with this source code.
         }
 
         public async mounted(): Promise<void> {
-            this.scroller = new Scroller(document.querySelectorAll('body')[0], {
-                resize: 'vertical',
-            });
             Themer.updateThemeColor('v-application');
             const pl = document.getElementById('pl');
 
             if (pl) {
                 pl.addEventListener('transitionend', () => {
                     pl.remove();
+                    document.getElementsByTagName('html')[0].classList.remove('preloader');
                 });
                 pl.style.opacity = '0';
             }
-        }
-
-        public destroyed(): void {
-            this.scroller.destroy();
         }
 
         public async logout(): Promise<void> {

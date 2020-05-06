@@ -59,14 +59,14 @@ file that was distributed with this source code.
                     <v-icon>close</v-icon>
                 </v-btn>
             </v-toolbar>
-            <scroller class="pa-4 json-viewer-wrapper">
+            <div class="pa-4 json-viewer-wrapper">
                 <json-view
                         :rootKey="package.version"
                         :data="package"
                         :maxDepth="maxDepth"
                         :colorScheme="colorScheme"
                 ></json-view>
-            </scroller>
+            </div>
         </v-card>
     </v-dialog>
 </template>
@@ -76,14 +76,11 @@ file that was distributed with this source code.
     import {mixins} from 'vue-class-component';
     import {AjaxContent} from '@app/mixins/AjaxContent';
     import {Package} from '@app/api/models/responses/Package';
-    import Scroller from '@app/components/Scroller.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
-    @Component({
-        components: {Scroller},
-    })
+    @Component
     export default class PackageViewer extends mixins(AjaxContent) {
         @Prop({type: String})
         public maxWidth?: string;
@@ -126,6 +123,7 @@ file that was distributed with this source code.
 <style lang="scss">
     .json-viewer-wrapper {
         max-height: 75vh;
+        overflow-y: scroll;
     }
 
     .v-dialog {

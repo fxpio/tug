@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="preloader">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,14 +7,23 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
     <style>
-        html {
-            overflow-y: hidden;
-            -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-            -webkit-text-size-adjust: 100%;
+        html.preloader {
+            overflow-y: scroll !important;
+            scrollbar-width: thin;
         }
 
-        *, ::before, ::after {
+        html.preloader::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        html.preloader::-webkit-scrollbar-track,
+        html.preloader::-webkit-scrollbar-thumb {
+            background-color: #f8f9fd;
+        }
+
+        #pl, #pl::before, #pl::after,
+        #pl *, #pl ::before, #pl ::after {
             -webkit-box-sizing: inherit;
             box-sizing: inherit;
         }
@@ -29,6 +38,9 @@
             left: 0;
             right: 0;
             transition: opacity 0.2s linear;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-text-size-adjust: 100%;
         }
 
         #pl-ctr {

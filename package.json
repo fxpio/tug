@@ -54,7 +54,6 @@
     "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
     "node-polyglot": "^2.4.0",
-    "overlayscrollbars": "^1.12.0",
     "regenerator-runtime": "^0.13.5",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",

@@ -10,9 +10,6 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 import vuetifyLocaleFr from 'vuetify/src/locale/fr';
-import VScrollerNavigationDrawer from '@app/components/vuetify/VScrollerNavigationDrawer';
-import VScrollerDialog from '@app/components/vuetify/VScrollerDialog';
-import VAppBar from '@app/components/vuetify/VAppBar';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -51,7 +48,3 @@ export default new Vuetify({
         },
     },
 });
-
-Vue.component('v-scroller-navigation-drawer', VScrollerNavigationDrawer);
-Vue.component('v-scroller-dialog', VScrollerDialog);
-Vue.component('v-scroller-app-bar', VAppBar);

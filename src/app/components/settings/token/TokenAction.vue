@@ -8,11 +8,12 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-scroller-dialog
+    <v-dialog
             v-model="dialog"
             :close-on-content-click="false"
             persistent
             max-width="600"
+            content-class="scroller-theme--dark"
     >
         <template v-slot:activator="{ on }">
             <v-scale-transition mode="out-in" :origin="origin">
@@ -71,7 +72,7 @@ file that was distributed with this source code.
                 </token-form-view>
             </v-slide-x-transition>
         </v-card>
-    </v-scroller-dialog>
+    </v-dialog>
 </template>
 
 <script lang="ts">

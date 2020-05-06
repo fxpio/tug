@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-    <v-scroller-app-bar app elevate-on-scroll :scroll-target.sync="scrollTarget">
+    <v-app-bar app elevate-on-scroll :scroll-target.sync="scrollTarget">
         <slot name="menu">
             <v-scale-transition origin="center center" mode="out-in">
                 <v-app-bar-nav-icon v-if="!showPreviousButton" @click.prevent="drawerButtonAction"
@@ -34,7 +34,7 @@ file that was distributed with this source code.
         </slot>
 
         <slot name="actions"></slot>
-    </v-scroller-app-bar>
+    </v-app-bar>
 </template>
 
 <script lang="ts">
