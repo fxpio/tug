@@ -8,6 +8,7 @@
  */
 
 import {LooseObject} from '@server/utils/LooseObject';
+import {mergeDeep} from '@server/utils/object';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -37,9 +38,9 @@ export class Config {
      */
     public merge(config: Config|LooseObject|null): void {
         if (config instanceof Config) {
-            this.config = Object.assign(this.config, config.all());
-        } else if (typeof config === 'object') {
-            this.config = Object.assign(this.config, config);
+            this.config = mergeDeep({}, this.config, config.all());
+        } else if (config && typeof config === 'object') {
+            this.config = mergeDeep({}, this.config, config);
         }
     }
 
