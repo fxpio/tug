@@ -36,14 +36,15 @@ export class ConfigManager {
      */
     public async get(): Promise<Config> {
         if (null === this.config) {
-            this.config = new Config();
+            const config = new Config();
             const data: LooseObject|null = await this.configRepo.get('global');
 
             if (data) {
                 delete data.id;
             }
 
-            this.config.merge(data);
+            config.merge(data);
+            this.config = config;
         }
 
         return this.config;
