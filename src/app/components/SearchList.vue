@@ -44,6 +44,9 @@ file that was distributed with this source code.
                         :items="items"
                         :loading="loading"
                         hide-default-footer
+                        disable-sort
+                        disable-filtering
+                        disable-pagination
                         item-key="id">
 
                     <template v-for="(slotItem) in getSlotItems('data-table')"
