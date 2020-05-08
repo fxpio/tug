@@ -17,6 +17,8 @@ export class Results {
 
     private readonly count: number;
 
+    private readonly total: number;
+
     private readonly lastId: string|undefined;
 
     /**
@@ -24,11 +26,13 @@ export class Results {
      *
      * @param {LooseObject[]} results  The results
      * @param {number}        count    The count of result
+     * @param {number}        [total]  The total of query
      * @param {string}        [lastId] The last id for the pagination
      */
-    constructor(results: LooseObject[], count: number, lastId?: string) {
+    constructor(results: LooseObject[], count: number, total?: number, lastId?: string) {
         this.results = results;
         this.count = count;
+        this.total = undefined !== total ? total : count;
         this.lastId = lastId;
     }
 
@@ -48,6 +52,15 @@ export class Results {
      */
     public getCount(): number {
         return this.count;
+    }
+
+    /**
+     * Get the total.
+     *
+     * @return {number}
+     */
+    public getTotal(): number {
+        return this.total;
     }
 
     /**

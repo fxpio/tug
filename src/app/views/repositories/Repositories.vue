@@ -28,10 +28,15 @@ file that was distributed with this source code.
                         </v-btn>
                     </template>
 
-                    <template v-slot:header>
+                    <template v-slot:header="{total}">
                         <v-subheader :class="$classes('mt-4 mb-4 primary--text', 'text--lighten-3')">
                             <lottie width="48px" :options="{animationData: iconData}"></lottie>
                             {{ $t('views.repositories.title') }}
+                            <v-fade-transition mode="out-in">
+                                <v-chip small outlined class="ml-2" v-if="null !== total">
+                                    {{ total }}
+                                </v-chip>
+                            </v-fade-transition>
                         </v-subheader>
                     </template>
 

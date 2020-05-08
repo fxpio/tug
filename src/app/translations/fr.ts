@@ -32,6 +32,7 @@ export default {
     'online': 'En ligne',
     'offline': 'Hor ligne',
     'pagination.load-more': 'Charger plus',
+    'pagination.all-loaded': 'Tous les enregistrements sont chargés',
     'error.network': 'Aucune connexion réseau détectée',
     'error.internal': 'Une erreur s\'est produite...',
     'error.404-page-not-found': 'Oops ! Page non trouvée',

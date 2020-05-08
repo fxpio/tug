@@ -97,7 +97,7 @@ export class BaseDatabaseRepository implements DatabaseRepository {
             this.cleanPrefix(item);
         }
 
-        return new Results(res.getRows(), res.getCount(), this.cleanPrefix(res.getLastId()));
+        return new Results(res.getRows(), res.getCount(), res.getTotal(), this.cleanPrefix(res.getLastId()));
     }
 
     /**
@@ -117,7 +117,7 @@ export class BaseDatabaseRepository implements DatabaseRepository {
             this.cleanPrefix(item);
         }
 
-        return new Results(res.getRows(), res.getCount(), this.cleanPrefix(res.getLastId()));
+        return new Results(res.getRows(), res.getCount(), res.getTotal(), this.cleanPrefix(res.getLastId()));
     }
 
     /**

@@ -32,6 +32,7 @@ export default {
     'online': 'Online',
     'offline': 'Offline',
     'pagination.load-more': 'Load more',
+    'pagination.all-loaded': 'All records are loaded',
     'error.network': 'No network connection detected',
     'error.internal': 'An error has occurred...',
     'error.404-page-not-found': 'Oops! Page not found',

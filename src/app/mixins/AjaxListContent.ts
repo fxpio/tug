@@ -25,6 +25,8 @@ export class AjaxListContent<I extends object> extends BaseAjaxContent {
 
     public count: number|null = null;
 
+    public total: number|null = null;
+
     public lastId: string | null = null;
 
     public search: string = '';
@@ -53,6 +55,10 @@ export class AjaxListContent<I extends object> extends BaseAjaxContent {
 
             if (this.count) {
                 this.count--;
+            }
+
+            if (this.total) {
+                this.total--;
             }
         }
 
@@ -87,6 +93,7 @@ export class AjaxListContent<I extends object> extends BaseAjaxContent {
             this.lastId = res.lastId ?? null;
             this.items = undefined !== searchValue ? [] : (this.items ?? []);
             this.count = res.count ?? null;
+            this.total = res.total ?? null;
 
             for (const result of (res.results ?? [])) {
                 this.items.push(result);

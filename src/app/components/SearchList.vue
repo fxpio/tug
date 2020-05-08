@@ -20,10 +20,24 @@ file that was distributed with this source code.
         <div v-else>
             <v-row class="ma-0" align="center">
                 <v-col cols="6" md="8" lg="10" class="ma-0 pa-0">
-                    <slot name="header"></slot>
+                    <slot name="header"
+                          :headers="headers"
+                          :items="items"
+                          :count="count"
+                          :total="total"
+                          :lastId="lastId"
+                          :search="search"
+                    ></slot>
                 </v-col>
                 <v-col cols="6" md="4" lg="2" class="search-list__actions">
-                    <slot name="header-actions"></slot>
+                    <slot name="header-actions"
+                          :headers="headers"
+                          :items="items"
+                          :count="count"
+                          :total="total"
+                          :lastId="lastId"
+                          :search="search"
+                    ></slot>
 
                     <v-btn :color="$color('primary', 'primary lighten-2')"
                            depressed
@@ -111,12 +125,28 @@ file that was distributed with this source code.
                         ></slot>
                     </template>
 
-                    <template slot="footer" v-if="lastId !== null">
-                        <td colspan="100%" class="pl-0 pr-0 text-xs-center">
-                            <v-btn color="accent" depressed ripple @click="fetchData()">
-                                {{ $t('pagination.load-more') }}
-                            </v-btn>
-                        </td>
+                    <template slot="footer">
+                        <v-container>
+                            <v-row justify="center">
+                                <v-scale-transition mode="out-in">
+                                    <v-btn v-if="lastId !== null"
+                                           color="accent"
+                                           depressed
+                                           rounded
+                                           small
+                                           ripple
+                                           :loading="loading"
+                                           @click="fetchData(search)"
+                                    >
+                                        {{ $t('pagination.load-more') }}
+                                    </v-btn>
+
+                                    <v-chip outlined small v-else-if="count > 0">
+                                        {{ $t('pagination.all-loaded') }}
+                                    </v-chip>
+                                </v-scale-transition>
+                            </v-row>
+                        </v-container>
                     </template>
                 </v-data-table>
             </v-card>

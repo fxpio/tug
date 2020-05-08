@@ -156,7 +156,7 @@ export class Database {
      * @return {Promise<Results>}
      */
     public async find(criteria: Query|LooseObject, startId?: string): Promise<Results> {
-        return new Results([], 0);
+        return new Results([], 0, 0);
     }
 
     /**

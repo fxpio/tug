@@ -66,6 +66,7 @@ export class AwsDynamoDbDatabase extends Database {
     public static unmarshall(data: any): LooseObject {
         return AWS.DynamoDB.Converter.unmarshall(data);
     }
+
     private readonly tableName: string;
 
     private readonly client: AWS.DynamoDB;
@@ -174,10 +175,16 @@ export class AwsDynamoDbDatabase extends Database {
             ExclusiveStartKey: startId ? {model: {S: query.getModel()}, id: {S: startId as string}} : null,
         });
 
+        let countRes: LooseObject = {Count: 0};
         let res: LooseObject = {Count: 0, Items: []};
         const resValues = [];
 
         try {
+            const countParams: any = Object.assign(convertQueryCriteria(query), {
+                TableName: this.tableName,
+                Select: 'COUNT',
+            });
+            countRes = await this.client.query(countParams).promise();
             res = await this.client.query(params).promise();
         } catch (e) {}
 
@@ -185,7 +192,7 @@ export class AwsDynamoDbDatabase extends Database {
             resValues.push(AwsDynamoDbDatabase.unmarshall(item));
         }
 
-        return new Results(resValues, res.Count, res.LastEvaluatedKey ? res.LastEvaluatedKey.id.S : null);
+        return new Results(resValues, res.Count, countRes.Count, res.LastEvaluatedKey ? res.LastEvaluatedKey.id.S : null);
     }
 
     /**

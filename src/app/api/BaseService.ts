@@ -71,6 +71,6 @@ export class BaseService implements ApiService {
 
         const res = await this.request<ListResponse<T>>(config, canceler);
 
-        return res ? res : {results: [], count: 0, lastId: null} as ListResponse<T>;
+        return res ? res : {results: [], count: 0, total: 0, lastId: null} as ListResponse<T>;
     }
 }
