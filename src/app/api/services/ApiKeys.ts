@@ -27,7 +27,7 @@ export class ApiKeys extends BaseService {
     }
 
     /**
-     * Get or create the authorization.
+     * List the api keys.
      *
      * @param {ListOptions} [options]
      * @param {Canceler}    [canceler]

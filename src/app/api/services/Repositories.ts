@@ -27,7 +27,7 @@ export class Repositories extends BaseService {
     }
 
     /**
-     * Get or create the authorization.
+     * List the repositories.
      *
      * @param {ListOptions} [options]
      * @param {Canceler}    [canceler]
