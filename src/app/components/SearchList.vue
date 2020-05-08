@@ -9,9 +9,9 @@ file that was distributed with this source code.
 
 <template>
     <v-fade-transition mode="out-in">
-        <loading v-if="firstLoading" class="mt-5"></loading>
+        <loading v-if="!disableFirstLoading && firstLoading" class="mt-5"></loading>
 
-        <wall-message v-else-if="hasNoItems">
+        <wall-message v-else-if="!disableFirstLoading && wallEmptyMessage && hasNoItems">
             <template v-for="(slotItem) in getSlotItems('no-items')" v-slot:[slotItem.target]>
                 <slot :name="slotItem.original"></slot>
             </template>
@@ -175,6 +175,12 @@ file that was distributed with this source code.
     export default class SearchList extends mixins(AjaxListContent, SlotWrapper) {
         @Prop({type: Function, required: true})
         public fetchRequest: FetchRequestDataFunction;
+
+        @Prop({type: Boolean, default: true})
+        public wallEmptyMessage: boolean;
+
+        @Prop({type: Boolean, default: false})
+        public disableFirstLoading: boolean;
 
         public async created(): Promise<void> {
             this.headers = this.$attrs.headers as any ?? [];

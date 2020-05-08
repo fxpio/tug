@@ -13,4 +13,4 @@ import {ListResponse} from '@app/api/models/responses/ListResponse';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export type FetchRequestDataFunction = (event: FetchRequestDataEvent<ListResponse<object>>) => Promise<ListResponse<object>>;
+export type FetchRequestDataFunction<I = object> = (event: FetchRequestDataEvent) => Promise<ListResponse<I>>;

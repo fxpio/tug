@@ -180,7 +180,7 @@ file that was distributed with this source code.
             };
         }
 
-        public async fetchDataRequest(event: FetchRequestDataEvent<ListResponse<CodeRepository>>): Promise<ListResponse<CodeRepository>> {
+        public async fetchDataRequest(event: FetchRequestDataEvent): Promise<ListResponse<CodeRepository>> {
             return await this.$api.get<ApiRepositories>(ApiRepositories)
                 .list({lastId: event.lastId, search: event.search}, event.canceler) as ListResponse<CodeRepository>;
         }

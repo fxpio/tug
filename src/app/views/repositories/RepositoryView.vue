@@ -142,16 +142,7 @@ file that was distributed with this source code.
                         </v-card>
 
                         <!-- Packages -->
-                        <v-row class="ma-0 mt-6" align="center">
-                            <v-col class="ma-0 pa-0">
-                                <v-subheader :class="$classes('primary--text', 'text--lighten-3')">
-                                    <lottie width="48px" :options="{animationData: iconDataPackage}"></lottie>
-                                    {{ $t('views.packages.title') }}
-                                </v-subheader>
-                            </v-col>
-                        </v-row>
-
-                        <package-versions v-model.sync="repo">
+                        <package-versions v-model.sync="repo" class="ma-0 mt-6">
                         </package-versions>
                     </div>
                 </v-fade-transition>

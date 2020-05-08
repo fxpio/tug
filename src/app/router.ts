@@ -58,6 +58,7 @@ export default new Router({
             meta: {requiresAuth: true},
             components: {
                 default: () => import(/* webpackChunkName: "repositories" */ '@app/views/repositories/RepositoryView.vue'),
+                toolbar: () => import(/* webpackChunkName: "repositories" */'@app/components/SearchToolbar.vue'),
             },
         },
         {

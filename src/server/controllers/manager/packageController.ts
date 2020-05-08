@@ -8,7 +8,10 @@
  */
 
 import {PackageManager} from '@server/composer/packages/PackageManager';
+import {RepositoryManager} from '@server/composer/repositories/RepositoryManager';
 import {HttpNotFoundError} from '@server/errors/HttpNotFoundError';
+import {Database} from '@server/db/Database';
+import {PackageRepository} from '@server/db/repositories/PackageRepository';
 import {Translator} from '@server/translators/Translator';
 import {LooseObject} from '@server/utils/LooseObject';
 import {validateForm} from '@server/utils/validation';
@@ -25,23 +28,27 @@ import Joi from 'joi';
  * @return {Promise<void>}
  */
 export async function listPackages(req: Request, res: Response, next: Function): Promise<void> {
-    const manager: PackageManager = req.app.get('package-manager');
+    const db = req.app.get('db') as Database;
+    const repo = db.getRepository<PackageRepository>(PackageRepository);
+    const manager: RepositoryManager = req.app.get('repository-manager');
     const packageName = req.params.vendor + '/' + req.params.package;
-    const result = await manager.findPackages(packageName);
-    const versions: LooseObject = {};
+    const result = await manager.findRepository(packageName);
 
     if (null === result) {
         throw new HttpNotFoundError();
     }
 
-    for (const i of Object.keys(result)) {
-        const pack = result[i];
-        versions[pack.getVersion()] = pack.getComposer();
+    const resList = await repo.search({
+        name: packageName,
+    }, ['version', 'versionNormalized'], req.query.search as string, req.query.lastId as string);
+
+    for (const item of resList.getRows()) {
+        if (item.composer) {
+            item.composer = JSON.parse(item.composer);
+        }
     }
 
-    res.set('Content-Type', 'application/json; charset=utf-8');
-    res.send(versions);
-    return;
+    res.json(resList);
 }
 
 /**

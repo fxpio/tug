@@ -9,13 +9,16 @@
 
 import {BaseService} from '../BaseService';
 import {Canceler} from '../Canceler';
-import {PackagesResponse} from '@app/api/models/responses/PackagesResponse';
+import {ListOptions} from '@app/api/models/requests/ListOptions';
+import {ListResponse} from '@app/api/models/responses/ListResponse';
+import {Package} from '@app/api/models/responses/Package';
 import {PackageRefreshRequest} from '@app/api/models/requests/PackageRefreshRequest';
 import {PackageRefreshResponse} from '@app/api/models/responses/PackageRefreshResponse';
 import {PackageRefreshCacheRequest} from '@app/api/models/requests/PackageRefreshCacheRequest';
 import {PackageCacheRefreshResponse} from '@app/api/models/responses/PackageCacheRefreshResponse';
 import {PackageDeleteRequest} from '@app/api/models/requests/PackageDeleteRequest';
 import {PackageDeleteResponse} from '@app/api/models/responses/PackageDeleteResponse';
+import {PackageVersion} from '@app/api/models/responses/PackageVersion';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -29,15 +32,20 @@ export class Packages extends BaseService {
     }
 
     /**
-     * Get all the package versions.
+     * List the package versions.
+     *
+     * @param {string}      packageName
+     * @param {ListOptions} [options]
+     * @param {Canceler}    [canceler]
+     *
+     * @return {Promise<ListResponse<PackageVersion>>}
      *
      * Note: The API returns a 404 error status code if no package is found.
      */
-    public async getAll(packageName: string, canceler?: Canceler): Promise<PackagesResponse> {
-        return await this.request<PackagesResponse>({
-            method: 'GET',
-            url: '/manager/packages/' + packageName + '/versions',
-        }, canceler) as PackagesResponse;
+    public async list(packageName: string, options?: ListOptions, canceler?: Canceler): Promise<ListResponse<PackageVersion>> {
+        return this.requestList<PackageVersion>({
+            url: '/manager/packages/' + packageName + '/versions', params: options || {},
+        }, canceler);
     }
 
     /**

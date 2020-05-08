@@ -12,7 +12,7 @@ import {Canceler} from '@app/api/Canceler';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class FetchRequestDataEvent<I extends object> {
+export class FetchRequestDataEvent {
     public lastId: string | null = null;
 
     public search: string|null = null;

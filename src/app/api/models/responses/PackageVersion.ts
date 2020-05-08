@@ -7,11 +7,16 @@
  * file that was distributed with this source code.
  */
 
-import {MapObject} from '../MapObject';
 import {Package} from './Package';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface PackagesResponse extends MapObject<Package> {
+export interface PackageVersion {
+    id: string;
+    name: string;
+    version: string;
+    versionNormalized: string;
+    composer: Package;
+    downloadCount?: number;
 }
