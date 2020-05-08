@@ -34,6 +34,11 @@ file that was distributed with this source code.
                             small
                     >
                         {{ item.version }}
+
+                        <span v-if="item && item.extra['branch-alias'] && item.extra['branch-alias'][item.version]">
+                            <span class="ml-1 mr-1">/</span>
+                            <span>{{ item.extra['branch-alias'][item.version] }}</span>
+                        </span>
                     </v-chip>
                 </template>
 
