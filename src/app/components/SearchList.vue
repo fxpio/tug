@@ -183,8 +183,8 @@ file that was distributed with this source code.
         }
 
         public mounted(): void {
-            this.$root.$on('toolbar-search-out', async (searchValue: string) => {
-                this.search = searchValue.trim();
+            this.$root.$on('toolbar-search-out', async (searchValue: string|null) => {
+                this.search = null !== searchValue ? searchValue.trim() : '';
             });
 
             this.$root.$on('search-list-delete-item', async (value: string|number, key: string = 'id') => {
