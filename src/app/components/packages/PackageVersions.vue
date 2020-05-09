@@ -127,6 +127,15 @@ file that was distributed with this source code.
         }
 
         public async fetchDataRequest(event: FetchRequestDataEvent): Promise<ListResponse<PackageVersion>> {
+            if (!this.repository.packageName) {
+                return Promise.resolve({
+                    results: [],
+                    lastId: null,
+                    count: 0,
+                    total: 0,
+                } as ListResponse<PackageVersion>);
+            }
+
             return await this.$api.get<Packages>(Packages)
                 .list(this.repository.packageName as string,
                     {lastId: event.lastId, search: event.search}, event.canceler) as ListResponse<PackageVersion>;
