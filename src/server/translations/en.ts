@@ -37,6 +37,15 @@ export default {
     'manager.config.github-token.created': `The token "{{token}}" for Github Webhooks hosted on "{{host}}" was created successfully`,
     'manager.config.github-token.deleted': `The token for Github Webhooks hosted on "{{host}}" was deleted successfully`,
 
+    'manager.config.gitlab-oauth.empty': `No tokens for Gitlab Oauth are saved`,
+    'manager.config.gitlab-oauth': `The Oauth tokens to connect the server with your Gitlab account are "{{tokens}}"`,
+    'manager.config.gitlab-oauth.created': `The Oauth token "{{token}}" to connect the server with your Gitlab account hosted on "{{host}}" was created successfully`,
+    'manager.config.gitlab-oauth.deleted': `The Oauth token to connect the server with your Gitlab account hosted on "{{host}}" was deleted successfully`,
+    'manager.config.gitlab-token.empty': `No tokens for Gitlab Webhooks are generated`,
+    'manager.config.gitlab-token': `The tokens for Gitlab Webhooks are "{{tokens}}"`,
+    'manager.config.gitlab-token.created': `The token "{{token}}" for Gitlab Webhooks hosted on "{{host}}" was created successfully`,
+    'manager.config.gitlab-token.deleted': `The token for Gitlab Webhooks hosted on "{{host}}" was deleted successfully`,
+
     'manager.api-key.created': `The API key "{{token}}" was created successfully`,
     'manager.api-key.deleted': `The API key "{{token}}" was deleted successfully`,
 

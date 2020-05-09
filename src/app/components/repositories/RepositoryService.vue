@@ -17,6 +17,13 @@ file that was distributed with this source code.
                 fab fa-github
             </v-icon>
 
+            <v-icon v-on="on"
+                    v-else-if="'vcs-gitlab' === type"
+                    color="deep-orange lighten-1"
+            >
+                fab fa-gitlab
+            </v-icon>
+
             <v-icon v-on="on" v-else>
                 fa-code-branch
             </v-icon>

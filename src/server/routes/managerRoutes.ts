@@ -9,7 +9,9 @@
 
 import {createApiKey, deleteApiKey, listApiKey} from '@server/controllers/manager/apiKeyController';
 import {createGithubOauth, deleteGithubOauth, showGithubOauth} from '@server/controllers/manager/githubOauthController';
+import {createGitlabOauth, deleteGitlabOauth, showGitlabOauth} from '@server/controllers/manager/gitlabOauthController';
 import {createGithubToken, deleteGithubToken, showGithubToken} from '@server/controllers/manager/githubTokenController';
+import {createGitlabToken, deleteGitlabToken, showGitlabToken} from '@server/controllers/manager/gitlabTokenController';
 import {
     deletePackages,
     listPackages,
@@ -47,9 +49,17 @@ export function managerRoutes(router: Router, basicAuthStrategy: AuthStrategy): 
     router.get('/github-oauth', asyncHandler(showGithubOauth));
     router.delete('/github-oauth', asyncHandler(deleteGithubOauth));
 
+    router.post('/gitlab-oauth', asyncHandler(createGitlabOauth));
+    router.get('/gitlab-oauth', asyncHandler(showGitlabOauth));
+    router.delete('/gitlab-oauth', asyncHandler(deleteGitlabOauth));
+
     router.post('/github-token', asyncHandler(createGithubToken));
     router.get('/github-token', asyncHandler(showGithubToken));
     router.delete('/github-token', asyncHandler(deleteGithubToken));
+
+    router.post('/gitlab-token', asyncHandler(createGitlabToken));
+    router.get('/gitlab-token', asyncHandler(showGitlabToken));
+    router.delete('/gitlab-token', asyncHandler(deleteGitlabToken));
 
     router.get('/repositories', asyncHandler(listRepository));
     router.post('/repositories', asyncHandler(enableRepository));

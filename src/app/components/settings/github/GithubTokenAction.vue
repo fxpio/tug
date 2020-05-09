@@ -9,7 +9,8 @@ file that was distributed with this source code.
 
 <template>
     <token-action
-        :title="$t('views.settings.webhook-token')"
+        :title="$t('views.settings.github.webhook-token')"
+        :create-token-field-label="$i18n.t('views.settings.github.webhook-token')"
         :fetch-tokens="fetchTokens"
         :create-token="createToken"
         :delete-token="deleteToken"

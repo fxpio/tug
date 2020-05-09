@@ -37,6 +37,15 @@ export default {
     'manager.config.github-token.created': `Le jeton "{{token}}" pour les Webhooks Github hébergés sur "{{host}}" a été créé avec succès`,
     'manager.config.github-token.deleted': `Le jeton pour les Webhooks Github hébergés sur "{{host}}" a été supprimé avec succès`,
 
+    'manager.config.gitlab-oauth.empty': `Aucun jeton pour Gitlab Oauth n'est sauvegardé`,
+    'manager.config.gitlab-oauth': `Les jetons Oauth pour connecter le serveur avec votre compte Gitlab sont "{{tokens}}"`,
+    'manager.config.gitlab-oauth.created': `Le jeton Oauth "{{token}}" pour connecter le serveur avec votre compte Gitlab hébergé sur "{{host}}" a été créé avec succès`,
+    'manager.config.gitlab-oauth.deleted': `Le jeton Oauth pour connecter le serveur avec votre compte Gitlab hébergé sur "{{host}}" a été supprimé avec succès`,
+    'manager.config.gitlab-token.empty': `Aucun jeton pour les Webhooks Gitlab n'est généré`,
+    'manager.config.gitlab-token': `Les jetons pour pour les Webhooks Gitlab sont "{{tokens}}"`,
+    'manager.config.gitlab-token.created': `Le jeton "{{token}}" pour les Webhooks Gitlab hébergés sur "{{host}}" a été créé avec succès`,
+    'manager.config.gitlab-token.deleted': `Le jeton pour les Webhooks Gitlab hébergés sur "{{host}}" a été supprimé avec succès`,
+
     'manager.api-key.created': `La clé API "{{token}}" a été créé avec succès`,
     'manager.api-key.deleted': `La clé API "{{token}}" a été supprimé avec succès`,
 

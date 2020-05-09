@@ -45,6 +45,7 @@ file that was distributed with this source code.
             <v-slide-x-transition mode="out-in">
                 <token-form-add
                         :title="title"
+                        :token-field-label="createTokenFieldLabel"
                         :default-host="defaultHost"
                         :token-required="createTokenRequired"
                         :create-token="createToken"
@@ -99,6 +100,9 @@ file that was distributed with this source code.
     export default class TokenAction extends mixins(AjaxContent) {
         @Prop({type: String, required: true})
         public title: string;
+
+        @Prop({type: String, required: true})
+        public createTokenFieldLabel: string;
 
         @Prop({type: Function, required: true})
         public fetchTokens: (canceler: Canceler) => Promise<TokensResponse|null>;

@@ -16,6 +16,7 @@ This document contains information on how to download, install, and start the AP
 - [AWS Certificate Manager](https://aws.amazon.com/certificate-manager)
 - [AWS IAM](https://aws.amazon.com/iam)
 - [Github Webhooks](https://developer.github.com/webhooks)
+- [Gitlab Webhooks](https://docs.gitlab.com/ee/user/project/integrations/webhooks.html)
 - [Express](http://expressjs.com)
 
 ## Prerequisites
@@ -23,7 +24,7 @@ This document contains information on how to download, install, and start the AP
 This project requires:
 
 - an active account for [AWS](https://aws.amazon.com)
-- an active account for [Github](https://github.com)
+- an active account for [Github](https://github.com) or [Gitlab](https://gitlab.com)
 
 If you want to compile and deploy your own version, you must have in addition:
 
@@ -57,6 +58,15 @@ Generate a [personal access token](https://github.com/settings/tokens) with the 
   - `repo_deployment`
   - `public_repo`
   - `repo:invite`
+
+Keep the token for the step 2.
+
+**Gitlab credentials:**
+
+Generate a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) with the required scopes:
+
+- `read_api`
+- `read_repository`
 
 Keep the token for the step 2.
 
@@ -104,7 +114,7 @@ $ yarn run setup
 ```
 
 > **Notes:**
-> - You will be prompted to enter your credentials for AWS and Github services, as well as some other settings.
+> - You will be prompted to enter your credentials for AWS and Github or Gitlab services, as well as some other settings.
 > - If you prefer run the commands separately or run the dev server in local, see [this page](alternate-installations.md)
 
 Great! Now you can go to the AWS console of CloudFormation to track the deployment status of the stack.
@@ -116,7 +126,9 @@ a custom domain. In this case, see [this page](custom-domain-ssl.md).
 
 ## 2) Configure the server
 
-### 2.1. Create the oAuth token for Github
+### 2.1. Create the oAuth token
+
+#### 2.1.a. Create the oAuth token for Github
 
 To connect the server with your Github account, you must configure the Github oAuth token.
 
@@ -134,8 +146,28 @@ $ bin/create-github-oauth --token <your-github-personal-token>
 > The oAuth token for Github is stored in the DynamoDB with the id `config:global` and the
 > `github-oauth."github.com"` attribute.
 
+#### 2.1.b. Create the oAuth token for Gitlab
 
-### 2.2. Create the token for Github Webhooks
+To connect the server with your Gitlab account, you must configure the Gitlab oAuth token.
+
+To create a oAuth token, open the PWA and in the `Settings` section click
+on the `Add` button of the `oAuth token` line item. Add your Gitlab personal token just before.
+
+Or run the command:
+
+```
+$ bin/create-gitlab-oauth --token <your-gitlab-personal-token>
+```
+
+> **Note:**
+>
+> The oAuth token for Gitlab is stored in the DynamoDB with the id `config:global` and the
+> `gitlab-oauth."gitlab.com"` attribute.
+
+
+### 2.2. Create the token for Webhooks
+
+### 2.2.a. Create the token for Github Webhooks
 
 To create a token to use in Github webhooks, open the PWA and in the `Settings` section click
 on the `Add` button of the `Webhook token` line item.
@@ -151,8 +183,26 @@ $ bin/create-github-token
 > The token for Github Webhooks is stored in the DynamoDB with the id `config:global` and the
 > `github-webhook."github.com"` attribute.
 
+### 2.2.b. Create the token for Gitlab Webhooks
 
-### 2.3. Configure the Github Webhook
+To create a token to use in Gitlab webhooks, open the PWA and in the `Settings` section click
+on the `Add` button of the `Webhook token` line item.
+
+Or run the command:
+
+```
+$ bin/create-gitlab-token
+```
+
+> **Note:**
+>
+> The token for Gitlab Webhooks is stored in the DynamoDB with the id `config:global` and the
+> `gitlab-webhook."gitlab.com"` attribute.
+
+
+### 2.3. Configure the Webhook in the SCM service
+
+### 2.3.a. Configure the Github Webhook
 
 In each repository or in a organization, create the webhook with:
 
@@ -160,6 +210,16 @@ In each repository or in a organization, create the webhook with:
 - Content type: `application/json`
 - Secret: `<your-created-token-for-github-webhooks-in-step-2.2>`
 - Which events would you like to trigger this webhook? `Just the push event.`
+
+### 2.3.b. Configure the Gitlab Webhook
+
+In each repository or in a organization, create the webhook with:
+
+- URL: `https://<your-custom-domain-for-tug>`
+- Secret Token: `<your-created-token-for-gitlab-webhooks-in-step-2.2>`
+- Trigger: _Select the events_
+  - `Push events`
+  - `Tag push events`
 
 
 ### 2.4. Create your first API key

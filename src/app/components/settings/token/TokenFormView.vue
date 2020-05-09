@@ -87,6 +87,7 @@ file that was distributed with this source code.
                 {
                     value: 'action',
                     sortable: false,
+                    align: 'end',
                 },
             ];
         }

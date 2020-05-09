@@ -45,7 +45,7 @@ file that was distributed with this source code.
                     <v-text-field
                             v-if="!autoGeneration"
                             type="text"
-                            :label="$i18n.t('views.settings.oauth-token')"
+                            :label="tokenFieldLabel"
                             v-model="token"
                             :error-messages="fieldErrors('token')"
                             @keydown.enter="save"
@@ -101,6 +101,9 @@ file that was distributed with this source code.
     export default class TokenFormAdd extends mixins(AjaxFormContent) {
         @Prop({type: String, required: true})
         public title: string;
+
+        @Prop({type: String, required: true})
+        public tokenFieldLabel: string;
 
         @Prop({type: Function, required: true})
         public createToken: (data: TokenRequest, canceler: Canceler) => Promise<TokenResponse|null>;

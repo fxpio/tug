@@ -15,6 +15,7 @@ test('test config to get default values', (t) => {
     const config = new Config();
 
     t.deepEqual(config.get('github-oauth'), {});
+    t.deepEqual(config.get('gitlab-oauth'), {});
 });
 
 test('test config to get default all values', (t) => {
@@ -33,8 +34,10 @@ test('test config to check if key exists', (t) => {
     const config = new Config();
 
     t.true(config.has('github-oauth'));
+    t.true(config.has('gitlab-oauth'));
     t.false(config.has('invalid-key'));
     t.false(config.has('github-oauth[invalid-key]'));
+    t.false(config.has('gitlab-oauth[invalid-key]'));
 });
 
 test('test config to merge with new config', (t) => {
@@ -42,13 +45,20 @@ test('test config to merge with new config', (t) => {
 
     t.deepEqual(config.get('github-oauth[github.com]'), null);
     t.deepEqual(config.get('github-oauth["github.com"]'), null);
+    t.deepEqual(config.get('gitlab-oauth[gitlab.com]'), null);
+    t.deepEqual(config.get('gitlab-oauth["gitlab.com"]'), null);
 
     config.merge({
         'github-oauth': {
             'github.com': 'MY_TOKEN',
         },
+        'gitlab-oauth': {
+            'gitlab.com': 'MY_TOKEN',
+        },
     });
 
     t.deepEqual(config.get('github-oauth[github.com]'), 'MY_TOKEN');
     t.deepEqual(config.get('github-oauth["github.com"]'), 'MY_TOKEN');
+    t.deepEqual(config.get('gitlab-oauth[gitlab.com]'), 'MY_TOKEN');
+    t.deepEqual(config.get('gitlab-oauth["gitlab.com"]'), 'MY_TOKEN');
 });

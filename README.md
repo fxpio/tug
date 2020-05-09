@@ -21,7 +21,7 @@ for more details.
 
 Also, this project is not intended to be another complete Packagist server, or a static packages generator like Satis,
 but bring some interesting features of the Packagist server (automatic update of package definitions) for a very low
-cost in case you use a third party service like Github to host your private packages, and that the use of
+cost in case you use a third party service like Github or Gitlab to host your private packages, and that the use of
 VCS repositories makes every Composer update excessively long.
 
 **Features include:**
@@ -32,6 +32,7 @@ VCS repositories makes every Composer update excessively long.
 - Authenticate with the AWS IAM Credentials (access key id and secret access key)
 - Available drivers:
   - Github
+  - Gitlab
 - Tiggers:
   - create the Composer package definition when the branch or tag is created
   - remove the Composer package definition when the branch or tag is deleted
@@ -55,11 +56,15 @@ VCS repositories makes every Composer update excessively long.
   - clean and rebuild the cache
 - CLI commands to manage the remote service:
   - enable or disable manually each Github repositories
+  - enable or disable manually each Gitlab repositories
   - generate or delete the token used by the Github Webhooks
+  - generate or delete the token used by the Gitlab Webhooks
   - generate or delete an API key
   - generate all package definitions for a specific repository
   - refresh all packages or a specific package version
   - delete all packages or a specific package version
+  - show the Github tokens
+  - show the Gitlab tokens
 - CLI commands to create and deploy manually:
   - configure interactively the project
   - create or remove the S3 bucket to deploy the code

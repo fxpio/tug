@@ -17,6 +17,8 @@ export class Config {
     public static defaultConfig: LooseObject = {
         'github-oauth': {},
         'github-webhook': {},
+        'gitlab-oauth': {},
+        'gitlab-webhook': {},
         'ui': {
             locale: 'en',
         },

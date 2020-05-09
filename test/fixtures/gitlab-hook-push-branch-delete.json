@@ -1,0 +1,48 @@
+{
+  "object_kind": "push",
+  "event_name": "push",
+  "before": "d28350d415272d438f8c0766056549c029f1ff43",
+  "after": "0000000000000000000000000000000000000000",
+  "ref": "refs/heads/test-new-branch",
+  "checkout_sha": null,
+  "message": null,
+  "user_id": 654321,
+  "user_name": "Full Name",
+  "user_username": "myusername",
+  "user_email": "",
+  "user_avatar": "https://assets.gitlab-static.net/uploads/-/system/user/avatar/654321/avatar.png",
+  "project_id": 12345678,
+  "project": {
+    "id": 12345678,
+    "name": "Test Tug Package",
+    "description": "",
+    "web_url": "https://gitlab.com/myorg/test-tug-package",
+    "avatar_url": null,
+    "git_ssh_url": "git@gitlab.com:myorg/test-tug-package.git",
+    "git_http_url": "https://gitlab.com/myorg/test-tug-package.git",
+    "namespace": "My Org",
+    "visibility_level": 0,
+    "path_with_namespace": "myorg/test-tug-package",
+    "default_branch": "master",
+    "ci_config_path": null,
+    "homepage": "https://gitlab.com/myorg/test-tug-package",
+    "url": "git@gitlab.com:myorg/test-tug-package.git",
+    "ssh_url": "git@gitlab.com:myorg/test-tug-package.git",
+    "http_url": "https://gitlab.com/myorg/test-tug-package.git"
+  },
+  "commits": [
+
+  ],
+  "total_commits_count": 0,
+  "push_options": {
+  },
+  "repository": {
+    "name": "Test Tug Package",
+    "url": "git@gitlab.com:myorg/test-tug-package.git",
+    "description": "",
+    "homepage": "https://gitlab.com/myorg/test-tug-package",
+    "git_http_url": "https://gitlab.com/myorg/test-tug-package.git",
+    "git_ssh_url": "git@gitlab.com:myorg/test-tug-package.git",
+    "visibility_level": 0
+  }
+}

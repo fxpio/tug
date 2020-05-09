@@ -52,6 +52,11 @@ export class RemoteFilesystem {
             params.headers.Authorization = 'token ' + this.config.get('github-oauth[' + originalUrl + ']');
         }
 
+        if (Object.keys(this.config.get('gitlab-oauth')).includes(originalUrl)) {
+            params.headers['Content-Type'] = 'application/json';
+            params.headers['Private-Token'] = this.config.get('gitlab-oauth[' + originalUrl + ']');
+        }
+
         options = Object.assign({}, options, params);
 
         return await fetch(fileUrl, options)

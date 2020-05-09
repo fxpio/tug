@@ -23,15 +23,21 @@ All commands below are executable via:
 - `package-deploy`: Package and deploy the project
 - `delete-stack`: Delete the AWS Cloud Formation stack
 - `create-github-oauth`: Create your Github oAuth token
+- `create-gitlab-oauth`: Create your Gitlab oAuth token
 - `show-github-oauth`: Show your Github oAuth token
+- `show-gitlab-oauth`: Show your Gitlab oAuth token
 - `delete-github-oauth`: Delete your Github oAuth token
+- `delete-gitlab-oauth`: Delete your Gitlab oAuth token
 - `create-github-token`: Create the token for the Github Webhooks
+- `create-gitlab-token`: Create the token for the Gitlab Webhooks
 - `show-github-token`: Show the token for the Github Webhooks
+- `show-gitlab-token`: Show the token for the Gitlab Webhooks
 - `delete-github-token`: Delete the token for the Github Webhooks
+- `delete-gitlab-token`: Delete the token for the Gitlab Webhooks
 - `create-api-key`: Create a API key
 - `delete-api-key`: Delete a API key
-- `enable-repo`: Enable manually the Github repository
-- `disable-repo`: Disable manually the Github repository
+- `enable-repo`: Enable manually the remote repository
+- `disable-repo`: Disable manually the remote repository
 - `delete-packages`: Delete the package versions or a specific package version
 - `refresh-packages`: Refresh the package versions or a specific package version
 - `refresh-cache`: Refresh only the cache of all package versions or a specific package version

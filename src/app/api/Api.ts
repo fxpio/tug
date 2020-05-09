@@ -13,6 +13,8 @@ import {ApiService, ApiServiceConstructor} from './ApiService';
 import {Authorization} from './services/Authorization';
 import {GithubOauthToken} from './services/GithubOauthToken';
 import {GithubToken} from './services/GithubToken';
+import {GitlabOauthToken} from './services/GitlabOauthToken';
+import {GitlabToken} from './services/GitlabToken';
 import {Repositories} from './services/Repositories';
 import {ApiKeys} from './services/ApiKeys';
 import {Packages} from '@app/api/services/Packages';
@@ -21,6 +23,8 @@ const SERVICES: ApiServiceConstructor[] = [
     Authorization,
     GithubOauthToken,
     GithubToken,
+    GitlabOauthToken,
+    GitlabToken,
     ApiKeys,
     Repositories,
     Packages,

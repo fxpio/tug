@@ -117,8 +117,8 @@ file that was distributed with this source code.
                     <v-list>
                         <v-list-item three-line>
                             <v-list-item-content>
-                                <v-list-item-title>{{ $t('views.settings.oauth-token') }}</v-list-item-title>
-                                <v-list-item-subtitle>{{ $t('views.settings.oauth-token.description') }}</v-list-item-subtitle>
+                                <v-list-item-title>{{ $t('views.settings.github.oauth-token') }}</v-list-item-title>
+                                <v-list-item-subtitle>{{ $t('views.settings.github.oauth-token.description') }}</v-list-item-subtitle>
                             </v-list-item-content>
 
                             <v-list-item-action class="mt-2 mb-2">
@@ -128,12 +128,41 @@ file that was distributed with this source code.
 
                         <v-list-item three-line>
                             <v-list-item-content>
-                                <v-list-item-title>{{ $t('views.settings.webhook-token') }}</v-list-item-title>
-                                <v-list-item-subtitle>{{ $t('views.settings.webhook-token.description') }}</v-list-item-subtitle>
+                                <v-list-item-title>{{ $t('views.settings.github.webhook-token') }}</v-list-item-title>
+                                <v-list-item-subtitle>{{ $t('views.settings.github.webhook-token.description') }}</v-list-item-subtitle>
                             </v-list-item-content>
 
                             <v-list-item-action class="mt-2 mb-2">
                                 <github-token-action origin="center right"></github-token-action>
+                            </v-list-item-action>
+                        </v-list-item>
+                    </v-list>
+                </v-card>
+
+                <v-subheader :class="$classes('mt-4 primary--text', 'text--lighten-3')">
+                    {{ $t('views.settings.gitlab') }}
+                </v-subheader>
+                <v-card flat>
+                    <v-list>
+                        <v-list-item three-line>
+                            <v-list-item-content>
+                                <v-list-item-title>{{ $t('views.settings.gitlab.oauth-token') }}</v-list-item-title>
+                                <v-list-item-subtitle>{{ $t('views.settings.gitlab.oauth-token.description') }}</v-list-item-subtitle>
+                            </v-list-item-content>
+
+                            <v-list-item-action class="mt-2 mb-2">
+                                <gitlab-oauth-token-action origin="center right"></gitlab-oauth-token-action>
+                            </v-list-item-action>
+                        </v-list-item>
+
+                        <v-list-item three-line>
+                            <v-list-item-content>
+                                <v-list-item-title>{{ $t('views.settings.gitlab.webhook-token') }}</v-list-item-title>
+                                <v-list-item-subtitle>{{ $t('views.settings.gitlab.webhook-token.description') }}</v-list-item-subtitle>
+                            </v-list-item-content>
+
+                            <v-list-item-action class="mt-2 mb-2">
+                                <gitlab-token-action origin="center right"></gitlab-token-action>
                             </v-list-item-action>
                         </v-list-item>
                     </v-list>
@@ -148,12 +177,14 @@ file that was distributed with this source code.
     import {Component, Vue} from 'vue-property-decorator';
     import GithubOauthTokenAction from '@app/components/settings/github/GithubOauthTokenAction.vue';
     import GithubTokenAction from '@app/components/settings/github/GithubTokenAction.vue';
+    import GitlabOauthTokenAction from '@app/components/settings/gitlab/GitlabOauthTokenAction.vue';
+    import GitlabTokenAction from '@app/components/settings/gitlab/GitlabTokenAction.vue';
 
     /**
      * @author François Pluchino <francois.pluchino@gmail.com>
      */
     @Component({
-        components: {GithubTokenAction, GithubOauthTokenAction},
+        components: {GithubTokenAction, GithubOauthTokenAction, GitlabTokenAction, GitlabOauthTokenAction},
     })
     export default class Settings extends Vue {
         public languageAvailables: LanguageAvailable[] = [];

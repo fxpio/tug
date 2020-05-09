@@ -8,6 +8,7 @@
  */
 
 import {GithubDriver} from '@server/composer/repositories/vcs-drivers/GithubDriver';
+import {GitlabDriver} from '@server/composer/repositories/vcs-drivers/GitlabDriver';
 import {VcsDriver} from '@server/composer/repositories/vcs-drivers/VcsDriver';
 import {Config} from '@server/configs/Config';
 import {RepositoryError} from '@server/errors/RepositoryError';
@@ -38,6 +39,7 @@ export class VcsRepository {
     constructor(repoData: LooseObject, config: Config, drivers?: LooseObject) {
         this.drivers = drivers ? drivers : {
             github: GithubDriver,
+            gitlab: GitlabDriver,
         };
 
         this.config = config;
