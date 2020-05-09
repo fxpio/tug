@@ -122,7 +122,7 @@ async function pushAction(req: Request, res: Response): Promise<void> {
  * @return {Promise<string>}
  */
 async function refreshVersion(queue: MessageQueue, logger: Logger, repo: VcsRepository, version: string, identifier: string, force: boolean = false): Promise<string> {
-    const mess = log(logger, `Refreshing of package version "${version}" has started for the repository "${repo.getUrl()}"`);
+    const mess = log(logger, `Refreshing of package version "${version}" has started for the repository "${repo.getUrl()}" with the identifier "${identifier}"` + (force ? ' (forced)' : ''));
     await queue.send({
         type: 'refresh-package',
         repositoryUrl: repo.getUrl(),
