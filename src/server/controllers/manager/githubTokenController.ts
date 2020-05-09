@@ -68,7 +68,7 @@ export async function deleteGithubToken(req: Request, res: Response, next: Funct
 
     const config = (await configManager.get()).all();
     delete config['github-webhook'][host];
-    await configManager.put(config);
+    await configManager.put(config, true);
 
     res.json({
         message: translator.trans(res, 'manager.config.github-token.deleted', {host}),

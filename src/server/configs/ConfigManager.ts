@@ -17,8 +17,6 @@ import {LooseObject} from '@server/utils/LooseObject';
 export class ConfigManager {
     private readonly configRepo: ConfigRepository;
 
-    private config: Config|null;
-
     /**
      * Constructor.
      *
@@ -26,7 +24,6 @@ export class ConfigManager {
      */
     constructor(configRepo: ConfigRepository) {
         this.configRepo = configRepo;
-        this.config = null;
     }
 
     /**
@@ -35,30 +32,28 @@ export class ConfigManager {
      * @return Promise<Config>
      */
     public async get(): Promise<Config> {
-        if (null === this.config) {
-            const config = new Config();
-            const data: LooseObject|null = await this.configRepo.get('global');
+        const config = new Config();
+        const data: LooseObject|null = await this.configRepo.get('global');
 
-            if (data) {
-                delete data.id;
-            }
-
-            config.merge(data);
-            this.config = config;
+        if (data) {
+            delete data.id;
         }
 
-        return this.config;
+        config.merge(data);
+
+        return config;
     }
 
     /**
      * Put and save the new config.
      *
      * @param {Config|LooseObject} config The new config
+     * @param {boolean}            replace Force to replace all values
      *
      * @return {Promise<Config>}
      */
-    public async put(config: Config|LooseObject): Promise<Config> {
-        const currentConfig = await this.get();
+    public async put(config: Config|LooseObject, replace: boolean = false): Promise<Config> {
+        const currentConfig = replace ? new Config() : await this.get();
         currentConfig.merge(config);
 
         await this.configRepo.put(Object.assign({}, currentConfig.all(), {id: 'global'}));
