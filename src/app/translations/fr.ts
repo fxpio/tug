@@ -70,6 +70,7 @@ export default {
     'views.packages.package-name': 'Nom du package',
     'views.packages.url': 'URL',
     'views.packages.version': 'Version',
+    'views.packages.reference': 'Référence',
     'views.packages.time': 'Date de publication',
     'views.api-keys.title': 'Clés API',
     'views.api-keys.name': 'Clé API',

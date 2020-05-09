@@ -38,6 +38,17 @@ file that was distributed with this source code.
             </v-chip>
         </template>
 
+        <template v-slot:data-table.item.reference="{item}">
+            <v-tooltip top>
+                <template v-slot:activator="{on}">
+                    <v-chip small v-on="on">
+                        {{ getReference(item, true) }}
+                    </v-chip>
+                </template>
+                <span>{{ getReference(item) }}</span>
+            </v-tooltip>
+        </template>
+
         <template v-slot:data-table.item.time="{item}">
             {{ $fdt(item.composer.time) }}
         </template>
@@ -114,6 +125,9 @@ file that was distributed with this source code.
                 {   text: this.$i18n.t('views.packages.version'),
                     value: 'version',
                 },
+                {   text: this.$i18n.t('views.packages.reference'),
+                    value: 'reference',
+                },
                 {   text: this.$i18n.t('views.packages.time'),
                     value: 'time',
                 },
@@ -124,6 +138,22 @@ file that was distributed with this source code.
 
         public get iconData(): object {
             return  iconData;
+        }
+
+        public getReference(item: PackageVersion, short: boolean = false): string {
+            let ref = item.version;
+
+            if (item.composer && item.composer.dist) {
+                ref = item.composer.dist.reference;
+            } else if (item.composer && item.composer.source) {
+                ref = item.composer.source.reference;
+            }
+
+            if (short && ref && ref !== item.version) {
+                ref = ref.substring(0, 8);
+            }
+
+            return ref;
         }
 
         public async fetchDataRequest(event: FetchRequestDataEvent): Promise<ListResponse<PackageVersion>> {
