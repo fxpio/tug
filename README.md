@@ -24,6 +24,10 @@ but bring some interesting features of the Packagist server (automatic update of
 cost in case you use a third party service like Github or Gitlab to host your private packages, and that the use of
 VCS repositories makes every Composer update excessively long.
 
+**All features can be managed with the Progressive Web Application for desktop and mobile:**
+
+[![PWA screenshots](doc/images/screenshots.jpg)](doc/images/screenshots.jpg)
+
 **Features include:**
 
 - Deploy the service in a few minutes
