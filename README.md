@@ -2,7 +2,7 @@ Tug
 ===
 
 [![Image of CloudFormation Launch Stack](doc/images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=Tug&templateURL=https://tug-dev.s3.amazonaws.com/latest.template)
-[![Build Status](https://travis-ci.org/fxpio/tug.svg?branch=master)](https://travis-ci.org/fxpio/tug)
+[![Build Status](https://travis-ci.com/fxpio/tug.svg?branch=1.0)](https://travis-ci.com/fxpio/tug)
 
 Tug is a Composer private registry for private PHP packages installable with
 [Composer](http://getcomposer.org) (1 and 2). The main idea of this project is to have an intermediary between
