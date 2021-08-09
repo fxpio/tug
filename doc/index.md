@@ -101,7 +101,7 @@ and follow the wizard:
 $ git clone git@github.com:fxpio/tug.git
 ```
 
-Or download the [archive](https://github.com/fxpio/tug/archive/master.zip) if you haven't Git.
+Or download the [archive](https://github.com/fxpio/tug/archive/1.0.zip) if you haven't Git.
 
 
 #### 1.b.2. Setup the project

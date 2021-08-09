@@ -5,7 +5,7 @@ Tug
 [![Build Status](https://travis-ci.org/fxpio/tug.svg?branch=master)](https://travis-ci.org/fxpio/tug)
 
 Tug is a Composer private registry for private PHP packages installable with
-[Composer](http://getcomposer.org). The main idea of this project is to have an intermediary between
+[Composer](http://getcomposer.org) (1 and 2). The main idea of this project is to have an intermediary between
 the management of its own server Packagist, or the use of a third party service, and the simple static
 packages generator like Satis. That is, do not be worried about updating package versions and SHA1s of
 the branches, while avoiding the cost of server maintenance and execution, or the high cost of third-party
