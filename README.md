@@ -30,7 +30,8 @@ VCS repositories makes every Composer update excessively long.
 
 **Features include:**
 
-- Deploy the service in a few minutes
+- Private registry compatible with Composer 1 and 2
+- Deploy the service in a few minutes with Amazon AWS Cloud Formation
 - Fully manage the remote service with the Progressive Web Application or the API Rest
 - Server messages and the Progressive Web Application are localized in multiple languages
 - Authenticate with the AWS IAM Credentials (access key id and secret access key)
@@ -78,7 +79,7 @@ VCS repositories makes every Composer update excessively long.
   - serve the server in local for tests
 - All CLI commands use the API Rest of the Server
 - Auto configuration of the CLI tool:
-  - authentication can be do with the AWS Security Token Service (session token) or the AWS IAM Credentials
+  - authentication can be doing with the AWS Security Token Service (session token) or the AWS IAM Credentials
   - automatically configuration of the AWS credentials if the [Shared Credentials File](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-shared.html)
     is present on your machine
   - automatically configuration of the AWS regions if the Shared Config File is present on your machine
