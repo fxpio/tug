@@ -101,7 +101,7 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
                 let params = {
                     ACL: program.tag || program.replace ? 'public-read' : undefined,
                     Bucket: program.bucket ? program.bucket : env.AWS_S3_BUCKET_DEPLOY,
-                    Key: `latest.template`,
+                    Key: `${program.tag || 'latest'}.template`,
                     Body: fileStream
                 };
                 await s3.upload(params).promise();
