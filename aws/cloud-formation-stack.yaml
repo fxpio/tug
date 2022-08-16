@@ -182,7 +182,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: Logic of Tug
-      Runtime: nodejs12.x
+      Runtime: nodejs16.x
       Handler: server.handler
       CodeUri:
         Bucket: {S3_LAMBDA_CODE_BUCKET}
