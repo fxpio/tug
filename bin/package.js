@@ -65,7 +65,7 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
             return newPath;
         })
         .then(async (filePath) => {
-            let s3 = new AWS.S3({apiVersion: '2006-03-01', region: env.AWS_REGION});
+            let s3 = new AWS.S3({apiVersion: '2006-03-01', region: env.AWS_REGION, credentials: {accessKeyId: env.AWS_ACCESS_KEY_ID, secretAccessKey: env.AWS_SECRET_ACCESS_KEY}});
             let fileStream = fs.createReadStream(filePath);
             fileStream.on('error', utils.displayError);
 
@@ -94,7 +94,7 @@ utils.spawn('node bin/build' + (program.force ? ' --force' : ''))
             fs.writeFileSync(BUILD_CLOUDFORMATION_PATH, data);
 
             if (program.tag || program.replace) {
-                let s3 = new AWS.S3({apiVersion: '2006-03-01', region: env.AWS_REGION});
+                let s3 = new AWS.S3({apiVersion: '2006-03-01', region: env.AWS_REGION, credentials: {accessKeyId: env.AWS_ACCESS_KEY_ID, secretAccessKey: env.AWS_SECRET_ACCESS_KEY}});
                 let fileStream = fs.createReadStream(BUILD_CLOUDFORMATION_PATH);
                 fileStream.on('error', utils.displayError);
 

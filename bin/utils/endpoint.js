@@ -24,7 +24,8 @@ module.exports.getEndpoint = async function getEndpoint(program) {
     }
 
     try {
-        let cf = new AWS.CloudFormation({apiVersion: '2010-05-15'});
+        const env = require('./../utils/env').loadEnvs();
+        let cf = new AWS.CloudFormation({apiVersion: '2010-05-15', credentials: {accessKeyId: env.AWS_ACCESS_KEY_ID, secretAccessKey: env.AWS_SECRET_ACCESS_KEY}});
         let resources = await cf.describeStackResources({StackName: process.env.AWS_STACK_NAME, LogicalResourceId: 'Endpoint'}).promise();
 
         if (resources.StackResources.length > 0 && 'AWS::ApiGateway::RestApi' === resources.StackResources[0].ResourceType) {

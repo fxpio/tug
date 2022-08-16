@@ -90,7 +90,7 @@ let availableRegions = null;
 let getAvailableRegions = async function () {
     if (null === availableRegions) {
         availableRegions = [];
-        let ec2 = new AWS.EC2({apiVersion: '2016-11-15', region: 'us-west-1'});
+        let ec2 = new AWS.EC2({apiVersion: '2016-11-15', region: 'us-west-1', credentials: {accessKeyId: envs.AWS_ACCESS_KEY_ID, secretAccessKey: envs.AWS_SECRET_ACCESS_KEY}});
         let res = await ec2.describeRegions({}).promise().catch(utils.displayError);
 
         if (undefined !== res.Regions) {
@@ -161,7 +161,15 @@ if (program.interaction) {
             choices: function() {
                 return getAvailableRegions();
             },
-            when: function () {
+            when: function (answers) {
+                let answerEnvs = {
+                    'AWS_PROFILE': answers.awsProfile,
+                    'AWS_ACCESS_KEY_ID': answers.awsAccessKeyId,
+                    'AWS_SECRET_ACCESS_KEY': answers.awsSecretAccessKey,
+                };
+                let awsEnvs = utils.findAwsVariables(answerEnvs);
+                envs = utils.mergeVariables(answerEnvs, awsEnvs, envs);
+
                 return utils.showOnlyEmptyOption(program, envs, 'AWS_REGION');
             },
             validate: function (value) {

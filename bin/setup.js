@@ -22,10 +22,10 @@ program
 utils.spawn('node bin/config')
     .then(async () => {
         const env = require('./utils/env').loadEnvs();
-        let s3 = new AWS.S3({apiVersion: '2006-03-01', region: env['AWS_REGION']});
+        let s3 = new AWS.S3({apiVersion: '2006-03-01', region: env.AWS_REGION, credentials: {accessKeyId: env.AWS_ACCESS_KEY_ID, secretAccessKey: env.AWS_SECRET_ACCESS_KEY}});
 
         try {
-            await s3.getBucketLocation({Bucket: env['AWS_S3_BUCKET_DEPLOY']}).promise();
+            await s3.getBucketLocation({Bucket: env.AWS_S3_BUCKET_DEPLOY}).promise();
         } catch (e) {
             return false;
         }

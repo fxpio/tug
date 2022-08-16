@@ -88,7 +88,11 @@ utils.spawn('node bin/config -e')
                 let db = new AWS.DynamoDB({
                     apiVersion: '2012-08-10',
                     region: env.AWS_REGION,
-                    endpoint: env.AWS_DYNAMODB_URL ? env.AWS_DYNAMODB_URL : undefined
+                    endpoint: env.AWS_DYNAMODB_URL ? env.AWS_DYNAMODB_URL : undefined,
+                    credentials: {
+                        accessKeyId: env.AWS_ACCESS_KEY_ID,
+                        secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+                    },
                 });
 
                 try {

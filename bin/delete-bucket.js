@@ -23,11 +23,11 @@ program
 utils.spawn('node bin/config -e')
     .then(() => {
         console.info('Deletion of the S3 bucket is started...');
-        let s3 = new AWS.S3({apiVersion: '2006-03-01', region: env['AWS_REGION']});
+        let s3 = new AWS.S3({apiVersion: '2006-03-01', region: env.AWS_REGION, credentials: {accessKeyId: env.AWS_ACCESS_KEY_ID, secretAccessKey: env.AWS_SECRET_ACCESS_KEY}});
 
-        return s3.deleteBucket({Bucket: env['AWS_S3_BUCKET_DEPLOY']}).promise();
+        return s3.deleteBucket({Bucket: env.AWS_S3_BUCKET_DEPLOY}).promise();
     })
     .then(() => {
-        console.info(`AWS S3 bucket "${env['AWS_S3_BUCKET_DEPLOY']}" was deleted with successfully`);
+        console.info(`AWS S3 bucket "${env.AWS_S3_BUCKET_DEPLOY}" was deleted with successfully`);
     })
     .catch(utils.displayError);
