@@ -17,7 +17,7 @@ import {Request} from 'express';
  * @return {boolean}
  */
 export function isGitlabEvent(req: Request): boolean {
-    return req.hasOwnProperty('headers') && req.headers.hasOwnProperty('x-gitlab-event');
+    return req.headers.hasOwnProperty('x-gitlab-event');
 }
 
 /**
