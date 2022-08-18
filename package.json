@@ -1,6 +1,6 @@
 {
   "name": "@fxp/tug",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Private Composer registry for private PHP packages on AWS Serverless",
   "main": "src/lambda.js",
   "repository": "git@github.com:fxpio/tug.git",
